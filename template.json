@@ -1,0 +1,196 @@
+{
+  "Actor": {
+    "types": [
+      "character",
+      "npc"
+    ],
+    "templates": {
+      "biodata": {
+        "biodata": {
+          "age": 0,
+          "size": "",
+          "weight": "",
+          "hair": "",
+          "sex": "",
+          "eyes": "",
+          "description": "",
+          "gmnotes": ""
+        }
+      },
+      "core": {
+        "subactors": [],
+        "attributes": {
+          "might": {
+            "label": "Might",
+            "abbrev": "might",
+            "value": 0,
+            "bonuseffect": 0,
+            "mod": 0,
+            "col": 1
+          },
+          "agility": {
+            "label": "Agility",
+            "abbrev": "agility",
+            "value": 0,
+            "bonuseffect": 0,
+            "col": 1,
+            "mod": 0
+          },
+          "willpower": {
+            "label": "Willpower",
+            "abbrev": "willpower",
+            "value": 0,
+            "bonuseffect": 0,
+            "col": 1,
+            "mod": 0
+          },
+          "knowledge": {
+            "label": "Knowledge",
+            "abbrev": "knowledge",
+            "value": 0,
+            "bonuseffect": 0,
+            "col": 1,
+            "mod": 0
+          },
+          "social": {
+            "label": "Social",
+            "abbrev": "social",
+            "value": 0,
+            "bonuseffect": 0,
+            "col": 1,
+            "mod": 0
+          }
+        },
+        "size": {
+          "label": "Size",
+          "value": ""
+        },
+        "health": {
+          "value": 0,
+          "tmpvalue": 0,
+          "max": 0
+        },
+        "lifeline": {
+          "value": 0,
+          "max": 0
+        },
+        "resistances": {
+          "physical": {
+            "label": "Physical Damage",
+            "abbrev": "physical",
+            "value": 0
+          },
+          "fire": {
+            "label": "Fire Damage",
+            "abbrev": "fire",
+            "iselemental": true,
+            "value": 0
+          },
+          "lightning": {
+            "label": "Lightning Damage",
+            "abbrev": "lightning",
+            "iselemental": true,
+            "value": 0
+          },
+          "cool": {
+            "label": "Cool Damage",
+            "abbrev": "cool",
+            "iselemental": true,
+            "value": 0
+          },
+          "psychic": {
+            "label": "Psychic Damage",
+            "abbrev": "psychic",
+            "value": 0
+          },
+          "dark": {
+            "label": "Dark Damage",
+            "abbrev": "dark",
+            "value": 0
+          },
+          "divine": {
+            "label": "Divine Damage",
+            "abbrev": "divine",
+            "value": 0
+          },
+          "true": {
+            "label": "True Damage",
+            "abbrev": "true",
+            "value": 0
+          }
+        }
+      },
+      "npccore": {
+        "npctype": "",
+        "description": ""
+      }
+    },
+    "character": {
+      "templates": [
+        "biodata",
+        "core"
+      ]
+    }
+  },
+  "Item": {
+    "types": [
+      "skill",
+      "spell",
+      "armor",
+      "shield",
+      "equipment",
+      "weapon",
+      "module",
+      "money"
+    ],
+    "skill": {
+      "attribute": "",
+      "value": 0,
+      "description": ""
+    },
+    "spell": {
+      "spelltype": "",
+      "value": 0,
+      "description": ""
+    },
+    "armor": {
+      "weight": 0,
+      "cost": 0,
+      "equipped": false,
+      "locationprotected": "",
+      "description": ""
+    },
+    "shield": {
+      "weight": 0,
+      "cost": 0,
+      "equipped": false,
+      "description": ""
+    },
+    "equipment": {
+      "equiptype": "",
+      "cost": 0,
+      "weight": 0,
+      "quantity": 0,
+      "equipped": false,
+      "description": ""
+    },
+    "money": {
+      "value": 0,
+      "quantity": 0,
+      "weight": 0,
+      "description": ""
+    },
+    "weapon": {
+      "weapontype": "",
+      "cost": 0,
+      "weight": 0,
+      "range": "",
+      "maxrange": "",
+      "equipped": false,
+      "description": ""
+    },
+    "module": {
+      "description": ""
+    }
+  }
+}
