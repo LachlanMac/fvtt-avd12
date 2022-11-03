@@ -312,6 +312,7 @@
     },
     "money": {
       "value": 0,
+      "abbreviation": "",
       "quantity": 0,
       "weight": 0,
       "description": ""

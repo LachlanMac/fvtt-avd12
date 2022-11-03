@@ -18,29 +18,90 @@
 
       <div class="tab" data-group="primary">
         <ul>
-          <li class="flexrow"><label class="item-field-label-long">Weapon type</label>
-            <select class="competence-base flexrow" type="text" name="system.weapontype" value="{{system.weapontype}}" data-dtype="String">
-              {{#select system.weapontype}}
-                {{> systems/fvtt-avd12/templates/items/partial-options-weapon-types.hbs}}
-              {{/select}}
-            </select> 
-          </li>
-
-          <li class="flexrow"><label class="item-field-label-long">Weapon category</label>
-            <select class="competence-base flexrow" type="text" name="system.category" value="{{system.category}}" data-dtype="String">
+          <li class="flexrow">
+            <label class="item-field-label-long">Weapon category</label>
+            <select class="item-field-label-long" type="text" name="system.category" value="{{system.category}}" data-dtype="String">
               {{#select system.category}}
                 {{> systems/fvtt-avd12/templates/items/partial-options-weapon-categories.hbs}}
               {{/select}}
             </select> 
+
+            <label class="item-field-label-short">&nbsp;</label>
+
+            <label class="item-field-label-long">Weapon type</label>
+            <select class="item-field-label-long" type="text" name="system.weapontype" value="{{system.weapontype}}" data-dtype="String">
+              {{#select system.weapontype}}
+                {{> systems/fvtt-avd12/templates/items/partial-options-weapon-types.hbs}}
+              {{/select}}
+            </select> 
+
           </li>
 
           {{> systems/fvtt-avd12/templates/items/partial-common-item-fields.hbs}}
 
-          <li class="flexrow"><label class="item-field-label-long">Min Range</label>
-              <input type="text" class="right" name="system.minrange" value="{{system.minrange}}" data-dtype="Number"/>
+          <li class='flexrow'>
+            <h3 class='item-field-label-long'>
+              Range
+            </h3>
           </li>
-          <li class="flexrow"><label class="generic-label">Max Range</label>
-              <input type="text" class="right" name="item-field-label-long" value="{{system.maxrange}}" data-dtype="Number"/>
+
+          <li class="flexrow">
+            <label class="item-field-label-long">Min Range</label>
+            <input type="text" class="item-field-label-short" name="system.minrange" value="{{system.minrange}}" data-dtype="Number"/>
+          
+            <label class="item-field-label-short">&nbsp;</label>
+
+            <label class="item-field-label-long">Max Range</label>
+            <input type="text" class="item-field-label-short" name="system.maxrange" value="{{system.maxrange}}" data-dtype="Number"/>
+          </li>
+
+          <li class="flexrow">
+            <label class="item-field-label-long">Throw Range</label>
+            <input type="text" class="item-field-label-short" name="system.throwrange" value="{{system.throwrange}}" data-dtype="Number"/>
+          </li>
+
+          <li class="flexrow">
+            <label class="item-field-label-long">Magical</label>
+            <input type="checkbox" class="item-field-label-short" name="system.magical" {{checked system.magical}} />
+          
+            <label class="item-field-label-short">&nbsp;</label>
+
+            <label class="item-field-label-long">Blackened Iron</label>
+            <input type="checkbox" class="item-field-label-short" name="system.blackenediron" {{checked system.blackenediron}} />
+          </li>
+
+          <li class="flexrow">
+            <label class="item-field-label-long">Silvered</label>
+            <input type="checkbox" class="item-field-label-short" name="system.silvered" {{checked system.silvered}} />
+          
+            <label class="item-field-label-short">&nbsp;</label>
+
+            <label class="item-field-label-long">Equipped</label>
+            <input type="checkbox" class="item-field-label-short" name="system.equipped" {{checked system.equipped}} />
+          </li>
+
+          <li class="flexrow">
+              <h3 class="item-field-label-long">Damages</h3>
+          </li>
+
+          <li class="flexrow">
+          {{#each system.damages as |damage key|}}
+            <div class="flexcol">
+              <label class="item-field-label-long">{{upperFirst key}}</label>
+              <div class="flexrow">
+                <label class="item-field-label-short">Type</label>
+                <input type="text" class="item-field-label-short" name="system.damages.{{key}}.damagetype" value="{{damage.damagetype}}" data-dtype="Number"/>
+              </div>
+              <div class="flexrow">
+                <label class="item-field-label-short">Dice</label>
+                <input type="text" class="item-field-label-short" name="system.damages.{{key}}.dice" value="{{damage.dice}}" data-dtype="Number"/>
+              </div>
+              <div class="flexrow">
+                <label class="item-field-label-short">Bonus</label>              
+                <input type="text" class="item-field-label-short" name="system.damages.{{key}}.bonus" value="{{damage.bonus}}" data-dtype="Number"/>
+              </div>
+            </div>
+          {{/each}}
           </li>
 
         </ul>

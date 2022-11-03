@@ -127,9 +127,12 @@ export class Avd12Utility {
       'systems/fvtt-avd12/templates/actors/editor-notes-gm.hbs',
       'systems/fvtt-avd12/templates/items/partial-item-nav.hbs',
       'systems/fvtt-avd12/templates/items/partial-item-description.hbs',
+      'systems/fvtt-avd12/templates/items/partial-common-item-fields.hbs',
       'systems/fvtt-avd12/templates/items/partial-options-weapon-types.hbs',
       'systems/fvtt-avd12/templates/items/partial-options-weapon-categories.hbs',
-      'systems/fvtt-avd12/templates/items/partial-common-item-fields.hbs'
+      'systems/fvtt-avd12/templates/items/partial-options-attributes.hbs',
+      'systems/fvtt-avd12/templates/items/partial-options-equipment-types.hbs',
+      'systems/fvtt-avd12/templates/items/partial-options-spell-types.hbs',
     ]
     return loadTemplates(templatePaths);
   }

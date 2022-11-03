@@ -4,20 +4,22 @@
   </label>
   <input
     type='text'
-    class='padd-right'
+    class='item-field-label-short'
     name='system.focuspointsbonus'
     value="{{system.focuspointsbonus}}"
     data-dtype='Number'
   />
-</li>
 
-<li class='flexrow'>
+  <label class='item-field-label-short'>
+    &nbsp;
+  </label>
+
   <label class='item-field-label-long'>
     Focus Regen Bonus
   </label>
   <input
     type='text'
-    class='padd-right'
+    class='item-field-label-short'
     name='system.focusregenbonus'
     value="{{system.focusregenbonus}}"
     data-dtype='Number'
@@ -30,9 +32,123 @@
   </label>
   <input
     type='text'
-    class='padd-right'
+    class='item-field-label-short'
     name='system.burnchancebonus'
     value="{{system.burnchancebonus}}"
+    data-dtype='Number'
+  />
+</li>
+
+<li class='flexrow'>
+  <h3 class='item-field-label-long'>
+    Mitigations
+  </h3>
+</li>
+
+<li class='flexrow'>
+  {{#each system.mitigation as |mitigation key|}}
+    <div>
+      <label class='item-field-label-short'>
+        {{upperFirst key}}
+      </label>
+      <input
+        type='text'
+        class='item-field-label-short padd-right'
+        name="system.mitigation.{{key}}.value"
+        value="{{mitigation.value}}"
+        data-dtype='Number'
+      />
+      <label>
+        &nbsp;
+      </label>
+    </div>
+  {{/each}}
+</li>
+
+<li class='flexrow'>
+  <h3 class='item-field-label-long'>
+    Bonus
+  </h3>
+</li>
+
+<li class='flexrow'>
+  {{#each system.bonus as |bonus key|}}
+    <div>
+      <label class='item-field-label-short'>
+        {{upperFirst key}}
+      </label>
+      <input
+        type='text'
+        class='item-field-label-short padd-right'
+        name="system.bonus.{{key}}.value"
+        value="{{bonus.value}}"
+        data-dtype='Number'
+      />
+      <label>
+        &nbsp;
+      </label>
+    </div>
+  {{/each}}
+</li>
+
+<li class='flexrow'>
+  <h3 class='item-field-label-long'>
+    Various
+  </h3>
+</li>
+
+<li class='flexrow'>
+  <label class='item-field-label-long'>
+    Weight
+  </label>
+  <input
+    type='text'
+    class='item-field-label-short'
+    name='system.weight'
+    value="{{system.weight}}"
+    data-dtype='Number'
+  />
+
+  <label class='item-field-label-short'>
+    &nbsp;
+  </label>
+
+  <label class='item-field-label-long'>
+    Cost
+  </label>
+  <input
+    type='text'
+    class='item-field-label-short'
+    name='system.cost'
+    value="{{system.cost}}"
+    data-dtype='Number'
+  />
+</li>
+
+<li class='flexrow'>
+  <label class='item-field-label-long'>
+    Health
+  </label>
+  <input
+    type='text'
+    class='item-field-label-short'
+    name='system.health'
+    value="{{system.health}}"
+    data-dtype='Number'
+  />
+
+  <label class='item-field-label-short'>
+    &nbsp;
+  </label>
+
+  <label class='item-field-label-long'>
+    Move speed
+  </label>
+  <input
+    type='text'
+    class='item-field-label-short'
+    name='system.movespeed'
+    value="{{system.movespeed}}"
     data-dtype='Number'
   />
 </li>

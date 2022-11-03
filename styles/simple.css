@@ -48,7 +48,7 @@
 .sheet nav.sheet-tabs {
   font-size: 0.8rem;
 } /* For nav and title */
-.window-app input, .foundryvtt-vadentis .item-form, .sheet header.sheet-header .flex-group-center.flex-compteurs, .sheet header.sheet-header .flex-group-center.flex-fatigue, select, button, .item-checkbox, #sidebar, #players, #navigation #nav-toggle {
+.window-app input, .fvtt-avd12 .item-form, .sheet header.sheet-header .flex-group-center.flex-compteurs, .sheet header.sheet-header .flex-group-center.flex-fatigue, select, button, .item-checkbox, #sidebar, #players, #navigation #nav-toggle {
   font-size: 0.8rem;
 }
 
@@ -73,6 +73,12 @@
   text-shadow: 0 0 10px red;
   cursor: pointer;
 }
+
+input:hover, select:hover {
+  border-width: 4px;
+  border-color: rgb(85, 65, 130);
+}
+
 input:disabled {
   color:#1c2058;
 }
@@ -191,9 +197,8 @@ table {border: 1px solid #7a7971;}
   flex: 'flex-shrink' ;
 }
 
-/* Styles limited to foundryvtt-vadentis sheets */
-
-.fvtt-crucible-rpg .sheet-header {
+/* Styles limited to sheets */
+.fvtt-avd12 .sheet-header {
   -webkit-box-flex: 0;
   -ms-flex: 0 0 210px;
   flex: 0 0 210px;
@@ -213,7 +218,7 @@ table {border: 1px solid #7a7971;}
   margin-bottom: 10px;
 }
 
-.fvtt-crucible-rpg .sheet-header .profile-img {
+.fvtt-avd12 .sheet-header .profile-img {
   -webkit-box-flex: 0;
   -ms-flex: 0 0 128px;
   flex: 0 0 128px;
@@ -234,6 +239,7 @@ table {border: 1px solid #7a7971;}
   border-width: 0;
 	border: 1px solid rgba(0, 0, 0, 0);
 }
+
 .button-img:hover {
 	color: rgba(255, 255, 128, 0.7);
 	border: 1px solid rgba(255, 128, 0, 0.8);
@@ -255,34 +261,34 @@ table {border: 1px solid #7a7971;}
   vertical-align: bottom;
 }
 
-.fvtt-crucible-rpg .sheet-header .header-fields {
+.fvtt-avd12 .sheet-header .header-fields {
   -webkit-box-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
 
-.fvtt-crucible-rpg .sheet-header h1.charname {
+.fvtt-avd12 .sheet-header h1.charname {
   height: 50px;
   padding: 0px;
   margin: 5px 0;
   border-bottom: 0;
 }
 
-.fvtt-crucible-rpg .sheet-header h1.charname input {
+.fvtt-avd12 .sheet-header h1.charname input {
   width: 100%;
   height: 100%;
   margin: 0;
 }
 
-.fvtt-crucible-rpg .sheet-tabs {
+.fvtt-avd12 .sheet-tabs {
   -webkit-box-flex: 0;
   -ms-flex: 0;
   flex: 0;
 }
 
-.fvtt-crucible-rpg .sheet-body,
-.fvtt-crucible-rpg .sheet-body .tab,
-.fvtt-crucible-rpg .sheet-body .tab .editor {
+.fvtt-avd12 .sheet-body,
+.fvtt-avd12 .sheet-body .tab,
+.fvtt-avd12 .sheet-body .tab .editor {
   height: 100%;
   font-size: 0.8rem;
 }
@@ -305,70 +311,70 @@ table {border: 1px solid #7a7971;}
   padding: 0 3px;
 }
 
-.fvtt-crucible-rpg .tox .tox-editor-container {
+.fvtt-avd12 .tox .tox-editor-container {
   background: #fff;
 }
 
-.fvtt-crucible-rpg .tox .tox-edit-area {
+.fvtt-avd12 .tox .tox-edit-area {
   padding: 0 8px;
 }
 
-.fvtt-crucible-rpg .resource-label {
+.fvtt-avd12 .resource-label {
   font-weight: bold;
   text-transform: uppercase;
 }
 
-.fvtt-crucible-rpg .tabs {
+.fvtt-avd12 .tabs {
   height: 40px;
   border-top: 1px solid #AAA;
   border-bottom: 1px solid #AAA;
   color: #000000;
 }
 
-.fvtt-crucible-rpg .tabs .item {
+.fvtt-avd12 .tabs .item {
   line-height: 40px;
   font-weight: bold;
 }
 
-.fvtt-crucible-rpg .tabs .item.active {
+.fvtt-avd12 .tabs .item.active {
   text-decoration: underline;
   text-shadow: none;
 }
 
-.fvtt-crucible-rpg .items-list {
+.fvtt-avd12 .items-list {
   list-style: none;
   margin: 1px 0;
   padding: 0;
   overflow-y: auto;
 }
 
-.fvtt-crucible-rpg .items-list .item-header {
+.fvtt-avd12 .items-list .item-header {
   font-weight: bold;
 }
 
-.fvtt-crucible-rpg .items-list .item {
+.fvtt-avd12 .items-list .item {
   height: 30px;
   line-height: 24px;
   padding: 1px 0;
   border-bottom: 1px solid #BBB;
 }
 
-.fvtt-crucible-rpg .items-list .item .item-image {
+.fvtt-avd12 .items-list .item .item-image {
   -webkit-box-flex: 0;
   -ms-flex: 0 0 24px;
   flex: 0 0 24px;
   margin-right: 5px;
 }
 
-.fvtt-crucible-rpg .items-list .item img {
+.fvtt-avd12 .items-list .item img {
   display: block;
 }
 
-.fvtt-crucible-rpg .items-list .item-name {
+.fvtt-avd12 .items-list .item-name {
   margin: 0;
 }
 
-.fvtt-crucible-rpg .items-list .item-controls {
+.fvtt-avd12 .items-list .item-controls {
   -webkit-box-flex: 0;
   -ms-flex: 0 0 86px;
   flex: 0 0 86px;
@@ -379,22 +385,28 @@ table {border: 1px solid #7a7971;}
 /* ======================================== */
 /* Sheet  */
 .window-app.sheet .window-content .sheet-header{
-  background: url("../images/ui/pc_sheet_bg.webp")
+  /*color: rgba(168, 139, 139, 0.5);*/
+  /*background: url("../images/ui/pc_sheet_bg.webp");*/
+  background: #494e6b;
 }
+
 /*  background: #011d33 url("../images/ui/fond1.webp") repeat left top;*/
 /*color: rgba(168, 139, 139, 0.5);*/
+.window-app.sheet .window-content .sheet-header select[type="text"], .window-app.sheet .window-content .sheet-header input[type="text"], .window-app.sheet .window-content .sheet-header input[type="number"], .window-app.sheet .window-content .sheet-body input[type="text"], .window-app.sheet .window-content .sheet-body input[type="number"], .window-app.sheet .window-content .sheet-body select[type="text"] {
+  background:white;
+}
 
-.window-app.sheet .window-content .sheet-header input[type="text"], .window-app.sheet .window-content .sheet-header input[type="number"], .window-app.sheet .window-content .sheet-header input[type="password"], .window-app.sheet .window-content .sheet-header input[type="date"], .window-app.sheet .window-content .sheet-header input[type="time"] {
+.window-app.sheet .window-content .sheet-header input[type="password"], .window-app.sheet .window-content .sheet-header input[type="date"], .window-app.sheet .window-content .sheet-header input[type="time"] {
   color: rgba(36, 37, 37, 0.75);
-  background: rgba(245, 245, 241, 0.95);
+  background: #494e6b;
   border: 1 none;
   margin-bottom: 0.25rem;
   margin-left: 2px;
 }
 
-.window-app.sheet .window-content .sheet-body input[type="text"], .window-app.sheet .window-content .sheet-body input[type="number"], .window-app.sheet .window-content .sheet-body input[type="password"], .window-app.sheet .window-content .sheet-body input[type="date"], .window-app.sheet .window-content .sheet-body input[type="time"] {
+.window-app.sheet .window-content .sheet-body input[type="password"], .window-app.sheet .window-content .sheet-body input[type="date"], .window-app.sheet .window-content .sheet-body input[type="time"] {
   color: rgba(36, 37, 37, 0.75);
-  background: rgba(245, 245, 241, 0.95);
+  background: #494e6b;
   border: 1 none;
   margin-bottom: 0.25rem;
   margin-left: 2px;
@@ -402,7 +414,7 @@ table {border: 1px solid #7a7971;}
 
 .window-app.sheet .window-content .sheet-body select, .window-app.sheet .window-content .sheet-header select {
   color: rgba(36, 37, 37, 0.75);
-  background: rgba(245, 245, 241, 0.95);
+  background: #494e6b;
   border: 1 none;
   margin-bottom: 0.25rem;
   margin-left: 2px;
@@ -410,7 +422,8 @@ table {border: 1px solid #7a7971;}
 
 .window-app .window-content, .window-app.sheet .window-content .sheet-body{
   font-size: 0.8rem;
-  background: url("../images/ui/pc_sheet_bg.webp") repeat left top;
+  /*background: url("../images/ui/pc_sheet_bg.webp") repeat left top;*/
+  background: #494e6b;
 }
 
 /*  background: rgba(245,245,240,0.6) url("../images/ui/sheet_background.webp") left top;*/
@@ -436,7 +449,7 @@ section.sheet-body{padding: 0.25rem 0.5rem;}
   line-height: 1.5rem;
   border-top: 0 none;
   border-bottom: 0 none;
-  background-color:black;
+  background-color:#252525;
   color:beige;
 }
 
@@ -560,9 +573,6 @@ ul, li {
 .item-display-hide {
   display: none;
 }
-.conteneur-type {
-  background: rgb(200, 10, 100, 0.25);
-}
 .item-quantite {
   margin-left: 0.5rem;
 }
@@ -600,17 +610,7 @@ ul, li {
   font-weight: bold;
   flex-grow: 0;
 }
-.secondaire-label,
-.arme-label,
-.generic-label,
-.competence-label,
-.devotion-label,
-.sort-label,
-.technique-label,
-.ability-label,
-.arme-label,
-.armure-label,
-.equipement-label,
+
 .description-label {
   flex-grow: 2;
   margin-left: 4px;
@@ -1080,60 +1080,15 @@ ul, li {
   transition: opacity 0.3s;
 }
 
-.tooltip .ttt-fatigue{
-  width: 360px;
-  
-  background: rgba(30, 25, 20, 0.9);
-  border-image: url(img/ui/bg_control.jpg) 21 repeat;
-  border-image-slice: 6 6 6 6 fill;
-  border-image-width: 6px 6px 6px 6px;
-  border-image-outset: 0px 0px 0px 0px;
-  border-radius: 0px;
-
-  font-size: 0.8rem;
-  padding: 3px 0;
-}
-
-.tooltip .ttt-ajustements {
-  width: 150px;
-  background: rgba(220,220,210,0.95);
-  border-radius: 6px;
-  font-size: 0.9rem;
-  padding: 3px 0;
-}
 
 .tooltip-nobottom {
   border-bottom: unset; /* If you want dots under the hoverable text */
-}
-.tooltip .ttt-xp {
-  width: 250px;
-  background: rgba(220,220,210,0.95);
-  border-radius: 6px;
-  font-size: 0.9rem;
-  padding: 3px 0;
 }
 
 /* Show the tooltip text when you mouse over the tooltip container */
 .tooltip:hover .tooltiptext {
   visibility: visible;
   opacity: 1;
-}
-
-.river-button { 
-  box-shadow: inset 0px 1px 0px 0px #a6827e;
-  background: linear-gradient(to bottom, #21374afc 5%, #152833ab 100%);
-  background-color: #7d5d3b00;
-  border-radius: 3px;
-  border: 2px ridge #846109;
-  display: inline-block;
-  cursor: pointer;
-  color: #ffffff;
-  font-size: 0.8rem;
-  padding: 2px 4px 0px 4px;
-  text-decoration: none;
-  text-shadow: 0px 1px 0px #4d3534;
-  position: relative;
-  margin:4px;
 }
 
 .chat-card-button {
@@ -1179,7 +1134,6 @@ ul, li {
   margin:0px;
 }
 
-.river-button:hover,
 .plus-minus-button:hover,
 .chat-card-button:hover {
   background: linear-gradient(to bottom, #800000 5%, #3e0101 100%);
@@ -1201,34 +1155,6 @@ ul, li {
   padding-left: 2rem;
 }
 
-.drop-equipment-effect,
-.drop-power-effect,
-.drop-perk-effect,
-.drop-ability-effect,
-.drop-effect-specaffected,
-.drop-effect-spec,
-.drop-ability-weapon,
-.drop-ability-armor,
-.drop-race-perk,
-.drop-spec-perk,
-.drop-ability-power,
-.drop-ability-spec,
-.drop-spec-power,
-.drop-specialability,
-.drop-abilities, 
-.drop-optionnal-abilities,
-.drop-virtue-vice-effect,
-.drop-virtue-vice,
-.drop-vice-virtue,
-.drop-specialperk1,
-.drop-perk2,
-.drop-spec1 ,
-.drop-spec2 {
-  background: linear-gradient(to bottom, #6c95b9fc 5%, #105177ab 100%);
-  background-color: #7d5d3b00;
-  border-radius: 3px;
-  border: 2px ridge #846109;
-}
 
 /*************************************************************/
 #pause
@@ -1266,75 +1192,8 @@ ul, li {
   position:relative;
 }
 
-/* =================== 1. ACTOR SHEET FONT STYLES =========== *//*
-Agility AGI: #02a41d     Also Used for Ranged Damage
-Mind MND: #a100fe
-Social SOC: #fd7100
-Strength STR: #5f3d00   Also Used For Melee Damage
-Physique PHY: #990304   Also used For Damage Resistance
-Combat COM: 0136ff      Also Used for Melee Attack
-Defence DEF: #88826a    Also used in the Defence on Combat Tab
-Stealth STL: #505050
-Perception PER: #f9c801     Also Used for Ranged Damage
-Focus FOC: #ff0084
-*/  
-.color-class-black {
-  background-color: black;
-  background: black;
-}
-.color-class-agi,
-.color-class-range {
-  background-color: #02a41d;
-  background: #02a41d;
-}
-.color-class-pool {
-  background-color:#c5c3c3;
-}
-.color-class-mnd {
-  background-color: #a100fe;
-}
-.color-class-soc {
-  background-color: #fd7100;
-}
-.color-class-str,
-.color-class-meleedmg {
-  background-color: #5f3d00;
-}
-.color-class-phy,
-.color-class-dmgres {
-  background-color: #990304;
-}
-.color-class-mr {
-  background-color: #050505;
-}
-.color-class-com,
-.color-class-melee {
-  background-color: #0136ff;
-}
-.color-class-def,
-.color-class-defence {
-  background-color: #88826a;
-}
-.color-class-stl {
-  background-color: #505050;
-}
-.color-class-per,
-.color-class-ranged {
-  background-color: #f9c801;
-}
-.color-class-foc {
-  background-color: #ff0084;
-}
-.color-class-common {
-  background: rgba(185, 183, 40, 0.45);
-}
 .status-small-label {
   font-size: 0.65rem;
-}
-.combat-button {
-  min-height: 26px;
-  max-height: 26px;
-  margin-top: 4px;
 }
 .no-grow {
   flex-grow: 1;
@@ -1342,41 +1201,6 @@ Focus FOC: #ff0084
 }
 .status-col-name {
   max-width: 72px;
-}
-.status-block {
-  max-width: 216px;
-}
-.momentum-block {
-  max-width: 128px;
-  justify-content: flex-start;
-}
-.ability-item {
-  flex-grow: 1;  
-  justify-content: flex-start;
-  margin: 2px;
-}
-.ability-block {
-  min-width: 160px;
-}
-.ability-margin {
-  margin-left: 4px;
-  margin-top: 5px;  
-}
-.combat-margin {
-  margin-left: 4px;
-  margin-top: 3px;  
-}
-.item-ability-roll {
-  max-height: 42px;
-  min-height: 36px;
-}
-.item-ability-roll select, .item-ability-roll input {
-  margin-top: 4px;
-  margin-right: 2px;
-}
-.table-momentum {
-  background: none;
-  border: 0;
 }
 .img-no-border {
   max-width: 48px;
@@ -1450,6 +1274,7 @@ Focus FOC: #ff0084
   min-width: 6rem;
 }
 .item-field-label-long {
+  margin-top: 4px;
   flex-grow:1;
   max-width: 8rem;
   min-width: 8rem;
@@ -1468,30 +1293,4 @@ Focus FOC: #ff0084
 .item-controls-fixed {
   min-width:2rem;
   max-width: 2rem;
-}
-
-.dice-pool-stack {
-  flex: 1 1 5rem;
-  display: flex !important;
-  flex-grow: 0;
-  justify-content: flex-start;
-}
-.dice-pool-label {
-  margin-left: 4px;
-}
-.dice-pool-div {
-  border-left: 4px;
-  border-radius: 2px;
-  margin-bottom: 1rem;
-  background-color: #403f3e40;
-}
-
-.dice-pool-image {
-  border: 0;
-  margin-left: 4px;
-  min-width: 48px;
-  min-height: 48px;
-  max-width: 48px;
-  max-height: 48px;
-  flex-grow: 0;
 }

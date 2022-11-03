@@ -1,0 +1,48 @@
+<form class="{{cssClass}}" autocomplete="off">
+  <header class="sheet-header">
+      <img class="item-sheet-img" src="{{img}}" data-edit="img" title="{{name}}"/>
+      <div class="header-fields">
+          <h1 class="charname"><input name="name" type="text" value="{{name}}" placeholder="Name"/></h1>
+      </div>
+  </header>
+  
+  {{> systems/fvtt-avd12/templates/items/partial-item-nav.hbs}}
+
+
+  {{!-- Sheet Body --}}
+  <section class="sheet-body">
+
+    {{> systems/fvtt-avd12/templates/items/partial-item-description.hbs}}
+    
+    <div class="tab details" data-group="primary" data-tab="details">
+
+      <div class="tab" data-group="primary">
+        <ul>
+          <li class="flexrow">
+            <label class="item-field-label-long">Type</label>
+            <select class="item-field-label-long" type="text" name="system.equiptype" value="{{system.equiptype}}" data-dtype="String">
+              {{#select system.equiptype}}
+                {{> systems/fvtt-avd12/templates/items/partial-options-equipment-types.hbs}}
+              {{/select}}
+            </select> 
+
+          </li>
+
+          {{> systems/fvtt-avd12/templates/items/partial-common-item-fields.hbs}}
+
+          <li class="flexrow">
+            <label class="item-field-label-long">Quantity</label>
+            <input type="text" class="item-field-label-short" name="system.quantity" value="{{system.quantity}}" data-dtype="Number"/>
+          </li>
+
+          <li class="flexrow">
+            <label class="item-field-label-long">Equipped</label>
+            <input type="checkbox" class="item-field-label-short" name="system.equipped" {{checked system.equipped}} />
+          </li>
+
+        </ul>
+    </div>
+  </div>
+
+  </section>
+</form>

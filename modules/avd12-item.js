@@ -1,11 +1,14 @@
 import { Avd12Utility } from "./avd12-utility.js";
 
 export const defaultItemImg = {
-  skill: "systems/fvtt-avd12/images/icons/icon_skill.webp",
-  armor: "systems/fvtt-avd12/images/icons/icon_armour.webp",
-  weapon: "systems/fvtt-avd12/images/icons/icon_weapon.webp",
-  equipment: "systems/fvtt-avd12/images/icons/icon_equipment.webp",
-  money: "systems/fvtt-avd12/images/icons/icon_money.webp",
+  skill: "systems/fvtt-avd12/images/icons/skill2.webp",
+  armor: "systems/fvtt-avd12/images/icons/gloves2.webp",
+  shield: "systems/fvtt-avd12/images/icons/shield2.webp",
+  weapon: "systems/fvtt-avd12/images/icons/weapon2.webp",
+  equipment: "systems/fvtt-avd12/images/icons/cloak2.webp",
+  spell: "systems/fvtt-avd12/images/icons/focus2.webp",
+  module: "systems/fvtt-avd12/images/icons/focus2.webp",
+  money: "systems/fvtt-avd12/images/icons/chest2.webp",
 }
 
 /**

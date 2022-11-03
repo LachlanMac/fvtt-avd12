@@ -1,0 +1,16 @@
+{
+  "ACTOR": {
+    "TypeCharacter": "Character",
+    "TypeNpc": "NPC"
+  },
+  "ITEM": {
+    "TypeWeapon": "Weapon",
+    "TypeShield": "Shield",
+    "TypeArmor": "Armor",
+    "TypeSkill": "Skill",
+    "TypeSpell": "Spell",
+    "TypeModule": "Module",
+    "TypeMoney": "Money",
+    "TypeEquipment": "Equipment"
+  }
+}
