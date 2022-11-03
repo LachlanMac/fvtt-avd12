@@ -17,7 +17,7 @@ export class Avd12Utility {
     this.rollDataStore = {}
     this.defenderStore = {}
 
-    CrucibleCommands.init();
+    Avd12Commands.init();
 
     Handlebars.registerHelper('count', function (list) {
       return list.length;
@@ -98,7 +98,7 @@ export class Avd12Utility {
   static async chatListeners(html) {
 
     html.on("click", '.view-item-from-chat', event => {
-      game.system.crucible.creator.openItemView(event)
+      game.system.avd12.creator.openItemView(event)
     })
     html.on("click", '.roll-defense-melee', event => {
       let rollId = $(event.currentTarget).data("roll-id")
@@ -127,7 +127,9 @@ export class Avd12Utility {
       'systems/fvtt-avd12/templates/actors/editor-notes-gm.hbs',
       'systems/fvtt-avd12/templates/items/partial-item-nav.hbs',
       'systems/fvtt-avd12/templates/items/partial-item-description.hbs',
-      'systems/fvtt-avd12/templates/items/partial-options-weapons-types.hbs'
+      'systems/fvtt-avd12/templates/items/partial-options-weapon-types.hbs',
+      'systems/fvtt-avd12/templates/items/partial-options-weapon-categories.hbs',
+      'systems/fvtt-avd12/templates/items/partial-common-item-fields.hbs'
     ]
     return loadTemplates(templatePaths);
   }
@@ -200,7 +202,7 @@ export class Avd12Utility {
   }
   /* -------------------------------------------- */
   static saveRollData(rollData) {
-    game.socket.emit("system.crucible-rpg", {
+    game.socket.emit("system.fvtt-avd12", {
       name: "msg_update_roll", data: rollData
     }); // Notify all other clients of the roll    
     this.updateRollData(rollData)
@@ -426,7 +428,7 @@ export class Avd12Utility {
   }
 
   /* -------------------------------------------- */
-  static async rollCrucible(rollData) {
+  static async rollAvd12(rollData) {
 
     let actor = game.actors.get(rollData.actorId)
 

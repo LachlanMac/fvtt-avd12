@@ -6,7 +6,7 @@
 import { Avd12Utility } from "./avd12-utility.js";
 
 /* -------------------------------------------- */
-export class CrucibleNPCSheet extends ActorSheet {
+export class Avd12NPCSheet extends ActorSheet {
 
   /** @override */
   static get defaultOptions() {

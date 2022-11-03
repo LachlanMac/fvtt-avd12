@@ -21,7 +21,7 @@
           <li class="flexrow"><label class="item-field-label-long">Weapon type</label>
             <select class="competence-base flexrow" type="text" name="system.weapontype" value="{{system.weapontype}}" data-dtype="String">
               {{#select system.weapontype}}
-                {{> systems/fvtt-avd12/templates/items/partial-weapon-types.hbs}}
+                {{> systems/fvtt-avd12/templates/items/partial-options-weapon-types.hbs}}
               {{/select}}
             </select> 
           </li>
@@ -29,7 +29,7 @@
           <li class="flexrow"><label class="item-field-label-long">Weapon category</label>
             <select class="competence-base flexrow" type="text" name="system.category" value="{{system.category}}" data-dtype="String">
               {{#select system.category}}
-                {{> systems/fvtt-avd12/templates/items/partial-weapon-categories.hbs}}
+                {{> systems/fvtt-avd12/templates/items/partial-options-weapon-categories.hbs}}
               {{/select}}
             </select> 
           </li>

@@ -8,10 +8,10 @@ export class Avd12Commands {
 
   static init() {
     if (!game.system.avd12.commands) {
-      const crucibleCommands = new CrucibleCommands();
+      const avd12Commands = new Avd12Commands();
       //crucibleCommands.registerCommand({ path: ["/char"], func: (content, msg, params) => crucibleCommands.createChar(msg), descr: "Create a new character" });
       //crucibleCommands.registerCommand({ path: ["/pool"], func: (content, msg, params) => crucibleCommands.poolRoll(msg), descr: "Generic Roll Window" });
-      game.system.avd12.commands = crucibleCommands;
+      game.system.avd12.commands = avd12Commands;
     }
   }
   constructor() {
