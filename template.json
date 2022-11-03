@@ -227,7 +227,8 @@
       "equipment",
       "weapon",
       "module",
-      "money"
+      "money",
+      "condition"
     ],
     "templates": {
       "commonitem": {
@@ -284,6 +285,7 @@
     },
     "spell": {
       "spelltype": "",
+      "level":"",
       "value": 0,
       "description": ""
     },
@@ -350,6 +352,9 @@
       "description": ""
     },
     "module": {
+      "description": ""
+    },
+    "condition": {
       "description": ""
     }
   }

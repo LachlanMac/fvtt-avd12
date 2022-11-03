@@ -30,7 +30,11 @@
 
           <li class="flexrow">
             <label class="item-field-label-long">Level</label>
-            <input type="text" class="item-field-label-short" name="system.value" value="{{system.value}}" data-dtype="Number"/>
+            <select class="item-field-label-long" type="text" name="system.level" value="{{system.level}}" data-dtype="String">
+              {{#select system.level}}
+                {{> systems/fvtt-avd12/templates/items/partial-options-spell-levels.hbs}}
+              {{/select}}
+            </select> 
           </li>
 
         </ul>

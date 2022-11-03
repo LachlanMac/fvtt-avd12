@@ -236,7 +236,7 @@ table {border: 1px solid #7a7971;}
   width: 8%;
   height: 8%;
   max-height: 48px;
-  border-width: 0;
+  border-width: 0px;
 	border: 1px solid rgba(0, 0, 0, 0);
 }
 
@@ -388,6 +388,10 @@ table {border: 1px solid #7a7971;}
   /*color: rgba(168, 139, 139, 0.5);*/
   /*background: url("../images/ui/pc_sheet_bg.webp");*/
   background: #494e6b;
+}
+
+input[type="text"], select[type="text"] {
+  background:white;
 }
 
 /*  background: #011d33 url("../images/ui/fond1.webp") repeat left top;*/
@@ -1205,7 +1209,7 @@ ul, li {
 .img-no-border {
   max-width: 48px;
   max-height: 48px;
-  border: 0;
+  border: 0px;
 }
 .items-title-bg {
   margin-top: 6px;
@@ -1222,6 +1226,7 @@ ul, li {
 .item-sheet-img {
   width: 64px;
   height: auto;
+  border: 0;
 }
 .item-name-img {
   flex-grow:1;
