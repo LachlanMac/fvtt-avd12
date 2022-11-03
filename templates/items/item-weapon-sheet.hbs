@@ -1,0 +1,51 @@
+<form class="{{cssClass}}" autocomplete="off">
+  <header class="sheet-header">
+      <img class="item-sheet-img" src="{{img}}" data-edit="img" title="{{name}}"/>
+      <div class="header-fields">
+          <h1 class="charname"><input name="name" type="text" value="{{name}}" placeholder="Name"/></h1>
+      </div>
+  </header>
+  
+  {{> systems/fvtt-avd12/templates/items/partial-item-nav.hbs}}
+
+
+  {{!-- Sheet Body --}}
+  <section class="sheet-body">
+
+    {{> systems/fvtt-avd12/templates/items/partial-item-description.hbs}}
+    
+    <div class="tab details" data-group="primary" data-tab="details">
+
+      <div class="tab" data-group="primary">
+        <ul>
+          <li class="flexrow"><label class="item-field-label-long">Weapon type</label>
+            <select class="competence-base flexrow" type="text" name="system.weapontype" value="{{system.weapontype}}" data-dtype="String">
+              {{#select system.weapontype}}
+                {{> systems/fvtt-avd12/templates/items/partial-weapon-types.hbs}}
+              {{/select}}
+            </select> 
+          </li>
+
+          <li class="flexrow"><label class="item-field-label-long">Weapon category</label>
+            <select class="competence-base flexrow" type="text" name="system.category" value="{{system.category}}" data-dtype="String">
+              {{#select system.category}}
+                {{> systems/fvtt-avd12/templates/items/partial-weapon-categories.hbs}}
+              {{/select}}
+            </select> 
+          </li>
+
+          {{> systems/fvtt-avd12/templates/items/partial-common-item-fields.hbs}}
+
+          <li class="flexrow"><label class="item-field-label-long">Min Range</label>
+              <input type="text" class="right" name="system.minrange" value="{{system.minrange}}" data-dtype="Number"/>
+          </li>
+          <li class="flexrow"><label class="generic-label">Max Range</label>
+              <input type="text" class="right" name="item-field-label-long" value="{{system.maxrange}}" data-dtype="Number"/>
+          </li>
+
+        </ul>
+    </div>
+  </div>
+
+  </section>
+</form>

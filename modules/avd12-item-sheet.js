@@ -57,8 +57,6 @@ export class Avd12ItemSheet extends ItemSheet {
       name: this.object.name,
       editable: this.isEditable,
       cssClass: this.isEditable ? "editable" : "locked",
-      weaponSkills: CrucibleUtility.getWeaponSkills(),
-      shieldSkills: CrucibleUtility.getShieldSkills(),
       system: duplicate(this.object.system),
       limited: this.object.limited,
       options: this.options,

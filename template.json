@@ -74,7 +74,7 @@
           "value": 0,
           "max": 0
         },
-        "resistances": {
+        "mitigation": {
           "physical": {
             "label": "Physical Damage",
             "abbrev": "physical",
@@ -92,9 +92,9 @@
             "iselemental": true,
             "value": 0
           },
-          "cool": {
-            "label": "Cool Damage",
-            "abbrev": "cool",
+          "cold": {
+            "label": "Cold Damage",
+            "abbrev": "cold",
             "iselemental": true,
             "value": 0
           },
@@ -113,10 +113,96 @@
             "abbrev": "divine",
             "value": 0
           },
+          "arcane": {
+            "label": "Aracane Damage",
+            "abbrev": "arcane",
+            "value": 0
+          },
+          "poison": {
+            "label": "Poison Damage",
+            "abbrev": "poison",
+            "value": 0
+          },
           "true": {
             "label": "True Damage",
             "abbrev": "true",
             "value": 0
+          }
+        },
+        "bonus": {
+          "ranged": {
+            "attack": 0,
+            "damage": 0,
+            "crits": 0,
+            "brutals": 0
+          },
+          "slash": {
+            "attack": 0,
+            "damage": 0,
+            "crits": 0,
+            "brutals": 0
+          },
+          "blunt": {
+            "attack": 0,
+            "damage": 0,
+            "crits": 0,
+            "brutals": 0
+          },
+          "pierce": {
+            "attack": 0,
+            "damage": 0,
+            "crits": 0,
+            "brutals": 0
+          },
+          "unarmed": {
+            "attack": 0,
+            "damage": 0
+          },
+          "dodge": {
+            "armored": 0,
+            "light": 0,
+            "unarmored": 0
+          },
+          "stealth": {
+            "armored": 0,
+            "light": 0,
+            "unarmored": 0
+          },
+          "block": {
+            "armored": 0,
+            "light": 0,
+            "unarmored": 0
+          },
+          "physical": {
+            "armored": 0,
+            "light": 0,
+            "unarmored": 0
+          },
+          "elemental": {
+            "armored": 0,
+            "light": 0,
+            "unarmored": 0
+          },
+          "armored": {
+            "remove_stealth": false,
+            "cast_speed": 0
+          },
+          "craft": {
+            "smithing": 0,
+            "cooking": 0,
+            "scribing": 0,
+            "runecarving": 0,
+            "alchemy": 0,
+            "ammocraft": 0,
+            "engineering": 0
+          },
+          "weapon": {
+            "attack": 0,
+            "damage": 0
+          },
+          "spell": {
+            "attack": 0,
+            "damage": 0
           }
         }
       },
@@ -143,6 +229,54 @@
       "module",
       "money"
     ],
+    "templates": {
+      "commonitem": {
+        "focuspointsbonus": 0,
+        "focusregenbonus": 0,
+        "burnchancebonus": 0,
+        "mitigation": {
+          "physical": {
+            "value": 0
+          },
+          "psychic": {
+            "value": 0
+          },
+          "fire": {
+            "value": 0
+          },
+          "lightning": {
+            "value": 0
+          },
+          "cold": {
+            "value": 0
+          },
+          "dark": {
+            "value": 0
+          },
+          "divine": {
+            "value": 0
+          },
+          "arcane": {
+            "value": 0
+          }
+        },
+        "bonus": {
+          "block": {
+            "value": 0
+          },
+          "dodge": {
+            "value": 0
+          },
+          "resistance": {
+            "value": 0
+          }
+        },
+        "weight": 0,
+        "cost": 0,
+        "health": 0,
+        "movespeed": 0
+      }
+    },
     "skill": {
       "attribute": "",
       "value": 0,
@@ -154,22 +288,24 @@
       "description": ""
     },
     "armor": {
-      "weight": 0,
-      "cost": 0,
+      "templates": [
+        "commonitem"
+      ],
       "equipped": false,
-      "locationprotected": "",
       "description": ""
     },
     "shield": {
-      "weight": 0,
-      "cost": 0,
+      "templates": [
+        "commonitem"
+      ],
       "equipped": false,
       "description": ""
     },
     "equipment": {
       "equiptype": "",
-      "cost": 0,
-      "weight": 0,
+      "templates": [
+        "commonitem"
+      ],
       "quantity": 0,
       "equipped": false,
       "description": ""
@@ -182,11 +318,34 @@
     },
     "weapon": {
       "weapontype": "",
-      "cost": 0,
-      "weight": 0,
-      "range": "",
-      "maxrange": "",
+      "category": "",
+      "templates": [
+        "commonitem"
+      ],
+      "minrange": 0,
+      "maxrange": 0,
+      "throwrange": 0,
+      "magical": false,
+      "blackenediron": false,
+      "silvered": false,
       "equipped": false,
+      "damages": {
+        "primary": {
+          "damagetype": "",
+          "dice": "",
+          "bonus": ""
+        },
+        "secondary": {
+          "damagetype": "",
+          "dice": "",
+          "bonus": ""
+        },
+        "tertiary": {
+          "damagetype": "",
+          "dice": "",
+          "bonus": ""
+        }
+      },
       "description": ""
     },
     "module": {

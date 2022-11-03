@@ -64,12 +64,12 @@ export class Avd12Utility {
 
   /* -------------------------------------------- */
   static async ready() {
-    const skills = await Avd12Utility.loadCompendium("fvtt-crucible-rpg.skills")
+    const skills = await Avd12Utility.loadCompendium("fvtt-avd12.skills")
     this.skills = skills.map(i => i.toObject())
     this.weaponSkills = duplicate(this.skills.filter(item => item.system.isweaponskill))
     this.shieldSkills = duplicate(this.skills.filter(item => item.system.isshieldskill))
 
-    const rollTables = await Avd12Utility.loadCompendium("fvtt-crucible-rpg.rolltables")
+    const rollTables = await Avd12Utility.loadCompendium("fvtt-avd12.rolltables")
     this.rollTables = rollTables.map(i => i.toObject())
 
   }
@@ -92,98 +92,6 @@ export class Avd12Utility {
       return true
     }
     return false
-  }
-  /* -------------------------------------------- */
-  static isWeaponPenetrating(weapon) {
-    if (weapon && weapon.system.qualities.toLowerCase().includes("penetrating")) {
-      return true
-    }
-    return false
-  }
-  /* -------------------------------------------- */
-  static isWeaponLight(weapon) {
-    if (weapon && weapon.system.qualities.toLowerCase().includes("light")) {
-      return true
-    }
-    return false
-  }
-  /* -------------------------------------------- */
-  static isWeaponHeavy(weapon) {
-    if (weapon && weapon.system.qualities.toLowerCase().includes("heavy")) {
-      return true
-    }
-    return false
-  }
-  /* -------------------------------------------- */
-  static isWeaponHack(weapon) {
-    if (weapon && weapon.system.qualities.toLowerCase().includes("hack")) {
-      return true
-    }
-    return false
-  }
-  /* -------------------------------------------- */
-  static isWeaponUndamaging(weapon) {
-    if (weapon && weapon.system.qualities.toLowerCase().includes("undamaging")) {
-      return true
-    }
-    return false
-  }
-  /* -------------------------------------------- */
-  static isWeaponDangerous(weapon) {
-    if (weapon && weapon.system.qualities.toLowerCase().includes("dangerous")) {
-      return true
-    }
-    return false
-  }
-  /* -------------------------------------------- */
-  static isWeaponDeadly(weapon) {
-    if (weapon && weapon.system.qualities.toLowerCase().includes("deadly")) {
-      return true
-    }
-    return false
-  }
-  static getWeaponRange(weapon) {
-    if (weapon && weapon.system.isranged) {
-      let rangeValue = weapon.system.range.replace(/[^0-9]/g, '')
-      return Number(rangeValue)
-    }
-    return false
-  }
-  static getWeaponMaxRange(weapon) {
-    if (weapon && weapon.system.isranged) {
-      let rangeValue = weapon.system.maxrange.replace(/[^0-9]/g, '')
-      return Number(rangeValue)
-    }
-    return false
-  }
-
-  /* -------------------------------------------- */
-  static async getRollTableFromDiceColor(diceColor, displayChat = true) {
-    let rollTableName = __color2RollTable[diceColor]
-    if (rollTableName) {
-      const pack = game.packs.get("fvtt-crucible-rpg.rolltables")
-      const index = await pack.getIndex()
-      const entry = index.find(e => e.name === rollTableName)
-      let table = await pack.getDocument(entry._id)
-      const draw = await table.draw({ displayChat: displayChat, rollMode: "gmroll" })
-      return draw.results.length > 0 ? draw.results[0] : undefined
-    }
-  }
-  /* -------------------------------------------- */
-  static getSizeDice(sizeValue) {
-    return __size2Dice[sizeValue]
-  }
-
-  /* -------------------------------------------- */
-  static async getCritical(level, weapon) {
-    const pack = game.packs.get("fvtt-crucible-rpg.rolltables")
-
-    let tableName = "Crit " + level + " (" + this.upperFirst(weapon.system.damage) + ")"
-    const index = await pack.getIndex()
-    const entry = index.find(e => e.name === tableName)
-    let table = await pack.getDocument(entry._id)
-    const draw = await table.draw({ displayChat: false, rollMode: "gmroll" })
-    return draw.results.length > 0 ? draw.results[0] : undefined
   }
 
   /* -------------------------------------------- */
@@ -216,14 +124,10 @@ export class Avd12Utility {
   static async preloadHandlebarsTemplates() {
 
     const templatePaths = [
-      'systems/fvtt-crucible-rpg/templates/editor-notes-gm.html',
-      'systems/fvtt-crucible-rpg/templates/partial-roll-select.html',
-      'systems/fvtt-crucible-rpg/templates/partial-actor-ability-block.html',
-      'systems/fvtt-crucible-rpg/templates/partial-actor-status.html',
-      'systems/fvtt-crucible-rpg/templates/partial-options-abilities.html',
-      'systems/fvtt-crucible-rpg/templates/partial-item-nav.html',
-      'systems/fvtt-crucible-rpg/templates/partial-item-description.html',
-      'systems/fvtt-crucible-rpg/templates/partial-actor-equipment.html'
+      'systems/fvtt-avd12/templates/actors/editor-notes-gm.hbs',
+      'systems/fvtt-avd12/templates/items/partial-item-nav.hbs',
+      'systems/fvtt-avd12/templates/items/partial-item-description.hbs',
+      'systems/fvtt-avd12/templates/items/partial-options-weapons-types.hbs'
     ]
     return loadTemplates(templatePaths);
   }
@@ -319,7 +223,7 @@ export class Avd12Utility {
           name: defender.name,
           alias: defender.name,
           //user: defender.id,
-          content: await renderTemplate(`systems/fvtt-crucible-rpg/templates/chat-request-defense.html`, rollData),
+          content: await renderTemplate(`systems/fvtt-avd12/templates/chat-request-defense.html`, rollData),
           whisper: [defender.id].concat(ChatMessage.getWhisperRecipients('GM')),
         })
       }
@@ -365,7 +269,7 @@ export class Avd12Utility {
 
   /* -------------------------------------------- */
   static async getFumble(weapon) {
-    const pack = game.packs.get("fvtt-crucible-rpg.rolltables")
+    const pack = game.packs.get("fvtt-avd12.rolltables")
     const index = await pack.getIndex()
     let entry
 
@@ -404,7 +308,7 @@ export class Avd12Utility {
         result.criticalText = result.critical.text
       }
       this.createChatWithRollMode(rollData.alias, {
-        content: await renderTemplate(`systems/fvtt-crucible-rpg/templates/chat-attack-defense-result.html`, rollData)
+        content: await renderTemplate(`systems/fvtt-avd12/templates/chat-attack-defense-result.html`, rollData)
       })
       console.log("Results processed", rollData)
     }
@@ -429,7 +333,7 @@ export class Avd12Utility {
       if (game.user.isGM) {
         this.processSuccessResult(rollData)
       } else {
-        game.socket.emit("system.fvtt-crucible-rpg", { msg: "msg_gm_process_attack_defense", data: rollData });
+        game.socket.emit("system.fvtt-avd12", { msg: "msg_gm_process_attack_defense", data: rollData });
       }
     }
   }
@@ -638,7 +542,7 @@ export class Avd12Utility {
       rollData.rollOrder = 1
       rollData.rollType = (rollData.rollAdvantage == "roll-advantage") ? "Advantage" : "Disadvantage"
       this.createChatWithRollMode(rollData.alias, {
-        content: await renderTemplate(`systems/fvtt-crucible-rpg/templates/chat-generic-result.html`, rollData)
+        content: await renderTemplate(`systems/fvtt-avd12/templates/chat-generic-result.html`, rollData)
       })
 
       rollData.rollOrder = 2
@@ -648,7 +552,7 @@ export class Avd12Utility {
       rollData.roll = myRoll2 // Tmp switch to display the proper results
       rollData.nbSuccess = myRoll2.total
       this.createChatWithRollMode(rollData.alias, {
-        content: await renderTemplate(`systems/fvtt-crucible-rpg/templates/chat-generic-result.html`, rollData)
+        content: await renderTemplate(`systems/fvtt-avd12/templates/chat-generic-result.html`, rollData)
       })
       rollData.roll = myRoll // Revert the tmp switch
       rollData.nbSuccess = myRoll.total
@@ -682,7 +586,7 @@ export class Avd12Utility {
     actor.lastRoll = rollData
 
     this.createChatWithRollMode(rollData.alias, {
-      content: await renderTemplate(`systems/fvtt-crucible-rpg/templates/chat-generic-result.html`, rollData)
+      content: await renderTemplate(`systems/fvtt-avd12/templates/chat-generic-result.html`, rollData)
     })
     console.log("Rolldata result", rollData)
 
@@ -733,7 +637,7 @@ export class Avd12Utility {
     chatGM.whisper = this.getUsers(user => user.isGM);
     chatGM.content = "Blinde message of " + game.user.name + "<br>" + chatOptions.content;
     console.log("blindMessageToGM", chatGM);
-    game.socket.emit("system.fvtt-crucible-rpg", { msg: "msg_gm_chat_message", data: chatGM });
+    game.socket.emit("system.fvtt-avd12", { msg: "msg_gm_chat_message", data: chatGM });
   }
 
 
