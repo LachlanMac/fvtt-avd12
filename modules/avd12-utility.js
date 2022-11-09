@@ -63,6 +63,18 @@ export class Avd12Utility {
   }
 
   /* -------------------------------------------- */
+  static buildBonusList() {
+    let bonusList = []
+    for(let key in game.system.model.Actor.character.bonus)  {
+      let bonuses = game.system.model.Actor.character.bonus[key]
+      for (let bonus in bonuses) {
+        bonusList.push( key + "." + bonus )
+      }
+    }
+    return bonusList
+  }
+
+  /* -------------------------------------------- */
   static async ready() {
     const skills = await Avd12Utility.loadCompendium("fvtt-avd12.skills")
     this.skills = skills.map(i => i.toObject())

@@ -18,18 +18,8 @@
 
       <div class="tab" data-group="primary">
         <ul>
-          <li class="flexrow">
-            <label class="item-field-label-long">Type of trait</label>
-            <select class="item-field-label-long" type="text" name="system.traittype" value="{{system.traittype}}" data-dtype="String">
-              {{#select system.traittype}}
-                <option value="traitonly">Trait only</option>
-                <option value="traitbonus">Trait with bonus or spells</option>
-              {{/select}}
-            </select> 
-          </li>
 
-          {{#if (eq system.traittype "traitbonus")}}
-            <li class="flexrow">
+          <li class="flexrow">
               <label class="item-field-label-long">Bonus automation</label>
               <input type="checkbox" class="item-field-label-short" name="system.computebonus" {{checked system.computebonus}} />
             </li>
@@ -37,14 +27,19 @@
               <li class="flexrow">
                 
                 <label class="item-field-label-long">Bonus path</label>
-                <input type="text" class="item-field-label-medium" name="system.bonusdata" value="{{system.bonusdata}}" data-dtype="String"/>
+                <select class="item-field-label-long" type="text" name="system.bonusdata" value="{{system.bonusdata}}" data-dtype="String">
+                  {{#select system.bonusdata}}
+                    {{#each bonusList as |bonus idx|}}
+                      <option value="{{bonus}}">{{bonus}}</option>
+                    {{/each}}
+                  {{/select}}
+                </select> 
               </li>
               <li class="flexrow">
                 <label class="item-field-label-long">Bonus value</label>
                 <input type="text" class="item-field-label-short" name="system.bonusvalue" value="{{system.bonusvalue}}" data-dtype="Number"/>
               </li>
             {{/if}}
-          {{/if}}
 
           <li class="flexrow">
             <label class="item-field-label-long">Selected</label>

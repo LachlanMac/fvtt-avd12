@@ -72,6 +72,7 @@ export class Avd12ItemSheet extends ItemSheet {
       limited: this.object.limited,
       options: this.options,
       owner: this.document.isOwner,
+      bonusList: Avd12Utility.buildBonusList(),
       description: await TextEditor.enrichHTML(this.object.system.description, { async: true }),
       isGM: game.user.isGM
     }
