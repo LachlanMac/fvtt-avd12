@@ -9,8 +9,7 @@
     {
       "lang": "en",
       "name": "English",
-      "path": "lang/en.json",
-      "flags": {}
+      "path": "lang/en.json"
     }
   ],
   "authors": [
@@ -27,8 +26,7 @@
     "maximum": "10"
   },
   "id": "fvtt-avd12",
-  "packs": [
- ],
+  "packs": [],
   "primaryTokenAttribute": "secondary.health",
   "secondaryTokenAttribute": "secondary.delirium",
   "socket": true,
@@ -37,7 +35,7 @@
   ],
   "title": "AnyVenture D12 RPG",
   "url": "https://www.uberwald.me/gitea/uberwald/fvtt-avd12",
-  "version": "10.0.1",
-  "download": "https://www.uberwald.me/gitea/public/fvtt-avd12/archive/fvtt-avd12-v10.0.1.zip",
+  "version": "10.0.2",
+  "download": "https://www.uberwald.me/gitea/public/fvtt-avd12/archive/fvtt-avd12-v10.0.2.zip",
   "background": "systems/fvtt-avd12/images/ui/avd12_welcome_page.webp"
 }
