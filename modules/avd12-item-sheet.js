@@ -1,5 +1,7 @@
 import { Avd12Utility } from "./avd12-utility.js";
 
+const __ALLOWED_MODULE_TYPES = { "action": 1, "reaction": 1, "freeaction": 1, "trait": 1 }
+
 /**
  * Extend the basic ItemSheet with some very simple modifications
  * @extends {ItemSheet}
@@ -15,7 +17,7 @@ export class Avd12ItemSheet extends ItemSheet {
       dragDrop: [{ dragSelector: null, dropSelector: null }],
       width: 620,
       height: 550,
-      tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description"}]
+      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description" }]
     });
   }
 
@@ -48,7 +50,16 @@ export class Avd12ItemSheet extends ItemSheet {
 
   /* -------------------------------------------- */
   async getData() {
-    
+
+    // Specific case for formating descriptions of sub-items
+    if (this.object.type == "module") {
+      for (let level of this.object.system.levels) {
+        for (let id in level.features) {
+          level.features[id].descriptionHTML = await TextEditor.enrichHTML(level.features[id].system.description, { async: true })
+        }
+      }
+    }
+
     let formData = {
       title: this.title,
       id: this.id,
@@ -61,6 +72,7 @@ export class Avd12ItemSheet extends ItemSheet {
       limited: this.object.limited,
       options: this.options,
       owner: this.document.isOwner,
+      description: await TextEditor.enrichHTML(this.object.system.description, { async: true }),
       isGM: game.user.isGM
     }
 
@@ -105,6 +117,58 @@ export class Avd12ItemSheet extends ItemSheet {
   }
 
   /* -------------------------------------------- */
+  async _onDrop(event) {
+
+    const levelIndex = Number($(event.toElement).data("level-index"))
+    let data = event.dataTransfer.getData('text/plain')
+    let dataItem = JSON.parse(data)
+    let item = fromUuidSync(dataItem.uuid)
+    if (item.pack) {
+      item = await Avd12Utility.searchItem(item)
+    }
+    if (!item) {
+      ui.notifications.warn("Unable to find relevant item  - Aborting drag&drop " + data.uuid)
+      return
+    }
+    if (this.object.type == "module" && __ALLOWED_MODULE_TYPES[item.type]) {
+      let levels = duplicate(this.object.system.levels)
+      levels[levelIndex].features[item.id] = duplicate(item)
+      this.object.update({ 'system.levels': levels })
+      return
+    }
+    ui.notifications.warn("This item is not allowed dropped here")
+  }
+
+  /* -------------------------------------------- */
+  async viewSubitem(ev) {
+    let field = $(ev.currentTarget).data('type');
+    let idx = Number($(ev.currentTarget).data('index'));
+    let itemData = this.object.system[field][idx];
+    if (itemData.name != 'None') {
+      let spec = await Item.create(itemData, { temporary: true });
+      spec.system.origin = "embeddedItem";
+      new Avd12ItemSheet(spec).render(true);
+    }
+  }
+
+  /* -------------------------------------------- */
+  async deleteSubitem(ev) {
+    let field = $(ev.currentTarget).data('type');
+    let idx = Number($(ev.currentTarget).data('index'));
+    let oldArray = this.object.system[field];
+    let itemData = this.object.system[field][idx];
+    if (itemData.name != 'None') {
+      let newArray = [];
+      for (var i = 0; i < oldArray.length; i++) {
+        if (i != idx) {
+          newArray.push(oldArray[i]);
+        }
+      }
+      this.object.update({ [`system.${field}`]: newArray });
+    }
+  }
+
+  /* -------------------------------------------- */
   /** @override */
   activateListeners(html) {
     super.activateListeners(html);
@@ -118,10 +182,6 @@ export class Avd12ItemSheet extends ItemSheet {
       const li = $(ev.currentTarget).parents(".item");
       const item = this.object.options.actor.getOwnedItem(li.data("item-id"));
       item.sheet.render(true);
-    });
-
-    html.find('.delete-spec').click(ev => {
-      this.object.update({ "data.specialisation": [{ name: 'None' }] });
     });
 
     html.find('.delete-subitem').click(ev => {
@@ -139,13 +199,32 @@ export class Avd12ItemSheet extends ItemSheet {
       this.viewSubitem(ev);
     });
 
-    html.find('.view-spec').click(ev => {
-      this.manageSpec();
-    });
+    html.find('.add-module-level').click(ev => {
+      let levels = duplicate(this.object.system.levels)
+      levels.push({ features: {} })
+      this.object.update({ 'system.levels': levels })
+    })
 
+    html.find('.module-feature-delete').click(ev => {
+      let levels = duplicate(this.object.system.levels)
+      let levelIndex = Number($(ev.currentTarget).parents(".item").data("level-index"))
+      let featureId = $(ev.currentTarget).parents(".item").data("feature-id")
+      levels[levelIndex].features[featureId] = undefined
+      this.object.update({ 'system.levels': levels })
+    })
+
+    html.find('.feature-level-selected').change(ev => {
+      let levels = duplicate(this.object.system.levels)
+      let levelIndex = Number($(ev.currentTarget).parents(".item").data("level-index"))
+      let featureId = $(ev.currentTarget).parents(".item").data("feature-id")
+      for (let id in levels[levelIndex].features) {
+        let feature = levels[levelIndex].features[id]
+        feature.system.selected = false // Everybody to false
+      }
+      levels[levelIndex].features[featureId].system.selected = ev.currentTarget.value
+      this.object.update({ 'system.levels': levels })
+    })
   }
-
-  
 
   /* -------------------------------------------- */
   get template() {

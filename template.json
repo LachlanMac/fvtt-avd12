@@ -228,7 +228,12 @@
       "weapon",
       "module",
       "money",
-      "condition"
+      "condition",
+      "action",
+      "freeaction",
+      "reaction",
+      "stance",
+      "trait"
     ],
     "templates": {
       "commonitem": {
@@ -272,11 +277,41 @@
             "value": 0
           }
         },
+        "focus": {
+          "isfocus": false,
+          "core": "",
+          "treatment": "",
+          "bond": ""
+        },
         "weight": 0,
         "cost": 0,
         "health": 0,
         "movespeed": 0
       }
+    },
+    "action": {
+      "selected": false,
+      "description": ""
+    },
+    "reaction": {
+      "selected": false,
+      "description": ""
+    },
+    "freeaction": {
+      "selected": false,
+      "description": ""
+    },
+    "stance": {
+      "active": false,
+      "description": ""
+    },
+    "trait": {
+      "traittype": "",
+      "computebonus": false,
+      "bonusdata": "",
+      "bonusvalue": 0,
+      "selected": false,
+      "description": ""
     },
     "skill": {
       "attribute": "",
@@ -352,6 +387,7 @@
       "description": ""
     },
     "module": {
+      "levels": [],
       "description": ""
     },
     "condition": {

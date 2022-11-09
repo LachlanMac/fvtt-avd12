@@ -3,8 +3,8 @@
   "esmodules": [
     "modules/avd12-main.js"
   ],
-  "gridDistance": 5,
-  "gridUnits": "m",
+  "gridDistance": 1,
+  "gridUnits": "u",
   "languages": [
     {
       "lang": "en",
@@ -37,7 +37,7 @@
   ],
   "title": "AnyVenture D12 RPG",
   "url": "https://www.uberwald.me/gitea/uberwald/fvtt-avd12",
-  "version": "10.0.0",
-  "download": "https://www.uberwald.me/gitea/public/fvtt-avd12/archive/fvtt-avd12-v10.0.0.zip",
+  "version": "10.0.1",
+  "download": "https://www.uberwald.me/gitea/public/fvtt-avd12/archive/fvtt-avd12-v10.0.1.zip",
   "background": "systems/fvtt-avd12/images/ui/avd12_welcome_page.webp"
 }

@@ -1,0 +1,58 @@
+<form class="{{cssClass}}" autocomplete="off">
+  <header class="sheet-header">
+      <img class="item-sheet-img" src="{{img}}" data-edit="img" title="{{name}}"/>
+      <div class="header-fields">
+          <h1 class="charname"><input name="name" type="text" value="{{name}}" placeholder="Name"/></h1>
+      </div>
+  </header>
+  
+  {{> systems/fvtt-avd12/templates/items/partial-item-nav.hbs}}
+
+
+  {{!-- Sheet Body --}}
+  <section class="sheet-body">
+
+    {{> systems/fvtt-avd12/templates/items/partial-item-description.hbs}}
+    
+    <div class="tab details" data-group="primary" data-tab="details">
+
+      <div class="tab" data-group="primary">
+        <ul>
+          <li class="flexrow">
+            <label class="item-field-label-long">Type of trait</label>
+            <select class="item-field-label-long" type="text" name="system.traittype" value="{{system.traittype}}" data-dtype="String">
+              {{#select system.traittype}}
+                <option value="traitonly">Trait only</option>
+                <option value="traitbonus">Trait with bonus or spells</option>
+              {{/select}}
+            </select> 
+          </li>
+
+          {{#if (eq system.traittype "traitbonus")}}
+            <li class="flexrow">
+              <label class="item-field-label-long">Bonus automation</label>
+              <input type="checkbox" class="item-field-label-short" name="system.computebonus" {{checked system.computebonus}} />
+            </li>
+            {{#if system.computebonus}}
+              <li class="flexrow">
+                
+                <label class="item-field-label-long">Bonus path</label>
+                <input type="text" class="item-field-label-medium" name="system.bonusdata" value="{{system.bonusdata}}" data-dtype="String"/>
+              </li>
+              <li class="flexrow">
+                <label class="item-field-label-long">Bonus value</label>
+                <input type="text" class="item-field-label-short" name="system.bonusvalue" value="{{system.bonusvalue}}" data-dtype="Number"/>
+              </li>
+            {{/if}}
+          {{/if}}
+
+          <li class="flexrow">
+            <label class="item-field-label-long">Selected</label>
+            <input type="checkbox" class="item-field-label-short" name="system.selected" {{checked system.selected}} />
+          </li>
+        </ul>
+    </div>
+  </div>
+
+  </section>
+</form>

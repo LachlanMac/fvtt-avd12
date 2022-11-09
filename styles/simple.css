@@ -1299,3 +1299,10 @@ ul, li {
   min-width:2rem;
   max-width: 2rem;
 }
+
+.drop-module-step {
+  background: linear-gradient(to bottom, #6c95b9fc 5%, #105177ab 100%);
+  background-color: #7d5d3b00;
+  border-radius: 3px;
+  border: 2px ridge #846109;
+}

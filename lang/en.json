@@ -11,6 +11,12 @@
     "TypeSpell": "Spell",
     "TypeModule": "Module",
     "TypeMoney": "Money",
-    "TypeEquipment": "Equipment"
+    "TypeEquipment": "Equipment",
+    "TypeAction": "Action",
+    "TypeFreeaction": "Free Action",
+    "TypeReaction": "Reaction",
+    "TypeStance": "Stance",
+    "TypeTrait": "Trait",
+    "TypeCondition": "Condition"
   }
 }

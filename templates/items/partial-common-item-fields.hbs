@@ -93,6 +93,33 @@
 
 <li class='flexrow'>
   <h3 class='item-field-label-long'>
+    Focus
+  </h3>
+  <input type="checkbox" class="item-field-label-short" name="system.focus.isfocus" {{checked system.focus.isfocus}} />  
+</li>
+
+  {{#if system.focus.isfocus}}
+    <li class='flexrow'>
+      <select class="item-field-label-long" type="text" name="system.focus.core" value="{{system.focus.core}}" data-dtype="String">
+        {{#select system.focus.core}}
+          {{> systems/fvtt-avd12/templates/items/partial-options-focus-core.hbs}}
+        {{/select}}
+      </select> 
+      <select class="item-field-label-long" type="text" name="system.focus.treatment" value="{{system.focus.treatment}}" data-dtype="String">
+        {{#select system.focus.treatment}}
+          {{> systems/fvtt-avd12/templates/items/partial-options-focus-treatment.hbs}}
+        {{/select}}
+      </select> 
+      <select class="item-field-label-long" type="text" name="system.focus.bond" value="{{system.focus.bond}}" data-dtype="String">
+        {{#select system.focus.bond}}
+          {{> systems/fvtt-avd12/templates/items/partial-options-focus-bond.hbs}}
+        {{/select}}
+      </select> 
+    </li>
+{{/if}}
+
+<li class='flexrow'>
+  <h3 class='item-field-label-long'>
     Various
   </h3>
 </li>
