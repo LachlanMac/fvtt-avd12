@@ -1,7 +1,7 @@
 import { Avd12Utility } from "./avd12-utility.js";
 
 export const defaultItemImg = {
-  skill: "systems/fvtt-avd12/images/icons/skill1.webp",
+  //skill: "systems/fvtt-avd12/images/icons/skill1.webp",
   armor: "systems/fvtt-avd12/images/icons/chest2.webp",
   shield: "systems/fvtt-avd12/images/icons/shield2.webp",
   weapon: "systems/fvtt-avd12/images/icons/weapon2.webp",

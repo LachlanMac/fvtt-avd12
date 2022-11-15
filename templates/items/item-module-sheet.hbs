@@ -6,45 +6,61 @@
       </div>
   </header>
   
-  {{> systems/fvtt-avd12/templates/items/partial-item-nav.hbs}}
+  {{> systems/fvtt-avd12/templates/items/partial-item-nav.hbs builder=true}}
 
 
   {{!-- Sheet Body --}}
   <section class="sheet-body">
 
     {{> systems/fvtt-avd12/templates/items/partial-item-description.hbs}}
-    
+
     <div class="tab details" data-group="primary" data-tab="details">
-
-      <div class="tab" data-group="primary">
-        <ul>
-          {{#each system.levels as |level index|}}
-            <hr>
-            <li class="flexrow">
-              <label class="item-field-label-long">Level {{index}}</label>
-            </li>
-            <li class="flexrow">
-              <div class="drop-module-step" data-level-index="{{index}}"><label data-level-index="{{index}}">Drop traits/actions/... here !</label></div>
-            </li>
-
-            {{#each level.features as |feature id|}}
-              <li class="flexrow item" data-level-index="{{../index}}" data-feature-id="{{feature._id}}" >
-                <label class="item-field-label-medium">{{feature.name}}</label>
-                <input type="checkbox" class="item-field-label-short feature-level-selected" {{checked feature.system.selected}} />
-                <label class="item-field-label-long2">{{{feature.descriptionHTML}}}</label>
-                <div class="item-controls item-controls-fixed">
-                  <a class="item-control module-feature-delete" title="Delete Feature"><i class="fas fa-trash"></i></a>
-                </div>
-              </li>
-            {{/each}}
-          {{/each}}
-
-          <li class="flexrow item">
-            <button class="chat-card-button add-module-level">Add a level</button>
-          </li>
-
-        </ul>
+      TODO : The tre of module choices will be displayed here for players, with the "selected" option only
     </div>
+
+    {{#if isGM}}
+      <div class="tab builder" data-group="primary" data-tab="builder">
+
+        <div class="tab" data-group="primary">
+          <ul>
+            {{#each system.levels as |level index|}}
+              <hr>
+              <li class="flexrow">
+                <h2 class="item-field-label-long">Level {{add index 1}}</h2>
+              </li>
+
+              <ul class="ul-level1">
+                {{#each level.choices as |choice choiceIndex|}}
+                <li class="">
+                  <h3 class="item-field-label-long">Level choice  {{add choiceIndex 1}}</h3></li>
+                <li class="item flexrow" data-level-index="{{../index}}" data-choice-index="{{choiceIndex}}">
+                  <div class="drop-module-step" data-choice-index="{{choiceIndex}}" data-level-index="{{../index}}">
+                    <label data-choice-index="{{choiceIndex}}" data-level-index="{{../index}}">Drop traits/actions/... here !</label>
+                  </div>
+                  <span class="item-field-label-short">&nbsp;</span>
+                  <label class="item-field-label-short">Selected</label>
+                  <input type="checkbox" class="item-field-label-short choice-level-selected" {{checked choice.selected}} />
+                </li>
+                  {{#each choice.features as |feature id|}}
+                  <li class="flexrow item" data-level-index="{{../index}}" data-choice-index="{{choiceIndex}}" data-feature-id="{{feature._id}}" >
+                    <label class="item-field-label-medium">{{feature.name}}</label>
+                    <label class="item-field-label-long2">{{{feature.descriptionHTML}}}</label>
+                    <div class="item-controls item-controls-fixed">
+                      <a class="item-control module-feature-delete" title="Delete Feature"><i class="fas fa-trash"></i></a>
+                    </div>
+                    </li>
+                  {{/each}}
+                {{/each}}
+              </ul>
+            {{/each}}
+
+            <li class="flexrow item">
+              <button class="chat-card-button add-module-level">Add a level</button>
+            </li>
+
+          </ul>
+      </div>
+      {{/if}}
 
   </div>
 

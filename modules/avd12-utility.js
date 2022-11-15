@@ -41,6 +41,9 @@ export class Avd12Utility {
     Handlebars.registerHelper('mul', function (a, b) {
       return parseInt(a) * parseInt(b);
     })
+    Handlebars.registerHelper('add', function (a, b) {
+      return parseInt(a) + parseInt(b);
+    })
   }
 
   /*-------------------------------------------- */
@@ -70,6 +73,15 @@ export class Avd12Utility {
       for (let bonus in bonuses) {
         bonusList.push( key + "." + bonus )
       }
+    }
+    for(let key in game.system.model.Actor.character.attributes)  {
+      let attrs = game.system.model.Actor.character.attributes[key]
+      for(let skillKey in attrs.skills)  {
+        bonusList.push( key + ".skills." + skillKey + ".modifier" )
+      }
+    }
+    for(let key in game.system.model.Actor.character.universal.skills)  {
+      bonusList.push( "universal.skills." + key + ".modifier" )
     }
     return bonusList
   }

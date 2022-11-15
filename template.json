@@ -26,7 +26,21 @@
             "value": 0,
             "bonuseffect": 0,
             "mod": 0,
-            "col": 1
+            "col": 1,
+            "skills": {
+              "athletics": {
+                "modifier": 0,
+                "good": false
+              },
+              "block": {
+                "modifier": 0,
+                "good": false
+              },
+              "strength": {
+                "modifier": 0,
+                "good": false
+              }
+            }
           },
           "agility": {
             "label": "Agility",
@@ -34,7 +48,21 @@
             "value": 0,
             "bonuseffect": 0,
             "col": 1,
-            "mod": 0
+            "mod": 0,
+            "skills": {
+              "acrobatics": {
+                "modifier": 0 ,
+                "good": false               
+              },
+              "stealth": {
+                "modifier": 0,
+                "good": false                
+              },
+              "dodge": {
+                "modifier": 0,
+                "good": false                
+              }
+            }
           },
           "willpower": {
             "label": "Willpower",
@@ -42,7 +70,21 @@
             "value": 0,
             "bonuseffect": 0,
             "col": 1,
-            "mod": 0
+            "mod": 0,
+            "skills": {
+              "concentration": {
+                "modifier": 0,
+                "good": false                
+              },
+              "endurance": {
+                "modifier": 0 ,
+                "good": false               
+              },
+              "resistance": {
+                "modifier": 0,
+                "good": false                
+              }
+            }
           },
           "knowledge": {
             "label": "Knowledge",
@@ -50,7 +92,29 @@
             "value": 0,
             "bonuseffect": 0,
             "col": 1,
-            "mod": 0
+            "mod": 0,
+            "skills": {
+              "wilderness": {
+                "modifier": 0,
+                "good": false                
+              },
+              "academic": {
+                "modifier": 0,
+                "good": false                
+              },
+              "arcanum": {
+                "modifier": 0,
+                "good": false                
+              },
+              "medicine": {
+                "modifier": 0,
+                "good": false                
+              },
+              "thievery": {
+                "modifier": 0,
+                "good": false                
+              }
+            }
           },
           "social": {
             "label": "Social",
@@ -58,7 +122,37 @@
             "value": 0,
             "bonuseffect": 0,
             "col": 1,
-            "mod": 0
+            "mod": 0,
+            "skills": {
+              "persuasion": {
+                "modifier": 0,
+                "good": false                
+              },
+              "insight": {
+                "modifier": 0,
+                "good": false                
+              },
+              "performance": {
+                "modifier": 0,
+                "good": false                
+              },
+              "animals": {
+                "modifier": 0,
+                "good": false                
+              }
+            }
+          }
+        },
+        "universal": {
+          "skills": {
+            "search": {
+              "modifier": 0,
+              "good": false
+            },
+            "initiative": {
+              "modifier": 0,
+              "good": false
+            }
           }
         },
         "size": {
@@ -220,7 +314,6 @@
   },
   "Item": {
     "types": [
-      "skill",
       "spell",
       "armor",
       "shield",
@@ -290,15 +383,12 @@
       }
     },
     "action": {
-      "selected": false,
       "description": ""
     },
     "reaction": {
-      "selected": false,
       "description": ""
     },
     "freeaction": {
-      "selected": false,
       "description": ""
     },
     "stance": {
@@ -310,12 +400,6 @@
       "computebonus": false,
       "bonusdata": "",
       "bonusvalue": 0,
-      "selected": false,
-      "description": ""
-    },
-    "skill": {
-      "attribute": "",
-      "value": 0,
       "description": ""
     },
     "spell": {

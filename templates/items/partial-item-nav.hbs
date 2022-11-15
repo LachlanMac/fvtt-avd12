@@ -2,4 +2,7 @@
 <nav class="sheet-tabs tabs" data-group="primary">
   <a class="item" data-tab="description">Description</a>
   <a class="item" data-tab="details">Details</a>
+  {{#if builder}}
+    <a class="item" data-tab="builder">Builder (GM only)</a>
+  {{/if}}
 </nav>

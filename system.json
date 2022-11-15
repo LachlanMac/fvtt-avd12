@@ -9,7 +9,8 @@
     {
       "lang": "en",
       "name": "English",
-      "path": "lang/en.json"
+      "path": "lang/en.json",
+      "flags": {}
     }
   ],
   "authors": [
@@ -26,7 +27,6 @@
     "maximum": "10"
   },
   "id": "fvtt-avd12",
-  "packs": [],
   "primaryTokenAttribute": "secondary.health",
   "secondaryTokenAttribute": "secondary.delirium",
   "socket": true,

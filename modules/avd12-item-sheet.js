@@ -121,6 +121,7 @@ export class Avd12ItemSheet extends ItemSheet {
   async _onDrop(event) {
 
     const levelIndex = Number($(event.toElement).data("level-index"))
+    const choiceIndex = Number($(event.toElement).data("choice-index"))
     let data = event.dataTransfer.getData('text/plain')
     let dataItem = JSON.parse(data)
     let item = fromUuidSync(dataItem.uuid)
@@ -133,7 +134,7 @@ export class Avd12ItemSheet extends ItemSheet {
     }
     if (this.object.type == "module" && __ALLOWED_MODULE_TYPES[item.type]) {
       let levels = duplicate(this.object.system.levels)
-      levels[levelIndex].features[item.id] = duplicate(item)
+      levels[levelIndex].choices[choiceIndex].features[item.id] = duplicate(item)
       this.object.update({ 'system.levels': levels })
       return
     }
@@ -202,27 +203,27 @@ export class Avd12ItemSheet extends ItemSheet {
 
     html.find('.add-module-level').click(ev => {
       let levels = duplicate(this.object.system.levels)
-      levels.push({ features: {} })
+      levels.push({ choices: [ {selected: false, features: {} }, {selected: false, features: {} } ] })
       this.object.update({ 'system.levels': levels })
     })
 
     html.find('.module-feature-delete').click(ev => {
       let levels = duplicate(this.object.system.levels)
       let levelIndex = Number($(ev.currentTarget).parents(".item").data("level-index"))
+      let choiceIndex = Number($(ev.currentTarget).parents(".item").data("choice-index"))
       let featureId = $(ev.currentTarget).parents(".item").data("feature-id")
-      levels[levelIndex].features[featureId] = undefined
+      levels[levelIndex].choices[choiceIndex].features[featureId] = undefined
       this.object.update({ 'system.levels': levels })
     })
 
-    html.find('.feature-level-selected').change(ev => {
+    html.find('.choice-level-selected').change(ev => {
       let levels = duplicate(this.object.system.levels)
       let levelIndex = Number($(ev.currentTarget).parents(".item").data("level-index"))
-      let featureId = $(ev.currentTarget).parents(".item").data("feature-id")
-      for (let id in levels[levelIndex].features) {
-        let feature = levels[levelIndex].features[id]
-        feature.system.selected = false // Everybody to false
+      let choiceIndex = Number($(ev.currentTarget).parents(".item").data("choice-index"))
+      for (let choice of levels[levelIndex].choices) {
+        choice.selected = false // Everybody to false
       }
-      levels[levelIndex].features[featureId].system.selected = ev.currentTarget.value
+      levels[levelIndex].choices[choiceIndex].selected = ev.currentTarget.value
       this.object.update({ 'system.levels': levels })
     })
   }
