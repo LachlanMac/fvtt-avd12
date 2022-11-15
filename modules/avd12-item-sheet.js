@@ -119,9 +119,10 @@ export class Avd12ItemSheet extends ItemSheet {
 
   /* -------------------------------------------- */
   async _onDrop(event) {
-
-    const levelIndex = Number($(event.toElement).data("level-index"))
-    const choiceIndex = Number($(event.toElement).data("choice-index"))
+    
+    let li = $(event.toElement).parents(".item")
+    const levelIndex = Number(li.data("level-index"))
+    const choiceIndex = Number(li.data("choice-index"))
     let data = event.dataTransfer.getData('text/plain')
     let dataItem = JSON.parse(data)
     let item = fromUuidSync(dataItem.uuid)
@@ -203,7 +204,11 @@ export class Avd12ItemSheet extends ItemSheet {
 
     html.find('.add-module-level').click(ev => {
       let levels = duplicate(this.object.system.levels)
-      levels.push({ choices: [ {selected: false, features: {} }, {selected: false, features: {} } ] })
+      if ( (levels.length+1) % 2 == 0) {
+        levels.push({ choices: [ {selected: false, features: {} }, {selected: false, features: {} } ] })
+      }else {
+        levels.push({ choices: [ {selected: false, features: {} } ] })
+      }
       this.object.update({ 'system.levels': levels })
     })
 

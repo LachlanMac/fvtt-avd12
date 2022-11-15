@@ -32,17 +32,18 @@
               <ul class="ul-level1">
                 {{#each level.choices as |choice choiceIndex|}}
                 <li class="">
-                  <h3 class="item-field-label-long">Level choice  {{add choiceIndex 1}}</h3></li>
-                <li class="item flexrow" data-level-index="{{../index}}" data-choice-index="{{choiceIndex}}">
-                  <div class="drop-module-step" data-choice-index="{{choiceIndex}}" data-level-index="{{../index}}">
-                    <label data-choice-index="{{choiceIndex}}" data-level-index="{{../index}}">Drop traits/actions/... here !</label>
+                  <h3 class="item-field-label-long">Level choice  {{add choiceIndex 1}}</h3>
+                </li>
+                <li class="item flexrow" data-level-index="{{@../index}}" data-choice-index="{{choiceIndex}}">
+                  <div class="drop-module-step">
+                    <label>Drop traits/actions/... here !</label>
                   </div>
                   <span class="item-field-label-short">&nbsp;</span>
                   <label class="item-field-label-short">Selected</label>
                   <input type="checkbox" class="item-field-label-short choice-level-selected" {{checked choice.selected}} />
                 </li>
                   {{#each choice.features as |feature id|}}
-                  <li class="flexrow item" data-level-index="{{../index}}" data-choice-index="{{choiceIndex}}" data-feature-id="{{feature._id}}" >
+                  <li class="flexrow item" data-level-index="{{@../../index}}" data-choice-index="{{choiceIndex}}" data-feature-id="{{feature._id}}" >
                     <label class="item-field-label-medium">{{feature.name}}</label>
                     <label class="item-field-label-long2">{{{feature.descriptionHTML}}}</label>
                     <div class="item-controls item-controls-fixed">
