@@ -25,7 +25,6 @@
                 {{> systems/fvtt-avd12/templates/items/partial-options-spell-types.hbs}}
               {{/select}}
             </select> 
-
           </li>
 
           <li class="flexrow">
@@ -35,6 +34,59 @@
                 {{> systems/fvtt-avd12/templates/items/partial-options-spell-levels.hbs}}
               {{/select}}
             </select> 
+          </li>
+
+          <li class="flexrow">
+            <label class="item-field-label-long">Actions</label>
+            <input type="text" class="item-field-label-long2" name="system.actions" value="{{system.actions}}" data-dtype="String"/>          
+          </li>
+
+          <li class="flexrow">
+            <label class="item-field-label-long">Charge Effect</label>
+            <input type="text" class="item-field-label-long2" name="system.chargeeffect" value="{{system.chargeeffect}}" data-dtype="String"/>          
+          </li>
+
+          <li class="flexrow">
+            <label class="item-field-label-long">School</label>
+            <select class="item-field-label-long" type="text" name="system.school" value="{{system.school}}" data-dtype="String">
+              {{#select system.school}}
+                {{> systems/fvtt-avd12/templates/items/partial-options-spell-schools.hbs}}
+              {{/select}}
+            </select> 
+          </li>
+
+          <li class="flexrow">
+            <label class="item-field-label-long">Damage</label>
+            <input type="text" class="item-field-label-short" name="system.damage" value="{{system.damage}}" data-dtype="String"/>          
+          </li>
+
+          <li class="flexrow">
+            <label class="item-field-label-long">Damage Type</label>
+            <select class="item-field-label-long" type="text" name="system.damagetype" value="{{system.damagetype}}" data-dtype="String">
+              {{#select system.damagetype}}
+                {{> systems/fvtt-avd12/templates/items/partial-options-damage-types.hbs}}
+              {{/select}}
+            </select> 
+          </li>
+
+          <li class="flexrow">
+            <label class="item-field-label-long">Range</label>
+            <input type="text" class="item-field-label-short" name="system.range" value="{{system.range}}" data-dtype="Number"/>
+          </li>
+
+          <li class="flexrow">
+            <label class="item-field-label-long">Components</label>
+            <input type="text" class="item-field-label-long2" name="system.components" value="{{system.components}}" data-dtype="String"/>
+          </li>
+
+          <li class="flexrow">
+            <label class="item-field-label-long">Reaction?</label>
+            <input type="checkbox" class="item-field-label-short" name="system.reaction" {{checked system.reaction}} />
+          </li>
+
+          <li class="flexrow">
+            <label class="item-field-label-long">Sustained?</label>
+            <input type="checkbox" class="item-field-label-short" name="system.sustained" {{checked system.sustained}} />
           </li>
 
         </ul>

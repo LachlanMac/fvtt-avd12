@@ -404,6 +404,15 @@
     },
     "spell": {
       "spelltype": "",
+      "actions": "",
+      "chargeeffect": "",
+      "school": "",
+      "damage": "",
+      "damagetype": "",
+      "range": 0,
+      "components": "",
+      "reaction": false,
+      "sustained": false,
       "level":"",
       "value": 0,
       "description": ""

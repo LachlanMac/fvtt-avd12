@@ -44,8 +44,7 @@
                 </li>
                   {{#each choice.features as |feature id|}}
                   <li class="flexrow item" data-level-index="{{@../../index}}" data-choice-index="{{choiceIndex}}" data-feature-id="{{feature._id}}" >
-                    <label class="item-field-label-medium">{{feature.name}}</label>
-                    <label class="item-field-label-long2">{{{feature.descriptionHTML}}}</label>
+                    <label class="item-field-label-long2">{{feature.name}}</label>
                     <div class="item-controls item-controls-fixed">
                       <a class="item-control module-feature-delete" title="Delete Feature"><i class="fas fa-trash"></i></a>
                     </div>

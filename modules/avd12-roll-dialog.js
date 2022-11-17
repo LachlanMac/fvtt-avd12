@@ -5,7 +5,7 @@ export class Avd12RollDialog extends Dialog {
   /* -------------------------------------------- */
   static async create(actor, rollData) {
 
-    let options = { classes: ["Avd12Dialog"], width: 540, height: 340, 'z-index': 99999 };
+    let options = { classes: ["Avd12Dialog"], width: 540, height: 'fit-content', 'z-index': 99999 };
     let html = await renderTemplate('systems/fvtt-avd12/templates/dialogs/roll-dialog-generic.html', rollData);
 
     return new CrucibleRollDialog(actor, rollData, html, options);

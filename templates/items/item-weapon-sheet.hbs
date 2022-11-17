@@ -90,7 +90,11 @@
               <label class="item-field-label-long">{{upperFirst key}}</label>
               <div class="flexrow">
                 <label class="item-field-label-short">Type</label>
-                <input type="text" class="item-field-label-short" name="system.damages.{{key}}.damagetype" value="{{damage.damagetype}}" data-dtype="Number"/>
+                <select class="item-field-label-long" type="text" name="system.damages.{{key}}.damagetype" value="{{system.damagetype}}" data-dtype="String">
+                  {{#select system.damagetype}}
+                    {{> systems/fvtt-avd12/templates/items/partial-options-damage-types.hbs}}
+                  {{/select}}
+                </select> 
               </div>
               <div class="flexrow">
                 <label class="item-field-label-short">Dice</label>

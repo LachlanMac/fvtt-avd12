@@ -16,7 +16,7 @@ export class Avd12ItemSheet extends ItemSheet {
       template: "systems/fvtt-avd12/templates/item-sheet.hbs",
       dragDrop: [{ dragSelector: null, dropSelector: null }],
       width: 620,
-      height: 550,
+      height: 'fit-content',
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description" }]
     });
   }
