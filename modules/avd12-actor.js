@@ -36,8 +36,6 @@ export class Avd12Actor extends Actor {
     }
 
     if (data.type == 'character') {
-      const skills = await Avd12Utility.loadCompendium("fvtt-avd12.skills")
-      data.items = skills.map(i => i.toObject())
     }
     if (data.type == 'npc') {
     }

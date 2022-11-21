@@ -157,6 +157,7 @@ export class Avd12Utility {
       'systems/fvtt-avd12/templates/items/partial-options-weapon-categories.hbs',
       'systems/fvtt-avd12/templates/items/partial-options-attributes.hbs',
       'systems/fvtt-avd12/templates/items/partial-options-equipment-types.hbs',
+      'systems/fvtt-avd12/templates/items/partial-options-armor-types.hbs',
       'systems/fvtt-avd12/templates/items/partial-options-spell-types.hbs',
       'systems/fvtt-avd12/templates/items/partial-options-spell-levels.hbs',
       'systems/fvtt-avd12/templates/items/partial-options-spell-schools.hbs',

@@ -422,6 +422,7 @@
         "commonitem"
       ],
       "equipped": false,
+      "category": "",
       "description": ""
     },
     "shield": {
