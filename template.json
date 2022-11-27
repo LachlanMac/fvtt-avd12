@@ -30,14 +30,17 @@
             "skills": {
               "athletics": {
                 "modifier": 0,
+                "finalvalue": 0,
                 "good": false
               },
               "block": {
                 "modifier": 0,
+                "finalvalue": 0,
                 "good": false
               },
               "strength": {
                 "modifier": 0,
+                "finalvalue": 0,
                 "good": false
               }
             }
@@ -52,14 +55,17 @@
             "skills": {
               "acrobatics": {
                 "modifier": 0 ,
+                "finalvalue": 0,
                 "good": false               
               },
               "stealth": {
                 "modifier": 0,
+                "finalvalue": 0,
                 "good": false                
               },
               "dodge": {
                 "modifier": 0,
+                "finalvalue": 0,
                 "good": false                
               }
             }
@@ -74,14 +80,17 @@
             "skills": {
               "concentration": {
                 "modifier": 0,
+                "finalvalue": 0,
                 "good": false                
               },
               "endurance": {
                 "modifier": 0 ,
+                "finalvalue": 0,
                 "good": false               
               },
               "resistance": {
                 "modifier": 0,
+                "finalvalue": 0,          
                 "good": false                
               }
             }
@@ -96,22 +105,27 @@
             "skills": {
               "wilderness": {
                 "modifier": 0,
+                "finalvalue": 0,
                 "good": false                
               },
               "academic": {
                 "modifier": 0,
+                "finalvalue": 0,
                 "good": false                
               },
               "arcanum": {
                 "modifier": 0,
+                "finalvalue": 0,
                 "good": false                
               },
               "medicine": {
                 "modifier": 0,
+                "finalvalue": 0,
                 "good": false                
               },
               "thievery": {
                 "modifier": 0,
+                "finalvalue": 0,
                 "good": false                
               }
             }
@@ -126,18 +140,22 @@
             "skills": {
               "persuasion": {
                 "modifier": 0,
+                "finalvalue": 0,
                 "good": false                
               },
               "insight": {
                 "modifier": 0,
+                "finalvalue": 0,
                 "good": false                
               },
               "performance": {
                 "modifier": 0,
+                "finalvalue": 0,
                 "good": false                
               },
               "animals": {
                 "modifier": 0,
+                "finalvalue": 0,
                 "good": false                
               }
             }
@@ -147,10 +165,12 @@
           "skills": {
             "search": {
               "modifier": 0,
+              "finalvalue": 0,
               "good": false
             },
             "initiative": {
               "modifier": 0,
+              "finalvalue": 0,
               "good": false
             }
           }

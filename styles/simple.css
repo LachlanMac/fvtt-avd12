@@ -800,6 +800,10 @@ ul, li {
   text-align: center;
 }
 
+.skill-good-checkbox {
+  height: 14px;
+  width: 14px;
+}
 
 .flex-actions-bar  {
   flex-grow: 2;

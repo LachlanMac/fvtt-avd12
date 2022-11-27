@@ -86,7 +86,7 @@ export class Avd12NPCSheet extends ActorSheet {
     // Delete Inventory Item
     html.find('.item-delete').click(ev => {
       const li = $(ev.currentTarget).parents(".item")
-      CrucibleUtility.confirmDelete(this, li)
+      Avd12Utility.confirmDelete(this, li)
     })
     html.find('.item-add').click(ev => {
       let dataType = $(ev.currentTarget).data("type")

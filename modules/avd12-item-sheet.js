@@ -1,7 +1,5 @@
 import { Avd12Utility } from "./avd12-utility.js";
 
-const __ALLOWED_MODULE_TYPES = { "action": 1, "reaction": 1, "freeaction": 1, "trait": 1 }
-
 /**
  * Extend the basic ItemSheet with some very simple modifications
  * @extends {ItemSheet}
@@ -16,10 +14,11 @@ export class Avd12ItemSheet extends ItemSheet {
       template: "systems/fvtt-avd12/templates/item-sheet.hbs",
       dragDrop: [{ dragSelector: null, dropSelector: null }],
       width: 620,
-      height: 'fit-content',
+      height: 480,
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description" }]
     });
   }
+
 
   /* -------------------------------------------- */
   _getHeaderButtons() {
@@ -96,7 +95,7 @@ export class Avd12ItemSheet extends ItemSheet {
 
   /* -------------------------------------------- */
   postItem() {
-    let chatData = duplicate(CrucibleUtility.data(this.item));
+    let chatData = duplicate(this.item)
     if (this.actor) {
       chatData.actor = { id: this.actor.id };
     }
@@ -112,7 +111,7 @@ export class Avd12ItemSheet extends ItemSheet {
       });
 
     renderTemplate('systems/avd12/templates/post-item.html', chatData).then(html => {
-      let chatOptions = CrucibleUtility.chatDataSetup(html);
+      let chatOptions = Avd12Utility.chatDataSetup(html);
       ChatMessage.create(chatOptions)
     });
   }
@@ -133,7 +132,7 @@ export class Avd12ItemSheet extends ItemSheet {
       ui.notifications.warn("Unable to find relevant item  - Aborting drag&drop " + data.uuid)
       return
     }
-    if (this.object.type == "module" && __ALLOWED_MODULE_TYPES[item.type]) {
+    if (this.object.type == "module" && Avd12Utility.isModuleItemAllowed(item.type) ) {
       let levels = duplicate(this.object.system.levels)
       levels[levelIndex].choices[choiceIndex].features[item.id] = duplicate(item)
       this.object.update({ 'system.levels': levels })
@@ -144,13 +143,16 @@ export class Avd12ItemSheet extends ItemSheet {
 
   /* -------------------------------------------- */
   async viewSubitem(ev) {
-    let field = $(ev.currentTarget).data('type');
-    let idx = Number($(ev.currentTarget).data('index'));
-    let itemData = this.object.system[field][idx];
+    let levelIndex = Number($(ev.currentTarget).parents(".item").data("level-index"))
+    let choiceIndex = Number($(ev.currentTarget).parents(".item").data("choice-index"))
+    let featureId = $(ev.currentTarget).parents(".item").data("feature-id")
+    
+    let itemData = this.object.system.levels[levelIndex].choices[choiceIndex].features[featureId]
+
     if (itemData.name != 'None') {
-      let spec = await Item.create(itemData, { temporary: true });
-      spec.system.origin = "embeddedItem";
-      new Avd12ItemSheet(spec).render(true);
+      let item = await Item.create(itemData, { temporary: true });
+      item.system.origin = "embeddedItem";
+      new Avd12ItemSheet(item).render(true);
     }
   }
 
@@ -198,7 +200,7 @@ export class Avd12ItemSheet extends ItemSheet {
       let itemType = li.data("item-type");
     });
 
-    html.find('.view-subitem').click(ev => {
+    html.find('.module-feature-view').click(ev => {
       this.viewSubitem(ev);
     });
 
@@ -228,8 +230,15 @@ export class Avd12ItemSheet extends ItemSheet {
       for (let choice of levels[levelIndex].choices) {
         choice.selected = false // Everybody to false
       }
-      levels[levelIndex].choices[choiceIndex].selected = ev.currentTarget.value
+      levels[levelIndex].choices[choiceIndex].selected = ev.currentTarget.checked
       this.object.update({ 'system.levels': levels })
+      if ( this.object.actor ) {
+        if ( ev.currentTarget.checked ) {
+          this.object.actor.addModuleLevel( this.object.id, levels[levelIndex].choices[choiceIndex] )
+        } else {
+          this.object.actor.deleteModuleLevel( this.object.id, levels[levelIndex].choices[choiceIndex] )
+        }
+      }
     })
   }
 

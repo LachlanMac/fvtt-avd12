@@ -13,7 +13,7 @@ export class Avd12ActorSheet extends ActorSheet {
 
     return mergeObject(super.defaultOptions, {
       classes: ["fvtt-avd12", "sheet", "actor"],
-      template: "systems/fvtt-avd12/templates/actor-sheet.html",
+      template: "systems/fvtt-avd12/templates/actors/actor-sheet.hbs",
       width: 960,
       height: 720,
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "skills" }],
@@ -35,11 +35,12 @@ export class Avd12ActorSheet extends ActorSheet {
       cssClass: this.isEditable ? "editable" : "locked",
       system: duplicate(this.object.system),
       limited: this.object.limited,
-      skills: this.actor.getSkills( ),
+      modules: this.actor.getModules(),
+      traits: this.actor.getTraits(),
       weapons: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getWeapons()) ),
       armors: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getArmors())),
       shields: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getShields())),
-      spells: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getLore())),
+      spells: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getSpells())),
       equipments: this.actor.checkAndPrepareEquipments(duplicate(this.actor.getEquipmentsOnly()) ),
       equippedWeapons: this.actor.checkAndPrepareEquipments(duplicate(this.actor.getEquippedWeapons()) ),
       equippedArmor: this.actor.getEquippedArmor(),
@@ -81,7 +82,7 @@ export class Avd12ActorSheet extends ActorSheet {
     // Delete Inventory Item
     html.find('.item-delete').click(ev => {
       const li = $(ev.currentTarget).parents(".item")
-      CrucibleUtility.confirmDelete(this, li)
+      Avd12Utility.confirmDelete(this, li)
     })
     html.find('.item-add').click(ev => {
       let dataType = $(ev.currentTarget).data("type")
@@ -129,14 +130,10 @@ export class Avd12ActorSheet extends ActorSheet {
       this.actor.incDecAmmo( li.data("item-id"), +1 )
     } );
             
-    html.find('.roll-ability').click((event) => {
-      const abilityKey = $(event.currentTarget).data("ability-key");
-      this.actor.rollAbility(abilityKey);
-    });
     html.find('.roll-skill').click((event) => {
-      const li = $(event.currentTarget).parents(".item")
-      const skillId = li.data("item-id")
-      this.actor.rollSkill(skillId)
+      let attrKey = $(event.currentTarget).data("attr-key")
+      let skillKey = $(event.currentTarget).data("skill-key")
+      this.actor.rollSkill(attrKey, skillKey)
     });    
 
     html.find('.roll-weapon').click((event) => {

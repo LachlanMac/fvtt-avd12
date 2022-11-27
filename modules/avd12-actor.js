@@ -49,12 +49,31 @@ export class Avd12Actor extends Actor {
 
   /* -------------------------------------------- */
   async prepareData() {
-    super.prepareData();
+
+    super.prepareData()
+
   }
 
   /* -------------------------------------------- */
   computeHitPoints() {
     if (this.type == "character") {
+    }
+  } 
+
+  /* -------------------------------------------- */
+  rebuildSkills() {
+    for (let attrKey in this.system.attributes) {
+      let attr = this.system.attributes[attrKey]
+      for (let skillKey in attr.skills) {
+        let dataPath = attrKey + ".skills." + skillKey + ".modifier"
+        let skill = attr.skills[skillKey]
+        skill.modifier = 0
+        let availableTraits = this.items.filter(t => t.type == "trait" && t.system.computebonus && t.system.bonusdata == dataPath)
+        for (let trait of availableTraits) {
+          skill.modifier += Number(trait.system.bonusvalue)
+        }
+        skill.finalvalue = skill.modifier + attr.value
+      }
     }
   }
 
@@ -65,7 +84,8 @@ export class Avd12Actor extends Actor {
       this.system.encCapacity = this.getEncumbranceCapacity()
       this.buildContainerTree()
       this.computeHitPoints()
-      this.computeEffortPoints()
+
+      this.rebuildSkills()
     }
 
     super.prepareDerivedData();
@@ -77,6 +97,11 @@ export class Avd12Actor extends Actor {
     super._preUpdate(changed, options, user);
   }
 
+  /*_onUpdateEmbeddedDocuments( embeddedName, ...args ) {
+    this.rebuildSkills()
+    super._onUpdateEmbeddedDocuments(embeddedName, ...args)
+  }*/
+  
   /* -------------------------------------------- */
   getEncumbranceCapacity() {
     return 1;
@@ -105,6 +130,10 @@ export class Avd12Actor extends Actor {
       return duplicate(comp)
     }
     return undefined
+  }
+  getSpells() {
+    let comp = duplicate(this.items.filter(item => item.type == 'spell') || []);
+    return comp
   }
   /* -------------------------------------------- */
   getShields() {
@@ -153,15 +182,14 @@ export class Avd12Actor extends Actor {
   }
 
   /* -------------------------------------------- */
-  getSkills() {
-    let comp = duplicate(this.items.filter(item => item.type == 'skill') || [])
-    for (let skill of comp) {
-      Avd12Utility.updateSkill(skill)
-    }
-    Avd12Utility.sortArrayObjectsByName(comp)
+  getModules() {
+    let comp = duplicate(this.items.filter(item => item.type == 'module') || [])
     return comp
   }
-
+  getTraits() {
+    let comp = duplicate(this.items.filter(item => item.type == 'trait') || [])
+    return comp
+  }
   /* -------------------------------------------- */
   getRelevantAttribute(attrKey) {
     let comp = duplicate(this.items.filter(item => item.type == 'skill' && item.system.attribute == attrKey) || []);
@@ -210,6 +238,31 @@ export class Avd12Actor extends Actor {
   /* ------------------------------------------- */
   getEquipmentsOnly() {
     return duplicate(this.items.filter(item => item.type == "equipment") || [])
+  }
+
+  /* ------------------------------------------- */
+  async addModuleLevel(moduleId, levelChoice) {
+    for (let itemId in levelChoice.features) {
+      let itemData = duplicate(levelChoice.features[itemId])
+      itemData.system.moduleId = moduleId
+      itemData.system.originalId = itemId
+      //let item = await Item.create(itemData, { temporary: true });
+      await this.createEmbeddedDocuments('Item', [itemData])
+    }
+  }
+  /* ------------------------------------------- */
+  async deleteModuleLevel(moduleId, levelChoice) {
+    let toDelete = []
+    for (let itemId in levelChoice.features) {
+      let item = this.items.find(it => Avd12Utility.isModuleItemAllowed(it.type) && it.system.moduleId == moduleId && it.system.originalId == itemId)
+      if (item) {
+        toDelete.push(item.id)
+      }
+    }
+    console.log("toele", toDelete, moduleId, levelChoice)
+    if (toDelete.length > 0) {
+      await this.deleteEmbeddedDocuments('Item', toDelete)
+    }
   }
 
   /* ------------------------------------------- */
@@ -451,59 +504,13 @@ export class Avd12Actor extends Actor {
   }
 
   /* -------------------------------------------- */
-  getCommonRollData(abilityKey = undefined) {
-    let noAction = this.isNoAction()
-    if (noAction) {
-      ui.notifications.warn("You can't do any actions du to the condition : " + noAction.name)
-      return
-    }
+  getCommonRollData() {
 
     let rollData = Avd12Utility.getBasicRollData()
     rollData.alias = this.name
     rollData.actorImg = this.img
     rollData.actorId = this.id
     rollData.img = this.img
-    rollData.featsDie = this.getFeatsWithDie()
-    rollData.featsSL = this.getFeatsWithSL()
-    rollData.armors = this.getArmors()
-    rollData.conditions = this.getConditions()
-    rollData.featDieName = "none"
-    rollData.featSLName = "none"
-    rollData.rollAdvantage = "none"
-    rollData.advantage = "none"
-    rollData.disadvantage = "none"
-    rollData.forceAdvantage = this.isForcedAdvantage()
-    rollData.forceDisadvantage = this.isForcedDisadvantage()
-    rollData.forceRollAdvantage = this.isForcedRollAdvantage()
-    rollData.forceRollDisadvantage = this.isForcedRollDisadvantage()
-    rollData.noAdvantage = this.isNoAdvantage()
-    if (rollData.defenderTokenId) {
-      let defenderToken = game.canvas.tokens.get(rollData.defenderTokenId)
-      let defender = defenderToken.actor
-
-      // Distance management
-      let token = this.token
-      if (!token) {
-        let tokens = this.getActiveTokens()
-        token = tokens[0]
-      }
-      if (token) {
-        const ray = new Ray(token.object?.center || token.center, defenderToken.center)
-        rollData.tokensDistance = canvas.grid.measureDistances([{ ray }], { gridSpaces: false })[0] / canvas.grid.grid.options.dimensions.distance
-      } else {
-        ui.notifications.info("No token connected to this actor, unable to compute distance.")
-        return
-      }
-      if (defender) {
-        rollData.forceAdvantage = defender.isAttackerAdvantage()
-        rollData.advantageFromTarget = true
-      }
-    }
-
-    if (abilityKey) {
-      rollData.ability = this.getAbility(abilityKey)
-      rollData.selectedKill = undefined
-    }
 
     console.log("ROLLDATA", rollData)
 
@@ -518,28 +525,22 @@ export class Avd12Actor extends Actor {
       ui.notifications.warn("You are targetting a token with a skill : please use a Weapon instead.")
       return
     }
-    Avd12Utility.rollCrucible(rollData)
+    Avd12Utility.rollAvd12(rollData)
   }
 
   /* -------------------------------------------- */
-  rollSkill(skillId) {
-    let skill = this.items.get(skillId)
+  rollSkill(attrKey, skillKey) {
+    let attr = this.system.attributes[attrKey]
+    let skill = attr.skills[skillKey]
     if (skill) {
-      if (skill.system.islore && skill.system.level == 0) {
-        ui.notifications.warn("You can't use Lore Skills with a SL of 0.")
-        return
-      }
       skill = duplicate(skill)
-      Avd12Utility.updateSkill(skill)
-      let abilityKey = skill.system.ability
-      let rollData = this.getCommonRollData(abilityKey)
+      skill.name = Avd12Utility.upperFirst(skillKey)
+      skill.attr = duplicate(attr)
+      let rollData = this.getCommonRollData()
       rollData.mode = "skill"
       rollData.skill = skill
+      rollData.title = "Roll Skill " + skill.name
       rollData.img = skill.img
-      if (rollData.target) {
-        ui.notifications.warn("You are targetting a token with a skill : please use a Weapon instead.")
-        return
-      }
       this.startRoll(rollData)
     }
   }
@@ -609,7 +610,7 @@ export class Avd12Actor extends Actor {
     let rollData = this.getCommonRollData()
     rollData.defenderTokenId = undefined // Cleanup
     rollData.mode = "rangeddefense"
-    if ( attackRollData) {
+    if (attackRollData) {
       rollData.attackRollData = duplicate(attackRollData)
       rollData.effectiveRange = Avd12Utility.getWeaponRange(attackRollData.weapon)
       rollData.tokensDistance = attackRollData.tokensDistance // QoL copy
@@ -700,26 +701,9 @@ export class Avd12Actor extends Actor {
   }
 
   /* -------------------------------------------- */
-  rollSave(saveKey) {
-    let saves = this.getSaveRoll()
-    let save = saves[saveKey]
-    if (save) {
-      save = duplicate(save)
-      let rollData = this.getCommonRollData()
-      rollData.mode = "save"
-      rollData.save = save
-      if (rollData.target) {
-        ui.notifications.warn("You are targetting a token with a save roll - Not authorized.")
-        return
-      }
-      this.startRoll(rollData)
-    }
-
-  }
-  /* -------------------------------------------- */
   async startRoll(rollData) {
     this.syncRoll(rollData)
-    let rollDialog = await CrucibleRollDialog.create(this, rollData)
+    let rollDialog = await Avd12RollDialog.create(this, rollData)
     rollDialog.render(true)
   }
 

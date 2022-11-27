@@ -6,9 +6,9 @@ export class Avd12RollDialog extends Dialog {
   static async create(actor, rollData) {
 
     let options = { classes: ["Avd12Dialog"], width: 540, height: 'fit-content', 'z-index': 99999 };
-    let html = await renderTemplate('systems/fvtt-avd12/templates/dialogs/roll-dialog-generic.html', rollData);
+    let html = await renderTemplate('systems/fvtt-avd12/templates/dialogs/roll-dialog-generic.hbs', rollData);
 
-    return new CrucibleRollDialog(actor, rollData, html, options);
+    return new Avd12RollDialog(actor, rollData, html, options);
   }
 
   /* -------------------------------------------- */
@@ -44,7 +44,7 @@ export class Avd12RollDialog extends Dialog {
 
   /* -------------------------------------------- */
   async refreshDialog() {
-    const content = await renderTemplate("systems/fvtt-avd12/templates/dialogs/roll-dialog-generic.html", this.rollData)
+    const content = await renderTemplate("systems/fvtt-avd12/templates/dialogs/roll-dialog-generic.hbs", this.rollData)
     this.data.content = content
     this.render(true)
   }
@@ -58,27 +58,12 @@ export class Avd12RollDialog extends Dialog {
     }
     $(function () { onLoad(); });
 
-    html.find('#advantage').change((event) => {
-      this.rollData.advantage = event.currentTarget.value
+    html.find('#bonusMalusRoll').change((event) => {
+      this.rollData.bonusMalusRoll = event.currentTarget.value
     })
-    html.find('#disadvantage').change((event) => {
-      this.rollData.disadvantage = event.currentTarget.value
+    html.find('#targetCheck').change((event) => {
+      this.rollData.targetCheck = event.currentTarget.value
     })
-    html.find('#rollAdvantage').change((event) => {
-      this.rollData.rollAdvantage = event.currentTarget.value
-    })
-    html.find('#useshield').change((event) => {
-      this.rollData.useshield = event.currentTarget.checked
-    })
-    html.find('#hasCover').change((event) => {
-      this.rollData.hasCover = event.currentTarget.value
-    })
-    html.find('#situational').change((event) => {
-      this.rollData.situational = event.currentTarget.value
-    })
-    html.find('#distanceBonusDice').change((event) => {
-      this.rollData.distanceBonusDice = Number(event.currentTarget.value)
-    })
-    
+
   }
 }
