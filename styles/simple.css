@@ -385,15 +385,19 @@ table {border: 1px solid #7a7971;}
 /* ======================================== */
 /* Sheet  */
 .window-app.sheet .window-content .sheet-header{
-  /*color: rgba(168, 139, 139, 0.5);*/
+  color: rgba(228, 240, 240, 0.75);
   /*background: url("../images/ui/pc_sheet_bg.webp");*/
   background: #494e6b;
 }
 
 input[type="text"], select[type="text"] {
   background:white;
+  color: #494e6b;
 }
 
+select {
+  background:white;
+}
 /*  background: #011d33 url("../images/ui/fond1.webp") repeat left top;*/
 /*color: rgba(168, 139, 139, 0.5);*/
 .window-app.sheet .window-content .sheet-header select[type="text"], .window-app.sheet .window-content .sheet-header input[type="text"], .window-app.sheet .window-content .sheet-header input[type="number"], .window-app.sheet .window-content .sheet-body input[type="text"], .window-app.sheet .window-content .sheet-body input[type="number"], .window-app.sheet .window-content .sheet-body select[type="text"] {
@@ -401,7 +405,7 @@ input[type="text"], select[type="text"] {
 }
 
 .window-app.sheet .window-content .sheet-header input[type="password"], .window-app.sheet .window-content .sheet-header input[type="date"], .window-app.sheet .window-content .sheet-header input[type="time"] {
-  color: rgba(36, 37, 37, 0.75);
+  color: rgba(228, 240, 240, 0.75);
   background: #494e6b;
   border: 1 none;
   margin-bottom: 0.25rem;
@@ -409,7 +413,7 @@ input[type="text"], select[type="text"] {
 }
 
 .window-app.sheet .window-content .sheet-body input[type="password"], .window-app.sheet .window-content .sheet-body input[type="date"], .window-app.sheet .window-content .sheet-body input[type="time"] {
-  color: rgba(36, 37, 37, 0.75);
+  color: rgba(228, 240, 240, 0.75);
   background: #494e6b;
   border: 1 none;
   margin-bottom: 0.25rem;
@@ -417,7 +421,7 @@ input[type="text"], select[type="text"] {
 }
 
 .window-app.sheet .window-content .sheet-body select, .window-app.sheet .window-content .sheet-header select {
-  color: rgba(36, 37, 37, 0.75);
+  color: rgba(228, 240, 240, 0.75);
   background: #494e6b;
   border: 1 none;
   margin-bottom: 0.25rem;
@@ -428,6 +432,7 @@ input[type="text"], select[type="text"] {
   font-size: 0.8rem;
   /*background: url("../images/ui/pc_sheet_bg.webp") repeat left top;*/
   background: #494e6b;
+  color: rgba(228, 240, 240, 0.75);
 }
 
 /*  background: rgba(245,245,240,0.6) url("../images/ui/sheet_background.webp") left top;*/
@@ -558,6 +563,7 @@ ul, li {
   padding: 0.125rem;
   flex: 1 1 5rem;
   display: flex !important;
+  color: rgba(228, 240, 240, 0.75);
 }
 .list-item-shadow {
   background:rgba(87, 60, 32, 0.35);

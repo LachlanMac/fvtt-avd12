@@ -174,6 +174,29 @@ export class Avd12ItemSheet extends ItemSheet {
   }
 
   /* -------------------------------------------- */
+  async processChoiceLevelSelection(ev) {
+    let levels = duplicate(this.object.system.levels)
+    let levelIndex = Number($(ev.currentTarget).parents(".item").data("level-index"))
+    let choiceIndex = Number($(ev.currentTarget).parents(".item").data("choice-index"))
+    for (let choice of levels[levelIndex].choices) {
+      choice.selected = false // Everybody to false
+    }
+    levels[levelIndex].choices[choiceIndex].selected = ev.currentTarget.checked
+    //console.log("Added", obj, levels, this.object.actor)
+    if ( this.object.actor ) {
+      let obj = await this.object.actor.updateEmbeddedDocuments('Item', [{ _id: this.object.id, 'system.levels': levels }]);
+      if ( ev.currentTarget.checked ) {
+        console.log("Added", obj, levels)
+        this.object.actor.addModuleLevel( this.object.id, levels[levelIndex].choices[choiceIndex] )
+      } else {
+        this.object.actor.deleteModuleLevel( this.object.id, levels[levelIndex].choices[choiceIndex] )
+      }
+    } else {
+      this.object.update({ 'system.levels': levels })
+    }
+  }
+
+  /* -------------------------------------------- */
   /** @override */
   activateListeners(html) {
     super.activateListeners(html);
@@ -223,22 +246,8 @@ export class Avd12ItemSheet extends ItemSheet {
       this.object.update({ 'system.levels': levels })
     })
 
-    html.find('.choice-level-selected').change(ev => {
-      let levels = duplicate(this.object.system.levels)
-      let levelIndex = Number($(ev.currentTarget).parents(".item").data("level-index"))
-      let choiceIndex = Number($(ev.currentTarget).parents(".item").data("choice-index"))
-      for (let choice of levels[levelIndex].choices) {
-        choice.selected = false // Everybody to false
-      }
-      levels[levelIndex].choices[choiceIndex].selected = ev.currentTarget.checked
-      this.object.update({ 'system.levels': levels })
-      if ( this.object.actor ) {
-        if ( ev.currentTarget.checked ) {
-          this.object.actor.addModuleLevel( this.object.id, levels[levelIndex].choices[choiceIndex] )
-        } else {
-          this.object.actor.deleteModuleLevel( this.object.id, levels[levelIndex].choices[choiceIndex] )
-        }
-      }
+    html.find('.choice-level-selected').change(ev =>  {
+      this.processChoiceLevelSelection(ev)
     })
   }
 
