@@ -351,10 +351,45 @@ export class Avd12Actor extends Actor {
 
   /* -------------------------------------------- */
   async preprocessItem(event, item, onDrop = false) {
+    //console.log('ITEM', item)
+    if ( item.system.focus && item.system.focus?.isfocus) {
+      let focusItem = this.items.find(it => it.system.focus?.isfocus)
+      if (focusItem) {
+        ui.notifications.warn("You already have a Focus Item in your equipment.")
+        return false
+      }
+    }
     let dropID = $(event.target).parents(".item").attr("data-item-id") // Only relevant if container drop
     let objectID = item.id || item._id
     this.addObjectToContainer(objectID, dropID)
     return true
+  }
+
+  /* -------------------------------------------- */
+  computeFinalFocusData() {
+    let focus = this.items.find(it => it.system.focus?.isfocus)
+    if (focus) {
+      let focusData = Avd12Utility.computeFocusData(focus.system.focus)
+      let focusBonus = this.items.filter( it => it.system.focuspointsbonus > 0).reduce((sum, item2) => sum = item2.system.focuspointsbonus, 0)
+      let focusregenbonus = this.items.filter( it => it.system.focusregenbonus > 0).reduce((sum, item2) => sum = item2.system.focusregenbonus, 0)
+      let burnchancebonus = this.items.filter( it => it.system.burnchancebonus > 0).reduce((sum, item2) => sum = item2.system.burnchancebonus, 0)
+      console.log("FINAL BONUS", focusBonus, focusregenbonus, burnchancebonus)
+      return {
+        focusPoints : focusData.focusPoints + focusBonus,
+        burnChance: focusData.burnChance + burnchancebonus,
+        focusRegen: focusData.focusRegen + focusregenbonus,
+        spellAttackBonus: focusData.spellAttackBonus,
+        spellDamageBonus: focusData.spellDamageBonus,
+        currentFocusPoints: this.system.focus.currentFocusPoints
+      }
+    }
+    return {
+      focusPoints : 0,
+      burnChance: 0,
+      focusRegen: 0,
+      spellAttackBonus: 0,
+      spellDamageBonus: 0
+    }
   }
 
   /* -------------------------------------------- */
@@ -542,6 +577,27 @@ export class Avd12Actor extends Actor {
       rollData.title = "Roll Skill " + skill.name
       rollData.img = skill.img
       this.startRoll(rollData)
+    }
+  }
+
+  /* -------------------------------------------- */
+  rollSpell(spellId) {
+    let spell = this.items.get(spellId)
+    if (spell) {
+      spell = duplicate(spell)
+      if (spell.system.spelltype != "utility") {
+        let rollData = this.getCommonRollData()
+        rollData.mode = "spell"
+        rollData.spell = spell
+        rollData.spellAttack = this.system.bonus.spell.attack
+        rollData.spellDamage = this.system.bonus.spell.damage
+        rollData.spellCost = Avd12Utility.getSpellCost(spell)
+        rollData.title = "Roll Spell " + spell.name
+        rollData.img = spell.img
+        this.startRoll(rollData)
+      }
+    } else {
+      ui.notifications.warn("Unable to find the relevant spell.")
     }
   }
 

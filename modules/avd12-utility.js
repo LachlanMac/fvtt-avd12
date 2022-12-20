@@ -4,6 +4,13 @@ import { Avd12Commands } from "./avd12-commands.js";
 
 /* -------------------------------------------- */
 const __ALLOWED_MODULE_TYPES = { "action": 1, "reaction": 1, "freeaction": 1, "trait": 1 }
+const __focusCore = { "corenone": 0, "core1gp": 6, "core5gp": 8, "core50gp": 10, "core100gp": 12, "core300gp": 16, "core500gp": 20, "core800gp": 26, "core1000gp": 32 }
+const __burnChanceTreatment = { "treatmentnone": 0, "treatment1gp": 8, "treatment4gp": 7, "treatment20gp": 6, "treatment50gp": 5, "treatment500gp": 4, "treatment1000gp": 3, "treatment5000gp": 2, "treatment10000gp": 1 }
+const __focusPointTreatment = { "treatmentnone": 0, "treatment1gp": 0, "treatment4gp": 1, "treatment20gp": 2, "treatment50gp": 4, "treatment500gp": 6, "treatment1000gp": 8, "treatment5000gp": 14, "treatment10000gp": 20 }
+const __focusRegenBond = { "bondnone": 6, "bondeasy": 8, "bondcommon": 12, "bonduncommon": 16, "bondrare": 22, "bondlegendary": 26, "bondmythic": 36, "bonddivine": 48 }
+const __bonusSpellDamageBond = { "bondnone": 0, "bondeasy": 1, "bondcommon": 1, "bonduncommon": 1, "bondrare": 2, "bondlegendary": 2, "bondmythic": 3, "bonddivine": 4 }
+const __bonusSpellAttackBond = { "bondnone": 0, "bondeasy": 0, "bondcommon": 1, "bonduncommon": 1, "bondrare": 2, "bondlegendary": 2, "bondmythic": 3, "bonddivine": 4 }
+const __spellCost = { "beginner": 1, "novice": 2, "expert": 4, "master": 6, "grandmaster": 8 }
 
 
 /* -------------------------------------------- */
@@ -76,20 +83,20 @@ export class Avd12Utility {
   /* -------------------------------------------- */
   static buildBonusList() {
     let bonusList = []
-    for(let key in game.system.model.Actor.character.bonus)  {
+    for (let key in game.system.model.Actor.character.bonus) {
       let bonuses = game.system.model.Actor.character.bonus[key]
       for (let bonus in bonuses) {
-        bonusList.push( key + "." + bonus )
+        bonusList.push(key + "." + bonus)
       }
     }
-    for(let key in game.system.model.Actor.character.attributes)  {
+    for (let key in game.system.model.Actor.character.attributes) {
       let attrs = game.system.model.Actor.character.attributes[key]
-      for(let skillKey in attrs.skills)  {
-        bonusList.push( key + ".skills." + skillKey + ".modifier" )
+      for (let skillKey in attrs.skills) {
+        bonusList.push(key + ".skills." + skillKey + ".modifier")
       }
     }
-    for(let key in game.system.model.Actor.character.universal.skills)  {
-      bonusList.push( "universal.skills." + key + ".modifier" )
+    for (let key in game.system.model.Actor.character.universal.skills) {
+      bonusList.push("universal.skills." + key + ".modifier")
     }
     return bonusList
   }
@@ -277,14 +284,14 @@ export class Avd12Utility {
   /* -------------------------------------------- */
   static getSuccessResult(rollData) {
     if (rollData.sumSuccess <= -3) {
-      if (rollData.attackRollData.weapon.system.isranged ) {
+      if (rollData.attackRollData.weapon.system.isranged) {
         return { result: "miss", fumble: true, hpLossType: "melee" }
       } else {
         return { result: "miss", fumble: true, attackerHPLoss: "2d3", hpLossType: "melee" }
       }
     }
     if (rollData.sumSuccess == -2) {
-      if (rollData.attackRollData.weapon.system.isranged ) {
+      if (rollData.attackRollData.weapon.system.isranged) {
         return { result: "miss", dangerous_fumble: true }
       } else {
         return { result: "miss", dangerous_fumble: true, attackerHPLoss: "1d3", hpLossType: "melee" }
@@ -404,6 +411,35 @@ export class Avd12Utility {
   }
 
   /* -------------------------------------------- */
+  static computeFocusData(focus) {
+    let focusData = {
+      focusPoints: __focusCore[focus.core] + __focusPointTreatment[focus.treatment],
+      burnChance: __burnChanceTreatment[focus.treatment],
+      focusRegen: __focusRegenBond[focus.bond],
+      spellAttackBonus: __bonusSpellAttackBond[focus.bond],
+      spellDamageBonus: __bonusSpellDamageBond[focus.bond]
+    }
+    return focusData
+  }
+
+  /* -------------------------------------------- */
+  static async searchItem(dataItem) {
+    let item
+    if (dataItem.pack) {
+      let id = dataItem.id || dataItem._id
+      let items = await this.loadCompendium(dataItem.pack, item => item.id == id)
+      item = items[0] || undefined
+    } else {
+      item = game.items.get(dataItem.id)
+    }
+    return item
+  }
+
+  /* -------------------------------------------- */
+  static getSpellCost(spell) {
+    return __spellCost[spell.system.level]
+  }
+  /* -------------------------------------------- */
   static chatDataSetup(content, modeOverride, isRoll = false, forceWhisper) {
     let chatData = {
       user: game.user.id,
@@ -477,10 +513,13 @@ export class Avd12Utility {
     // Build the dice formula
     let diceFormula = "1d12"
     if (rollData.skill) {
-      diceFormula += "+"+rollData.skill.finalvalue
+      diceFormula += "+" + rollData.skill.finalvalue
     }
-    diceFormula += "+"+rollData.bonusMalusRoll
-    
+    if (rollData.spellAttack) {
+      diceFormula += "+" + rollData.spellAttack
+    }
+    diceFormula += "+" + rollData.bonusMalusRoll
+
     if (rollData.skill && rollData.skill.good) {
       diceFormula += "+1d4"
     }
@@ -494,10 +533,10 @@ export class Avd12Utility {
       await this.showDiceSoNice(myRoll, game.settings.get("core", "rollMode"))
     }
     rollData.roll = myRoll
-    
+
     rollData.isSuccess = false
-    if ( rollData.targetCheck != "none") {
-      if( myRoll.total >= Number(rollData.targetCheck)) {
+    if (rollData.targetCheck != "none") {
+      if (myRoll.total >= Number(rollData.targetCheck)) {
         rollData.isSuccess = true
       }
     }
@@ -555,17 +594,6 @@ export class Avd12Utility {
 
 
   /* -------------------------------------------- */
-  static async searchItem(dataItem) {
-    let item
-    if (dataItem.pack) {
-      item = await fromUuid("Compendium." + dataItem.pack + "." + dataItem.id)
-    } else {
-      item = game.items.get(dataItem.id)
-    }
-    return item
-  }
-
-  /* -------------------------------------------- */
   static split3Columns(data) {
 
     let array = [[], [], []];
@@ -609,7 +637,7 @@ export class Avd12Utility {
     let rollData = {
       rollId: randomID(16),
       bonusMalusRoll: 0,
-      targetCheck : "none",
+      targetCheck: "none",
       rollMode: game.settings.get("core", "rollMode")
     }
     Avd12Utility.updateWithTarget(rollData)

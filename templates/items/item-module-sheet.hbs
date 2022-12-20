@@ -31,10 +31,8 @@
 
               <ul class="ul-level1">
                 {{#each level.choices as |choice choiceIndex|}}
-                <li class="">
-                  <h3 class="item-field-label-long">Level choice  {{add choiceIndex 1}}</h3>
-                </li>
                 <li class="item flexrow" data-level-index="{{@../index}}" data-choice-index="{{choiceIndex}}">
+                  <h3 class="item-field-label-long">Level choice  {{add choiceIndex 1}}</h3>
                   <div class="drop-module-step">
                     <label>Drop traits/actions/... here !</label>
                   </div>

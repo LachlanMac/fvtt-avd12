@@ -808,9 +808,12 @@ ul, li {
   text-align: center;
 }
 
-.skill-good-checkbox {
-  height: 14px;
-  width: 14px;
+.skill-label {
+  font-size: 0.7rem;
+}
+.skill-good-checkbox {  
+  max-height: 10px;
+  max-width: 10px;
 }
 
 .flex-actions-bar  {

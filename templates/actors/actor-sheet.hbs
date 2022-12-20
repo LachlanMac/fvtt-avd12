@@ -17,7 +17,7 @@
                 </div>
                   {{#each attr.skills as |skill skillKey|}}
                   <div class="flexrow">
-                      <span class="item-field-label-medium"><a class="roll-skill" data-attr-key="{{attrKey}}" data-skill-key="{{skillKey}}">{{upperFirst skillKey}} : {{skill.finalvalue}}</a></span>
+                      <span class="item-field-label-medium skill-label"><a class="roll-skill" data-attr-key="{{attrKey}}" data-skill-key="{{skillKey}}">{{upperFirst skillKey}} {{skill.finalvalue}}<i class="fa-solid fa-dice-d12"></i></a></span>
                       <input type="checkbox" class="skill-good-checkbox" name="system.attributes.{{attrKey}}.skills.{{skillKey}}.good" {{checked skill.good}} />
                   </div>
                   {{/each}}
@@ -56,35 +56,71 @@
     <div class="tab main" data-group="primary" data-tab="main">
 
       <ul class="stat-list alternate-list item-list">
-        <li class="item flexrow list-item items-title-bg">
-          <span class="item-name-label-header">
-            <h3><label class="items-title-text">Skills</label></h3>
-          </span>
-          <span class="item-field-label-short">
-            <label class="short-label">Ability</label>
-          </span>
-          <span class="item-field-label-short">
-            <label class="short-label">Dice</label>
-          </span>
-          <span class="item-field-label-long">
-            <label class="short-label">Background</label>
-          </span>
+        <li class="item flexrow list-item">
+          <span class="item-name-label-header-short">Level</span>
+          <input type="text" class="item-field-label-short" name="system.level.value" value="{{system.level.value}}" data-dtype="Number"/>
+          
+          <span class="item-name-label-header-short">&nbsp;</span>
+
+          <span class="item-name-label-header-short">Health</span>
+          <input type="text" class="item-field-label-short" name="system.health.value" value="{{system.health.value}}" data-dtype="Number"/> / 
+          <input type="text" class="item-field-label-short" name="system.health.max" value="{{system.health.max}}" data-dtype="Number"/>
+
+          <span class="item-name-label-header-medium">&nbsp;</span>
+
         </li>
-        {{#each skills as |skill key|}}
-        <li class="item stat flexrow list-item list-item-shadow" data-item-id="{{skill._id}}">
-          <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
-              src="{{skill.img}}" /></a>
-          <span class="item-name-label"><a class="roll-skill">{{skill.name}}</a></span>
-          <span class="item-field-label-short">{{upper skill.system.ability}}</span>
-          <span class="item-field-label-short">{{skill.system.skilldice}}</span>
-          <span class="item-field-label-long">&nbsp;-&nbsp;</span>
-          <div class="item-filler">&nbsp;</div>
-          <div class="item-controls item-controls-fixed">
-            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
-          </div>
+
+        <li class="item flexrow list-item">
+          <span class="item-name-label-header-short">Focus Regen</span>
+          <input type="text" class="item-field-label-short" value="{{focusData.focusRegen}}" data-dtype="Number" disabled/>
+
+          
+          <span class="item-name-label-header-short">&nbsp;</span>
+
+          <span class="item-name-label-header-short">Focus Points</span>
+          <input type="text" class="item-field-label-short" value="{{focusData.currentFocusPoints}}" data-dtype="Number" disabled/> / 
+          <input type="text" class="item-field-label-short" value="{{focusData.focusPoints}}" data-dtype="Number" disabled/>
+
+          <span class="item-name-label-header-medium">&nbsp;</span>
         </li>
-        {{/each}}
       </ul>
+
+      <div class="grid-2col">
+        <ul class="stat-list alternate-list">
+          <li class="item flexrow list-item items-title-bg">
+            <span class="item-name-label-header-long">
+              <h3><label class="items-title-text">Mitigations</label></h3>
+            </span>
+          </li>
+          {{#each system.mitigation as |mitigation key|}}
+          <li class="item flexrow list-item list-item-shadow" data-mitigation-id="{{key}}">
+            <span class="item-name-label-medium">{{mitigation.label}}</span>
+            <span class="item-name-label-short">{{mitigation.value}}</span>
+          </li>
+          {{/each}}
+        </ul>
+
+        <ul class="stat-list alternate-list">
+          <li class="item flexrow list-item items-title-bg">
+            <span class="item-name-label-header-long">
+              <h3><label class="items-title-text">Bonuses</label></h3>
+            </span>
+          </li>
+          {{#each system.bonus as |bonus key|}}
+          <li class="item flexrow list-item list-item-shadow" data-bonus-id="{{key}}">
+            <span class="item-name-label-medium">{{upperFirst key}}</span>
+            <ul class="ul-level1">
+              {{#each bonus as |value key2|}}
+              <li class="item flexrow list-item list-item-shadow" data-bonus-id="{{key}}">
+                <span class="item-name-label-short">{{upperFirst key2}}</span>
+                <span class="item-name-label-short">{{value}}</span>
+              </li>
+            {{/each}}
+            </ul>
+          </li>
+          {{/each}}
+        </ul>
+      </div>
     </div>
 
     {{!-- Combat Tab --}}
@@ -138,7 +174,7 @@
             <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
                 src="{{spell.img}}" /></a>
             <span class="item-name-label">
-              <a class="spell-roll">{{spell.name}}</a>
+              <a class="roll-spell">{{spell.name}} <i class="fa-solid fa-dice-d12"></i></a>
             </span>
             <span class="item-field-label-medium">{{upperFirst spell.system.spelltype}}</span>
             <span class="item-field-label-medium">{{upperFirst spell.system.level}}</span>
@@ -310,8 +346,8 @@
           <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
               src="{{weapon.img}}" /></a>
           <span class="item-name-label">{{weapon.name}}</span>
-          <span class="item-field-label-short"><label>{{upper weapon.system.ability}}</label></span>
-          <span class="item-field-label-short"><label>{{upper weapon.system.damage}}</label></span>
+          <span class="item-field-label-short"><label>{{upperFirst weapon.system.ability}}</label></span>
+          <span class="item-field-label-short"><label>{{upperFirst weapon.system.damage}}</label></span>
 
           <div class="item-filler">&nbsp;</div>
           <div class="item-controls item-controls-fixed">
@@ -345,7 +381,7 @@
           <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
               src="{{armor.img}}" /></a>
           <span class="item-name-label">{{armor.name}}</span>
-          <span class="item-field-label-short">{{upper armor.system.armortype}}</span>
+          <span class="item-field-label-short">{{upperFirst armor.system.armortype}}</span>
           <span class="item-field-label-short">{{armor.system.absorprionroll}}</span>
 
           <div class="item-filler">&nbsp;</div>
@@ -394,7 +430,7 @@
             <h3><label class="items-title-text">Equipment</label></h3>
           </span>
           <span class="item-field-label-long">
-            <label class="short-label">Quantity</label>
+            <label class="short-label">Qty</label>
           </span>
           <div class="item-filler">&nbsp;</div>
           <div class="item-controls item-controls-fixed">
@@ -402,13 +438,25 @@
           </div>
 
         </li>
-        {{#each containersTree as |equip key|}}
-        {{> systems/fvtt-crucible-rpg/templates/partial-actor-equipment.html equip=equip level=1}}
-        <ul class="item-list list-item-shadow2 list-item-margin1">
-          {{#each equip.data.contents as |subgear key|}}
-          {{> systems/fvtt-crucible-rpg/templates/partial-actor-equipment.html equip=subgear level=2}}
-          {{/each}}
-        </ul>
+        {{#each equipments as |equip key|}}
+        <li class="item list-item flexrow list-item-shadow" data-item-id="{{equip._id}}">
+          <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
+              src="{{equip.img}}" /></a>
+          <span class="item-name-label">{{equip.name}}</span>
+
+          <span class="item-field-label-long"><label>
+              {{equip.system.quantity}}
+              (<a class="quantity-minus plus-minus-button"> -</a>/<a class="quantity-plus plus-minus-button">+</a>)
+            </label>
+          </span>
+
+          <div class="item-filler">&nbsp;</div>
+          <div class="item-controls item-controls-fixed">
+            <a class="item-control item-equip" title="Worn">{{#if equip.system.equipped}}<i
+                class="fas fa-circle"></i>{{else}}<i class="fas fa-genderless"></i>{{/if}}</a>
+            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+          </div>
+        </li>
         {{/each}}
       </ul>
 

@@ -47,6 +47,7 @@ export class Avd12ActorSheet extends ActorSheet {
       equippedShield: this.actor.getEquippedShield(),
       subActors: duplicate(this.actor.getSubActors()),
       moneys: duplicate(this.actor.getMoneys()),
+      focusData: this.actor.computeFinalFocusData(),
       encCurrent: this.actor.encCurrent,
       options: this.options,
       owner: this.document.isOwner,
@@ -89,17 +90,6 @@ export class Avd12ActorSheet extends ActorSheet {
       this.actor.createEmbeddedDocuments('Item', [{ name: "NewItem", type: dataType }], { renderSheet: true })
     })
         
-    html.find('.equip-activate').click(ev => {
-      const li = $(ev.currentTarget).parents(".item")
-      let itemId = li.data("item-id")
-      this.actor.equipActivate( itemId)
-    });      
-    html.find('.equip-deactivate').click(ev => {
-      const li = $(ev.currentTarget).parents(".item")
-      let itemId = li.data("item-id")
-      this.actor.equipDeactivate( itemId)
-    });      
-
     html.find('.subactor-edit').click(ev => {
       const li = $(ev.currentTarget).parents(".item");
       let actorId = li.data("actor-id");
@@ -135,25 +125,15 @@ export class Avd12ActorSheet extends ActorSheet {
       let skillKey = $(event.currentTarget).data("skill-key")
       this.actor.rollSkill(attrKey, skillKey)
     });    
+    html.find('.roll-spell').click((event) => {
+      const li = $(event.currentTarget).parents(".item");
+      this.actor.rollSpell( li.data("item-id") )
+    });    
 
     html.find('.roll-weapon').click((event) => {
       const li = $(event.currentTarget).parents(".item");
       const skillId = li.data("item-id")
       this.actor.rollWeapon(skillId)
-    });
-    html.find('.roll-armor-die').click((event) => {
-      this.actor.rollArmorDie()
-    });
-    html.find('.roll-shield-die').click((event) => {
-      this.actor.rollShieldDie()
-    });
-    html.find('.roll-target-die').click((event) => {
-      this.actor.rollDefenseRanged()
-    });
-    
-    html.find('.roll-save').click((event) => {
-      const saveKey = $(event.currentTarget).data("save-key")
-      this.actor.rollSave(saveKey)
     });
     
     
@@ -191,12 +171,18 @@ export class Avd12ActorSheet extends ActorSheet {
 
   /* -------------------------------------------- */
   async _onDropItem(event, dragData) {
-    console.log(">>>>>> DROPPED!!!!")
     const item = fromUuidSync(dragData.uuid)
+    let itemFull
     if (item == undefined) {
-      item = this.actor.items.get( item.id )
+      itemFull = this.actor.items.get( dragData.uuid )
+    } else {
+      if (item && item.system) {
+        itemFull = item
+      } else {
+        itemFull = await Avd12Utility.searchItem( item )
+      }
     }
-    let ret = await this.actor.preprocessItem( event, item, true )
+    let ret = await this.actor.preprocessItem( event, itemFull, true )
     if ( ret ) {
       super._onDropItem(event, dragData)
     }

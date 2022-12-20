@@ -76,6 +76,11 @@ export class Avd12ItemSheet extends ItemSheet {
       isGM: game.user.isGM
     }
 
+    // Specific focus case
+    if (this.object.system.focus?.isfocus) {
+      formData.focusData = Avd12Utility.computeFocusData( this.object.system.focus)
+    }
+
     this.options.editable = !(this.object.origin == "embeddedItem");
     console.log("ITEM DATA", formData, this);
     return formData;

@@ -15,6 +15,21 @@
       </div>
       {{/if}}
 
+      {{#if spell}}
+      <div class="flexrow">
+        <span class="roll-dialog-label">Spell : </span>
+        <span class="roll-dialog-label">{{spell.name}} ({{upperFirst spell.system.level}} - Cost : {{spellCost}})</span>
+      </div>
+      <div class="flexrow">
+        <span class="roll-dialog-label">Spell Attack level : </span>
+        <span class="roll-dialog-label">{{spellAttack}}</span>
+      </div>
+      <div class="flexrow">
+        <span class="roll-dialog-label">Spell Damage level : </span>
+        <span class="roll-dialog-label">{{spellDamage}}</span>
+      </div>
+      {{/if}}
+
       <div class="flexrow">
         <span class="roll-dialog-label">Bonus/Malus : </span>
         <select id="bonusMalusRoll" name="bonusMalusRoll">

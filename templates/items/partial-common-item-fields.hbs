@@ -115,8 +115,17 @@
           {{> systems/fvtt-avd12/templates/items/partial-options-focus-bond.hbs}}
         {{/select}}
       </select> 
-    </li>
-{{/if}}
+      </li>
+      <li class='flexrow'>
+        <span>Focus Points : {{focusData.focusPoints}} </span>
+        <span>Burn Chance : {{focusData.burnChance}} </span>
+        <span>Focus Regen : {{focusData.focusRegen}} </span>
+      </li>
+      <li class='flexrow'>
+        <span>Spell Attack Bonus : {{focusData.spellAttackBonus}} </span>
+        <span>Spell Damage Bonus : {{focusData.spellDamageBonus}} </span>
+      </li>
+  {{/if}}
 
 <li class='flexrow'>
   <h3 class='item-field-label-long'>

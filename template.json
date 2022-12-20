@@ -175,6 +175,10 @@
             }
           }
         },
+        "level": {
+          "label": "Level",
+          "value": 0
+        },
         "size": {
           "label": "Size",
           "value": ""
@@ -183,6 +187,11 @@
           "value": 0,
           "tmpvalue": 0,
           "max": 0
+        },
+        "focus": {
+          "focuspoints": 0,
+          "focusregen": 0,
+          "currentFocusPoints": 0
         },
         "lifeline": {
           "value": 0,
