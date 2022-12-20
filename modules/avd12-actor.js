@@ -373,14 +373,24 @@ export class Avd12Actor extends Actor {
       let focusBonus = this.items.filter( it => it.system.focuspointsbonus > 0).reduce((sum, item2) => sum = item2.system.focuspointsbonus, 0)
       let focusregenbonus = this.items.filter( it => it.system.focusregenbonus > 0).reduce((sum, item2) => sum = item2.system.focusregenbonus, 0)
       let burnchancebonus = this.items.filter( it => it.system.burnchancebonus > 0).reduce((sum, item2) => sum = item2.system.burnchancebonus, 0)
-      console.log("FINAL BONUS", focusBonus, focusregenbonus, burnchancebonus)
+
+      let focusPoints = focusData.focusPoints + focusBonus
+      let focusRegen = focusData.focusRegen + focusregenbonus
+      //console.log("Update focus", focusPoints, focusRegen)
+      if ( focusPoints != this.system.focus.focuspoints || focusRegen != this.system.focus.focusregen) {
+        let focusData = duplicate(this.system.focus) 
+        focusData.focuspoints = focusPoints
+        focusData.focusregen = focusRegen
+        this.update( {'system.focus': focusData})
+      }
+      //console.log("FINAL BONUS", focusBonus, focusregenbonus, burnchancebonus)
       return {
-        focusPoints : focusData.focusPoints + focusBonus,
+        focusPoints : focusPoints,
         burnChance: focusData.burnChance + burnchancebonus,
-        focusRegen: focusData.focusRegen + focusregenbonus,
+        focusRegen: focusRegen,
         spellAttackBonus: focusData.spellAttackBonus,
         spellDamageBonus: focusData.spellDamageBonus,
-        currentFocusPoints: this.system.focus.currentFocusPoints
+        currentFocusPoints: this.system.focus.currentfocuspoints
       }
     }
     return {
@@ -581,24 +591,40 @@ export class Avd12Actor extends Actor {
   }
 
   /* -------------------------------------------- */
-  rollSpell(spellId) {
+  async rollSpell(spellId) {
     let spell = this.items.get(spellId)
     if (spell) {
       spell = duplicate(spell)
+      let rollData = this.getCommonRollData()
+      rollData.mode = "spell"
+      rollData.spell = spell
+      rollData.spellAttack = this.system.bonus.spell.attack
+      rollData.spellDamage = this.system.bonus.spell.damage
+      rollData.spellCost = Avd12Utility.getSpellCost(spell)
+      rollData.title = "Roll Spell " + spell.name
+      rollData.img = spell.img
       if (spell.system.spelltype != "utility") {
-        let rollData = this.getCommonRollData()
-        rollData.mode = "spell"
-        rollData.spell = spell
-        rollData.spellAttack = this.system.bonus.spell.attack
-        rollData.spellDamage = this.system.bonus.spell.damage
-        rollData.spellCost = Avd12Utility.getSpellCost(spell)
-        rollData.title = "Roll Spell " + spell.name
-        rollData.img = spell.img
         this.startRoll(rollData)
+      } else {
+        this.spentFocusPoints( spell )
+        let msg = await Avd12Utility.createChatWithRollMode(rollData.alias, {
+          content: await renderTemplate(`systems/fvtt-avd12/templates/chat/chat-utility-spell.hbs`, rollData)
+        })
+        msg.setFlag("world", "rolldata", rollData)
       }
     } else {
       ui.notifications.warn("Unable to find the relevant spell.")
     }
+  }
+
+  /* -------------------------------------------- */
+  spentFocusPoints( spell) {
+    let spellCost = Avd12Utility.getSpellCost(spell)
+    let focusData = duplicate(this.system.focus)
+    focusData.currentfocuspoints -= spellCost
+    focusData.currentfocuspoints = Math.max(focusData.currentfocuspoints, 0)
+    console.log("New fovcus", this.system, focusData)
+    this.update({'system.focus': focusData})
   }
 
   /* -------------------------------------------- */

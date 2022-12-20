@@ -64,7 +64,7 @@
 
           <span class="item-name-label-header-short">Health</span>
           <input type="text" class="item-field-label-short" name="system.health.value" value="{{system.health.value}}" data-dtype="Number"/> / 
-          <input type="text" class="item-field-label-short" name="system.health.max" value="{{system.health.max}}" data-dtype="Number"/>
+          <input type="text" class="item-field-label-short" name="system.health.max" value="{{system.health.max}}" data-dtype="Number" disabled/>
 
           <span class="item-name-label-header-medium">&nbsp;</span>
 
@@ -72,14 +72,14 @@
 
         <li class="item flexrow list-item">
           <span class="item-name-label-header-short">Focus Regen</span>
-          <input type="text" class="item-field-label-short" value="{{focusData.focusRegen}}" data-dtype="Number" disabled/>
+          <input type="text" class="item-field-label-short" value="{{system.focus.focusregen}}" data-dtype="Number" disabled/>
 
           
           <span class="item-name-label-header-short">&nbsp;</span>
 
           <span class="item-name-label-header-short">Focus Points</span>
-          <input type="text" class="item-field-label-short" value="{{focusData.currentFocusPoints}}" data-dtype="Number" disabled/> / 
-          <input type="text" class="item-field-label-short" value="{{focusData.focusPoints}}" data-dtype="Number" disabled/>
+          <input type="text" class="item-field-label-short"  name="system.focus.currentfocuspoints" value="{{system.focus.currentfocuspoints}}" data-dtype="Number"/> / 
+          <input type="text" class="item-field-label-short" value="{{system.focus.focuspoints}}" data-dtype="Number" disabled/>
 
           <span class="item-name-label-header-medium">&nbsp;</span>
         </li>

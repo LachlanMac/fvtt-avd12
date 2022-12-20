@@ -191,7 +191,7 @@
         "focus": {
           "focuspoints": 0,
           "focusregen": 0,
-          "currentFocusPoints": 0
+          "currentfocuspoints": 0
         },
         "lifeline": {
           "value": 0,
@@ -438,6 +438,8 @@
       "school": "",
       "damage": "",
       "damagetype": "",
+      "damagesecondary": "",
+      "damagesecondarytype": "",
       "range": 0,
       "components": "",
       "reaction": false,

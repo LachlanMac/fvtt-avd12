@@ -23,6 +23,13 @@
         </li>
         {{/if}}
 
+        {{#if spell}}
+        <li>Spell : {{spell.name}} ({{spell.system.level}}) 
+        </li>
+        <li>Focus Points Spent : {{spellCost}} 
+        </li>
+        {{/if}}
+
         <li>Dice Formula {{diceFormula}} </li>
         <li>Result {{roll.total}} </li>
 

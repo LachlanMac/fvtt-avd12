@@ -541,6 +541,10 @@ export class Avd12Utility {
       }
     }
 
+    if (rollData.spell) {
+      actor.spentFocusPoints(rollData.spell)
+    }
+
     let msg = await this.createChatWithRollMode(rollData.alias, {
       content: await renderTemplate(`systems/fvtt-avd12/templates/chat/chat-generic-result.hbs`, rollData)
     })
