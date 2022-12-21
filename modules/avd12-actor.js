@@ -62,6 +62,9 @@ export class Avd12Actor extends Actor {
 
   /* -------------------------------------------- */
   rebuildSkills() {
+    let armorPenalties = Avd12Utility.getArmorPenalty( this.items.find( item => item.type == "armor") )
+    let shieldPenalties = Avd12Utility.getArmorPenalty( this.items.find( item => item.type == "shield") )
+
     for (let attrKey in this.system.attributes) {
       let attr = this.system.attributes[attrKey]
       for (let skillKey in attr.skills) {
@@ -72,7 +75,35 @@ export class Avd12Actor extends Actor {
         for (let trait of availableTraits) {
           skill.modifier += Number(trait.system.bonusvalue)
         }
+        // Apply armor penalties
+        if ( armorPenalties[skillKey]) {
+          console.log("Found armor penalties : ", armorPenalties, skillKey)
+          skill.modifier += Number(armorPenalties[skillKey])
+        }
+        // Apply shield penalties
+        if ( shieldPenalties[skillKey]) {
+          console.log("Found shield penalties : ", shieldPenalties, skillKey)
+          skill.modifier += Number(shieldPenalties[skillKey])
+        }
+        // Process additionnal bonuses
+        for(let item of this.items) {
+          if (item.system.bonus && item.system.bonus[skillKey]) {
+            skill.modifier += Number(item.system.bonus[skillKey].value)
+          }
+        }
         skill.finalvalue = skill.modifier + attr.value
+      }
+    }
+  }
+  
+  /* -------------------------------------------- */
+  rebuildMitigations() {
+    for (let mitiKey in this.system.mitigation) {
+      let mitigation = this.system.mitigation[mitiKey]
+      for(let item of this.items) {
+        if (item.system.mitigation && item.system.mitigation[mitiKey]) {
+          mitigation.value += Number(item.system.mitigation[mitiKey].value)
+        }
       }
     }
   }
@@ -86,6 +117,7 @@ export class Avd12Actor extends Actor {
       this.computeHitPoints()
 
       this.rebuildSkills()
+      this.rebuildMitigations()
     }
 
     super.prepareDerivedData();

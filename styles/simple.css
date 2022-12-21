@@ -222,13 +222,14 @@ table {border: 1px solid #7a7971;}
   -webkit-box-flex: 0;
   -ms-flex: 0 0 128px;
   flex: 0 0 128px;
-  width: 196px;
+  width: 128px;
   height: auto;
-  max-height:260px;
+  max-height:160px;
   margin-top: 0px;
   margin-right: 10px;
   object-fit: cover;
   object-position: 50% 0;
+  border-width: 0px;
 }
 
 .button-img {
@@ -1292,6 +1293,11 @@ ul, li {
   flex-grow:1;
   max-width: 6rem;
   min-width: 6rem;
+}
+.item-field-skill {
+  flex-grow:1;
+  max-width: 6.8rem;
+  min-width: 6.8rem;
 }
 .item-field-label-long {
   margin-top: 4px;

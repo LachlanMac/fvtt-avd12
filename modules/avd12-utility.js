@@ -11,7 +11,11 @@ const __focusRegenBond = { "bondnone": 6, "bondeasy": 8, "bondcommon": 12, "bond
 const __bonusSpellDamageBond = { "bondnone": 0, "bondeasy": 1, "bondcommon": 1, "bonduncommon": 1, "bondrare": 2, "bondlegendary": 2, "bondmythic": 3, "bonddivine": 4 }
 const __bonusSpellAttackBond = { "bondnone": 0, "bondeasy": 0, "bondcommon": 1, "bonduncommon": 1, "bondrare": 2, "bondlegendary": 2, "bondmythic": 3, "bonddivine": 4 }
 const __spellCost = { "beginner": 1, "novice": 2, "expert": 4, "master": 6, "grandmaster": 8 }
+const __armorPenalties = {"light": { block: -2, dodge: -1}, "medium": { dodge: -3, block: -2, castingtime: 1, stealth: -2, speed: -1, 
+    "heavy": { dodge: -4, block: -3, stealth: -3, castingtime: 2, speed: -3 }, "ultraheavy": { dodge: -5, block: -4, stealth: -5, castingtime: 2, speed: -3 }, 
+    "lightshield": {dodge: -1, block: +1}, "heavyshield": {dodge: -2, block: 2, speed: -1, stealth: -1} }
 
+}
 
 /* -------------------------------------------- */
 export class Avd12Utility {
@@ -439,6 +443,15 @@ export class Avd12Utility {
   static getSpellCost(spell) {
     return __spellCost[spell.system.level]
   }
+
+  /* -------------------------------------------- */
+  static getArmorPenalty( item ) {
+    if (item && (item.type == "shield" || item.type == "armor")) {
+      return __armorPenalties[item.system.category]
+    }
+    return {}
+  }
+
   /* -------------------------------------------- */
   static chatDataSetup(content, modeOverride, isRoll = false, forceWhisper) {
     let chatData = {
