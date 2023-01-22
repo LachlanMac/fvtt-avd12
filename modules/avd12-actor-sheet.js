@@ -132,8 +132,14 @@ export class Avd12ActorSheet extends ActorSheet {
 
     html.find('.roll-weapon').click((event) => {
       const li = $(event.currentTarget).parents(".item");
-      const skillId = li.data("item-id")
-      this.actor.rollWeapon(skillId)
+      const weponId = li.data("item-id")
+      this.actor.rollWeapon(weponId)
+    });
+    html.find('.roll-weapon-damage').click((event) => {
+      const li = $(event.currentTarget).parents(".item");
+      const dmg = $(event.currentTarget).data("damage")
+      const weaponId = li.data("item-id")
+      this.actor.rollWeaponDamage(weaponId, dmg)
     });
     
     

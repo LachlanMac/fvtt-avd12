@@ -199,8 +199,27 @@ export class Avd12Actor extends Actor {
     return comp;
   }
   /* -------------------------------------------- */
+  addDamages( damage) {
+    //console.log(damage)
+    if ( damage.damagetype != "none" && damage.dice ) {
+      damage.normal   = damage.dice + '+' + damage.bonus 
+      damage.critical = damage.dice + '+' + Number(damage.bonus)*2
+      let parser = damage.dice.match(/(\d+)(d\d+)/)
+      let nbDice = 2
+      if (parser && parser[1]) {
+        nbDice = Number(parser[1]) * 2
+      } 
+      damage.brutal   = nbDice + parser[2] + "+" + Number(damage.bonus)*2
+    }
+  }
+  /* -------------------------------------------- */
   getWeapons() {
-    let comp = duplicate(this.items.filter(item => item.type == 'weapon') || []);
+    let comp = duplicate(this.items.filter(item => item.type == 'weapon') || [])
+    comp.forEach(item => {
+      this.addDamages(item.system.damages.primary)
+      this.addDamages(item.system.damages.secondary)
+      this.addDamages(item.system.damages.tertiary)
+    })
     Avd12Utility.sortArrayObjectsByName(comp)
     return comp;
   }
@@ -664,154 +683,39 @@ export class Avd12Actor extends Actor {
     let weapon = this.items.get(weaponId)
     if (weapon) {
       weapon = duplicate(weapon)
-      let skill = this.items.find(item => item.name.toLowerCase() == weapon.system.skill.toLowerCase())
-      if (skill) {
-        skill = duplicate(skill)
-        Avd12Utility.updateSkill(skill)
-        let abilityKey = skill.system.ability
-        let rollData = this.getCommonRollData(abilityKey)
-        rollData.mode = "weapon"
-        rollData.skill = skill
-        rollData.weapon = weapon
-        rollData.img = weapon.img
-        if (!rollData.forceDisadvantage) { // This is an attack, check if disadvantaged
-          rollData.forceDisadvantage = this.isAttackDisadvantage()
-        }
-        /*if (rollData.weapon.system.isranged && rollData.tokensDistance > Avd12Utility.getWeaponMaxRange(rollData.weapon) ) {
-          ui.notifications.warn(`Your target is out of range of your weapon (max: ${Avd12Utility.getWeaponMaxRange(rollData.weapon)}  - current : ${rollData.tokensDistance})` )
-          return
-        }*/
-        this.startRoll(rollData)
-      } else {
-        ui.notifications.warn("Unable to find the relevant skill for weapon " + weapon.name)
-      }
+      let rollData = this.getCommonRollData()
+      rollData.modifier = this.system.bonus[weapon.system.weapontype]
+      rollData.mode = "weapon"
+      rollData.weapon = weapon
+      rollData.img = weapon.img
+      this.startRoll(rollData)
+    } else {
+      ui.notifications.warn("Unable to find the relevant weapon ")
     }
   }
-
   /* -------------------------------------------- */
-  rollDefenseMelee(attackRollData) {
-    let weapon = this.items.get(attackRollData.defenseWeaponId)
+  async rollWeaponDamage(weaponId, damageType) {
+    let weapon = this.items.get(weaponId)
     if (weapon) {
       weapon = duplicate(weapon)
-      let skill = this.items.find(item => item.name.toLowerCase() == weapon.system.skill.toLowerCase())
-      if (skill) {
-        skill = duplicate(skill)
-        Avd12Utility.updateSkill(skill)
-        let abilityKey = skill.system.ability
-        let rollData = this.getCommonRollData(abilityKey)
-        rollData.defenderTokenId = undefined // Cleanup
-        rollData.mode = "weapondefense"
-        rollData.shield = this.getEquippedShield()
-        rollData.attackRollData = duplicate(attackRollData)
-        rollData.skill = skill
-        rollData.weapon = weapon
-        rollData.img = weapon.img
-        if (!rollData.forceDisadvantage) { // This is an attack, check if disadvantaged
-          rollData.forceDisadvantage = this.isDefenseDisadvantage()
-        }
-
-        this.startRoll(rollData)
-      } else {
-        ui.notifications.warn("Unable to find the relevant skill for weapon " + weapon.name)
-      }
-    } else {
-      ui.notifications.warn("Weapon not found ! ")
-    }
-  }
-
-  /* -------------------------------------------- */
-  rollDefenseRanged(attackRollData) {
-    let rollData = this.getCommonRollData()
-    rollData.defenderTokenId = undefined // Cleanup
-    rollData.mode = "rangeddefense"
-    if (attackRollData) {
-      rollData.attackRollData = duplicate(attackRollData)
-      rollData.effectiveRange = Avd12Utility.getWeaponRange(attackRollData.weapon)
-      rollData.tokensDistance = attackRollData.tokensDistance // QoL copy
-    }
-    rollData.sizeDice = Avd12Utility.getSizeDice(this.system.biodata.size)
-    rollData.distanceBonusDice = 0 //Math.max(0, Math.floor((rollData.tokensDistance - rollData.effectiveRange) + 0.5))
-    rollData.hasCover = "none"
-    rollData.situational = "none"
-    rollData.useshield = false
-    rollData.shield = this.getEquippedShield()
-    this.startRoll(rollData)
-  }
-
-  /* -------------------------------------------- */
-  rollShieldDie() {
-    let shield = this.getEquippedShield()
-    if (shield) {
-      shield = duplicate(shield)
+      this.addDamages(weapon.system.damages.primary)
       let rollData = this.getCommonRollData()
-      rollData.mode = "shield"
-      rollData.shield = shield
-      rollData.useshield = true
-      rollData.img = shield.img
-      this.startRoll(rollData)
+      rollData.damageFormula = weapon.system.damages.primary[damageType]
+      rollData.mode = "weapon-damage"
+      rollData.weapon = weapon
+      rollData.damageType = damageType
+      rollData.img = weapon.img
+      let myRoll = new Roll(rollData.damageFormula).roll({ async: false })
+      await Avd12Utility.showDiceSoNice(myRoll, game.settings.get("core", "rollMode"))
+      rollData.roll = myRoll
+      let msg = await Avd12Utility.createChatWithRollMode(rollData.alias, {
+        content: await renderTemplate(`systems/fvtt-avd12/templates/chat/chat-damage-result.hbs`, rollData)
+      })
+      msg.setFlag("world", "rolldata", rollData)
+  
+    } else {
+      ui.notifications.warn("Unable to find the relevant weapon ")
     }
-  }
-
-  /* -------------------------------------------- */
-  async rollArmorDie(rollData = undefined) {
-    let armor = this.getEquippedArmor()
-    if (armor) {
-      armor = duplicate(armor)
-      let reduce = 0
-      let multiply = 1
-      let disadvantage = false
-      let advantage = false
-      let messages = ["Armor applied"]
-
-      if (rollData) {
-        if (Avd12Utility.isArmorLight(armor) && Avd12Utility.isWeaponPenetrating(rollData.attackRollData.weapon)) {
-          return { armorIgnored: true, nbSuccess: 0, messages: ["Armor ignored : Penetrating weapons ignore Light Armors."] }
-        }
-        if (Avd12Utility.isWeaponPenetrating(rollData.attackRollData.weapon)) {
-          messages.push("Armor reduced by 1 (Penetrating weapon)")
-          reduce = 1
-        }
-        if (Avd12Utility.isWeaponLight(rollData.attackRollData.weapon)) {
-          messages.push("Armor with advantage (Light weapon)")
-          advantage = true
-        }
-        if (Avd12Utility.isWeaponHeavy(rollData.attackRollData.weapon)) {
-          messages.push("Armor with disadvantage (Heavy weapon)")
-          disadvantage = true
-        }
-        if (Avd12Utility.isWeaponHack(rollData.attackRollData.weapon)) {
-          messages.push("Armor reduced by 1 (Hack weapon)")
-          reduce = 1
-        }
-        if (Avd12Utility.isWeaponUndamaging(rollData.attackRollData.weapon)) {
-          messages.push("Armor multiplied by 2 (Undamaging weapon)")
-          multiply = 2
-        }
-      }
-      let diceColor = armor.system.absorprionroll
-      let armorResult = await Avd12Utility.getRollTableFromDiceColor(diceColor, false)
-      console.log("Armor log", armorResult)
-      let armorValue = Math.max(0, (Number(armorResult.text) + reduce) * multiply)
-      if (advantage || disadvantage) {
-        let armorResult2 = await Avd12Utility.getRollTableFromDiceColor(diceColor, false)
-        let armorValue2 = Math.max(0, (Number(armorResult2.text) + reduce) * multiply)
-        if (advantage) {
-          armorValue = (armorValue2 > armorValue) ? armorValue2 : armorValue
-          messages.push(`Armor advantage - Roll 1 = ${armorValue} - Roll 2 = ${armorValue2}`)
-        }
-        if (disadvantage) {
-          armorValue = (armorValue2 < armorValue) ? armorValue2 : armorValue
-          messages.push(`Armor disadvantage - Roll 1 = ${armorValue} - Roll 2 = ${armorValue2}`)
-        }
-      }
-      armorResult.armorValue = armorValue
-      if (!rollData) {
-        ChatMessage.create({ content: "Armor result : " + armorValue })
-      }
-      messages.push("Armor result : " + armorValue)
-      return { armorIgnored: false, nbSuccess: armorValue, rawArmor: armorResult.text, messages: messages }
-    }
-    return { armorIgnored: true, nbSuccess: 0, messages: ["No armor equipped."] }
   }
 
   /* -------------------------------------------- */

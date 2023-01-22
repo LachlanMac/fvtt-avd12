@@ -19,7 +19,6 @@ export class Avd12ItemSheet extends ItemSheet {
     });
   }
 
-
   /* -------------------------------------------- */
   _getHeaderButtons() {
     let buttons = super._getHeaderButtons();

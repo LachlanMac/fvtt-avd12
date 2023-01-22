@@ -51,6 +51,15 @@
       "system": "fvtt-avd12",
       "private": false,
       "flags": {}
+    },
+    {
+      "type": "Item",
+      "label": "Weapons",
+      "name": "weapons",
+      "path": "packs/weapons.db",
+      "system": "fvtt-avd12",
+      "private": false,
+      "flags": {}
     }
   ],
   "title": "AnyVenture D12 RPG",

@@ -1,0 +1,34 @@
+<div class="chat-message-header">
+  {{#if actorImg}}
+  <img class="actor-icon" src="{{actorImg}}" alt="{{alias}}" />
+  {{/if}}
+  <h4 class=chat-actor-name>{{alias}}</h4>
+</div>
+
+  <hr>
+  
+  {{#if img}}
+  <div >
+    <img class="chat-icon" src="{{img}}" alt="{{name}}" />
+  </div>
+  {{/if}}
+
+  <div class="flexcol">
+    </div>
+
+    <div>
+      <ul>
+
+        <li>Weapon : {{weapon.name}}  
+        </li>
+        <li>Damage formula : {{damageFormula}} ({{upperFirst damageType}})  
+        </li>
+        <li>Damage type : {{upperFirst weapon.system.damages.primary.damagetype}}  
+        </li>
+        <li>Total : {{roll.total}}    
+        </li>
+
+      </ul>  
+    </div>
+
+  </div>
