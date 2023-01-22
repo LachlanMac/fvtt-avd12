@@ -536,6 +536,9 @@ export class Avd12Utility {
     if (rollData.skill && rollData.skill.good) {
       diceFormula += "+1d4"
     }
+    if (rollData.weapon ) {
+      diceFormula += "+" + rollData.weapon.attackBonus
+    }
     rollData.diceFormula = diceFormula
 
     // Performs roll

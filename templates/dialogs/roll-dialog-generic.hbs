@@ -15,6 +15,13 @@
       </div>
       {{/if}}
 
+      {{#if weapon}}
+      <div class="flexrow">
+        <span class="roll-dialog-label">Weapon Attack Bonus : </span>
+        <span class="roll-dialog-label">{{weapon.attackBonus}}</span>
+      </div>
+      {{/if}}
+
       {{#if spell}}
       <div class="flexrow">
         <span class="roll-dialog-label">Spell : </span>

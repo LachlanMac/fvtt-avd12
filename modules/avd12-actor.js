@@ -58,12 +58,12 @@ export class Avd12Actor extends Actor {
   computeHitPoints() {
     if (this.type == "character") {
     }
-  } 
+  }
 
   /* -------------------------------------------- */
   rebuildSkills() {
-    let armorPenalties = Avd12Utility.getArmorPenalty( this.items.find( item => item.type == "armor") )
-    let shieldPenalties = Avd12Utility.getArmorPenalty( this.items.find( item => item.type == "shield") )
+    let armorPenalties = Avd12Utility.getArmorPenalty(this.items.find(item => item.type == "armor"))
+    let shieldPenalties = Avd12Utility.getArmorPenalty(this.items.find(item => item.type == "shield"))
 
     for (let attrKey in this.system.attributes) {
       let attr = this.system.attributes[attrKey]
@@ -76,17 +76,17 @@ export class Avd12Actor extends Actor {
           skill.modifier += Number(trait.system.bonusvalue)
         }
         // Apply armor penalties
-        if ( armorPenalties[skillKey]) {
+        if (armorPenalties[skillKey]) {
           console.log("Found armor penalties : ", armorPenalties, skillKey)
           skill.modifier += Number(armorPenalties[skillKey])
         }
         // Apply shield penalties
-        if ( shieldPenalties[skillKey]) {
+        if (shieldPenalties[skillKey]) {
           console.log("Found shield penalties : ", shieldPenalties, skillKey)
           skill.modifier += Number(shieldPenalties[skillKey])
         }
         // Process additionnal bonuses
-        for(let item of this.items) {
+        for (let item of this.items) {
           if (item.system.bonus && item.system.bonus[skillKey]) {
             skill.modifier += Number(item.system.bonus[skillKey].value)
           }
@@ -95,19 +95,32 @@ export class Avd12Actor extends Actor {
       }
     }
   }
-  
+
   /* -------------------------------------------- */
   rebuildMitigations() {
     for (let mitiKey in this.system.mitigation) {
       let mitigation = this.system.mitigation[mitiKey]
-      for(let item of this.items) {
+      for (let item of this.items) {
         if (item.system.mitigation && item.system.mitigation[mitiKey]) {
           mitigation.value += Number(item.system.mitigation[mitiKey].value)
         }
       }
     }
   }
-
+  /* -------------------------------------------- */
+  rebuildBonus() {
+    for (let bonusKey in this.system.bonus) {
+      let bonus = this.system.bonus[bonusKey]
+      for (let content in bonus) {
+        let dataPath = bonusKey + "." + content
+        //console.log("Parsing", bonusKey, content, dataPath)
+        let availableTraits = this.items.filter(t => t.type == "trait" && t.system.computebonus && t.system.bonusdata == dataPath)
+        for (let trait of availableTraits) {
+          bonus[content] += Number(trait.system.bonusvalue)
+        }
+      }
+    }
+  }
   /* -------------------------------------------- */
   prepareDerivedData() {
 
@@ -118,6 +131,7 @@ export class Avd12Actor extends Actor {
 
       this.rebuildSkills()
       this.rebuildMitigations()
+      this.rebuildBonus()
     }
 
     super.prepareDerivedData();
@@ -133,7 +147,7 @@ export class Avd12Actor extends Actor {
     this.rebuildSkills()
     super._onUpdateEmbeddedDocuments(embeddedName, ...args)
   }*/
-  
+
   /* -------------------------------------------- */
   getEncumbranceCapacity() {
     return 1;
@@ -146,10 +160,23 @@ export class Avd12Actor extends Actor {
     return comp;
   }
   getEquippedWeapons() {
-    let comp = duplicate(this.items.filter(item => item.type == 'weapon' && item.system.equipped) || []);
+    let comp = duplicate(this.items.filter(item => item.type == 'weapon' && item.system.equipped) || [])
+    comp.forEach(item => {
+      this.prepareWeapon(item)
+    })
     Avd12Utility.sortArrayObjectsByName(comp)
     return comp;
   }
+  /* -------------------------------------------- */
+  getWeapons() {
+    let comp = duplicate(this.items.filter(item => item.type == 'weapon') || [])
+    comp.forEach(item => {
+      this.prepareWeapon(item)
+    })
+    Avd12Utility.sortArrayObjectsByName(comp)
+    return comp;
+  }
+
   /* -------------------------------------------- */
   getArmors() {
     let comp = duplicate(this.items.filter(item => item.type == 'armor') || []);
@@ -199,29 +226,29 @@ export class Avd12Actor extends Actor {
     return comp;
   }
   /* -------------------------------------------- */
-  addDamages( damage) {
+  addDamages(damage, bonusDamage) {
     //console.log(damage)
-    if ( damage.damagetype != "none" && damage.dice ) {
-      damage.normal   = damage.dice + '+' + damage.bonus 
-      damage.critical = damage.dice + '+' + Number(damage.bonus)*2
+    if (damage.damagetype != "none" && damage.dice) {
+      let fullBonus = Number(bonusDamage) + Number(damage.bonus)
+      damage.normal = damage.dice + '+' + fullBonus
+      damage.critical = damage.dice + '+' + Number(fullBonus) * 2
       let parser = damage.dice.match(/(\d+)(d\d+)/)
       let nbDice = 2
       if (parser && parser[1]) {
         nbDice = Number(parser[1]) * 2
-      } 
-      damage.brutal   = nbDice + parser[2] + "+" + Number(damage.bonus)*2
+      }
+      damage.brutal = nbDice + parser[2] + "+" + Number(fullBonus) * 2
     }
   }
   /* -------------------------------------------- */
-  getWeapons() {
-    let comp = duplicate(this.items.filter(item => item.type == 'weapon') || [])
-    comp.forEach(item => {
-      this.addDamages(item.system.damages.primary)
-      this.addDamages(item.system.damages.secondary)
-      this.addDamages(item.system.damages.tertiary)
-    })
-    Avd12Utility.sortArrayObjectsByName(comp)
-    return comp;
+  prepareWeapon(weapon) {
+    weapon.attackBonus = this.system.bonus.weapon.attack + this.system.bonus[weapon.system.weapontype].attack
+    let bonusDamage = this.system.bonus.weapon.damage + this.system.bonus[weapon.system.weapontype].damage
+    this.addDamages(weapon.system.damages.primary, bonusDamage)
+    bonusDamage = this.system.bonus.weapon.damage + this.system.bonus[weapon.system.weapontype].crits
+    this.addDamages(weapon.system.damages.secondary, bonusDamage)
+    bonusDamage = this.system.bonus.weapon.damage + this.system.bonus[weapon.system.weapontype].brutals
+    this.addDamages(weapon.system.damages.tertiary + bonusDamage)
   }
   /* -------------------------------------------- */
   getItemById(id) {
@@ -403,7 +430,7 @@ export class Avd12Actor extends Actor {
   /* -------------------------------------------- */
   async preprocessItem(event, item, onDrop = false) {
     //console.log('ITEM', item)
-    if ( item.system.focus && item.system.focus?.isfocus) {
+    if (item.system.focus && item.system.focus?.isfocus) {
       let focusItem = this.items.find(it => it.system.focus?.isfocus)
       if (focusItem) {
         ui.notifications.warn("You already have a Focus Item in your equipment.")
@@ -421,22 +448,22 @@ export class Avd12Actor extends Actor {
     let focus = this.items.find(it => it.system.focus?.isfocus)
     if (focus) {
       let focusData = Avd12Utility.computeFocusData(focus.system.focus)
-      let focusBonus = this.items.filter( it => it.system.focuspointsbonus > 0).reduce((sum, item2) => sum = item2.system.focuspointsbonus, 0)
-      let focusregenbonus = this.items.filter( it => it.system.focusregenbonus > 0).reduce((sum, item2) => sum = item2.system.focusregenbonus, 0)
-      let burnchancebonus = this.items.filter( it => it.system.burnchancebonus > 0).reduce((sum, item2) => sum = item2.system.burnchancebonus, 0)
+      let focusBonus = this.items.filter(it => it.system.focuspointsbonus > 0).reduce((sum, item2) => sum = item2.system.focuspointsbonus, 0)
+      let focusregenbonus = this.items.filter(it => it.system.focusregenbonus > 0).reduce((sum, item2) => sum = item2.system.focusregenbonus, 0)
+      let burnchancebonus = this.items.filter(it => it.system.burnchancebonus > 0).reduce((sum, item2) => sum = item2.system.burnchancebonus, 0)
 
       let focusPoints = focusData.focusPoints + focusBonus
       let focusRegen = focusData.focusRegen + focusregenbonus
       //console.log("Update focus", focusPoints, focusRegen)
-      if ( focusPoints != this.system.focus.focuspoints || focusRegen != this.system.focus.focusregen) {
-        let focusData = duplicate(this.system.focus) 
+      if (focusPoints != this.system.focus.focuspoints || focusRegen != this.system.focus.focusregen) {
+        let focusData = duplicate(this.system.focus)
         focusData.focuspoints = focusPoints
         focusData.focusregen = focusRegen
-        this.update( {'system.focus': focusData})
+        this.update({ 'system.focus': focusData })
       }
       //console.log("FINAL BONUS", focusBonus, focusregenbonus, burnchancebonus)
       return {
-        focusPoints : focusPoints,
+        focusPoints: focusPoints,
         burnChance: focusData.burnChance + burnchancebonus,
         focusRegen: focusRegen,
         spellAttackBonus: focusData.spellAttackBonus,
@@ -445,7 +472,7 @@ export class Avd12Actor extends Actor {
       }
     }
     return {
-      focusPoints : 0,
+      focusPoints: 0,
       burnChance: 0,
       focusRegen: 0,
       spellAttackBonus: 0,
@@ -657,7 +684,7 @@ export class Avd12Actor extends Actor {
       if (spell.system.spelltype != "utility") {
         this.startRoll(rollData)
       } else {
-        this.spentFocusPoints( spell )
+        this.spentFocusPoints(spell)
         let msg = await Avd12Utility.createChatWithRollMode(rollData.alias, {
           content: await renderTemplate(`systems/fvtt-avd12/templates/chat/chat-utility-spell.hbs`, rollData)
         })
@@ -669,13 +696,13 @@ export class Avd12Actor extends Actor {
   }
 
   /* -------------------------------------------- */
-  spentFocusPoints( spell) {
+  spentFocusPoints(spell) {
     let spellCost = Avd12Utility.getSpellCost(spell)
     let focusData = duplicate(this.system.focus)
     focusData.currentfocuspoints -= spellCost
     focusData.currentfocuspoints = Math.max(focusData.currentfocuspoints, 0)
     console.log("New fovcus", this.system, focusData)
-    this.update({'system.focus': focusData})
+    this.update({ 'system.focus': focusData })
   }
 
   /* -------------------------------------------- */
@@ -683,6 +710,7 @@ export class Avd12Actor extends Actor {
     let weapon = this.items.get(weaponId)
     if (weapon) {
       weapon = duplicate(weapon)
+      this.prepareWeapon(weapon)
       let rollData = this.getCommonRollData()
       rollData.modifier = this.system.bonus[weapon.system.weapontype]
       rollData.mode = "weapon"
@@ -698,7 +726,7 @@ export class Avd12Actor extends Actor {
     let weapon = this.items.get(weaponId)
     if (weapon) {
       weapon = duplicate(weapon)
-      this.addDamages(weapon.system.damages.primary)
+      this.prepareWeapon(weapon)
       let rollData = this.getCommonRollData()
       rollData.damageFormula = weapon.system.damages.primary[damageType]
       rollData.mode = "weapon-damage"
@@ -712,7 +740,7 @@ export class Avd12Actor extends Actor {
         content: await renderTemplate(`systems/fvtt-avd12/templates/chat/chat-damage-result.hbs`, rollData)
       })
       msg.setFlag("world", "rolldata", rollData)
-  
+
     } else {
       ui.notifications.warn("Unable to find the relevant weapon ")
     }
