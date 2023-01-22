@@ -259,6 +259,12 @@
             "crits": 0,
             "brutals": 0
           },
+          "crush": {
+            "attack": 0,
+            "damage": 0,
+            "crits": 0,
+            "brutals": 0
+          },
           "slash": {
             "attack": 0,
             "damage": 0,
