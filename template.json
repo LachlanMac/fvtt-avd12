@@ -492,6 +492,7 @@
       "templates": [
         "commonitem"
       ],
+      "attackbonus": 0,
       "minrange": 0,
       "maxrange": 0,
       "throwrange": 0,

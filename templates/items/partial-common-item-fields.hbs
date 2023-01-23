@@ -1,43 +1,3 @@
-<li class='flexrow'>
-  <label class='item-field-label-long'>
-    Focus Points Bonus
-  </label>
-  <input
-    type='text'
-    class='item-field-label-short'
-    name='system.focuspointsbonus'
-    value="{{system.focuspointsbonus}}"
-    data-dtype='Number'
-  />
-
-  <label class='item-field-label-short'>
-    &nbsp;
-  </label>
-
-  <label class='item-field-label-long'>
-    Focus Regen Bonus
-  </label>
-  <input
-    type='text'
-    class='item-field-label-short'
-    name='system.focusregenbonus'
-    value="{{system.focusregenbonus}}"
-    data-dtype='Number'
-  />
-</li>
-
-<li class='flexrow'>
-  <label class='item-field-label-long'>
-    Burn Chance Bonus
-  </label>
-  <input
-    type='text'
-    class='item-field-label-short'
-    name='system.burnchancebonus'
-    value="{{system.burnchancebonus}}"
-    data-dtype='Number'
-  />
-</li>
 
 <li class='flexrow'>
   <h3 class='item-field-label-long'>
@@ -91,6 +51,26 @@
   {{/each}}
 </li>
 
+{{#if (eq type "weapon")}}
+  <li class='flexrow'>
+      <div>
+        <label class='item-field-label-short'>
+          Attack Bonus
+        </label>
+        <input
+          type='text'
+          class='item-field-label-short padd-right'
+          name="system.attackbonus"
+          value="{{system.attackbonus}}"
+          data-dtype='Number'
+        />
+        <label>
+          &nbsp;
+        </label>
+      </div>
+  </li>
+{{/if}}
+
 <li class='flexrow'>
   <h3 class='item-field-label-long'>
     Focus
@@ -126,6 +106,46 @@
         <span>Spell Damage Bonus : {{focusData.spellDamageBonus}} </span>
       </li>
   {{/if}}
+<li class='flexrow'>
+  <label class='item-field-label-long'>
+    Focus Points Bonus
+  </label>
+  <input
+    type='text'
+    class='item-field-label-short'
+    name='system.focuspointsbonus'
+    value="{{system.focuspointsbonus}}"
+    data-dtype='Number'
+  />
+
+  <label class='item-field-label-short'>
+    &nbsp;
+  </label>
+
+  <label class='item-field-label-long'>
+    Focus Regen Bonus
+  </label>
+  <input
+    type='text'
+    class='item-field-label-short'
+    name='system.focusregenbonus'
+    value="{{system.focusregenbonus}}"
+    data-dtype='Number'
+  />
+</li>
+
+<li class='flexrow'>
+  <label class='item-field-label-long'>
+    Burn Chance Bonus
+  </label>
+  <input
+    type='text'
+    class='item-field-label-short'
+    name='system.burnchancebonus'
+    value="{{system.burnchancebonus}}"
+    data-dtype='Number'
+  />
+</li>
 
 <li class='flexrow'>
   <h3 class='item-field-label-long'>

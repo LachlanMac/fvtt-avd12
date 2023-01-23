@@ -242,8 +242,8 @@ export class Avd12Actor extends Actor {
   }
   /* -------------------------------------------- */
   prepareWeapon(weapon) {
-    console.log(weapon)
-    weapon.attackBonus = this.system.bonus.weapon.attack + this.system.bonus[weapon.system.weapontype].attack
+    //console.log(weapon)
+    weapon.attackBonus = this.system.bonus.weapon.attack + weapon.system.attackbonus + this.system.bonus[weapon.system.weapontype].attack
     let bonusDamage = this.system.bonus.weapon.damage + this.system.bonus[weapon.system.weapontype].damage
     this.addDamages(weapon.system.damages.primary, bonusDamage)
     bonusDamage = this.system.bonus.weapon.damage + this.system.bonus[weapon.system.weapontype].crits
