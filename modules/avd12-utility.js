@@ -528,6 +528,9 @@ export class Avd12Utility {
     if (rollData.skill) {
       diceFormula += "+" + rollData.skill.finalvalue
     }
+    if (rollData.crafting) {
+      diceFormula += "+" + rollData.crafting.system.level
+    }
     if (rollData.spellAttack) {
       diceFormula += "+" + rollData.spellAttack
     }

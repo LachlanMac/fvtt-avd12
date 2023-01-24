@@ -176,7 +176,12 @@ export class Avd12Actor extends Actor {
     Avd12Utility.sortArrayObjectsByName(comp)
     return comp;
   }
-
+  /* -------------------------------------------- */
+  getCraftingSkills() {
+    let comp = duplicate(this.items.filter(item => item.type == 'craftingskill') || [])
+    Avd12Utility.sortArrayObjectsByName(comp)
+    return comp;
+  }
   /* -------------------------------------------- */
   getArmors() {
     let comp = duplicate(this.items.filter(item => item.type == 'armor') || []);
@@ -705,7 +710,20 @@ export class Avd12Actor extends Actor {
     console.log("New fovcus", this.system, focusData)
     this.update({ 'system.focus': focusData })
   }
-
+  /* -------------------------------------------- */
+  rollCrafting(craftId) {
+    let crafting = this.items.get(craftId)
+    if (crafting) {
+      crafting = duplicate(crafting)
+      let rollData = this.getCommonRollData()
+      rollData.mode = "crafting"
+      rollData.crafting = crafting
+      rollData.img = crafting.img
+      this.startRoll(rollData)
+    } else {
+      ui.notifications.warn("Unable to find the relevant weapon ")
+    }
+  }
   /* -------------------------------------------- */
   rollWeapon(weaponId) {
     let weapon = this.items.get(weaponId)
@@ -722,6 +740,7 @@ export class Avd12Actor extends Actor {
       ui.notifications.warn("Unable to find the relevant weapon ")
     }
   }
+  
   /* -------------------------------------------- */
   async rollWeaponDamage(weaponId, damageType) {
     let weapon = this.items.get(weaponId)

@@ -15,6 +15,13 @@
       </div>
       {{/if}}
 
+      {{#if crafting}}
+      <div class="flexrow">
+        <span class="roll-dialog-label">Crafting : </span>
+        <span class="roll-dialog-label">{{crafting.name}} ({{crafting.system.level}})</span>
+      </div>
+      {{/if}}
+
       {{#if weapon}}
       <div class="flexrow">
         <span class="roll-dialog-label">Weapon Attack Bonus : </span>

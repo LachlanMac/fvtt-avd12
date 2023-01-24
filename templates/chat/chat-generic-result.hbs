@@ -23,6 +23,11 @@
         </li>
         {{/if}}
 
+        {{#if crafting}}
+        <li>Crafting : {{crafting.name}} ({{crafting.system.level}}) 
+        </li>
+        {{/if}}
+
         {{#if spell}}
         <li>Spell : {{spell.name}} ({{spell.system.level}}) 
         </li>
@@ -30,6 +35,7 @@
         </li>
         {{/if}}
 
+        <li>Bonus/Malus {{bonusMalusRoll}} </li>
         <li>Dice Formula {{diceFormula}} </li>
         <li>Result {{roll.total}} </li>
 

@@ -493,6 +493,39 @@
 
     </div>
 
+    {{!-- Equipement Tab --}}
+    <div class="tab crafting" data-group="primary" data-tab="crafting">
+
+
+      <ul class="item-list alternate-list">
+        <li class="item flexrow list-item items-title-bg">
+          <span class="item-name-label-header">
+            <h3><label class="items-title-text">Crafting</label></h3>
+          </span>
+          <span class="item-field-label-short">
+            <label class="short-label">Level</label>
+          </span>
+          <div class="item-controls item-controls-fixed">
+            <a class="item-control item-add" data-type="weapon" title="Create Item"><i class="fas fa-plus"></i></a>
+          </div>
+        </li>
+        {{#each craftingSkills as |crafting key|}}
+        <li class="item flexrow list-item list-item-shadow" data-item-id="{{crafting._id}}">
+          <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
+              src="{{crafting.img}}" /></a>
+          <span class="item-name-label"> <a class="roll-crafting"><i class="fa-solid fa-dice-d12"> </i>{{crafting.name}}</a></span>
+          <span class="item-field-label-short"><label>{{crafting.system.level}}</label></span>
+
+          <div class="item-filler">&nbsp;</div>
+          <div class="item-controls item-controls-fixed">
+            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+          </div>
+        </li>
+        {{/each}}
+      </ul>
+
+    </div>
+
     {{!-- Biography Tab --}}
     <div class="tab biodata" data-group="primary" data-tab="biodata">
       <div class="grid grid-2col">

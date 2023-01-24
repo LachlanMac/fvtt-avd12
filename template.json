@@ -356,6 +356,7 @@
       "weapon",
       "module",
       "money",
+      "craftingskill",
       "condition",
       "action",
       "freeaction",
@@ -416,6 +417,10 @@
         "health": 0,
         "movespeed": 0
       }
+    },
+    "craftingskill" : {
+      "level": 0,
+      "description": ""
     },
     "action": {
       "description": ""

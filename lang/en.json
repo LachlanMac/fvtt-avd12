@@ -16,6 +16,7 @@
     "TypeReaction": "Reaction",
     "TypeStance": "Stance",
     "TypeTrait": "Trait",
-    "TypeCondition": "Condition"
+    "TypeCondition": "Condition",
+    "TypeCraftingskill": "Crafting Skill"
   }
 }

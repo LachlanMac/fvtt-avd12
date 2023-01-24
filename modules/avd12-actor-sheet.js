@@ -45,6 +45,7 @@ export class Avd12ActorSheet extends ActorSheet {
       equippedWeapons: this.actor.checkAndPrepareEquipments(duplicate(this.actor.getEquippedWeapons()) ),
       equippedArmor: this.actor.getEquippedArmor(),
       equippedShield: this.actor.getEquippedShield(),
+      craftingSkills: this.actor.getCraftingSkills(),
       subActors: duplicate(this.actor.getSubActors()),
       moneys: duplicate(this.actor.getMoneys()),
       focusData: this.actor.computeFinalFocusData(),
@@ -129,6 +130,11 @@ export class Avd12ActorSheet extends ActorSheet {
       const li = $(event.currentTarget).parents(".item");
       this.actor.rollSpell( li.data("item-id") )
     });    
+    html.find('.roll-crafting').click((event) => {
+      const li = $(event.currentTarget).parents(".item");
+      this.actor.rollCrafting( li.data("item-id") )
+    });    
+
 
     html.find('.roll-weapon').click((event) => {
       const li = $(event.currentTarget).parents(".item");

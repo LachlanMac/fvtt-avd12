@@ -9,6 +9,7 @@ export const defaultItemImg = {
   module: "systems/fvtt-avd12/images/icons/focus2.webp",
   money: "systems/fvtt-avd12/images/icons/focus2.webp",
   spell: "systems/fvtt-avd12/images/icons/spell1.webp",
+  craftingskill: "systems/fvtt-avd12/images/icons/cloak2.webp",
 }
 
 /**
