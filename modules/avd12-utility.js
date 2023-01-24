@@ -568,6 +568,10 @@ export class Avd12Utility {
       content: await renderTemplate(`systems/fvtt-avd12/templates/chat/chat-generic-result.hbs`, rollData)
     })
     msg.setFlag("world", "rolldata", rollData)
+    if (rollData.skillKey == "initiative") {
+      console.log("REGISTERED")
+      actor.setFlag("world", "initiative", myRoll.total) 
+    }
 
     console.log("Rolldata result", rollData)
   }

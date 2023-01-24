@@ -1320,7 +1320,16 @@ ul, li {
   min-width:2rem;
   max-width: 2rem;
 }
-
+.attribute-label {
+  font-weight: bold;
+}
+.flexrow-no-expand {
+  flex-grow: 0;  
+}
+.item-input-small {
+  max-width: 16px;
+  max-height: 12px;
+}
 .drop-module-step {
   background: linear-gradient(to bottom, #6c95b9fc 5%, #105177ab 100%);
   background-color: #7d5d3b00;

@@ -61,22 +61,26 @@
         </select>        
       </div>
 
-      {{#if (or spell weapon)}} 
+      {{#if (eq skillKey "initiative") }}
 
       {{else}}
-      <div class="flexrow">
-        <span class="roll-dialog-label">Target check : </span>
-        <select id="targetCheck" name="targetCheck">
-          {{#select targetCheck}} 
-            <option value="none">None</option>
-            <option value="5">5 (Trivial)</option>
-            <option value="7">7 (Easy)</option>
-            <option value="10">10 (Regular)</option>
-            <option value="14">14 (Difficult)</option>
-            <option value="20">20 (Heroic)</option>
-          {{/select}}
-        </select>        
-      </div>
+        {{#if (or spell weapon)}} 
+
+        {{else}}
+        <div class="flexrow">
+          <span class="roll-dialog-label">Target check : </span>
+          <select id="targetCheck" name="targetCheck">
+            {{#select targetCheck}} 
+              <option value="none">None</option>
+              <option value="5">5 (Trivial)</option>
+              <option value="7">7 (Easy)</option>
+              <option value="10">10 (Regular)</option>
+              <option value="14">14 (Difficult)</option>
+              <option value="20">20 (Heroic)</option>
+            {{/select}}
+          </select>        
+        </div>
+        {{/if}}
       {{/if}}
 
   </div>

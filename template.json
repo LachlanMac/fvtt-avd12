@@ -164,11 +164,13 @@
         "universal": {
           "skills": {
             "search": {
+              "label": "Search",
               "modifier": 0,
               "finalvalue": 0,
               "good": false
             },
             "initiative": {
+              "label": "Initiative",
               "modifier": 0,
               "finalvalue": 0,
               "good": false

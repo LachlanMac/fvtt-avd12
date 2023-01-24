@@ -11,25 +11,44 @@
           <div class="flexrow">
             {{#each system.attributes as |attr attrKey|}}
               <div class="flexcol">
-                <div class="flerow">
-                  <span>{{attr.label}}</span>
+                <div class="flexrow flexrow-no-expand">
+                  <span class="attribute-label">{{attr.label}}</span>
                   <input type="text" class="item-field-label-short" name="system.attributes.{{attrKey}}.value" value="{{attr.value}}" data-dtype="Number"/>
                 </div>
-                  {{#each attr.skills as |skill skillKey|}}
-                  <div class="flexrow">
-                      <span class="item-field-skill skill-label"><a class="roll-skill" data-attr-key="{{attrKey}}" data-skill-key="{{skillKey}}"><i class="fa-solid fa-dice-d12"></i> {{upperFirst skillKey}} {{skill.finalvalue}}</a></span>
-                      <input type="checkbox" class="skill-good-checkbox" name="system.attributes.{{attrKey}}.skills.{{skillKey}}.good" {{checked skill.good}} />
+                {{#each attr.skills as |skill skillKey|}}
+                <div class="flexrow flexrow-no-expand">
+                  <span class="item-field-skill skill-label">
+                    <a class="roll-skill" data-attr-key="{{attrKey}}" data-skill-key="{{skillKey}}">
+                    <i class="fa-solid fa-dice-d12"></i> {{upperFirst skillKey}} {{skill.finalvalue}}</a>
+                  </span>
+                  <input type="checkbox" class="skill-good-checkbox" name="system.attributes.{{attrKey}}.skills.{{skillKey}}.good" {{checked skill.good}} />
+                </div>
+                {{/each}}
+                <div class="flexrow flexrow-no-expand">
+                  <span class="attribute-label">&nbsp;</span>
+                </div>
+                {{#if (eq attrKey "might")}}
+                  <div class="flexrow flexrow-no-expand">
+                    <span class="attribute-label">Universal</span>
+                  </div>
+                  {{#each @root.system.universal.skills as |skill skillKey|}}
+                  <div class="flexrow flexrow-no-expand">
+                    <span class="item-field-skill skill-label">
+                      <a class="roll-universal" data-skill-key="{{skillKey}}">
+                        <i class="fa-solid fa-dice-d12"></i> {{upperFirst skillKey}}
+                      </a>
+                    </span>
+                    <input type="text" class="item-input-small" name="system.universal.skills.{{skillKey}}.finalvalue" value="{{skill.finalvalue}}" data-dtype="Number"/>
                   </div>
                   {{/each}}
-              </div>
+                {{else}}
+                  <div class="flexrow">
+                  </div>
+                {{/if}}
+              </div>              
             {{/each}}
+
           </div>
-
-            <div class="ability-item">
-            </div>
-
-            <div class="ability-item status-block">
-            </div>
 
           </div>
         </div>

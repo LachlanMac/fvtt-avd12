@@ -494,12 +494,21 @@ export class Avd12Actor extends Actor {
       await this.updateEmbeddedDocuments('Item', [update]); // Updates one EmbeddedEntity
     }
   }
+
+  /* -------------------------------------------- */
+  clearInitiative(){
+    this.getFlag("world", "initiative", -1)
+  }
   /* -------------------------------------------- */
   getInitiativeScore(combatId, combatantId) {
     if (this.type == 'character') {
-      this.rollMR(true, combatId, combatantId)
+      let init = this.getFlag("world", "initiative" )
+      console.log("INIT", init)
+      if (!init || init == -1) {
+        ChatMessage.create( { content: "Roll your initiative for this combat"} )
+      }
+      return init
     }
-    console.log("Init required !!!!")
     return -1;
   }
 
@@ -667,13 +676,30 @@ export class Avd12Actor extends Actor {
       skill.attr = duplicate(attr)
       let rollData = this.getCommonRollData()
       rollData.mode = "skill"
+      rollMode.skillKey = skillKey
       rollData.skill = skill
-      rollData.title = "Roll Skill " + skill.name
+      rollData.title = "Roll Skill " + skill.name 
       rollData.img = skill.img
       this.startRoll(rollData)
     }
   }
 
+  /* -------------------------------------------- */
+  rollUniversal(skillKey) {
+    let skill = this.system.universal.skills[skillKey]
+    if (skill) {
+      skill = duplicate(skill)
+      skill.name = Avd12Utility.upperFirst(skillKey)
+      let rollData = this.getCommonRollData()
+      rollData.mode = "universal"
+      rollData.skillKey = skillKey
+      rollData.skill = skill
+      rollData.title = "Roll Skill " + skill.name 
+      rollData.img = skill.img
+      this.startRoll(rollData)
+    }
+  }
+  
   /* -------------------------------------------- */
   async rollSpell(spellId) {
     let spell = this.items.get(spellId)

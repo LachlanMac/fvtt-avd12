@@ -27,4 +27,14 @@ export class Avd12Combat extends Combat {
     }
   }
 
+  /* -------------------------------------------- */
+  _onDelete() {
+    let combatants = this.combatants.contents
+    for (let c of combatants) {
+      let actor = game.actors.get(c.actorId)
+      actor.clearInitiative()
+    }
+    super._onDelete()
+  }
+
 }
