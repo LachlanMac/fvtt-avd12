@@ -15,7 +15,23 @@
     {{> systems/fvtt-avd12/templates/items/partial-item-description.hbs}}
 
     <div class="tab details" data-group="primary" data-tab="details">
-      TODO : The tre of module choices will be displayed here for players, with the "selected" option only
+      
+      <div class="flexcol">
+        {{#each system.levels as |level index|}}
+          <div class="flexrow flex-center">
+            {{#each level.choices as |choice choiceIndex|}}
+              <span class="module-level-box {{#if choice.selected}}color-selected{{/if}}">
+                <ul>
+                  {{#each choice.features as |feature id|}}
+                    <li>{{feature.name}}</li>
+                  {{/each}}
+                </ul>                  
+              </span>
+          {{/each}}
+          </div>
+        {{/each}}
+      </div>
+
     </div>
 
     {{#if isGM}}
@@ -26,7 +42,10 @@
             {{#each system.levels as |level index|}}
               <hr>
               <li class="flexrow">
-                <h2 class="item-field-label-long">Level {{add index 1}}</h2>
+                <h2 class="item-field-label-long">Level {{add index 1}}</h2>                       
+                <span class="item-field-label-short">
+                  <a class="item-control module-level-delete" data-level-index="{{index}}" title="Delete Level"><i class="fas fa-trash"></i></a>
+                </span>
               </li>
 
               <ul class="ul-level1">

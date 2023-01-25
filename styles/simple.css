@@ -1336,3 +1336,21 @@ ul, li {
   border-radius: 3px;
   border: 2px ridge #846109;
 }
+.module-level-box {
+  background: linear-gradient(to bottom, #6c95b9fc 5%, #105177ab 100%);
+  border-radius: 5px;
+  padding: 4px;
+  margin-bottom: 8px;
+  margin-left: 12px;
+  border: 2px ridge #846109;
+  max-width: 45%;
+  min-height: 64px;
+  align-content: center;
+}
+.color-selected {
+  background: linear-gradient(to bottom, #9ae470fc 5%, #247e30ab 100%);
+}
+.flex-center {
+  align-items: center;
+  align-content: space-between;
+}

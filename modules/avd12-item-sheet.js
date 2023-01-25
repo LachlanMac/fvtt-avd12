@@ -52,8 +52,12 @@ export class Avd12ItemSheet extends ItemSheet {
     // Specific case for formating descriptions of sub-items
     if (this.object.type == "module") {
       for (let level of this.object.system.levels) {
-        for (let id in level.features) {
-          level.features[id].descriptionHTML = await TextEditor.enrichHTML(level.features[id].system.description, { async: true })
+        if ( level && level.features) {
+          for (let id in level.features) {
+            if ( level.features[id] ) {
+              level.features[id].descriptionHTML = await TextEditor.enrichHTML(level.features[id].system.description, { async: true })
+            }
+          }
         }
       }
     }
@@ -249,7 +253,13 @@ export class Avd12ItemSheet extends ItemSheet {
       levels[levelIndex].choices[choiceIndex].features[featureId] = undefined
       this.object.update({ 'system.levels': levels })
     })
-
+    html.find('.module-level-delete').click(ev => {
+      let levels = duplicate(this.object.system.levels)
+      let levelIndex = Number($(ev.currentTarget).data("level-index"))
+      levels.splice(levelIndex,levelIndex)
+      this.object.update({ 'system.levels': levels })
+    })
+      
     html.find('.choice-level-selected').change(ev =>  {
       this.processChoiceLevelSelection(ev)
     })
