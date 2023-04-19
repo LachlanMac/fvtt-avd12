@@ -1,0 +1,42 @@
+<form class="skill-roll-dialog">
+  <header class="roll-dialog-header">
+    {{#if img}}
+    <img class="actor-icon" src="{{img}}" data-edit="img" title="{{name}}" />
+    {{/if}}
+    <h1 class="dialog-roll-title roll-dialog-header">Take Damage</h1>
+  </header>
+
+    <div class="flexcol">
+      <div class="flexrow">
+        <span class="roll-dialog-label">Damage Taken : </span>
+        <input type="text" class=" flex-center" id="total-damage" name="total-damage" value="0" data-dtype="Number"/>  
+      </div>
+    </div>
+
+    <div class="flexcol">
+      <div class="flexrow">
+        <span class="roll-dialog-label">Mitigation Modifier : </span>
+        <input type="text" class=" flex-center" id="damage-modifier" name="damage-modifier" value="0" data-dtype="Number"/>  
+      </div>
+    </div>
+
+    <div class="flexcol">
+        <li class="flexrow">
+            <span class="roll-dialog-label">Damage Type</span>
+            <select id="damage-type" class="item-field-label-long" type="text" name="system.damagetype" value="{{system.damagetype}}" data-dtype="String">
+                {{#select system.damagetype}}
+                    <option value="Physical">Physical</option>
+                    <option value="Psychic">Psychic</option>
+                    <option value="Fire">Fire</option>
+                    <option value="Lightning">Lightning</option>
+                    <option value="Cold">Cold</option>
+                    <option value="Dark">Dark</option>
+                    <option value="Divine">Divine</option>
+                    <option value="Arcane">Arcane</option>
+                    <option value="True">True</option>
+                {{/select}}
+            </select> 
+        </li>
+    </div>
+
+</form>

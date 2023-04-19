@@ -35,18 +35,9 @@
         </li>
         {{/if}}
 
-        <li>Bonus/Malus {{bonusMalusRoll}} </li>
+        <li>Modifier {{bonusMalusRoll}} </li>
         <li>Dice Formula {{diceFormula}} </li>
         <li>Result {{roll.total}} </li>
-
-        {{#if (ne targetCheck "none")}}
-          {{#if isSuccess}}
-          <li><strong>Success !</strong></li>
-          {{else}}
-          <li><strong>Failure !</strong></li>
-          {{/if}}
-        {{/if}}
-
       </ul>  
     </div>
 

@@ -17,6 +17,7 @@ import { Avd12Combat } from "./avd12-combat.js";
 import { Avd12Item } from "./avd12-item.js";
 import { Avd12Hotbar } from "./avd12-hotbar.js"
 
+
 /* -------------------------------------------- */
 /*  Foundry VTT Initialization                  */
 /* -------------------------------------------- */
@@ -63,6 +64,7 @@ Hooks.once("init", async function () {
 
   Avd12Utility.init()
 });
+
 
 /* -------------------------------------------- */
 function welcomeMessage() {

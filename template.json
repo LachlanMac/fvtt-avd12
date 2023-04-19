@@ -5,6 +5,7 @@
       "npc"
     ],
     "templates": {
+     
       "biodata": {
         "biodata": {
           "age": 0,
@@ -14,10 +15,14 @@
           "sex": "",
           "eyes": "",
           "description": "",
-          "gmnotes": ""
+          "gmnotes": "",
+          "languages":""
         }
       },
       "core": {
+        "meta":{
+          "static":false
+        },
         "subactors": [],
         "attributes": {
           "might": {
@@ -162,6 +167,9 @@
           }
         },
         "universal": {
+          "bonuses":{
+            "health":0
+          },
           "skills": {
             "search": {
               "label": "Search",
@@ -185,6 +193,39 @@
           "label": "Size",
           "value": ""
         },
+        "movement":{
+            "speed":6,
+            "walk":{
+              "label": "Walk",
+              "modifier": 6,
+              "value": 6,
+              "primary":true
+            },
+            "hover":{
+              "label": "Hover",
+              "modifier": 0,
+              "value": 0,
+              "primary":false
+            },
+            "fly":{
+              "label": "Fly",
+              "modifier": 0,
+              "value": 0,
+              "primary":false
+            },
+            "climb":{
+              "label": "Climb",
+              "modifier": 0,
+              "value": 0,
+              "primary":false
+            },
+            "burrow":{
+              "label": "Burrow",
+              "modifier": 0,
+              "value": 0,
+              "primary":false
+            }
+        },
         "health": {
           "value": 0,
           "tmpvalue": 0,
@@ -196,55 +237,55 @@
           "currentfocuspoints": 0
         },
         "lifeline": {
-          "value": 0,
-          "max": 0
+          "value": 12,
+          "max": 12
         },
         "mitigation": {
           "physical": {
-            "label": "Physical Damage",
+            "label": "Physical",
             "abbrev": "physical",
             "value": 0
           },
           "fire": {
-            "label": "Fire Damage",
+            "label": "Fire",
             "abbrev": "fire",
             "iselemental": true,
             "value": 0
           },
           "lightning": {
-            "label": "Lightning Damage",
+            "label": "Lightning",
             "abbrev": "lightning",
             "iselemental": true,
             "value": 0
           },
           "cold": {
-            "label": "Cold Damage",
+            "label": "Cold",
             "abbrev": "cold",
             "iselemental": true,
             "value": 0
           },
           "psychic": {
-            "label": "Psychic Damage",
+            "label": "Psychic",
             "abbrev": "psychic",
             "value": 0
           },
           "dark": {
-            "label": "Dark Damage",
+            "label": "Dark",
             "abbrev": "dark",
             "value": 0
           },
           "divine": {
-            "label": "Divine Damage",
+            "label": "Divine",
             "abbrev": "divine",
             "value": 0
           },
           "arcane": {
-            "label": "Aracane Damage",
+            "label": "Aracane",
             "abbrev": "arcane",
             "value": 0
           },
           "poison": {
-            "label": "Poison Damage",
+            "label": "Poison",
             "abbrev": "poison",
             "value": 0
           },
@@ -255,68 +296,93 @@
           }
         },
         "bonus": {
+          "traits":{
+            "armsman":0
+          },
           "ranged": {
             "attack": 0,
             "damage": 0,
             "crits": 0,
-            "brutals": 0
-          },
-          "crush": {
-            "attack": 0,
-            "damage": 0,
-            "crits": 0,
-            "brutals": 0
+            "brutals": 0,
+            "upgraded":0
           },
           "slash": {
             "attack": 0,
             "damage": 0,
             "crits": 0,
-            "brutals": 0
+            "brutals": 0,
+            "upgraded":0
           },
           "blunt": {
             "attack": 0,
             "damage": 0,
             "crits": 0,
-            "brutals": 0
+            "brutals": 0,
+            "upgraded":0
           },
           "pierce": {
             "attack": 0,
             "damage": 0,
             "crits": 0,
-            "brutals": 0
+            "brutals": 0,
+            "upgraded":0
           },
           "unarmed": {
             "attack": 0,
-            "damage": 0
+            "damage": 0,
+            "upgraded":0
           },
-          "dodge": {
-            "armored": 0,
-            "light": 0,
-            "unarmored": 0
-          },
-          "stealth": {
-            "armored": 0,
-            "light": 0,
-            "unarmored": 0
-          },
-          "block": {
-            "armored": 0,
-            "light": 0,
-            "unarmored": 0
-          },
-          "physical": {
-            "armored": 0,
-            "light": 0,
-            "unarmored": 0
-          },
-          "elemental": {
-            "armored": 0,
-            "light": 0,
-            "unarmored": 0
-          },
-          "armored": {
-            "remove_stealth": false,
-            "cast_speed": 0
+          "when":{
+            "shield":{
+              "elemental":0,
+              "physical":0,
+              "dodge":0,
+              "block":0,
+              "move":0,
+              "attack":0,
+              "remove_penalties":0,
+              "remove_move_penalty":0,
+              "remove_dodge_penalty":0,
+              "remove_stealth_penalty":0,
+              "cast_penalty":0
+            },
+            "light_armor":{
+              "elemental":0,
+              "physical":0,
+              "dodge":0,
+              "block":0,
+              "move":0,
+              "attack":0,
+              "remove_penalties":0,
+              "remove_move_penalty":0,
+              "remove_dodge_penalty":0,
+              "remove_stealth_penalty":0,
+              "cast_penalty":0
+            }, "unarmored":{
+              "elemental":0,
+              "physical":0,
+              "dodge":0,
+              "block":0,
+              "move":0,
+              "attack":0,
+              "remove_penalties":0,
+              "remove_move_penalty":0,
+              "remove_dodge_penalty":0,
+              "remove_stealth_penalty":0,
+              "cast_penalty":0
+            }, "armored":{
+              "elemental":0,
+              "physical":0,
+              "dodge":0,
+              "block":0,
+              "move":0,
+              "attack":0,
+              "remove_penalties":0,
+              "remove_move_penalty":0,
+              "remove_dodge_penalty":0,
+              "remove_stealth_penalty":0,
+              "cast_penalty":0
+            }
           },
           "craft": {
             "smithing": 0,
@@ -364,7 +430,8 @@
       "freeaction",
       "reaction",
       "stance",
-      "trait"
+      "trait",
+      "feature"
     ],
     "templates": {
       "commonitem": {

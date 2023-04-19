@@ -45,42 +45,15 @@
       {{/if}}
 
       <div class="flexrow">
-        <span class="roll-dialog-label">Bonus/Malus : </span>
-        <select id="bonusMalusRoll" name="bonusMalusRoll">
-          {{#select bonusMalusRoll}} 
-            <option value="-4">-4</option>
-            <option value="-3">-3</option>
-            <option value="-2">-2</option>
-            <option value="-1">-1</option>
-            <option value="0">0</option>
-            <option value="1">+1</option>
-            <option value="2">+2</option>
-            <option value="3">+3</option>
-            <option value="4">+4</option>
-          {{/select}}
-        </select>        
+        <span class="roll-dialog-label">Modifier : </span>
+        <input type="text" class=" flex-center" id="bonusMalusRoll" name="bonusMalusRoll" value="0" data-dtype="Number"/>  
+
       </div>
 
       {{#if (eq skillKey "initiative") }}
 
       {{else}}
-        {{#if (or spell weapon)}} 
-
-        {{else}}
-        <div class="flexrow">
-          <span class="roll-dialog-label">Target check : </span>
-          <select id="targetCheck" name="targetCheck">
-            {{#select targetCheck}} 
-              <option value="none">None</option>
-              <option value="5">5 (Trivial)</option>
-              <option value="7">7 (Easy)</option>
-              <option value="10">10 (Regular)</option>
-              <option value="14">14 (Difficult)</option>
-              <option value="20">20 (Heroic)</option>
-            {{/select}}
-          </select>        
-        </div>
-        {{/if}}
+       
       {{/if}}
 
   </div>

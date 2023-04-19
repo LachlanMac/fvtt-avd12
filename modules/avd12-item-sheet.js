@@ -85,7 +85,7 @@ export class Avd12ItemSheet extends ItemSheet {
     }
 
     this.options.editable = !(this.object.origin == "embeddedItem");
-    console.log("ITEM DATA", formData, this);
+  
     return formData;
   }
 
@@ -191,7 +191,10 @@ export class Avd12ItemSheet extends ItemSheet {
     }
     levels[levelIndex].choices[choiceIndex].selected = ev.currentTarget.checked
     //console.log("Added", obj, levels, this.object.actor)
+
+    //if there is an actor associated wit this?
     if ( this.object.actor ) {
+
       let obj = await this.object.actor.updateEmbeddedDocuments('Item', [{ _id: this.object.id, 'system.levels': levels }]);
       if ( ev.currentTarget.checked ) {
         console.log("Added", obj, levels)
@@ -235,6 +238,7 @@ export class Avd12ItemSheet extends ItemSheet {
       this.viewSubitem(ev);
     });
 
+    
     html.find('.add-module-level').click(ev => {
       let levels = duplicate(this.object.system.levels)
       if ( (levels.length+1) % 2 == 0) {
@@ -244,7 +248,18 @@ export class Avd12ItemSheet extends ItemSheet {
       }
       this.object.update({ 'system.levels': levels })
     })
-
+    
+   /*
+    html.find('.add-module-level').click(ev => {
+      let levels = duplicate(this.object.system.levels)
+      if ( (levels.length+1) % 2 == 0) {
+        levels.push({ choices: [ {selected: false, features: [] }, {selected: false, features: [] } ] })
+      }else {
+        levels.push({ choices: [ {selected: false, features: [] } ] })
+      }
+      this.object.update({ 'system.levels': levels })
+    })
+*/
     html.find('.module-feature-delete').click(ev => {
       let levels = duplicate(this.object.system.levels)
       let levelIndex = Number($(ev.currentTarget).parents(".item").data("level-index"))

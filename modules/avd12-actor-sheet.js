@@ -10,12 +10,11 @@ export class Avd12ActorSheet extends ActorSheet {
 
   /** @override */
   static get defaultOptions() {
-
     return mergeObject(super.defaultOptions, {
       classes: ["fvtt-avd12", "sheet", "actor"],
       template: "systems/fvtt-avd12/templates/actors/actor-sheet.hbs",
       width: 960,
-      height: 720,
+      height: 740,
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "skills" }],
       dragDrop: [{ dragSelector: ".item-list .item", dropSelector: null }],
       editScore: true
@@ -24,10 +23,10 @@ export class Avd12ActorSheet extends ActorSheet {
 
   /* -------------------------------------------- */
   async getData() {
-
     let formData = {
       title: this.title,
       id: this.actor.id,
+      bonuses: this.actor.system.bonus,
       type: this.actor.type,
       img: this.actor.img,
       name: this.actor.name,
@@ -37,6 +36,9 @@ export class Avd12ActorSheet extends ActorSheet {
       limited: this.object.limited,
       modules: this.actor.getModules(),
       traits: this.actor.getTraits(),
+      actions: this.actor.getActions(),
+      reactions: this.actor.getReactions(),
+      freeactions: this.actor.getFreeActions(),
       weapons: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getWeapons()) ),
       armors: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getArmors())),
       shields: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getShields())),
@@ -56,8 +58,6 @@ export class Avd12ActorSheet extends ActorSheet {
       isGM: game.user.isGM
     }
     this.formData = formData;
-
-    console.log("PC : ", formData, this.object);
     return formData;
   }
 
@@ -90,7 +90,7 @@ export class Avd12ActorSheet extends ActorSheet {
       let dataType = $(ev.currentTarget).data("type")
       this.actor.createEmbeddedDocuments('Item', [{ name: "NewItem", type: dataType }], { renderSheet: true })
     })
-        
+    
     html.find('.subactor-edit').click(ev => {
       const li = $(ev.currentTarget).parents(".item");
       let actorId = li.data("actor-id");
@@ -120,12 +120,18 @@ export class Avd12ActorSheet extends ActorSheet {
       const li = $(event.currentTarget).parents(".item")
       this.actor.incDecAmmo( li.data("item-id"), +1 )
     } );
-            
+      
+    html.find('#take-damage-btn').click((event) => {
+      this.actor.takeDamage();
+    });
+
+
     html.find('.roll-skill').click((event) => {
       let attrKey = $(event.currentTarget).data("attr-key")
       let skillKey = $(event.currentTarget).data("skill-key")
       this.actor.rollSkill(attrKey, skillKey)
-    });    
+    });   
+
     html.find('.roll-spell').click((event) => {
       const li = $(event.currentTarget).parents(".item");
       this.actor.rollSpell( li.data("item-id") )
@@ -136,6 +142,7 @@ export class Avd12ActorSheet extends ActorSheet {
     });    
     html.find('.roll-universal').click((event) => {
       let skillKey = $(event.currentTarget).data("skill-key")
+    
       this.actor.rollUniversal(skillKey)
     });    
     
@@ -144,6 +151,8 @@ export class Avd12ActorSheet extends ActorSheet {
       const weponId = li.data("item-id")
       this.actor.rollWeapon(weponId)
     });
+
+
     html.find('.roll-weapon-damage').click((event) => {
       const li = $(event.currentTarget).parents(".item");
       const dmg = $(event.currentTarget).data("damage")
@@ -151,6 +160,19 @@ export class Avd12ActorSheet extends ActorSheet {
       this.actor.rollWeaponDamage(weaponId, dmg)
     });
     
+    html.find('.roll-secondary-weapon-damage').click((event) => {
+      const li = $(event.currentTarget).parents(".item");
+      const dmg = $(event.currentTarget).data("damage")
+      const weaponId = li.data("item-id")
+      this.actor.rollSecondaryWeaponDamage(weaponId, dmg)
+    });
+
+    html.find('.roll-tertiary-weapon-damage').click((event) => {
+      const li = $(event.currentTarget).parents(".item");
+      const dmg = $(event.currentTarget).data("damage")
+      const weaponId = li.data("item-id")
+      this.actor.rollTertiaryWeaponDamage(weaponId, dmg)
+    });
     
     html.find('.lock-unlock-sheet').click((event) => {
       this.options.editScore = !this.options.editScore;

@@ -23,6 +23,8 @@
     --actor-label-font-weight: 700;
     --actor-label-color: #464331c4;
 
+    --color-underline-header:rgb(226, 209, 113) !important;
+
   /* =================== 2. DEBUGGING HIGHLIGHTERS ============ */ 
     --debug-background-color-red: #ff000054;
     --debug-background-color-blue: #1d00ff54;
@@ -40,6 +42,20 @@
   font-size: 16px;
   letter-spacing: 1px;
 }
+
+form button {
+  background-color: #1c2058;
+  color:white;
+}
+
+.window-app .window-content   {
+  color:rgb(255, 255, 255) !important;
+}
+
+form .notes, form .hint{
+  color:rgb(201, 201, 201);
+}
+
 
 /* Fonts */
 .sheet header.sheet-header h1 input, .window-app .window-header, #actors .directory-list, #navigation #scene-list .scene.nav-item {
@@ -67,6 +83,8 @@
 .tabs .item.active, .blessures-list li ul li:first-child:hover, a:hover {
   text-shadow: 1px 0px 0px #ff6600;
 }
+
+
 
 .rollable:hover, .rollable:focus {
   color: #000;
@@ -268,17 +286,29 @@ table {border: 1px solid #7a7971;}
   flex: 1;
 }
 
-.fvtt-avd12 .sheet-header h1.charname {
-  height: 50px;
+.fvtt-avd12 .sheet-header .charname {
+  height: 30px;
   padding: 0px;
   margin: 5px 0;
   border-bottom: 0;
+  font-weight: bolder;
+  font-size: 16px;
+  width:200px;
+  background:rgb(212, 212, 212) !important;  
+  color: black !important;
+  border-radius: 20% !important;
+  border: #1c2058 solid 3px !important;
 }
 
-.fvtt-avd12 .sheet-header h1.charname input {
+
+
+
+.fvtt-avd12 .sheet-header .charname input {
   width: 100%;
   height: 100%;
   margin: 0;
+  font-weight: bolder;
+  font-size: 16px;
 }
 
 .fvtt-avd12 .sheet-tabs {
@@ -391,10 +421,7 @@ table {border: 1px solid #7a7971;}
   background: #494e6b;
 }
 
-input[type="text"],  select[type="text"] {
-  background:white;
-  color: #494e6b;
-}
+
 
 select {
   background:white;
@@ -463,6 +490,10 @@ section.sheet-body{padding: 0.25rem 0.5rem;}
   border-bottom: 0 none;
   background-color:#252525;
   color:beige;
+}
+
+.notes{
+  color:white;
 }
 
 /*  background: rgb(245,245,240) url("../images/ui/fond4.webp") repeat left top;*/
@@ -808,13 +839,21 @@ ul, li {
   left: 0px;
   text-align: center;
 }
+input[type="checkbox"] {
+  width: 45px;                         /* Set width */
+  height: 45px;                        /* Set height */
+  clip-path: circle(46% at 50% 50%);   /* Set the clip path of circle*/
+}
+
 
 .skill-label {
   font-size: 0.7rem;
 }
+
 .skill-good-checkbox {  
-  max-height: 10px;
-  max-width: 10px;
+  max-height: 20px;
+  max-width: 20px;
+  border-radius:5px;
 }
 
 .flex-actions-bar  {
@@ -1353,4 +1392,102 @@ ul, li {
 .flex-center {
   align-items: center;
   align-content: space-between;
+}
+
+
+.large-skill{
+  font-size: 16px;
+  padding:6px;
+}
+
+
+
+.ui-dice:hover{
+  color: rgb(226, 209, 113);
+  transform: rotate(720deg) scale(1.2);
+  filter: hue-rotate(180deg);
+  transition: all 1.4s ease-in-out;
+}
+
+
+.ui-dice{
+  border:none !important;
+  transition: transform 1.4s ease-in-out;
+}
+
+.skill-title{
+  font-size:18px;
+}
+
+.skill-value{
+  font-size: 18px;
+  padding-left:20px;
+}
+
+input[type="text"] {
+  background:white;
+  color: #494e6b;
+}
+
+select[type="text"]{
+  background:white;
+  color: #494e6b;
+}
+
+.attribute-input{
+  height:20px !important;
+  background:rgb(212, 212, 212) !important;  
+  color: black !important;
+  font-weight: bolder !important;
+  border-radius: 30% !important;
+  border: #1c2058 solid 3px !important;
+}
+
+.health-input{
+  height:20px !important;
+  background:rgb(212, 212, 212) !important;  
+  color: black !important;
+  font-weight: bolder !important;
+  border-radius: 30% !important;
+  border: #1c2058 solid 3px !important;
+}
+
+
+.movement-input{
+  background:rgb(212, 212, 212) !important;  
+  color: black !important;
+  font-weight: bolder !important;
+  border-radius: 30% !important;
+  border: #1c2058 solid 3px !important;
+}
+
+.level-input{
+  background:rgb(212, 212, 212) !important;  
+  color: black !important;
+  font-weight: bolder !important;
+  border-radius: 40% !important;
+  width: 60px !important;
+  height: 60px !important;
+  border: #1c2058 solid 3px !important;
+}
+
+#movespeed-title{
+  padding-bottom: 0px !important;
+}
+
+.odd-row{
+  background-color: #3b3f57;
+}
+
+#take-damage-btn{
+  width:100%;
+  text-align: center;
+}
+
+
+.item-label-title{
+  font-weight: bolder;
+  font-size: 1.2em;
+  align-items: center;
+  text-align: center;
 }

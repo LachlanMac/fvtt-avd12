@@ -11,11 +11,13 @@ const __focusRegenBond = { "bondnone": 6, "bondeasy": 8, "bondcommon": 12, "bond
 const __bonusSpellDamageBond = { "bondnone": 0, "bondeasy": 1, "bondcommon": 1, "bonduncommon": 1, "bondrare": 2, "bondlegendary": 2, "bondmythic": 3, "bonddivine": 4 }
 const __bonusSpellAttackBond = { "bondnone": 0, "bondeasy": 0, "bondcommon": 1, "bonduncommon": 1, "bondrare": 2, "bondlegendary": 2, "bondmythic": 3, "bonddivine": 4 }
 const __spellCost = { "beginner": 1, "novice": 2, "expert": 4, "master": 6, "grandmaster": 8 }
-const __armorPenalties = {"light": { block: -2, dodge: -1}, "medium": { dodge: -3, block: -2, castingtime: 1, stealth: -2, speed: -1, 
-    "heavy": { dodge: -4, block: -3, stealth: -3, castingtime: 2, speed: -3 }, "ultraheavy": { dodge: -5, block: -4, stealth: -5, castingtime: 2, speed: -3 }, 
-    "lightshield": {dodge: -1, block: +1}, "heavyshield": {dodge: -2, block: 2, speed: -1, stealth: -1} }
+const __armorPenalties = {"light": { block: -2, dodge: -1}, 
+    "medium": { dodge: -3, block: -2, castingtime: 1, stealth: -2, speed: -1}, 
+    "heavy": { dodge: -4, block: -3, stealth: -3, castingtime: 2, speed: -3 },
+     "ultraheavy": { dodge: -5, block: -4, stealth: -5, castingtime: 2, speed: -3 }, 
+    "lightshield": {dodge: -1, block: +1}, 
+    "heavyshield": {dodge: -2, block: 2, speed: -1, stealth: -1} }
 
-}
 
 /* -------------------------------------------- */
 export class Avd12Utility {
@@ -27,6 +29,7 @@ export class Avd12Utility {
     /*Hooks.on("dropCanvasData", (canvas, data) => {
       Avd12Utility.dropItemOnToken(canvas, data)
     });*/
+
 
     this.rollDataStore = {}
     this.defenderStore = {}
@@ -114,6 +117,12 @@ export class Avd12Utility {
 
     const rollTables = await Avd12Utility.loadCompendium("fvtt-avd12.rolltables")
     this.rollTables = rollTables.map(i => i.toObject())
+
+  }
+
+  static setPluginData(){
+    console.log("LOL");
+    native.settings.speedAttribute = "asdasdfdsfdsafsdaf";
 
   }
 
@@ -446,6 +455,15 @@ export class Avd12Utility {
 
   /* -------------------------------------------- */
   static getArmorPenalty( item ) {
+    if(!item)
+      return{};
+
+    console.log("ITEMITEMITEM", item);
+    if(!item.system.equipped){
+      console.log("item is not equipped")
+      return {};
+    }
+
     if (item && (item.type == "shield" || item.type == "armor")) {
       return __armorPenalties[item.system.category]
     }
@@ -537,7 +555,7 @@ export class Avd12Utility {
     diceFormula += "+" + rollData.bonusMalusRoll
 
     if (rollData.skill && rollData.skill.good) {
-      diceFormula += "+1d4"
+      diceFormula = "3d4+" + rollData.skill.finalvalue;
     }
     if (rollData.weapon ) {
       diceFormula += "+" + rollData.weapon.attackBonus
@@ -567,9 +585,11 @@ export class Avd12Utility {
     let msg = await this.createChatWithRollMode(rollData.alias, {
       content: await renderTemplate(`systems/fvtt-avd12/templates/chat/chat-generic-result.hbs`, rollData)
     })
+
+
+    //WTF IS THIS?
     msg.setFlag("world", "rolldata", rollData)
     if (rollData.skillKey == "initiative") {
-      console.log("REGISTERED")
       actor.setFlag("world", "initiative", myRoll.total) 
     }
 
@@ -659,6 +679,31 @@ export class Avd12Utility {
     return ChatMessage.create(chatOptions);
   }
 
+  static async displayDefenseMessage(rollData) {
+    if (rollData.mode == "weapon" && rollData.defenderTokenId) {
+      let defender = game.canvas.tokens.get(rollData.defenderTokenId).actor
+      if (game.user.isGM || (game.user.character && game.user.character.id == defender.id)) {
+        rollData.defender = defender
+        rollData.defenderWeapons = defender.getEquippedWeapons()
+        rollData.isRangedAttack = rollData.weapon?.system.isranged
+        this.createChatWithRollMode(defender.name, {
+          name: defender.name,
+          alias: defender.name,
+          //user: defender.id,
+          content: await renderTemplate(`systems/fvtt-avd12/templates/chat-request-defense.html`, rollData),
+        })
+      }
+    }
+  }
+
+  static async createDamageChatMessage(damageData) {
+    return ChatMessage.create({
+      name : damageData.actor.name, 
+      alias : damageData.actor.name, 
+      content : await renderTemplate(`systems/fvtt-avd12/templates/chat/take-damage-result.hbs`, damageData)
+    });
+  }
+
   /* -------------------------------------------- */
   static getBasicRollData() {
     let rollData = {
@@ -683,6 +728,7 @@ export class Avd12Utility {
   static createChatWithRollMode(name, chatOptions) {
     return this.createChatMessage(name, game.settings.get("core", "rollMode"), chatOptions)
   }
+
 
   /* -------------------------------------------- */
   static async confirmDelete(actorSheet, li) {

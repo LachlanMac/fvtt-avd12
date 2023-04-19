@@ -3,6 +3,9 @@
   "esmodules": [
     "modules/avd12-main.js"
   ],
+  "scripts":[
+    "js/lodash.js"
+  ],
   "gridDistance": 1,
   "gridUnits": "u",
   "languages": [
