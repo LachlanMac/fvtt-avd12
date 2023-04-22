@@ -84,21 +84,279 @@ export class Avd12Actor extends Actor {
    // msg.setFlag("world", "rolldata", damageData)
   }
 
+  ZREALM_CRAFTS = ["Ammocraft", "Alchemy", "Smithing", "Cooking", "Scribing", "Runecarving", "Engineering"];
+  ZREALM_SKILLS = [
+    "Academics",
+    "Acrobatics",
+    "Animals",
+    "Arcanum",
+    "Athletics",
+    "Concentration",
+    "Endurance",
+    "Initiative",
+    "Insight",
+    "Medicine",
+    "Performance",
+    "Persuasion",
+    "Search",
+    "Stealth",
+    "Strength",
+    "Thievery",
+    "Wilderness"
+];
+
+  parseItemSkills(skills, craft){
+    
+    if(skills){
+      let skills_array = skills.split(",");
+      for(let i in skills_array){
+        skills_array[i] = Number(skills_array[i]);
+      }
+      this.system.attributes.knowledge.skills.academic.finalvalue += skills_array[0];
+      this.system.attributes.agility.skills.acrobatics.finalvalue += skills_array[1];
+      this.system.attributes.social.skills.animals.finalvalue += skills_array[2];
+      this.system.attributes.knowledge.skills.arcanum.finalvalue += skills_array[3];
+      this.system.attributes.might.skills.athletics.finalvalue += skills_array[4];
+      this.system.attributes.willpower.skills.concentration.finalvalue += skills_array[5];
+      this.system.attributes.willpower.skills.endurance.finalvalue += skills_array[6];
+      this.system.universal.skills.initiative.finalvalue += skills_array[7];
+      this.system.attributes.social.skills.insight.finalvalue += skills_array[8];
+      this.system.attributes.knowledge.skills.medicine.finalvalue += skills_array[9];
+      this.system.attributes.social.skills.performance.finalvalue += skills_array[10];
+      this.system.attributes.social.skills.persuasion.finalvalue += skills_array[11];
+      this.system.universal.skills.search.finalvalue += skills_array[12];
+      this.system.attributes.agility.skills.stealth.finalvalue += skills_array[13];
+      this.system.attributes.might.skills.strength.finalvalue += skills_array[14];
+      this.system.attributes.knowledge.skills.thievery.finalvalue += skills_array[15];
+      this.system.attributes.knowledge.skills.wilderness.finalvalue += skills_array[16];
+  }
+
+  
+
+}
+  
+/*
+ getSkillsArray(editItem.ruleset_id).forEach(element => {
+                    $("#skill-" + count + "-text").text(element);
+                    $("#skill-"+count).val(editItem.skill_array.split(",")[count-1]);
+                    count++;
+                });
+
+                count = 1;
+                getCraftArray(editItem.ruleset_id).forEach(element => {
+                    $("#skill-" + (count + 17) + "-text").text(element);
+                    $("#skill-"+(count + 17)).val(editItem.craft_array.split(",")[count-1]);
+                    count++;
+                });
+*/
+
+  rebuildEquipment(){
+
+
+    let allEquippedItems = this.items.filter(item => item.system.equipped)
+
+    allEquippedItems.forEach(item => {
+      this.parseItemSkills(item.system.skills, item.system.craft_skills)
+
+    })
+
+
+    let equippedWeapons = this.items.filter(item => item.type == "weapon" && item.system.equipped)
+
+    equippedWeapons.forEach(weapon => {
+      switch(weapon.system.category){
+        case "light1h":
+          break;
+        case "light2h":
+          break;
+        case "heavy1h":
+          this.system.attributes.agility.skills.dodge.finalvalue -= 1;
+          break;
+        case "heavy2h":
+          this.system.attributes.agility.skills.dodge.finalvalue -= 2;
+          break;
+        case "lightranged":
+          break;
+        case "heavyranged":
+          this.system.attributes.agility.skills.dodge.finalvalue -= 2;
+          this.system.attributes.might.skills.block.finalvalue -= 2;
+          break;
+        case "uheavyranged":
+          this.system.attributes.agility.skills.dodge.finalvalue -= 3;
+          this.system.attributes.might.skills.block.finalvalue -= 3;
+          break;
+      }
+    })
+
+
+    let equippedArmor = this.items.find(item => item.type == "armor" && item.system.equipped)
+    if(equippedArmor){
+      switch(equippedArmor.system.category){
+        case "unarmored":
+          this.system.mitigation.physical.value += (0 + this.system.bonus.when.unarmored.physical);
+          this.system.mitigation.fire.value += (0 + this.system.bonus.when.unarmored.elemental);
+          this.system.mitigation.cold.value += (0 + this.system.bonus.when.unarmored.elemental);
+          this.system.mitigation.lightning.value += (0 + this.system.bonus.when.unarmored.elemental);
+          this.system.attributes.might.skills.block.finalvalue += this.system.bonus.when.unarmored.block;
+          this.system.attributes.agility.skills.dodge.finalvalue += this.system.bonus.when.unarmored.dodge;
+          this.system.attributes.willpower.skills.resistance.finalvalue += this.system.bonus.when.unarmored.resist; 
+          this.system.movement.walk.value += this.system.bonus.when.unarmored.move;
+          this.system.bonus.weapon.attack += this.system.bonus.when.unarmored.attack;
+
+          break;
+        case "light":
+          //do light penalties
+          this.system.mitigation.physical.value += (1 + this.system.bonus.when.light_armor.physical);
+          this.system.mitigation.fire.value += (2 + this.system.bonus.when.light_armor.elemental);
+          this.system.mitigation.cold.value += (2 + this.system.bonus.when.light_armor.elemental);
+          this.system.mitigation.lightning.value += (2 + this.system.bonus.when.light_armor.elemental);
+          
+          this.system.attributes.might.skills.block.finalvalue += this.system.bonus.when.light_armor.block;
+          this.system.attributes.agility.skills.dodge.finalvalue += this.system.bonus.when.light_armor.dodge;
+          this.system.attributes.willpower.skills.resistance.finalvalue += this.system.bonus.when.light_armor.resist; 
+          this.system.movement.walk.value += this.system.bonus.when.light_armor.move;
+          this.system.bonus.weapon.attack += this.system.bonus.when.light_armor.attack;
+
+          //apply penalties
+          if(this.system.bonus.when.light_armor.remove_penalties == 0){
+            this.system.attributes.might.skills.block.finalvalue -= 1;
+            this.system.attributes.agility.skills.dodge.finalvalue -= 1;
+          }
+
+          break;
+        case "medium":
+          //do medijm
+          this.system.mitigation.physical.value += (2 + this.system.bonus.when.armored.physical);
+          this.system.mitigation.fire.value += (1 + this.system.bonus.when.armored.elemental);
+          this.system.mitigation.cold.value += (1 + this.system.bonus.when.armored.elemental);
+          this.system.mitigation.lightning.value += (1 + this.system.bonus.when.armored.elemental);
+
+          this.system.attributes.might.skills.block.finalvalue += this.system.bonus.when.armored.block;
+          this.system.attributes.agility.skills.dodge.finalvalue += this.system.bonus.when.armored.dodge;
+          this.system.attributes.willpower.skills.resistance.finalvalue += this.system.bonus.when.armored.resist; 
+          this.system.movement.walk.value += this.system.bonus.when.armored.move;
+          this.system.bonus.weapon.attack += this.system.bonus.when.armored.attack;
+
+            //apply penalties
+          if(this.system.bonus.when.armored.remove_penalties == 0){
+            this.system.attributes.might.skills.block.finalvalue -= 2;
+            this.system.attributes.agility.skills.dodge.finalvalue -= 3;
+            this.system.attributes.agility.skills.acrobatics.finalvalue -= 1;
+            this.system.attributes.agility.skills.stealth.finalvalue -= 2;
+            this.system.movement.walk.value -= 1;
+          }
+
+          this.system.focus.castpenalty = Math.max(0, (1 + this.system.bonus.when.armored.castpenalty)) 
+
+          if(this.system.bonus.when.armored.remove_penalties == 0 && this.system.bonus.when.armored.remove_stealth_penalty == 1){
+            this.system.attributes.agility.skills.stealth.finalvalue += 2;
+          }
+
+          break;
+        case "heavy":
+
+          this.system.mitigation.physical.value += (4 + this.system.bonus.when.armored.physical);
+          this.system.mitigation.fire.value += (0 + this.system.bonus.when.armored.elemental);
+          this.system.mitigation.cold.value += (0 + this.system.bonus.when.armored.elemental);
+          this.system.mitigation.lightning.value += (0 + this.system.bonus.when.armored.elemental);
+
+          this.system.attributes.might.skills.block.finalvalue += this.system.bonus.when.armored.block;
+          this.system.attributes.agility.skills.dodge.finalvalue += this.system.bonus.when.armored.dodge;
+          this.system.attributes.willpower.skills.resistance.finalvalue += this.system.bonus.when.armored.resist; 
+          this.system.movement.walk.value += this.system.bonus.when.armored.move;
+          this.system.bonus.weapon.attack += this.system.bonus.when.armored.attack;
+
+          this.system.focus.castpenalty = Math.max(0, (2 + this.system.bonus.when.armored.castpenalty)) 
+            //apply penalties
+          if(this.system.bonus.when.armored.remove_penalties == 0){
+            this.system.attributes.might.skills.block.finalvalue -= 3;
+            this.system.attributes.agility.skills.dodge.finalvalue -= 4;
+            this.system.attributes.agility.skills.acrobatics.finalvalue -= 3;
+            this.system.attributes.agility.skills.stealth.finalvalue -= 3;
+            this.system.movement.walk.value -= 2;
+          } 
+
+          console.log(this.system.bonus.when.armored.remove_penalties, this.system.bonus.when.armored.remove_penalties == 0,this.system.bonus.when.armored.remove_stealth_penalty, this.system.bonus.when.armored.remove_stealth_penalty == 0 )
+
+          if(this.system.bonus.when.armored.remove_penalties == 0 && this.system.bonus.when.armored.remove_stealth_penalty == 1){
+            this.system.attributes.agility.skills.stealth.finalvalue += 3;
+          }
+
+          break;
+        case "ultraheavy":
+          this.system.mitigation.physical.value += (6 + this.system.bonus.when.armored.physical);
+          this.system.mitigation.fire.value += (0 + this.system.bonus.when.armored.elemental);
+          this.system.mitigation.cold.value += (0 + this.system.bonus.when.armored.elemental);
+          this.system.mitigation.lightning.value += (0 + this.system.bonus.when.armored.elemental);
+
+          this.system.attributes.might.skills.block.finalvalue += this.system.bonus.when.armored.block;
+          this.system.attributes.agility.skills.dodge.finalvalue += this.system.bonus.when.armored.dodge;
+          this.system.attributes.willpower.skills.resistance.finalvalue += this.system.bonus.when.armored.resist; 
+          
+          this.system.movement.walk.value += this.system.bonus.when.armored.move;
+          this.system.bonus.weapon.attack += this.system.bonus.when.armored.attack;
+
+          this.system.focus.castpenalty = Math.max(0, (3 + this.system.bonus.when.armored.castpenalty)) 
+
+            //apply penalties
+          if(this.system.bonus.when.armored.remove_penalties == 0){
+            this.system.attributes.might.skills.block.finalvalue -= 4;
+            this.system.attributes.agility.skills.dodge.finalvalue -= 5;
+            this.system.attributes.agility.skills.acrobatics.finalvalue -= 5;
+            this.system.attributes.agility.skills.stealth.finalvalue -= 5;
+            this.system.movement.walk.value -= 3;
+          }
+
+          if(this.system.bonus.when.armored.remove_penalties == 0 && this.system.bonus.when.armored.remove_stealth_penalty == 1){
+            this.system.attributes.agility.skills.stealth.finalvalue += 5;
+          }
+
+          break;
+      }
+  }else{ //unarmored
+
+    console.log("UNARMORED!!", this.system.bonus.when);
+    this.system.mitigation.physical.value += (0 + this.system.bonus.when.unarmored.physical);
+    this.system.mitigation.fire.value += (0 + this.system.bonus.when.unarmored.elemental);
+    this.system.mitigation.cold.value += (0 + this.system.bonus.when.unarmored.elemental);
+    this.system.mitigation.lightning.value += (0 + this.system.bonus.when.unarmored.elemental);
+    this.system.attributes.might.skills.block.finalvalue += this.system.bonus.when.unarmored.block;
+    this.system.attributes.agility.skills.dodge.finalvalue += this.system.bonus.when.unarmored.dodge;
+    this.system.attributes.willpower.skills.resistance.finalvalue += this.system.bonus.when.unarmored.resist; 
+    this.system.movement.walk.value += this.system.bonus.when.unarmored.move;
+    this.system.bonus.weapon.attack += this.system.bonus.when.unarmored.attack;
+
+  }
+
+  let equippedShield = this.items.find(item => item.type == "shield" && item.system.equipped)
+    if(equippedShield){
+      switch(equippedShield.system.category){
+        case "lightshield":
+          this.system.attributes.might.skills.block.finalvalue += (1 + this.system.bonus.when.shield.block);
+          if(this.system.bonus.when.shield.remove_penalties == 0){
+
+          }
+          this.tmpReactions.push(Avd12Utility.getLightShieldReaction());
+          break;
+        case "heavyshield":
+          this.system.attributes.might.skills.block.finalvalue += (1 + this.system.bonus.when.shield.block);
+          if(this.system.bonus.when.shield.remove_penalties == 0){
+            this.system.attributes.agility.skills.dodge.finalvalue -= 2;
+            this.system.attributes.agility.skills.stealth.finalvalue -= 1;
+            this.system.movement.walk.value -= 1;
+          }
+          this.tmpReactions.push(Avd12Utility.getHeavyShieldReaction());
+          break;
+
+      }
+    } 
+  }
+
   /* -------------------------------------------- */
   rebuildSkills() {
-    if(this.system.meta.static){
-      console.log("STATIC!");
-      return;
-    }else{
-    }
-
-    
-    let armorPenalties = Avd12Utility.getArmorPenalty(this.items.find(item => item.type == "armor"))
-    let shieldPenalties = Avd12Utility.getArmorPenalty(this.items.find(item => item.type == "shield"))
-
-    //health formula
     this.system.health.max = this.system.level.value * 5 + 10;
-
+    //we may need to allow the player to change this?
+    this.system.movement.walk.value = 6;
     for (let attrKey in this.system.attributes) {
       let attr = this.system.attributes[attrKey]
       for (let skillKey in attr.skills) {
@@ -109,14 +367,7 @@ export class Avd12Actor extends Actor {
         for (let trait of availableTraits) {
           skill.modifier += Number(trait.system.bonusvalue)
         }
-      
-        if (armorPenalties[skillKey]) {
-          skill.modifier += Number(armorPenalties[skillKey])
-        }
-        // Apply shield penalties
-        if (shieldPenalties[skillKey]) {
-          skill.modifier += Number(shieldPenalties[skillKey])
-        }
+
         // Process additionnal bonuses
         for (let item of this.items) {
           if (item.system.bonus && item.system.bonus[skillKey]) {
@@ -133,12 +384,14 @@ export class Avd12Actor extends Actor {
     for (let mitiKey in this.system.mitigation) {
       let mitigation = this.system.mitigation[mitiKey]
       for (let item of this.items) {
-        if (item.system.mitigation && item.system.mitigation[mitiKey]) {
+        if (item.system.mitigation && item.system.mitigation[mitiKey] && item.system.equipped) {
           mitigation.value += Number(item.system.mitigation[mitiKey].value)
         }
       }
     }
   }
+
+
 
   rebuildBonuses(){
     
@@ -146,16 +399,37 @@ export class Avd12Actor extends Actor {
     this.system.bonus.blunt.damage += this.system.bonus.weapon.damage;
     this.system.bonus.slash.damage += this.system.bonus.weapon.damage;
     this.system.bonus.pierce.damage += this.system.bonus.weapon.damage;
-
+    this.system.bonus.ranged.damage += this.system.bonus.weapon.damage;
     this.system.bonus.blunt.attack += this.system.bonus.weapon.attack;
     this.system.bonus.slash.attack += this.system.bonus.weapon.attack;
     this.system.bonus.pierce.attack += this.system.bonus.weapon.attack;
+    this.system.bonus.ranged.attack += this.system.bonus.weapon.attack;
+    this.system.health.max += this.system.health.bonus;
 
+
+  }
+
+  rebuildSize(){
+    switch(this.system.size.value){
+      case 1://small
+        this.system.attributes.agility.skills.dodge.finalvalue += 1;
+        this.system.attributes.agility.skills.stealth.finalvalue += 1;
+        this.system.movement.walk.value -= 1;
+        break;
+      case 2://medium
+        break;
+      case 3://large
+        this.system.attributes.agility.skills.dodge.finalvalue -= 1;
+        this.system.attributes.agility.skills.stealth.finalvalue -= 1;
+        this.system.attributes.agility.skills.acrobatics.finalvalue -= 1;
+        this.system.attributes.might.skills.strength.finalvalue += 1;
+        this.system.attributes.might.skills.block.finalvalue += 1;
+        break;
+    }
   }
 
   /* -------------------------------------------- */
   rebuildModules() {
-
     let totalModules = this.items.filter(item => item.type == 'module')
     totalModules.forEach(item => {
       let levels = item.system.levels;
@@ -170,15 +444,13 @@ export class Avd12Actor extends Actor {
                   switch(data.system.traittype){
                     case "skill":
                     case "bonus":
-                    case "mitigation":
-                      console.log(data.system.bonusdata)
+                    case "mitigation":  
                       _.set(this.system, data.system.bonusdata, _.get(this.system, data.system.bonusdata) + data.system.bonusvalue)
                       break;
                     case "feature":
-                      console.log("FEATURE!");
+                      //maybe decide what to do here?
                       break;
                     default:
-                      console.log("**********\n",data,"\n*************");
                       break;
                   }
                 break;
@@ -190,6 +462,9 @@ export class Avd12Actor extends Actor {
                   break;  
                 case "freeaction":
                   this.tmpFreeActions.push(data);
+                  break;
+                case "ballad":
+                  this.tmpBallads.push(data);
                   break;
                 case "feature":
                   this.tmpTraits.push(data);
@@ -204,7 +479,7 @@ export class Avd12Actor extends Actor {
       })
     })
 
-    console.log(this.system);
+    console.log("ACTOR:::", this.system);
 
 
 
@@ -231,19 +506,30 @@ export class Avd12Actor extends Actor {
     this.tmpFreeActions = [];
     this.tmpActions = [];
     this.tmpReactions = [];
+    this.tmpBallads = [];
 
     if (this.type == 'character' || game.user.isGM) {
       this.system.encCapacity = this.getEncumbranceCapacity()
       this.buildContainerTree()
       this.computeHitPoints()
-   
+      
+      this.clearData()
       this.rebuildSkills()
+      this.rebuildSize()
       this.rebuildModules()
       this.rebuildBonuses()
       this.rebuildMitigations()
+      this.rebuildEquipment()
      
     }
     super.prepareDerivedData();
+  }
+
+  clearData(){
+
+    
+
+
   }
 
   /* -------------------------------------------- */
@@ -276,6 +562,14 @@ export class Avd12Actor extends Actor {
     Avd12Utility.sortArrayObjectsByName(comp)
     return comp;
   }
+
+  parseEquippedGear(){
+    let comp = duplicate(this.items.filter(item => item.type == 'weapon' && item.system.equipped) || [])
+    comp.forEach(item => {
+      this.prepareWeapon(item)
+    })
+
+  }
   /* -------------------------------------------- */
   getWeapons() {
     let comp = duplicate(this.items.filter(item => item.type == 'weapon') || [])
@@ -285,6 +579,37 @@ export class Avd12Actor extends Actor {
     Avd12Utility.sortArrayObjectsByName(comp)
     return comp;
   }
+
+  getHeadwear() {
+    let comp = duplicate(this.items.filter(item => item.type == 'headgear') || [])
+    Avd12Utility.sortArrayObjectsByName(comp)
+    return comp;
+  }
+
+  getGloves() {
+    let comp = duplicate(this.items.filter(item => item.type == 'gloves') || [])
+    Avd12Utility.sortArrayObjectsByName(comp)
+    return comp;
+  }
+
+  getBoots() {
+    let comp = duplicate(this.items.filter(item => item.type == 'boots') || [])
+    Avd12Utility.sortArrayObjectsByName(comp)
+    return comp;
+  }
+
+  getCloaks() {
+    let comp = duplicate(this.items.filter(item => item.type == 'cloak') || [])
+    Avd12Utility.sortArrayObjectsByName(comp)
+    return comp;
+  }
+
+  getRings() {
+    let comp = duplicate(this.items.filter(item => item.type == 'ring') || [])
+    Avd12Utility.sortArrayObjectsByName(comp)
+    return comp;
+  }
+
   /* -------------------------------------------- */
   getCraftingSkills() {
     let comp = duplicate(this.items.filter(item => item.type == 'craftingskill') || [])
@@ -374,6 +699,28 @@ export class Avd12Actor extends Actor {
     let bonusDamage = this.system.bonus.weapon.damage + this.system.bonus[weapon.system.weapontype].damage
     let upgraded = this.system.bonus[weapon.system.weapontype].upgraded;
     let dice = "";
+  
+
+    switch(weapon.system.category){
+      case "ulightranged":
+        weapon.system.minrange -= this.system.bonus.ranged.min_range_bonus_ulight;
+        weapon.system.maxrange += this.system.bonus.ranged.max_range_bonus_ulight;
+        break;
+      case "lightranged":
+        weapon.system.minrange -= this.system.bonus.ranged.min_range_bonus_light;
+        weapon.system.maxrange += this.system.bonus.ranged.max_range_bonus_light;
+        break;
+      case "heavyranged":
+        weapon.system.minrange -= this.system.bonus.ranged.min_range_bonus_heavy;
+        weapon.system.maxrange += this.system.bonus.ranged.max_range_bonus_heavy;
+        break;
+    }
+
+    if(weapon.system.minrange < 0){
+      weapon.system.minrange = 0;
+    }
+    //weapon.range = "";
+
 
     switch(weapon.system.category){
       case "unarmed":
@@ -392,7 +739,7 @@ export class Avd12Actor extends Actor {
           break;
         case "ulightranged":
           upgraded == 1 ? dice = "1d10" : dice = "1d6"
-          breakl
+          break;
         case "lightranged":
           upgraded == 1 ? dice = "2d6" : dice = "1d8"
           break;
@@ -400,16 +747,9 @@ export class Avd12Actor extends Actor {
           upgraded == 1 ? dice = "3d6" : dice = "2d6"
           break;
     }
-
     this.addPrimaryDamage(weapon.system.damages.primary, bonusDamage, dice)
     this.addOtherDamage(weapon.system.damages.secondary, bonusDamage)
     this.addOtherDamage(weapon.system.damages.tertiary, bonusDamage)
-    /*
-    bonusDamage = this.system.bonus.weapon.damage + this.system.bonus[weapon.system.weapontype].crits
-    
-    bonusDamage = this.system.bonus.weapon.damage + this.system.bonus[weapon.system.weapontype].brutals
-    this.addOtherDamage(weapon.system.damages.tertiary + bonusDamage)
-    */
   }
   /* -------------------------------------------- */
   getItemById(id) {
@@ -428,11 +768,6 @@ export class Avd12Actor extends Actor {
   getTraits() {
     return this.tmpTraits;
 
-    /*
-    let comp = duplicate(this.items.filter(item => item.type == 'trait') || [])
-    console.log("TRAITS??!", comp);
-    return comp
-    */
   }
 
   getFreeActions(){
@@ -443,6 +778,9 @@ export class Avd12Actor extends Actor {
   }
   getReactions(){
     return this.tmpReactions;
+  }
+  getBallads(){
+    return this.tmpBallads;
   }
 
   /* -------------------------------------------- */
@@ -560,15 +898,6 @@ export class Avd12Actor extends Actor {
     this.encCurrent = enc
     this.containersTree = equipments.filter(item => item.system.containerid == "") // Returns the root of equipements without container
 
-  }
-
-  /* -------------------------------------------- */
-  async rollArmor(rollData) {
-    let armor = this.getEquippedArmor()
-    if (armor) {
-
-    }
-    return { armor: "none" }
   }
 
   /* -------------------------------------------- */

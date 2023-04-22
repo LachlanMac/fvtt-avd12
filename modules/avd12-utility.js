@@ -121,8 +121,7 @@ export class Avd12Utility {
   }
 
   static setPluginData(){
-    console.log("LOL");
-    native.settings.speedAttribute = "asdasdfdsfdsafsdaf";
+  
 
   }
 
@@ -404,7 +403,6 @@ export class Avd12Utility {
 
   /* -------------------------------------------- */
   static async onSocketMesssage(msg) {
-    console.log("SOCKET MESSAGE", msg.name)
     if (msg.name == "msg_update_roll") {
       this.updateRollData(msg.data)
     }
@@ -458,7 +456,6 @@ export class Avd12Utility {
     if(!item)
       return{};
 
-    console.log("ITEMITEMITEM", item);
     if(!item.system.equipped){
       console.log("item is not equipped")
       return {};
@@ -563,7 +560,7 @@ export class Avd12Utility {
     rollData.diceFormula = diceFormula
 
     // Performs roll
-    console.log("Roll formula", diceFormula)
+
     let myRoll = rollData.roll
     if (!myRoll) { // New rolls only of no rerolls
       myRoll = new Roll(diceFormula).roll({ async: false })
@@ -587,13 +584,11 @@ export class Avd12Utility {
     })
 
 
-    //WTF IS THIS?
     msg.setFlag("world", "rolldata", rollData)
     if (rollData.skillKey == "initiative") {
       actor.setFlag("world", "initiative", myRoll.total) 
     }
 
-    console.log("Rolldata result", rollData)
   }
 
   /* -------------------------------------------- */
@@ -609,6 +604,79 @@ export class Avd12Utility {
       }
       return 0;
     })
+  }
+
+  static getHeavyShieldReaction(){
+
+    let json = `{
+      "folder": "JUbRIYO0CIXLz4NV",
+      "name": "Reaction : Shields Up! [Heavy]",
+      "type": "reaction",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+          "description": "In response to an Enemy making an Attack Roll against you, lower the Roll by 1d4 after the result of the Attack Roll is known. This also downgrades True Hits to Normal Hits.",
+          "traittype": "undefined"
+      },
+      "effects": [],
+      "sort": 0,
+      "ownership": {
+          "default": 0,
+          "PkSjA89Pm9zyORjP": 3
+      },
+      "flags": {},
+      "_stats": {
+          "systemId": "fvtt-avd12",
+          "systemVersion": "10.0.25",
+          "coreVersion": "10.291",
+          "createdTime": 1680974863058,
+          "modifiedTime": 1680974895862,
+          "lastModifiedBy": "PkSjA89Pm9zyORjP"
+      },
+      "_id": "3f035231e05a42fa"
+  }`
+
+    return JSON.parse(json);
+
+
+  }
+  
+
+
+
+
+
+  static getLightShieldReaction(){
+
+    let json = `{
+      "folder": "JUbRIYO0CIXLz4NV",
+      "name": "Reaction : Shields Up! [Light]",
+      "type": "reaction",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+          "description": "After being hit by a Projectile or Weapon Attack that does Physical Damage, reduce the Damage by a number equal to 1d4 plus your Block Modifier.",
+          "traittype": "undefined"
+      },
+      "effects": [],
+      "sort": 0,
+      "ownership": {
+          "default": 0,
+          "PkSjA89Pm9zyORjP": 3
+      },
+      "flags": {},
+      "_stats": {
+          "systemId": "fvtt-avd12",
+          "systemVersion": "10.0.25",
+          "coreVersion": "10.291",
+          "createdTime": 1680974863058,
+          "modifiedTime": 1680974895862,
+          "lastModifiedBy": "PkSjA89Pm9zyORjP"
+      },
+      "_id": "3f035231e05a42fa"
+  }`
+
+    return JSON.parse(json);
+
+
   }
 
   /* -------------------------------------------- */

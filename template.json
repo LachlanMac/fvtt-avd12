@@ -1,11 +1,7 @@
 {
   "Actor": {
-    "types": [
-      "character",
-      "npc"
-    ],
+    "types": ["character", "npc"],
     "templates": {
-     
       "biodata": {
         "biodata": {
           "age": 0,
@@ -16,13 +12,10 @@
           "eyes": "",
           "description": "",
           "gmnotes": "",
-          "languages":""
+          "languages": ""
         }
       },
       "core": {
-        "meta":{
-          "static":false
-        },
         "subactors": [],
         "attributes": {
           "might": {
@@ -59,19 +52,19 @@
             "mod": 0,
             "skills": {
               "acrobatics": {
-                "modifier": 0 ,
+                "modifier": 0,
                 "finalvalue": 0,
-                "good": false               
+                "good": false
               },
               "stealth": {
                 "modifier": 0,
                 "finalvalue": 0,
-                "good": false                
+                "good": false
               },
               "dodge": {
                 "modifier": 0,
                 "finalvalue": 0,
-                "good": false                
+                "good": false
               }
             }
           },
@@ -86,17 +79,17 @@
               "concentration": {
                 "modifier": 0,
                 "finalvalue": 0,
-                "good": false                
+                "good": false
               },
               "endurance": {
-                "modifier": 0 ,
+                "modifier": 0,
                 "finalvalue": 0,
-                "good": false               
+                "good": false
               },
               "resistance": {
                 "modifier": 0,
-                "finalvalue": 0,          
-                "good": false                
+                "finalvalue": 0,
+                "good": false
               }
             }
           },
@@ -111,27 +104,27 @@
               "wilderness": {
                 "modifier": 0,
                 "finalvalue": 0,
-                "good": false                
+                "good": false
               },
               "academic": {
                 "modifier": 0,
                 "finalvalue": 0,
-                "good": false                
+                "good": false
               },
               "arcanum": {
                 "modifier": 0,
                 "finalvalue": 0,
-                "good": false                
+                "good": false
               },
               "medicine": {
                 "modifier": 0,
                 "finalvalue": 0,
-                "good": false                
+                "good": false
               },
               "thievery": {
                 "modifier": 0,
                 "finalvalue": 0,
-                "good": false                
+                "good": false
               }
             }
           },
@@ -146,30 +139,27 @@
               "persuasion": {
                 "modifier": 0,
                 "finalvalue": 0,
-                "good": false                
+                "good": false
               },
               "insight": {
                 "modifier": 0,
                 "finalvalue": 0,
-                "good": false                
+                "good": false
               },
               "performance": {
                 "modifier": 0,
                 "finalvalue": 0,
-                "good": false                
+                "good": false
               },
               "animals": {
                 "modifier": 0,
                 "finalvalue": 0,
-                "good": false                
+                "good": false
               }
             }
           }
         },
         "universal": {
-          "bonuses":{
-            "health":0
-          },
           "skills": {
             "search": {
               "label": "Search",
@@ -187,54 +177,57 @@
         },
         "level": {
           "label": "Level",
-          "value": 0
+          "value": 1
         },
         "size": {
           "label": "Size",
           "value": ""
         },
-        "movement":{
-            "speed":6,
-            "walk":{
-              "label": "Walk",
-              "modifier": 6,
-              "value": 6,
-              "primary":true
-            },
-            "hover":{
-              "label": "Hover",
-              "modifier": 0,
-              "value": 0,
-              "primary":false
-            },
-            "fly":{
-              "label": "Fly",
-              "modifier": 0,
-              "value": 0,
-              "primary":false
-            },
-            "climb":{
-              "label": "Climb",
-              "modifier": 0,
-              "value": 0,
-              "primary":false
-            },
-            "burrow":{
-              "label": "Burrow",
-              "modifier": 0,
-              "value": 0,
-              "primary":false
-            }
+        "movement": {
+          "speed": 6,
+          "walk": {
+            "label": "Walk",
+            "modifier": 6,
+            "value": 6,
+            "primary": true
+          },
+          "hover": {
+            "label": "Hover",
+            "modifier": 0,
+            "value": 0,
+            "primary": false
+          },
+          "fly": {
+            "label": "Fly",
+            "modifier": 0,
+            "value": 0,
+            "primary": false
+          },
+          "climb": {
+            "label": "Climb",
+            "modifier": 0,
+            "value": 0,
+            "primary": false
+          },
+          "burrow": {
+            "label": "Burrow",
+            "modifier": 0,
+            "value": 0,
+            "primary": false
+          }
         },
         "health": {
           "value": 0,
           "tmpvalue": 0,
-          "max": 0
+          "max": 0,
+          "bonus":0
         },
         "focus": {
+          "burn_chance": 0,
           "focuspoints": 0,
           "focusregen": 0,
-          "currentfocuspoints": 0
+          "currentfocuspoints": 0,
+          "castpenalty":0
         },
         "lifeline": {
           "value": 12,
@@ -296,92 +289,125 @@
           }
         },
         "bonus": {
-          "traits":{
-            "armsman":0
+          "traits": {
+            "armsman": 0
+          },
+          "immunities": {
+            "poison": 0,
+            "disease": 0,
+            "afraid": 0,
+            "charmed": 0,
+            "exhaustion": 0,
+            "prone": 0,
+            "curses": 0
           },
           "ranged": {
             "attack": 0,
             "damage": 0,
             "crits": 0,
             "brutals": 0,
-            "upgraded":0
+            "upgraded": 0,
+            "max_range_bonus_ulight": 0,
+            "max_range_bonus_light": 0,
+            "max_range_bonus_heavy": 0,
+            "max_range_bonus_uheavy": 0,
+            "min_range_bonus_ulight": 0,
+            "min_range_bonus_light": 0,
+            "min_range_bonus_heavy": 0,
+            "min_range_bonus_uheavy": 0,
+            "max_range": 0,
+            "min_range": 0
           },
           "slash": {
             "attack": 0,
             "damage": 0,
             "crits": 0,
             "brutals": 0,
-            "upgraded":0
+            "upgraded": 0
           },
           "blunt": {
             "attack": 0,
             "damage": 0,
             "crits": 0,
             "brutals": 0,
-            "upgraded":0
+            "upgraded": 0
           },
           "pierce": {
             "attack": 0,
             "damage": 0,
             "crits": 0,
             "brutals": 0,
-            "upgraded":0
+            "upgraded": 0
           },
           "unarmed": {
             "attack": 0,
             "damage": 0,
-            "upgraded":0
+            "upgraded": 0
           },
-          "when":{
-            "shield":{
-              "elemental":0,
-              "physical":0,
-              "dodge":0,
-              "block":0,
-              "move":0,
-              "attack":0,
-              "remove_penalties":0,
-              "remove_move_penalty":0,
-              "remove_dodge_penalty":0,
-              "remove_stealth_penalty":0,
-              "cast_penalty":0
+          "stances": {
+            "dueling_stance": 0,
+            "juggernaught_stance": 0,
+            "armsman_stance": 0,
+            "marksman_stance": 0,
+            "flowing_strikes_stance": 0,
+            "sentinel_stance": 0
+          },
+          "when": {
+            "shield": {
+              "elemental": 0,
+              "physical": 0,
+              "dodge": 0,
+              "block": 0,
+              "resist": 0,
+              "move": 0,
+              "attack": 0,
+              "remove_penalties": 0,
+              "remove_move_penalty": 0,
+              "remove_dodge_penalty": 0,
+              "remove_stealth_penalty": 0,
+              "cast_penalty": 0
             },
-            "light_armor":{
-              "elemental":0,
-              "physical":0,
-              "dodge":0,
-              "block":0,
-              "move":0,
-              "attack":0,
-              "remove_penalties":0,
-              "remove_move_penalty":0,
-              "remove_dodge_penalty":0,
-              "remove_stealth_penalty":0,
-              "cast_penalty":0
-            }, "unarmored":{
-              "elemental":0,
-              "physical":0,
-              "dodge":0,
-              "block":0,
-              "move":0,
-              "attack":0,
-              "remove_penalties":0,
-              "remove_move_penalty":0,
-              "remove_dodge_penalty":0,
-              "remove_stealth_penalty":0,
-              "cast_penalty":0
-            }, "armored":{
-              "elemental":0,
-              "physical":0,
-              "dodge":0,
-              "block":0,
-              "move":0,
-              "attack":0,
-              "remove_penalties":0,
-              "remove_move_penalty":0,
-              "remove_dodge_penalty":0,
-              "remove_stealth_penalty":0,
-              "cast_penalty":0
+            "light_armor": {
+              "elemental": 0,
+              "physical": 0,
+              "dodge": 0,
+              "block": 0,
+              "resist": 0,
+              "move": 0,
+              "attack": 0,
+              "remove_penalties": 0,
+              "remove_move_penalty": 0,
+              "remove_dodge_penalty": 0,
+              "remove_stealth_penalty": 0,
+              "cast_penalty": 0
+            },
+            "unarmored": {
+              "elemental": 0,
+              "physical": 0,
+              "dodge": 0,
+              "block": 0,
+              "resist": 0,
+              "move": 0,
+              "attack": 0,
+              "remove_penalties": 0,
+              "remove_move_penalty": 0,
+              "remove_dodge_penalty": 0,
+              "remove_stealth_penalty": 0,
+              "cast_penalty": 0
+            },
+            "armored": {
+              "elemental": 0,
+              "physical": 0,
+              "dodge": 0,
+              "block": 0,
+              "resist": 0,
+              "move": 0,
+              "attack": 0,
+              "remove_penalties": 0,
+              "remove_move_penalty": 0,
+              "remove_dodge_penalty": 0,
+              "remove_stealth_penalty": 0,
+              "cast_penalty": 0
             }
           },
           "craft": {
@@ -409,11 +435,9 @@
       }
     },
     "character": {
-      "templates": [
-        "biodata",
-        "core"
-      ]
-    }
+      "templates": ["biodata", "core"]
+    },
+    "npc": { "templates": ["core"] }
   },
   "Item": {
     "types": [
@@ -421,6 +445,11 @@
       "armor",
       "shield",
       "equipment",
+      "headwear",
+      "gloves",
+      "boots",
+      "cloak",
+      "ring",
       "weapon",
       "module",
       "money",
@@ -431,10 +460,13 @@
       "reaction",
       "stance",
       "trait",
-      "feature"
+      "feature",
+      "ballad"
     ],
     "templates": {
       "commonitem": {
+        "skills":"",
+        "craft_skills":"",
         "focuspointsbonus": 0,
         "focusregenbonus": 0,
         "burnchancebonus": 0,
@@ -487,7 +519,7 @@
         "movespeed": 0
       }
     },
-    "craftingskill" : {
+    "craftingskill": {
       "level": 0,
       "description": ""
     },
@@ -514,6 +546,7 @@
     "spell": {
       "spelltype": "",
       "actions": "",
+      "action_type": "",
       "chargeeffect": "",
       "school": "",
       "damage": "",
@@ -521,34 +554,29 @@
       "damagesecondary": "",
       "damagesecondarytype": "",
       "range": 0,
+      "range_type": "",
       "components": "",
       "reaction": false,
       "sustained": false,
-      "level":"",
+      "level": "",
       "value": 0,
       "description": ""
     },
     "armor": {
-      "templates": [
-        "commonitem"
-      ],
+      "templates": ["commonitem"],
       "equipped": false,
       "category": "",
       "description": ""
     },
     "shield": {
       "category": "",
-      "templates": [
-        "commonitem"
-      ],
+      "templates": ["commonitem"],
       "equipped": false,
       "description": ""
     },
     "equipment": {
       "equiptype": "",
-      "templates": [
-        "commonitem"
-      ],
+      "templates": ["commonitem"],
       "quantity": 0,
       "equipped": false,
       "description": ""
@@ -563,9 +591,7 @@
     "weapon": {
       "weapontype": "",
       "category": "",
-      "templates": [
-        "commonitem"
-      ],
+      "templates": ["commonitem"],
       "attackbonus": 0,
       "minrange": 0,
       "maxrange": 0,

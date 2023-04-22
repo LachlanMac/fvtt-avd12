@@ -39,6 +39,15 @@ export class Avd12ActorSheet extends ActorSheet {
       actions: this.actor.getActions(),
       reactions: this.actor.getReactions(),
       freeactions: this.actor.getFreeActions(),
+      ballads: this.actor.getBallads(),
+
+      gloves: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getGloves()) ),
+      rings: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getRings()) ),
+      cloaks: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getCloaks()) ),
+      boots: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getBoots()) ),
+      headwear: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getHeadwear()) ),
+
+
       weapons: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getWeapons()) ),
       armors: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getArmors())),
       shields: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getShields())),

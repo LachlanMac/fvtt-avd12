@@ -25,7 +25,8 @@
             <label class="item-field-label-long">Shield type</label>
             <select class="item-field-label-long" type="text" name="system.category" value="{{system.category}}" data-dtype="String">
               {{#select system.category}}
-                {{> systems/fvtt-avd12/templates/items/partial-options-shield-types.hbs}}
+                 <option value="lightshield">Light Shield</option>
+                 <option value="heavyshield">Heavy Shield</option>
               {{/select}}
             </select> 
           </li>

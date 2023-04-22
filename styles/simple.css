@@ -407,9 +407,10 @@ table {border: 1px solid #7a7971;}
 
 .fvtt-avd12 .items-list .item-controls {
   -webkit-box-flex: 0;
-  -ms-flex: 0 0 86px;
-  flex: 0 0 86px;
+  -ms-flex: 0 0 100px;
+  flex: 0 0 100px;
   text-align: right;
+
 }
 
 
@@ -1346,6 +1347,7 @@ input[type="checkbox"] {
 }
 .item-control-end {
   align-self: flex-end;
+  padding:5px;
 }
 .alternate-list {
   margin-top: 4px;
@@ -1413,6 +1415,9 @@ input[type="checkbox"] {
 .ui-dice{
   border:none !important;
   transition: transform 1.4s ease-in-out;
+}
+.ui-dice-container{
+  display:block;
 }
 
 .skill-title{
@@ -1490,4 +1495,31 @@ select[type="text"]{
   font-size: 1.2em;
   align-items: center;
   text-align: center;
+}
+
+.item-text{
+  text-align: center;
+  align-items: center;
+  font-size: 1.3em;
+}
+
+.roll-text{
+  display: inline-flex;
+  justify-content: center;
+  align-content: center;
+}
+.roll-description{
+  font-size:1.1em;
+  padding:0px 5px 0px 5px;
+}
+
+.big-label{
+  padding-top:4px;
+  font-size:1em;
+  width: 400px;
+}
+
+.item-description {
+  padding-left:10px;
+  padding-right:10px;
 }
