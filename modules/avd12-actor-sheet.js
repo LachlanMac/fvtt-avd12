@@ -46,8 +46,7 @@ export class Avd12ActorSheet extends ActorSheet {
       cloaks: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getCloaks()) ),
       boots: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getBoots()) ),
       headwear: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getHeadwear()) ),
-
-
+  
       weapons: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getWeapons()) ),
       armors: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getArmors())),
       shields: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getShields())),
@@ -203,8 +202,16 @@ export class Avd12ActorSheet extends ActorSheet {
       let value = Number(ev.currentTarget.value);
       this.actor.update( { [`${fieldName}`]: value } );
     });    
+
+   
   }
   
+  async handleLightSource(item){
+
+    console.log("HANDLING LGIHT SOURCE!?");
+
+  }
+
   /* -------------------------------------------- */
   /** @override */
   setPosition(options = {}) {

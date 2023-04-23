@@ -24,6 +24,9 @@ export class Avd12Actor extends Actor {
    */
 
   static async create(data, options) {
+
+   
+
     // Case of compendium global import
     if (data instanceof Array) {
       return super.create(data, options);
@@ -38,6 +41,7 @@ export class Avd12Actor extends Actor {
     if (data.type == 'npc') {
     }
 
+   
     return super.create(data, options);
   }
 
@@ -46,8 +50,189 @@ export class Avd12Actor extends Actor {
   }
   /* -------------------------------------------- */
   async prepareData() {
+
+    
+
+
     super.prepareData()
+
+
+
+ 
+ 
   }
+
+
+    /* -------------------------------------------- */
+  prepareDerivedData() {
+
+    this.tmpTraits = [];
+    this.tmpFreeActions = [];
+    this.tmpActions = [];
+    this.tmpReactions = [];
+    this.tmpBallads = [];
+
+
+    if (this.type == 'character' || game.user.isGM) {
+      this.system.encCapacity = this.getEncumbranceCapacity()
+      this.buildContainerTree()
+      this.computeHitPoints()
+      
+      this.clearData()
+      this.rebuildSkills()
+      this.rebuildSize()
+      this.rebuildModules()
+      this.rebuildBonuses()
+      
+      this.rebuildMitigations()
+      this.rebuildEquipment()
+
+      this.parseActiveEffects()
+      this.rebuildBonuses()
+      
+      
+      //we want to create a token, and assign the same token data?  i dont even know dude. 
+     
+    }
+    super.prepareDerivedData();
+
+  }
+
+
+  
+  parseActiveEffects(){
+    //get lighting effects. ..
+    let lightsource = null;
+    if(this.parent){
+      lightsource = this.getBestLightSource();
+    }
+    let LightSourceOn = false;
+    let overrideLight = false;
+
+    let lightObj = {dim:0, bright:0,  animation:{type:"none", speed:5, intensity:5, reverse:false}, color:"#000000"}
+    this.temporaryEffects.forEach(effect => {
+      switch(effect.flags.core.statusId){
+        case "blind":
+          this.system.bonus.weapon.attack -= 2;
+          this.system.bonus.spell.attack -= 2;
+          this.system.attributes.agility.skills.dodge.finalvalue -= 2;
+          this.system.attributes.willpower.skills.resistance.finalvalue -= 2;
+          this.system.attributes.might.skills.block.finalvalue -= 2;
+          break;
+        case "invisible":
+          this.system.attributes.agility.skills.stealth.finalvalue += 3;
+          //+2 on melee spells
+          this.system.bonus.weapon.attack += 2;
+          break;
+        case "prone":
+          this.system.bonus.weapon.attack -= 1;
+          this.system.bonus.spell.attack -= 1;
+          this.system.attributes.agility.skills.dodge.finalvalue -= 1;
+          this.system.attributes.willpower.skills.resistance.finalvalue -= 1;
+          this.system.attributes.might.skills.block.finalvalue -= 1;
+          break;
+        case "frozen":
+          //blue?
+          this.system.movement.walk.value = 0;
+          this.system.mitigation.physical.value = 0;
+          this.system.mitigation.cold.value = 99;
+          lightObj.dim = 0.2
+          lightObj.bright = 0.1
+          lightObj.color = "#00bfff"
+          lightObj.animation.type = "none"
+          overrideLight = true;
+
+          break;
+        case "ignited":
+          this.system.movement.walk.value = 0;
+          this.system.mitigation.physical.value = 0;
+          this.system.mitigation.cold.value = 99;
+          lightObj.dim = 0.5
+          lightObj.bright = 0.3
+          lightObj.color = "#ff2000"
+          lightObj.animation.type = "torch"
+          overrideLight = true;
+          break;
+        case "bleeding":
+          break;
+        case "lightsource":
+          LightSourceOn = true;
+           break;
+        case "default":
+          break;
+      }
+    })
+
+    if(lightsource && LightSourceOn){
+      this.parent.update({"light.dim":lightsource.dim})
+      this.parent.update({"light.animation":lightsource.animation})
+      this.parent.update({"light.bright":lightsource.bright})
+      this.parent.update({"light.color":lightsource.color})
+    }else if(overrideLight){
+      this.parent.update({"light.dim":lightObj.dim})
+      this.parent.update({"light.animation":lightObj.animation})
+      this.parent.update({"light.bright":lightObj.bright})
+      this.parent.update({"light.color":lightObj.color})
+    }else if(this.parent){
+      this.parent.update({"light.dim":0})
+      this.parent.update({"light.bright":0})
+    }
+
+  }
+
+
+  getBestLightSource(){
+
+    let lightSources = this.items.filter(item => item.system.equipped && item.system.light.lightsource)
+    let bestLightSource = null;
+    lightSources.forEach(item => {
+      console.log("FOUND LIGHTSOURCE::", item);
+      if(bestLightSource){
+        if(item.system.light.dim > bestLightSource.system.light.dim)
+        bestLightSource = item;
+      } else {
+        bestLightSource = item;
+      }
+    })
+
+    console.log(bestLightSource);
+
+    if(bestLightSource)
+      return bestLightSource.system.light;
+    else
+      return null;
+    }
+
+    resetLightsource(lightsource){
+
+
+    
+    lightsource.alpha = 0.5
+    lightsource.angle = 360
+
+    lightsource.animation.intensity = 5
+    lightsource.animation.reverse = false
+    lightsource.animation.speed = 5
+    lightsource.animation.type = null
+    
+    lightsource.attenuation = 0.5
+    lightsource.bright = 0
+    //lightsource.color = null
+
+    lightsource.coloration = 1
+    lightsource.contrast = 0
+    lightsource.darkness.min = 0
+    lightsource.darkness.max = 1
+
+    lightsource.dim = 0
+    lightsource.luminosity = 0.5
+    lightsource.saturation = 0
+    lightsource.shadows = 0
+    
+    return lightsource
+
+  }
+
   /* -------------------------------------------- */
   computeHitPoints() {
     if (this.type == "character") {
@@ -134,32 +319,14 @@ export class Avd12Actor extends Actor {
   
 
 }
-  
-/*
- getSkillsArray(editItem.ruleset_id).forEach(element => {
-                    $("#skill-" + count + "-text").text(element);
-                    $("#skill-"+count).val(editItem.skill_array.split(",")[count-1]);
-                    count++;
-                });
-
-                count = 1;
-                getCraftArray(editItem.ruleset_id).forEach(element => {
-                    $("#skill-" + (count + 17) + "-text").text(element);
-                    $("#skill-"+(count + 17)).val(editItem.craft_array.split(",")[count-1]);
-                    count++;
-                });
-*/
 
   rebuildEquipment(){
 
-
+  
     let allEquippedItems = this.items.filter(item => item.system.equipped)
-
     allEquippedItems.forEach(item => {
       this.parseItemSkills(item.system.skills, item.system.craft_skills)
-
     })
-
 
     let equippedWeapons = this.items.filter(item => item.type == "weapon" && item.system.equipped)
 
@@ -276,8 +443,6 @@ export class Avd12Actor extends Actor {
             this.system.movement.walk.value -= 2;
           } 
 
-          console.log(this.system.bonus.when.armored.remove_penalties, this.system.bonus.when.armored.remove_penalties == 0,this.system.bonus.when.armored.remove_stealth_penalty, this.system.bonus.when.armored.remove_stealth_penalty == 0 )
-
           if(this.system.bonus.when.armored.remove_penalties == 0 && this.system.bonus.when.armored.remove_stealth_penalty == 1){
             this.system.attributes.agility.skills.stealth.finalvalue += 3;
           }
@@ -315,7 +480,6 @@ export class Avd12Actor extends Actor {
       }
   }else{ //unarmored
 
-    console.log("UNARMORED!!", this.system.bonus.when);
     this.system.mitigation.physical.value += (0 + this.system.bonus.when.unarmored.physical);
     this.system.mitigation.fire.value += (0 + this.system.bonus.when.unarmored.elemental);
     this.system.mitigation.cold.value += (0 + this.system.bonus.when.unarmored.elemental);
@@ -406,6 +570,11 @@ export class Avd12Actor extends Actor {
     this.system.bonus.ranged.attack += this.system.bonus.weapon.attack;
     this.system.health.max += this.system.health.bonus;
 
+    //reset 
+    this.system.bonus.weapon.damage = 0;
+    this.system.bonus.weapon.attack = 0;
+    this.system.health.bonus = 0;
+
 
   }
 
@@ -479,50 +648,10 @@ export class Avd12Actor extends Actor {
       })
     })
 
-    console.log("ACTOR:::", this.system);
-
-
-
+ 
+   
 
     return;
-    for (let bonusKey in this.system.bonus) {
-      let bonus = this.system.bonus[bonusKey]
-      for (let content in bonus) {
-        let dataPath = bonusKey + "." + content
-        //console.log("Parsing", bonusKey, content, dataPath)
-        let availableTraits = this.items.filter(t => t.type == "trait" && t.system.computebonus && t.system.bonusdata == dataPath)
-        //get the traits in some other way?
-        for (let trait of availableTraits) {
-          console.log("XXXX", bonus);
-          bonus[content] += Number(trait.system.bonusvalue)
-        }
-      }
-    }
-  }
-  /* -------------------------------------------- */
-  prepareDerivedData() {
-
-    this.tmpTraits = [];
-    this.tmpFreeActions = [];
-    this.tmpActions = [];
-    this.tmpReactions = [];
-    this.tmpBallads = [];
-
-    if (this.type == 'character' || game.user.isGM) {
-      this.system.encCapacity = this.getEncumbranceCapacity()
-      this.buildContainerTree()
-      this.computeHitPoints()
-      
-      this.clearData()
-      this.rebuildSkills()
-      this.rebuildSize()
-      this.rebuildModules()
-      this.rebuildBonuses()
-      this.rebuildMitigations()
-      this.rebuildEquipment()
-     
-    }
-    super.prepareDerivedData();
   }
 
   clearData(){
@@ -700,7 +829,6 @@ export class Avd12Actor extends Actor {
     let upgraded = this.system.bonus[weapon.system.weapontype].upgraded;
     let dice = "";
   
-
     switch(weapon.system.category){
       case "ulightranged":
         weapon.system.minrange -= this.system.bonus.ranged.min_range_bonus_ulight;
@@ -719,8 +847,6 @@ export class Avd12Actor extends Actor {
     if(weapon.system.minrange < 0){
       weapon.system.minrange = 0;
     }
-    //weapon.range = "";
-
 
     switch(weapon.system.category){
       case "unarmed":
@@ -747,9 +873,16 @@ export class Avd12Actor extends Actor {
           upgraded == 1 ? dice = "3d6" : dice = "2d6"
           break;
     }
-    this.addPrimaryDamage(weapon.system.damages.primary, bonusDamage, dice)
-    this.addOtherDamage(weapon.system.damages.secondary, bonusDamage)
-    this.addOtherDamage(weapon.system.damages.tertiary, bonusDamage)
+
+    if(weapon.system.damages.primary.dice == "1d4"){
+      this.addPrimaryDamage(weapon.system.damages.primary, bonusDamage, "1d4")
+      this.addOtherDamage(weapon.system.damages.secondary, bonusDamage)
+      this.addOtherDamage(weapon.system.damages.tertiary, bonusDamage)
+    }else{
+      this.addPrimaryDamage(weapon.system.damages.primary, bonusDamage, dice)
+      this.addOtherDamage(weapon.system.damages.secondary, bonusDamage)
+      this.addOtherDamage(weapon.system.damages.tertiary, bonusDamage)
+    }
   }
   /* -------------------------------------------- */
   getItemById(id) {
@@ -767,7 +900,6 @@ export class Avd12Actor extends Actor {
   }
   getTraits() {
     return this.tmpTraits;
-
   }
 
   getFreeActions(){
@@ -789,7 +921,6 @@ export class Avd12Actor extends Actor {
     return comp;
   }
 
-
   /* -------------------------------------------- */
   async equipItem(itemId) {
     let item = this.items.find(item => item.id == itemId)
@@ -808,6 +939,7 @@ export class Avd12Actor extends Actor {
           return
         }
       }
+      
       let update = { _id: item.id, "system.equipped": !item.system.equipped };
       await this.updateEmbeddedDocuments('Item', [update]); // Updates one EmbeddedEntity
     }
@@ -1011,9 +1143,6 @@ export class Avd12Actor extends Actor {
     return -1;
   }
 
-
-
-
   /* -------------------------------------------- */
   getSubActors() {
     let subActors = [];
@@ -1038,6 +1167,8 @@ export class Avd12Actor extends Actor {
     }
     await this.update({ 'system.subactors': newArray });
   }
+
+
 
   /* -------------------------------------------- */
   syncRoll(rollData) {
@@ -1091,35 +1222,7 @@ export class Avd12Actor extends Actor {
     }
   }
 
-  /* -------------------------------------------- */
-  isForcedAdvantage() {
-    return this.items.find(cond => cond.type == "condition" && cond.system.advantage)
-  }
-  isForcedDisadvantage() {
-    return this.items.find(cond => cond.type == "condition" && cond.system.disadvantage)
-  }
-  isForcedRollAdvantage() {
-    return this.items.find(cond => cond.type == "condition" && cond.system.rolladvantage)
-  }
-  isForcedRollDisadvantage() {
-    return this.items.find(cond => cond.type == "condition" && cond.system.rolldisadvantage)
-  }
-  isNoAdvantage() {
-    return this.items.find(cond => cond.type == "condition" && cond.system.noadvantage)
-  }
-  isNoAction() {
-    return this.items.find(cond => cond.type == "condition" && cond.system.noaction)
-  }
-  isAttackDisadvantage() {
-    return this.items.find(cond => cond.type == "condition" && cond.system.attackdisadvantage)
-  }
-  isDefenseDisadvantage() {
-    return this.items.find(cond => cond.type == "condition" && cond.system.defensedisadvantage)
-  }
-  isAttackerAdvantage() {
-    return this.items.find(cond => cond.type == "condition" && cond.system.targetadvantage)
-  }
-
+  
   /* -------------------------------------------- */
   getCommonRollData() {
 

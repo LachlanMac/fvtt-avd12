@@ -465,6 +465,14 @@
     ],
     "templates": {
       "commonitem": {
+        "light":{
+          "lightsource":false,
+          "dim":0,
+          "bright":0,
+          "animation":{"type":"none", "speed":5, "intensity":5, "reverse":false},
+          "luminosity":0.5,
+          "color":"#ffffff"
+        },
         "skills":"",
         "craft_skills":"",
         "focuspointsbonus": 0,

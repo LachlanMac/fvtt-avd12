@@ -18,5 +18,20 @@
     "TypeTrait": "Trait",
     "TypeCondition": "Condition",
     "TypeCraftingskill": "Crafting Skill"
+  },
+  "STATUS":{
+    "ConditionDead":"Dead",
+    "ConditionUnconscious":"Unconcious",
+    "ConditionDead":"Dead",
+    "ConditionDead":"Dead",
+    "ConditionDead":"Dead",
+    "ConditionDead":"Dead",
+    "ConditionDead":"Dead",
+    "ConditionDead":"Dead",
+    "ConditionDead":"Dead",
+    "ConditionDead":"Dead",
+    "ConditionDead":"Dead",
+    "ConditionDead":"Dead"
+
   }
 }
