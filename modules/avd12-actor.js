@@ -1,6 +1,7 @@
 /* -------------------------------------------- */
 import { Avd12Utility } from "./avd12-utility.js";
 import { Avd12RollDialog } from "./avd12-roll-dialog.js";
+import { Avd12RestDialog } from "./avd12-rest-dialog.js";
 import { Avd12DamageDialog } from "./avd12-damage-dialog.js";
 
 /* -------------------------------------------- */
@@ -14,19 +15,12 @@ export class Avd12Actor extends Actor {
   /* -------------------------------------------- */
   /**
    * Override the create() function to provide additional SoS functionality.
-   *
    * This overrided create() function adds initial items 
    * Namely: Basic skills, money, 
-   *
    * @param {Object} data        Barebones actor data which this function adds onto.
    * @param {Object} options     (Unused) Additional options which customize the creation workflow.
-   *
    */
-
   static async create(data, options) {
-
-   
-
     // Case of compendium global import
     if (data instanceof Array) {
       return super.create(data, options);
@@ -45,38 +39,76 @@ export class Avd12Actor extends Actor {
     return super.create(data, options);
   }
 
+
+  updateCharacter(){
+
+  }
+
+
   /* -------------------------------------------- */
   prepareBaseData() {
   }
   /* -------------------------------------------- */
   async prepareData() {
-
-    
-
-
     super.prepareData()
+  }
 
 
+  async importData(data){
+    //deletes all items
+    await this.deleteEmbeddedDocuments("Item", [], {
+      deleteAll: true,
+    });
 
- 
- 
+    /*Handle Attributes*/
+    
+    await this.update({'system':data.system});
+    await this.update({ 'name': data.name})
+    await this.update({ 'prototypeToken.name': data.name});
+    await this.update({ 'prototypeToken.width': data.prototypeToken.width});
+    await this.update({ 'prototypeToken.height':  data.prototypeToken.height});
+    await this.update({ 'name': data.name})
+
+    await this.createEmbeddedDocuments("Item", data.items);
+
+    const image = await Avd12Utility.downloadImage(`https://localhost/upload/${data.imgurl}`)
+    //const image = await Avd12Utility.downloadImage(`https://anyventured12.com/upload/${data.imgurl}`)
+    if(image){
+      let options = Avd12Utility.parse("avd12/characters/");
+      var file = new File([image], data.imgurl);
+      await Avd12Utility.uploadToPath(options.current, file);
+      await this.update({ 'img': `avd12/characters/${data.imgurl}`})
+      await this.update({ 'prototypeToken.texture.src': `avd12/characters/${data.imgurl}`})
+    }
+  }
+
+  getPowerPercentage(){
+    let percentage = 100 - (this.system.focus.currentfocuspoints / this.system.focus.focuspoints * 100);
+    if(percentage <= 0)
+      return {primary:"0%", secondary:"0%"};
+    return {primary:(percentage - 5)+"%", secondary:(percentage+5)+"%"}
+  }
+
+  getHealthPercentage(){
+    let percentage = 100 - (this.system.health.value /  this.system.health.max * 100);
+    if(percentage <= 0)
+      return {primary:"0%", secondary:"0%"};
+    return {primary:(percentage-5)+"%", secondary:(percentage+5)+"%"}
   }
 
 
     /* -------------------------------------------- */
   prepareDerivedData() {
-
     this.tmpTraits = [];
     this.tmpFreeActions = [];
     this.tmpActions = [];
     this.tmpReactions = [];
     this.tmpBallads = [];
 
-
     if (this.type == 'character' || game.user.isGM) {
       this.system.encCapacity = this.getEncumbranceCapacity()
       this.buildContainerTree()
-      this.computeHitPoints()
+
       
       this.clearData()
       this.rebuildSkills()
@@ -124,12 +156,44 @@ export class Avd12Actor extends Actor {
           //+2 on melee spells
           this.system.bonus.weapon.attack += 2;
           break;
+        case "paralyzed":
+            this.system.movement.walk.value = 0;
+            
+            //cant attack with melee weapons
+          break;
+        case "grappled":
+          this.system.movement.walk.value = 0;
+          //cant attack with melee weapons
+          break;
+        case "wounded3":
+          //death roll
+        case "wounded2":
+          this.system.attributes.willpower.skills.endurance.finalvalue -= 2;
+          //disable reactions
+        case "wounded1":
+          this.system.attributes.willpower.skills.endurance.finalvalue -= 2;
+          break;
+        case "deafened":
+          this.system.attributes.willpower.skills.resistance.finalvalue -= 2;
+          break;
+        case "exhausted3":
+          //can only channel once
+        case "exhausted2":
+          this.system.bonus.weapon.damage = 0;
+          this.system.bonus.ranged.damage = 0;
+          this.system.bonus.spell.damage = 0;
+          this.system.bonus.slash.damage = 0;
+          this.system.bonus.unarmed.damage = 0;
+          this.system.bonus.pierce.damage = 0;
+          this.system.bonus.blunt.damage = 0;
+          //disable reactions
+        case "exhausted1":
+          this.system.movement.walk.value -= 2;
+          break;
         case "prone":
           this.system.bonus.weapon.attack -= 1;
           this.system.bonus.spell.attack -= 1;
-          this.system.attributes.agility.skills.dodge.finalvalue -= 1;
-          this.system.attributes.willpower.skills.resistance.finalvalue -= 1;
-          this.system.attributes.might.skills.block.finalvalue -= 1;
+          this.system.movement.walk.value = 2;
           break;
         case "frozen":
           //blue?
@@ -141,12 +205,8 @@ export class Avd12Actor extends Actor {
           lightObj.color = "#00bfff"
           lightObj.animation.type = "none"
           overrideLight = true;
-
           break;
         case "ignited":
-          this.system.movement.walk.value = 0;
-          this.system.mitigation.physical.value = 0;
-          this.system.mitigation.cold.value = 99;
           lightObj.dim = 0.5
           lightObj.bright = 0.3
           lightObj.color = "#ff2000"
@@ -183,19 +243,18 @@ export class Avd12Actor extends Actor {
 
   getBestLightSource(){
 
-    let lightSources = this.items.filter(item => item.system.equipped && item.system.light.lightsource)
+    let lightSources = this.items.filter(item => item.system.equipped && item.system.light)
     let bestLightSource = null;
     lightSources.forEach(item => {
-      console.log("FOUND LIGHTSOURCE::", item);
-      if(bestLightSource){
-        if(item.system.light.dim > bestLightSource.system.light.dim)
-        bestLightSource = item;
-      } else {
-        bestLightSource = item;
+      if(item.system.light.lightsource){
+        if(bestLightSource){
+          if(item.system.light.dim > bestLightSource.system.light.dim)
+          bestLightSource = item;
+        } else {
+          bestLightSource = item;
+        }
       }
     })
-
-    console.log(bestLightSource);
 
     if(bestLightSource)
       return bestLightSource.system.light;
@@ -234,12 +293,6 @@ export class Avd12Actor extends Actor {
   }
 
   /* -------------------------------------------- */
-  computeHitPoints() {
-    if (this.type == "character") {
-
-    }
-  }
-
   confirmDamage(damageData){
     damageData.mitigation = this.system.mitigation[damageData.damageType.toLowerCase()].value
     damageData.mitigated = damageData.mitigation + damageData.damageModifier;
@@ -320,12 +373,24 @@ export class Avd12Actor extends Actor {
 
 }
 
+
+  parseFocus(focus){
+    let focusData = Avd12Utility.computeFocusData(focus.system.focus);
+    this.system.focus.burn_chance = focusData.burnChance;
+    this.system.focus.focuspoints += focusData.focusPoints;
+    this.system.focus.focusregen += focusData.focusRegen;
+  }
+
   rebuildEquipment(){
 
   
     let allEquippedItems = this.items.filter(item => item.system.equipped)
     allEquippedItems.forEach(item => {
       this.parseItemSkills(item.system.skills, item.system.craft_skills)
+      if(item.system.focus.isfocus){
+        this.parseFocus(item);
+      }
+
     })
 
     let equippedWeapons = this.items.filter(item => item.type == "weapon" && item.system.equipped)
@@ -343,6 +408,7 @@ export class Avd12Actor extends Actor {
           this.system.attributes.agility.skills.dodge.finalvalue -= 2;
           break;
         case "lightranged":
+          this.system.attributes.might.skills.block.finalvalue -= 1;
           break;
         case "heavyranged":
           this.system.attributes.agility.skills.dodge.finalvalue -= 2;
@@ -519,6 +585,19 @@ export class Avd12Actor extends Actor {
   /* -------------------------------------------- */
   rebuildSkills() {
     this.system.health.max = this.system.level.value * 5 + 10;
+    this.system.focus.focuspoints = 0;
+    this.system.focus.focusregen = 0;
+    this.system.focus.castpenalty = 0;
+    /*
+     "focus": {
+          "burn_chance": 0,
+          "focuspoints": 0,
+          "focusregen": 0,
+          "currentfocuspoints": 0,
+          "castpenalty":0
+        },
+    */
+
     //we may need to allow the player to change this?
     this.system.movement.walk.value = 6;
     for (let attrKey in this.system.attributes) {
@@ -569,6 +648,7 @@ export class Avd12Actor extends Actor {
     this.system.bonus.pierce.attack += this.system.bonus.weapon.attack;
     this.system.bonus.ranged.attack += this.system.bonus.weapon.attack;
     this.system.health.max += this.system.health.bonus;
+    this.system.movement.speed = this.system.movement.walk.value;
 
     //reset 
     this.system.bonus.weapon.damage = 0;
@@ -579,15 +659,15 @@ export class Avd12Actor extends Actor {
   }
 
   rebuildSize(){
-    switch(this.system.size.value){
-      case 1://small
+    switch(this.system.biodata.size){
+      case 2://small
         this.system.attributes.agility.skills.dodge.finalvalue += 1;
         this.system.attributes.agility.skills.stealth.finalvalue += 1;
         this.system.movement.walk.value -= 1;
         break;
-      case 2://medium
+      case 3://medium
         break;
-      case 3://large
+      case 4://large
         this.system.attributes.agility.skills.dodge.finalvalue -= 1;
         this.system.attributes.agility.skills.stealth.finalvalue -= 1;
         this.system.attributes.agility.skills.acrobatics.finalvalue -= 1;
@@ -655,15 +735,18 @@ export class Avd12Actor extends Actor {
   }
 
   clearData(){
+    for (let mitiKey in this.system.mitigation) {
+      let mitigation = this.system.mitigation[mitiKey]
+      mitigation.value = 0
+    }
 
-    
-
+    //this.system.attributes.universal.skills.initiative.finalvalue = 0;
+    //this.system.attributes.universal.skills.search.finalvalue = 0;
 
   }
 
   /* -------------------------------------------- */
   _preUpdate(changed, options, user) {
-
     super._preUpdate(changed, options, user);
   }
 
@@ -701,7 +784,7 @@ export class Avd12Actor extends Actor {
   }
   /* -------------------------------------------- */
   getWeapons() {
-    let comp = duplicate(this.items.filter(item => item.type == 'weapon') || [])
+    let comp = duplicate(this.items.filter(item => item.type == 'weapon' || item.type == 'equipable') || [])
     comp.forEach(item => {
       this.prepareWeapon(item)
     })
@@ -758,10 +841,46 @@ export class Avd12Actor extends Actor {
     }
     return undefined
   }
-  getSpells() {
+
+  getSpells(){
     let comp = duplicate(this.items.filter(item => item.type == 'spell') || []);
+    comp.forEach(spell => {
+      if(spell.system.damagetype == "none"){
+        spell.system.damagetype = "";
+      }
+      spell.system.rangeDescription = (spell.system.range > 0 ? spell.system.range : "") + " " + spell.system.range_type.charAt(0).toUpperCase() + spell.system.range_type.substring(1, spell.system.range_type.length);
+      spell.system.actionDescription = spell.system.actions + " " + spell.system.action_type.charAt(0).toUpperCase() + spell.system.action_type.slice(1) + (spell.system.actions > 1 ? 's' :'');
+      spell.system.improvedDescription = spell.system.description  + (spell.system.chargeEffect ? "\nCharge Effect: " + spell.system.chargeEffect:"")  + (spell.system.components ? "\nComponents: " + spell.system.components : "");  
+      spell.system.damageDescription = spell.system.damage + " " + spell.system.damagetype.charAt(0).toUpperCase() + spell.system.damagetype.slice(1)
+    })
     return comp
   }
+
+  getBeginnerSpells(spells) {
+    let comp = duplicate(spells.filter(item => item.system.level == 'beginner') || []);
+    return comp
+  }
+
+  getNoviceSpells(spells) {
+    let comp = duplicate(spells.filter(item => item.system.level == 'novice') || []);
+    return comp
+  }
+
+  getExpertSpells(spells) {
+    let comp = duplicate(spells.filter(item => item.system.level == 'expert') || []);
+    return comp
+  }
+
+  getMasterSpells(spells) {
+    let comp = duplicate(spells.filter(item => item.system.level == 'master') || []);
+    return comp
+  }
+
+  getGrandmasterSpells(spells) {
+    let comp = duplicate(spells.filter(item => item.system.level == 'grandmaster') || []);
+    return comp
+  }
+
   /* -------------------------------------------- */
   getShields() {
     let comp = duplicate(this.items.filter(item => item.type == 'shield') || []);
@@ -777,6 +896,7 @@ export class Avd12Actor extends Actor {
   }
   /* -------------------------------------------- */
   checkAndPrepareEquipment(item) {
+    //why are we doing this?
   }
 
   /* -------------------------------------------- */
@@ -824,6 +944,11 @@ export class Avd12Actor extends Actor {
 
   /* -------------------------------------------- */
   prepareWeapon(weapon) {
+
+    if(weapon.type == 'equipable'){
+      return;
+    }
+
     weapon.attackBonus = this.system.bonus.weapon.attack + weapon.system.attackbonus + this.system.bonus[weapon.system.weapontype].attack
     let bonusDamage = this.system.bonus.weapon.damage + this.system.bonus[weapon.system.weapontype].damage
     let upgraded = this.system.bonus[weapon.system.weapontype].upgraded;
@@ -1132,9 +1257,7 @@ export class Avd12Actor extends Actor {
   /* -------------------------------------------- */
   getInitiativeScore(combatId, combatantId) {
     if (this.type == 'character') {
-    
       let initiative = this.system.universal.skills.initiative.finalvalue;
-
       if (!initiative || initiative == -1) {
         ChatMessage.create( { content: "Roll your initiative for this combat"} )
       }
@@ -1272,8 +1395,8 @@ export class Avd12Actor extends Actor {
       skill = duplicate(skill)
       skill.name = Avd12Utility.upperFirst(skillKey)
       let rollData = this.getCommonRollData()
-      rollData.mode = "universal"
-      rollData.skillKey = skillKey
+      rollData.mode = "skill"
+      //rollData.skillKey = skillKey
       rollData.skill = skill
       rollData.title = "Roll Skill " + skill.name 
       rollData.img = skill.img
@@ -1430,9 +1553,76 @@ export class Avd12Actor extends Actor {
   }
 
   async takeDamage(damageData){
-
     let dialog = await Avd12DamageDialog.create(this, damageData)
     dialog.render(true)
   }
 
+
+  async takeRest(data, favorable){
+    let totalPowerRegen = this.system.focus.focusregen;
+    if(Number(data.bonusPower)){
+      totalPowerRegen += Number(data.bonusPower);
+    }
+    let totalHealthRegen = this.system.level.value * (favorable ? 2 : 1);
+    if(Number(data.bonusHealth)){
+      totalHealthRegen += Number(data.bonusHealth);
+    }
+
+    let restData = {};
+    restData.actor = this;
+   
+
+    
+    let currentHealth = this.system.health.value;
+    let currentPower = this.system.focus.currentfocuspoints;
+
+    this.system.health.value = Math.min(this.system.health.max, (totalHealthRegen + this.system.health.value))
+    this.system.focus.currentfocuspoints = Math.min(this.system.focus.focuspoints, (totalPowerRegen + this.system.focus.currentfocuspoints))
+    this.update({ 'system.health.value': this.system.health.value})
+    this.update({ 'system.focus.currentfocuspoints': this.system.focus.currentfocuspoints})
+
+    restData.health = this.system.health.value - currentHealth;
+    restData.power = this.system.focus.currentfocuspoints - currentPower;
+   
+    if(favorable){
+      restData.favorable = "Favorable"
+    }else{
+      restData.favorable = "";
+    }
+
+    Avd12Utility.createRestChatMessage(restData);
+
+  }
+
+  async rest(){
+    let dialog = await Avd12RestDialog.create(this)
+    dialog.render(true)
+  }
+
+  async essenceBurn(){
+
+    /*
+     skill = duplicate(skill)
+      skill.name = Avd12Utility.upperFirst(skillKey)
+      skill.attr = duplicate(attr)
+      let rollData = this.getCommonRollData()
+      rollData.mode = "skill"
+      //rollMode.skillKey = skillKey
+      rollData.skill = skill
+      rollData.title = "Roll Skill " + skill.name 
+      rollData.img = skill.img
+      this.startRoll(rollData)
+      */
+
+      let burn = {burnValue : this.system.focus.burn_chance};
+      let rollData = this.getCommonRollData()
+      rollData.mode = "essenceburn"
+      rollData.burn = burn;
+
+      rollData.title = "Rolling Essence Burn";
+      
+      //this.syncRoll(rollData)
+      Avd12Utility.rollAvd12(rollData)
+    
+  }  
 }

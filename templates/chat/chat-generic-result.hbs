@@ -14,31 +14,36 @@
   {{/if}}
 
   <div class="flexcol">
-    </div>
-
     <div>
       <ul>
         {{#if skill}}
-        <li>Skill : {{skill.name}} ({{skill.finalvalue}}) 
-        </li>
+          <li>Skill : {{skill.name}} ({{skill.finalvalue}}) </li>
+          <li>Modifier : <b>{{bonusMalusRoll}}</b></li>
+          <li>Dice Formula : <b>{{diceFormula}}</b> </li>
+          <li>Result : <b>{{roll.total}}</b></li>
         {{/if}}
 
         {{#if crafting}}
-        <li>Crafting : {{crafting.name}} ({{crafting.system.level}}) 
-        </li>
+        <li>Crafting : {{crafting.name}} ({{crafting.system.level}}) </li>
+        <li>Modifier : <b>{{bonusMalusRoll}}</b></li>
+        <li>Dice Formula : <b>{{diceFormula}}</b> </li>
+        <li>Result : <b>{{roll.total}}</b></li>
         {{/if}}
 
         {{#if spell}}
         <li>Spell : {{spell.name}} ({{spell.system.level}}) 
         </li>
-        <li>Focus Points Spent : {{spellCost}} 
-        </li>
+          <li>Focus Points Spent : <b>{{spellCost}}</b></li>
+          <li>Modifier : <b>{{bonusMalusRoll}}</b></li>
+          <li>Dice Formula : <b>{{diceFormula}}</b> </li>
+          <li>Result : <b>{{roll.total}}</b></li>
         {{/if}}
 
-        <li>Modifier {{bonusMalusRoll}} </li>
-        <li>Dice Formula {{diceFormula}} </li>
-        <li>Result {{roll.total}} </li>
+        {{#if burn}}
+           <li><b>Essence Burn</b>
+            <li>Dice Formula : <b>{{diceFormula}} </b></li>
+          <li>Result :  <b>({{roll.total}}) {{#if (gt roll.total 0)}}Success!{{else}}Failure!{{/if}}</b></li>
+        {{/if}}
       </ul>  
     </div>
-
   </div>

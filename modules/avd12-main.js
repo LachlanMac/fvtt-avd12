@@ -193,7 +193,6 @@ Hooks.once("init", async function () {
   Actors.unregisterSheet("core", ActorSheet);
   Actors.registerSheet("fvtt-avd12", Avd12ActorSheet, { types: ["character"], makeDefault: true });
   Actors.registerSheet("fvtt-avd12", Avd12NPCSheet, { types: ["npc"], makeDefault: false });
-
   Items.unregisterSheet("core", ItemSheet);
   Items.registerSheet("fvtt-avd12", Avd12ItemSheet, { makeDefault: true });
 

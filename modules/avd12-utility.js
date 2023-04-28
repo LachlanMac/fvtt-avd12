@@ -30,6 +30,10 @@ export class Avd12Utility {
       Avd12Utility.dropItemOnToken(canvas, data)
     });*/
 
+    //system.healthEstimate.core.custom.FractionHP
+    console.log(game.healthEstimate);
+    console.log("SYSTEM::",);
+    await Avd12Utility.verifyPath(Avd12Utility.parse("avd12/characters/"));
 
     this.rollDataStore = {}
     this.defenderStore = {}
@@ -373,14 +377,12 @@ export class Avd12Utility {
       this.createChatWithRollMode(rollData.alias, {
         content: await renderTemplate(`systems/fvtt-avd12/templates/chat-attack-defense-result.html`, rollData)
       })
-      console.log("Results processed", rollData)
     }
   }
 
   /* -------------------------------------------- */
   static async processAttackDefense(rollData) {
     if (rollData.attackRollData) {
-      //console.log("Defender token, ", rollData, rollData.defenderTokenId)
       let defender = game.canvas.tokens.get(rollData.attackRollData.defenderTokenId).actor
       let sumSuccess = rollData.attackRollData.nbSuccess - rollData.nbSuccess
       if (sumSuccess > 0) {
@@ -457,7 +459,6 @@ export class Avd12Utility {
       return{};
 
     if(!item.system.equipped){
-      console.log("item is not equipped")
       return {};
     }
 
@@ -538,6 +539,7 @@ export class Avd12Utility {
 
     let actor = game.actors.get(rollData.actorId)
 
+  
     // Build the dice formula
     let diceFormula = "1d12"
     if (rollData.skill) {
@@ -550,17 +552,18 @@ export class Avd12Utility {
       diceFormula += "+" + rollData.spellAttack
     }
     diceFormula += "+" + rollData.bonusMalusRoll
-
     if (rollData.skill && rollData.skill.good) {
       diceFormula = "3d4+" + rollData.skill.finalvalue;
     }
     if (rollData.weapon ) {
       diceFormula += "+" + rollData.weapon.attackBonus
     }
+    if(rollData.burn){
+      diceFormula = "1d12 -" + rollData.burn.burnValue;
+    }
     rollData.diceFormula = diceFormula
 
     // Performs roll
-
     let myRoll = rollData.roll
     if (!myRoll) { // New rolls only of no rerolls
       myRoll = new Roll(diceFormula).roll({ async: false })
@@ -640,9 +643,92 @@ export class Avd12Utility {
 
   }
   
+  static parse(str) {
+    let matches = str.match(/\[(.+)\]\s*(.+)/);
+    if (matches) {
+      let source = matches[1];
+      const current = matches[2].trim();
+      const [s3, bucket] = source.split(":");
+      if (bucket !== undefined) {
+        return {
+          activeSource: s3,
+          bucket: bucket,
+          current: current,
+        };
+      } else {
+        return {
+          activeSource: s3,
+          bucket: null,
+          current: current,
+        };
+      }
+    }
+    // failsave, try it at least
+    return {
+      activeSource: "data",
+      bucket: null,
+      current: str,
+    };
+  }
 
+  static async createDirectory(source, target, options = {}) {
+    if (!target) {
+      throw new Error("No directory name provided");
+    }
+    return FilePicker.createDirectory(source, target, options);
+  }
 
+  static async verifyPath(parsedPath, targetPath = null) {
+    try {
+      const paths = (targetPath) ? targetPath.split("/") : parsedPath.current.split("/");
+      let currentSource = paths[0];
 
+      for (let i = 0; i < paths.length; i += 1) {
+        try {
+          if (currentSource !== paths[i]) {
+            currentSource = `${currentSource}/${paths[i]}`;
+          }
+          // eslint-disable-next-line no-await-in-loop
+
+          await FilePicker.createDirectory(parsedPath.activeSource, `${currentSource}`, { bucket: parsedPath.bucket });
+
+        } catch (err) {
+          if (!err.startsWith("EEXIST") && !err.startsWith("The S3 key")) {
+            logger.error(`Error trying to verify path [${parsedPath.activeSource}], ${parsedPath.current}`, err);
+            logger.error("parsedPath", parsedPath);
+            logger.error("targetPath", targetPath);
+          }
+        }
+      }
+    } catch (err) {
+      console.log(err);
+      return false;
+    }
+    return true;
+  }
+  static async uploadToPath(path, file) {
+    return FilePicker.upload("data", path, file);
+  }
+
+  static async downloadImage(url){
+    return new Promise((resolve, reject) => {
+      fetch(url, {
+        method: "GET",
+        headers: {
+          "x-requested-with": "foundry"
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            reject("Could not retrieve image");
+          }
+          return response.blob();
+        })
+        .then((blob) => resolve(blob))
+        .catch((error) => reject(error.message));
+    });
+  }
+  
 
 
   static getLightShieldReaction(){
@@ -771,6 +857,15 @@ export class Avd12Utility {
       content : await renderTemplate(`systems/fvtt-avd12/templates/chat/take-damage-result.hbs`, damageData)
     });
   }
+
+  static async createRestChatMessage(restData) {
+    return ChatMessage.create({
+      name : restData.actor.name, 
+      alias : restData.actor.name, 
+      content : await renderTemplate(`systems/fvtt-avd12/templates/chat/take-rest.hbs`, restData)
+    });
+  }
+
 
   /* -------------------------------------------- */
   static getBasicRollData() {

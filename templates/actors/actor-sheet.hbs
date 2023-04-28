@@ -5,38 +5,60 @@
     <div class="header-fields">
       
       <div class="flexrow">
-        <img class="profile-img" src="{{img}}" data-edit="img" title="{{name}}" />
-        <div class="middle flexcol">
-          
- 
-          <!--<h3 class="flex-center">Name</h3><input class="charname" name="name" type="text" value="{{name}}" placeholder="Name" />-->
+        <div class="profile-img-section">
+          <div style="position:relative">
+          <img class="profile-img" src="{{img}}" data-edit="img" title="{{name}}"/>
+          <div class="health-bar">                                                                              
+            <div id="health-container" class="flexrow" style="background: linear-gradient(-90deg,rgba(139, 10, 10, 0.815) 0%,rgba(139, 10, 10, 0.815) calc({{hpOverlayCalculationCurrent1}}),rgba(16, 156, 70, 0.815) calc({{hpOverlayCalculationCurrent2}}),rgba(16, 156, 70, 0.815) 100%);">
+                <input id="current-health-bar" type="text" class="health-bar-field" name="system.health.value" value="{{system.health.value}}" data-dtype="Number"/>
+                <span id="health-divider" class="flex0">/</span>
+                <input id="max-health-bar" type="text" class="health-bar-field" name="system.health.max" value="{{system.health.max}}" data-dtype="Number"/>
+            </div>
+          </div>
 
+          <div id="power-test">
+
+          </div>
+          
+          <div id="level-display">
+              <input id="level-input-field" type="text" class="hover-button" name="system.level.value" value="{{system.level.value}}" data-dtype="Number"/>
+          </div>
+
+          <span id="rest-display" class="hover-button">
+            <div id="rest-icon">
+              <i style="padding-top:5px;" class="fa fa-bed" aria-hidden="true"></i>
+            </div>
+          </span>
+
+        </div>
+      </div>
+
+        <div class="middle flexcol flex2">
+          <!--<h3 class="flex-center">Name</h3><input class="charname" name="name" type="text" value="{{name}}" placeholder="Name" />-->
           <div class="flexrow name-section flex2">
             <div class="flexcol flex-center flex0">
               <h3 class="flex-center">Name</h3><input class="charname" name="name" type="text" value="{{name}}" placeholder="Name" />
             </div>
             <div class="flexcol flexgroup-center flex-center">
-              <h3 class="flex-center flex0">{{system.level.label}}</h3>
-              <input type="text" class="item-field-label-short level-input" name="system.level.value" value="{{system.level.value}}" data-dtype="Number"/>
+             
+                
             </div>
           </div>
 
           <div class="flexrow health-section flex2">
               <div class="flexcol flex-center flex1">
-                  <h3 class="flexrow flex-center flex0">Health</h3>
-                  <div class="flexrow ">
-                      <div class="flexcol">
-                        <span class="attribute-label flex0">Current</span>
-                        <input type="text" class="item-field-label-short health-input" name="system.health.value" value="{{system.health.value}}" data-dtype="Number"/>
-                      </div>
-                      <div class="flexcol">
-                         <span class="attribute-label flex0">Max</span>
-                        <input type="text" class="item-field-label-short health-input" name="system.health.max" value="{{system.health.max}}" data-dtype="Number"/>
-                      </div>
-                      <div class="flexcol">
-                         <span class="attribute-label flex0">Temp</span>
-                        <input type="text" class="item-field-label-short health-input" name="system.health.tmpvalue" value="{{system.health.tmpvalue}}" data-dtype="Number"/>
-                      </div>
+                  <div class="circle" style="background: linear-gradient(180deg,rgba(0, 0, 0, 0.815) 0%,rgba(0, 0, 0, 0.815) calc({{powerOverlayCalculationCurrent1}}),rgba(255,0,181,0.85) calc({{powerOverlayCalculationCurrent2}}),rgba(255,0,181,0.85) 100%);">
+                    <div id="essence-burn-icon" class="hover-button">
+                      <i style="padding-top:5px;" class="fa fa-fire" aria-hidden="true"></i>
+                    </div>
+                    <div id="power-regen-icon">
+                          <!-- linear-gradient(0deg, rgba(255,0,181,1) 0%, rgba(255,0,232,1) 80%, rgba(0,0,0,1) 85%); -->
+                    </div>
+                    <input id="power-regen-value" type="text" class="power-field" name="system.focus.focusregen" value="{{system.focus.focusregen}}" data-dtype="Number"/>
+                    <input id="power-current-value" type="text" class="power-field" name="system.focus.currentfocuspoints" value="{{system.focus.currentfocuspoints}}" data-dtype="Number"/>
+                    <i id="power-divider" class="fa-thin fa-horizontal-rule"></i>
+                    <input id="power-max-value" type="text" class="power-field" name="system.focus.focuspoints" value="{{system.focus.focuspoints}}" data-dtype="Number"/>
+
                   </div>
               </div>
               <div class="flexcol">
@@ -56,7 +78,7 @@
               </div>
             </div>
           </div>
-        <div class="flexcol">
+        <div class="flexcol flex2">
 
             <div class="flex-center flex0">
             <h3 id="movespeed-title">Attributes</h3>
@@ -203,7 +225,7 @@
             </span>
 
             <span class="small-skill flexrow  odd-row">
-              <input type="checkbox" class="skill-good-checkbox" name="system.attributes.universal.skills.initiatve.good" {{checked system.universal.skills.initiative.good}} />
+              <input type="checkbox" class="skill-good-checkbox" name="system.universal.skills.initiative.good" {{checked system.universal.skills.initiative.good}} />
               <section class="skill-title flex2" >Initiative:</section>
               <section class="skill-value flex1">{{#if (gt system.universal.skills.initiative.finalvalue -1)}}+{{/if}}{{system.universal.skills.initiative.finalvalue}}</section>
               <img class=" roll-universal ui-dice flex0 flex-center"   width="24px" height="24px" src="systems/fvtt-avd12/images/ui/D12_White.webp" data-skill-key="initiative"/>
@@ -243,10 +265,10 @@
             </span>
 
             <span class="small-skill flexrow">
-              <input type="checkbox" class="skill-good-checkbox" name="system.attributes.universal.skills.search.good" {{checked system.universal.skills.search.good}} />
+              <input type="checkbox" class="skill-good-checkbox" name="system.universal.skills.search.good" {{checked system.universal.skills.search.good}} />
               <section class="skill-title flex2" >Search:</section>
               <section class="skill-value flex1">{{#if (gt system.universal.skills.search.finalvalue -1)}}+{{/if}}{{system.universal.skills.search.finalvalue}}</section>
-              <img class=" roll-universal ui-dice flex0 flex-center"   width="24px" height="24px" src="systems/fvtt-avd12/images/ui/D12_White.webp" data-skill-key="search"/>
+              <img class="roll-universal ui-dice flex0 flex-center"   width="24px" height="24px" src="systems/fvtt-avd12/images/ui/D12_White.webp" data-skill-key="search"/>
                <section class="skill-title flex1" ></section>
             </span>
 
@@ -451,61 +473,216 @@
             {{/each}}
           </ul>
         </div>
-
     </div>
 
 
     {{!-- Spells Tab --}}
     <div class="tab spells" data-group="primary" data-tab="spells">
-
       <div class="flexcol">
+        <!-- CONDUIT INFO SECTION -->
+       
+      
+        <!-- SPELL BY LEVEL -->
 
-        <ul class="stat-list alternate-list">
-          <li class="item flexrow list-item">
-            <span class="item-name-label-header-short">Conduit Regen</span>
-            <input type="text" class="item-field-label-short" value="{{system.focus.focusregen}}" data-dtype="Number" disabled/>
-
-            
-            <span class="item-name-label-header-short">&nbsp;</span>
-
-            <span class="item-name-label-header-short">Power</span>
-            <input type="text" class="item-field-label-short"  name="system.focus.currentfocuspoints" value="{{system.focus.currentfocuspoints}}" data-dtype="Number"/> / 
-            <input type="text" class="item-field-label-short" value="{{system.focus.focuspoints}}" data-dtype="Number" disabled/>
-
-            <span class="item-name-label-header-medium">&nbsp;</span>
-          </li>
-        </ul>
         
+        {{#if beginnerSpells}}
         <ul class="stat-list alternate-list">
           <li class="item flexrow list-item items-title-bg">
             <span class="item-name-label-header">
-              <h3><label class="items-title-text">Name</label></h3>
+              <h3><label class="items-title-text">Beginner Spells</label></h3>
             </span>
-            <span class="item-field-label-medium">
+            <span class="item-field-label-medium flex-center">
               <label class="short-label">Type</label>
             </span>
-            <span class="item-field-label-medium">
-              <label class="short-label">Level</label>
+            <span class="item-field-label-medium flex-center">
+              <label class="short-label">Range</label>
             </span>
+            <span class="item-field-label-medium flex-center">
+              <label class="short-label">Cost</label>
+            </span>
+            <span class="item-field-label-medium flex-center">
+              <label class="short-label">Damage</label>
+            </span>
+            <span class="item-field-label-extra-short flex-center">
+              <label class="short-label">Focus</label>
+            </span>
+            <span class="item-field-label-extra-short flex-center">
+              <label class="short-label">Reaction</label>
+            </span>
+            <span class="item-field-label-extra-short flex-center">
+              <label class="short-label">Components</label>
+            </span>
+            <span class="item-filler">&nbsp;</span>
           </li>
-
-          {{#each spells as |spell key|}}
-          <li class="item stat flexrow list-item list-item-shadow" data-item-id="{{spell._id}}">
-            <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
-                src="{{spell.img}}" /></a>
-            <span class="item-name-label">
-              <a class="roll-spell"><i class="fa-solid fa-dice-d12"> </i>{{spell.name}}</a>
-            </span>
-            <span class="item-field-label-medium">{{upperFirst spell.system.spelltype}}</span>
-            <span class="item-field-label-medium">{{upperFirst spell.system.level}}</span>
-            <div class="item-filler">&nbsp;</div>
+          {{#each beginnerSpells as |spell key|}}
+          <li class="item stat flexrow list-item list-item-shadow spell-card" data-item-id="{{spell._id}}">
+            <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"src="{{spell.img}}" /></a>
+            <span class="item-name-label"><a class="roll-spell"></i>{{spell.name}}</a></span>
+            <span class="item-field-label-medium flex-center">{{upperFirst spell.system.spelltype}}</span>
+             <span class="item-field-label-medium flex-center">{{upperFirst spell.system.rangeDescription}}</span>
+            <span class="item-field-label-medium flex-center">{{upperFirst spell.system.actionDescription}}</span>
+            <span class="item-field-label-medium flex-center">{{upperFirst spell.system.damageDescription}}</span>
+            <span class="item-field-label-extra-short flex-center">{{#if spell.system.sustained}}<i class="fas fa-circle"></i>{{/if}}</span>
+            <span class="item-field-label-extra-short flex-center">{{#if spell.system.reaction}}<i class="fas fa-circle"></i>{{/if}}</span>
+            <span class="item-field-label-extra-short flex-center">{{#if spell.system.components}}<i class="fas fa-circle"></i>{{/if}}</span>
+            <span class="item-filler">&nbsp;</span>
             <div class="item-controls item-controls-fixed">
               <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
             </div>  
           </li>
           {{/each}}
-
         </ul>
+        {{/if}}
+
+        
+{{#if noviceSpells}}
+        <ul class="stat-list alternate-list">
+          <li class="item flexrow list-item items-title-bg">
+            <span class="item-name-label-header">
+              <h3><label class="items-title-text">Novice Spells</label></h3>
+            </span>
+            <span class="item-field-label-medium flex-center">
+              <label class="short-label">Type</label>
+            </span>
+            <span class="item-field-label-medium flex-center">
+              <label class="short-label">Range</label>
+            </span>
+            <span class="item-field-label-medium flex-center">
+              <label class="short-label">Cost</label>
+            </span>
+            <span class="item-field-label-medium flex-center">
+              <label class="short-label">Damage</label>
+            </span>
+            <span class="item-field-label-extra-short flex-center">
+              <label class="short-label">Focus</label>
+            </span>
+            <span class="item-field-label-extra-short flex-center">
+              <label class="short-label">Reaction</label>
+            </span>
+            <span class="item-field-label-extra-short flex-center">
+              <label class="short-label">Components</label>
+            </span>
+            <span class="item-filler">&nbsp;</span>
+          </li>
+          {{#each noviceSpells as |spell key|}}
+          <li class="item stat flexrow list-item list-item-shadow spell-card" data-item-id="{{spell._id}}">
+            <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"src="{{spell.img}}" /></a>
+            <span class="item-name-label"><a class="roll-spell"></i>{{spell.name}}</a></span>
+            <span class="item-field-label-medium flex-center">{{upperFirst spell.system.spelltype}}</span>
+             <span class="item-field-label-medium flex-center">{{upperFirst spell.system.rangeDescription}}</span>
+            <span class="item-field-label-medium flex-center">{{upperFirst spell.system.actionDescription}}</span>
+            <span class="item-field-label-medium flex-center">{{upperFirst spell.system.damageDescription}}</span>
+            <span class="item-field-label-extra-short flex-center">{{#if spell.system.sustained}}<i class="fas fa-circle"></i>{{/if}}</span>
+            <span class="item-field-label-extra-short flex-center">{{#if spell.system.reaction}}<i class="fas fa-circle"></i>{{/if}}</span>
+            <span class="item-field-label-extra-short flex-center">{{#if spell.system.components}}<i class="fas fa-circle"></i>{{/if}}</span>
+            <span class="item-filler">&nbsp;</span>
+            <div class="item-controls item-controls-fixed">
+              <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+            </div>  
+          </li>
+          {{/each}}
+        </ul>
+        {{/if}}
+
+
+        {{#if expertSpells}}
+        <ul class="stat-list alternate-list">
+          <li class="item flexrow list-item items-title-bg">
+            <span class="item-name-label-header">
+              <h3><label class="items-title-text">Expert Spells</label></h3>
+            </span>
+            <span class="item-field-label-medium flex-center">
+              <label class="short-label">Type</label>
+            </span>
+            <span class="item-field-label-medium flex-center">
+              <label class="short-label">Range</label>
+            </span>
+            <span class="item-field-label-medium flex-center">
+              <label class="short-label">Cost</label>
+            </span>
+            <span class="item-field-label-medium flex-center">
+              <label class="short-label">Damage</label>
+            </span>
+            <span class="item-field-label-extra-short flex-center">
+              <label class="short-label">Focus</label>
+            </span>
+            <span class="item-field-label-extra-short flex-center">
+              <label class="short-label">Reaction</label>
+            </span>
+            <span class="item-field-label-extra-short flex-center">
+              <label class="short-label">Components</label>
+            </span>
+            <span class="item-filler">&nbsp;</span>
+          </li>
+          {{#each expertSpells as |spell key|}}
+          <li class="item stat flexrow list-item list-item-shadow spell-card" data-item-id="{{spell._id}}">
+            <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"src="{{spell.img}}" /></a>
+            <span class="item-name-label"><a class="roll-spell"></i>{{spell.name}}</a></span>
+            <span class="item-field-label-medium flex-center">{{upperFirst spell.system.spelltype}}</span>
+             <span class="item-field-label-medium flex-center">{{upperFirst spell.system.rangeDescription}}</span>
+            <span class="item-field-label-medium flex-center">{{upperFirst spell.system.actionDescription}}</span>
+            <span class="item-field-label-medium flex-center">{{upperFirst spell.system.damageDescription}}</span>
+            <span class="item-field-label-extra-short flex-center">{{#if spell.system.sustained}}<i class="fas fa-circle"></i>{{/if}}</span>
+            <span class="item-field-label-extra-short flex-center">{{#if spell.system.reaction}}<i class="fas fa-circle"></i>{{/if}}</span>
+            <span class="item-field-label-extra-short flex-center">{{#if spell.system.components}}<i class="fas fa-circle"></i>{{/if}}</span>
+            <span class="item-filler">&nbsp;</span>
+            <div class="item-controls item-controls-fixed">
+              <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+            </div>  
+          </li>
+          {{/each}}
+        </ul>
+        {{/if}}
+
+
+        {{#if masterSpells}}
+        <ul class="stat-list alternate-list">
+          <li class="item flexrow list-item items-title-bg">
+            <span class="item-name-label-header">
+              <h3><label class="items-title-text">Master Spells</label></h3>
+            </span>
+            <span class="item-field-label-medium flex-center">
+              <label class="short-label">Type</label>
+            </span>
+            <span class="item-field-label-medium flex-center">
+              <label class="short-label">Range</label>
+            </span>
+            <span class="item-field-label-medium flex-center">
+              <label class="short-label">Cost</label>
+            </span>
+            <span class="item-field-label-medium flex-center">
+              <label class="short-label">Damage</label>
+            </span>
+            <span class="item-field-label-extra-short flex-center">
+              <label class="short-label">Focus</label>
+            </span>
+            <span class="item-field-label-extra-short flex-center">
+              <label class="short-label">Reaction</label>
+            </span>
+            <span class="item-field-label-extra-short flex-center">
+              <label class="short-label">Components</label>
+            </span>
+            <span class="item-filler">&nbsp;</span>
+          </li>
+          {{#each masterSpells as |spell key|}}
+          <li class="item stat flexrow list-item list-item-shadow spell-card" data-item-id="{{spell._id}}">
+            <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"src="{{spell.img}}" /></a>
+            <span class="item-name-label"><a class="roll-spell"></i>{{spell.name}}</a></span>
+            <span class="item-field-label-medium flex-center">{{upperFirst spell.system.spelltype}}</span>
+             <span class="item-field-label-medium flex-center">{{upperFirst spell.system.rangeDescription}}</span>
+            <span class="item-field-label-medium flex-center">{{upperFirst spell.system.actionDescription}}</span>
+            <span class="item-field-label-medium flex-center">{{upperFirst spell.system.damageDescription}}</span>
+            <span class="item-field-label-extra-short flex-center">{{#if spell.system.sustained}}<i class="fas fa-circle"></i>{{/if}}</span>
+            <span class="item-field-label-extra-short flex-center">{{#if spell.system.reaction}}<i class="fas fa-circle"></i>{{/if}}</span>
+            <span class="item-field-label-extra-short flex-center">{{#if spell.system.components}}<i class="fas fa-circle"></i>{{/if}}</span>
+            <span class="item-filler">&nbsp;</span>
+            <div class="item-controls item-controls-fixed">
+              <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+            </div>  
+          </li>
+          {{/each}}
+        </ul>
+        {{/if}}
 
       </div>
     </div>
@@ -985,9 +1162,6 @@
 
     </div>
 
-
-    
-
     {{!-- Biography Tab --}}
     <div class="tab biodata" data-group="primary" data-tab="biodata">
       <div class="grid grid-2col">
@@ -995,24 +1169,15 @@
           <ul class="item-list alternate-list">
             <li class="item flexrow">
               <label class="generic-label">Origin</label>
-              <input type="text" class="" name="system.biodata.origin" value="{{data.biodata.origin}}"
+              <input type="text" class="" name="system.biodata.origin" value="{{system.biodata.origin}}"
                 data-dtype="String" />
             </li>
             <li class="item flexrow">
-              <label class="generic-label">Age</label>
-              <input type="text" class="" name="system.biodata.age" value="{{data.biodata.age}}" data-dtype="String" />
-            </li>
-            <li class="item flexrow">
-              <label class="generic-label">Height</label>
-              <input type="text" class="" name="system.biodata.height" value="{{data.biodata.height}}" data-dtype="String" />
-            </li>
-            <li class="item flexrow">
-              <label class="generic-label">Eyes</label>
-              <input type="text" class="" name="system.biodata.eyes" value="{{data.biodata.eyes}}" data-dtype="String" />
-            </li>
-            <li class="item flexrow">
-              <label class="generic-label">Hair</label>
-              <input type="text" class="" name="system.biodata.hair" value="{{data.biodata.hair}}" data-dtype="String" />
+               <input type="text" class="" name="system.uuid" value="{{system.uuid}}"
+                data-dtype="String" />
+                {{#if isGM}}
+               <button id="import-character" class="flex0">Import Character</button>
+               {{/if}}
             </li>
           </ul>
         </div>
@@ -1021,7 +1186,7 @@
             <li class="flexrow item">
               <label class="generic-label">Size</label>
               <select class="competence-base flexrow" type="text" name="system.biodata.size" value="{{data.biodata.size}}" data-dtype="Number">
-                {{#select data.biodata.size}}
+                {{#select system.biodata.size}}
                 <option value="1">Tiny</option>
                 <option value="2">Small</option>
                 <option value="3">Medium</option>
@@ -1030,20 +1195,6 @@
                 <option value="6">Gargantuan</option>
                 {{/select}}
               </select> 
-            </li>
-            <li class="flexrow item">
-              <label class="generic-label">Sex</label>
-              <input type="text" class="" name="system.biodata.sex" value="{{data.biodata.sex}}" data-dtype="String" />
-            </li>
-            <li class="flexrow item">
-              <label class="generic-label">Preferred Hand</label>
-              <input type="text" class="" name="system.biodata.preferredhand" value="{{data.biodata.preferredhand}}"
-                data-dtype="String" />
-            </li>
-            <li class="flexrow item" data-item-id="{{race._id}}">
-              <label class="generic-label">Race</label>
-              <a class="item-edit"><img class="stat-icon" src="{{race.img}}"></a>
-              <input type="text" class="" name="system.biodata.racename" value="{{data.biodata.racename}}" data-dtype="String" />
             </li>
           </ul>
         </div>

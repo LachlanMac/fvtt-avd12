@@ -1,0 +1,23 @@
+<form class="skill-roll-dialog">
+  <header class="roll-dialog-header">
+    {{#if img}}
+    <img class="actor-icon" src="{{img}}" data-edit="img" title="{{name}}" />
+    {{/if}}
+    <h1 class="dialog-roll-title roll-dialog-header">Take a Full Rest</h1>
+  </header>
+
+    <div class="flexcol">
+      <div class="flexrow">
+        <span class="roll-dialog-label">Extra Health Regeneration : </span>
+        <input type="text" class="flex-center" id="bonus-health" name="bonus-health" value="0" data-dtype="Number"/>  
+      </div>
+    </div>
+
+    <div class="flexcol">
+      <div class="flexrow">
+        <span class="roll-dialog-label">Extra Power Regeneration : </span>
+        <input type="text" class="flex-center" id="bonus-power" name="bonus-power" value="0" data-dtype="Number"/>  
+      </div>
+    </div>
+
+</form>

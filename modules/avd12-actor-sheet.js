@@ -21,9 +21,40 @@ export class Avd12ActorSheet extends ActorSheet {
     });
   }
 
+  async importData(){
+  
+
+    let uuid = this.actor.system.uuid;
+    let actor = this.actor;
+    
+    await $.ajax({
+      type: "GET",
+      //url: `https://anyventured12.com/foundryvtt/${uuid}`,
+      url: `https://localhost/foundryvtt/${uuid}`,
+      dataType:"json",
+      success: function (data) {
+        actor.importData(data)
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+          console.log(jqXHR.responseText);
+          console.log(textStatus); //returns error
+          console.log(errorThrown); //returns bad request
+      }
+    });
+  }
+
   /* -------------------------------------------- */
-  async getData() {
+  async getData(options) {
+
+
     let formData = {
+
+      hpOverlayCalculationCurrent1: this.actor.getHealthPercentage().primary,
+      hpOverlayCalculationCurrent2: this.actor.getHealthPercentage().secondary,
+
+      powerOverlayCalculationCurrent1: this.actor.getPowerPercentage().primary,
+      powerOverlayCalculationCurrent2: this.actor.getPowerPercentage().secondary,
+
       title: this.title,
       id: this.actor.id,
       bonuses: this.actor.system.bonus,
@@ -40,17 +71,20 @@ export class Avd12ActorSheet extends ActorSheet {
       reactions: this.actor.getReactions(),
       freeactions: this.actor.getFreeActions(),
       ballads: this.actor.getBallads(),
-
       gloves: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getGloves()) ),
       rings: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getRings()) ),
       cloaks: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getCloaks()) ),
       boots: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getBoots()) ),
       headwear: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getHeadwear()) ),
-  
       weapons: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getWeapons()) ),
       armors: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getArmors())),
       shields: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getShields())),
       spells: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getSpells())),
+      beginnerSpells: this.actor.getBeginnerSpells(duplicate(this.actor.getSpells())),
+      noviceSpells: this.actor.getNoviceSpells(duplicate(this.actor.getSpells())),
+      expertSpells: this.actor.getExpertSpells(duplicate(this.actor.getSpells())),
+      masterSpells: this.actor.getMasterSpells(duplicate(this.actor.getSpells())),
+      grandmasterSpells: this.actor.getGrandmasterSpells(duplicate(this.actor.getSpells())),
       equipments: this.actor.checkAndPrepareEquipments(duplicate(this.actor.getEquipmentsOnly()) ),
       equippedWeapons: this.actor.checkAndPrepareEquipments(duplicate(this.actor.getEquippedWeapons()) ),
       equippedArmor: this.actor.getEquippedArmor(),
@@ -70,17 +104,25 @@ export class Avd12ActorSheet extends ActorSheet {
   }
 
 
+
   /* -------------------------------------------- */
   /** @override */
   activateListeners(html) {
     super.activateListeners(html);
-
     // Everything below here is only needed if the sheet is editable
     if (!this.options.editable) return;
     
     html.bind("keydown", function(e) { // Ignore Enter in actores sheet
       if (e.keyCode === 13) return false;
     });  
+ 
+    html.find('#rest-display').click(ev => {
+      this.actor.rest();
+    });    
+
+    html.find('#essence-burn-icon').click(ev => {
+      this.actor.essenceBurn();
+    });    
 
     // Update Inventory Item
     html.find('.item-edit').click(ev => {
@@ -158,8 +200,14 @@ export class Avd12ActorSheet extends ActorSheet {
       const li = $(event.currentTarget).parents(".item");
       const weponId = li.data("item-id")
       this.actor.rollWeapon(weponId)
+     
     });
 
+
+    html.find('#import-character').click((event) => {
+      this.importData("TEST");
+    });
+    
 
     html.find('.roll-weapon-damage').click((event) => {
       const li = $(event.currentTarget).parents(".item");
@@ -202,16 +250,10 @@ export class Avd12ActorSheet extends ActorSheet {
       let value = Number(ev.currentTarget.value);
       this.actor.update( { [`${fieldName}`]: value } );
     });    
+  
 
-   
   }
   
-  async handleLightSource(item){
-
-    console.log("HANDLING LGIHT SOURCE!?");
-
-  }
-
   /* -------------------------------------------- */
   /** @override */
   setPosition(options = {}) {
