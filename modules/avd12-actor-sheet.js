@@ -22,15 +22,12 @@ export class Avd12ActorSheet extends ActorSheet {
   }
 
   async importData(){
-  
-
     let uuid = this.actor.system.uuid;
     let actor = this.actor;
-    
     await $.ajax({
       type: "GET",
-      //url: `https://anyventured12.com/foundryvtt/${uuid}`,
-      url: `https://localhost/foundryvtt/${uuid}`,
+      url: `https://anyventured12.com/foundryvtt/${uuid}`,
+      //url: `https://localhost/foundryvtt/${uuid}`,
       dataType:"json",
       success: function (data) {
         actor.importData(data)
@@ -45,16 +42,12 @@ export class Avd12ActorSheet extends ActorSheet {
 
   /* -------------------------------------------- */
   async getData(options) {
-
-
     let formData = {
-
       hpOverlayCalculationCurrent1: this.actor.getHealthPercentage().primary,
       hpOverlayCalculationCurrent2: this.actor.getHealthPercentage().secondary,
-
       powerOverlayCalculationCurrent1: this.actor.getPowerPercentage().primary,
       powerOverlayCalculationCurrent2: this.actor.getPowerPercentage().secondary,
-
+      hasFocusEquipped : this.actor.hasFocusEquipped(),
       title: this.title,
       id: this.actor.id,
       bonuses: this.actor.system.bonus,
@@ -67,10 +60,12 @@ export class Avd12ActorSheet extends ActorSheet {
       limited: this.object.limited,
       modules: this.actor.getModules(),
       traits: this.actor.getTraits(),
+      character: this.actor.type == "character",
       actions: this.actor.getActions(),
       reactions: this.actor.getReactions(),
       freeactions: this.actor.getFreeActions(),
       ballads: this.actor.getBallads(),
+      stances: this.actor.checkAndPrepareEquipments(duplicate(this.actor.getStances())),
       gloves: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getGloves()) ),
       rings: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getRings()) ),
       cloaks: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getCloaks()) ),
@@ -102,28 +97,29 @@ export class Avd12ActorSheet extends ActorSheet {
     this.formData = formData;
     return formData;
   }
-
-
-
-  /* -------------------------------------------- */
   /** @override */
   activateListeners(html) {
     super.activateListeners(html);
-    // Everything below here is only needed if the sheet is editable
     if (!this.options.editable) return;
-    
+    let shift = false;
+    $(document).keydown(function(e) {
+      if(e.which === 16)
+        shift = true;
+    })
+    $(document).keyup(function(e) {
+      if(e.which === 16)
+        shift = false;
+    })
     html.bind("keydown", function(e) { // Ignore Enter in actores sheet
       if (e.keyCode === 13) return false;
+
     });  
- 
     html.find('#rest-display').click(ev => {
       this.actor.rest();
     });    
-
     html.find('#essence-burn-icon').click(ev => {
       this.actor.essenceBurn();
     });    
-
     // Update Inventory Item
     html.find('.item-edit').click(ev => {
       const li = $(ev.currentTarget).parents(".item")
@@ -140,14 +136,12 @@ export class Avd12ActorSheet extends ActorSheet {
       let dataType = $(ev.currentTarget).data("type")
       this.actor.createEmbeddedDocuments('Item', [{ name: "NewItem", type: dataType }], { renderSheet: true })
     })
-    
     html.find('.subactor-edit').click(ev => {
       const li = $(ev.currentTarget).parents(".item");
       let actorId = li.data("actor-id");
       let actor = game.actors.get( actorId );
       actor.sheet.render(true);
     });
-    
     html.find('.subactor-delete').click(ev => {
       const li = $(ev.currentTarget).parents(".item");
       let actorId = li.data("actor-id");
@@ -161,7 +155,6 @@ export class Avd12ActorSheet extends ActorSheet {
       const li = $(event.currentTarget).parents(".item");
       this.actor.incDecQuantity( li.data("item-id"), +1 );
     } );
-
     html.find('.ammo-minus').click(event => {
       const li = $(event.currentTarget).parents(".item")
       this.actor.incDecAmmo( li.data("item-id"), -1 );
@@ -170,66 +163,66 @@ export class Avd12ActorSheet extends ActorSheet {
       const li = $(event.currentTarget).parents(".item")
       this.actor.incDecAmmo( li.data("item-id"), +1 )
     } );
-      
     html.find('#take-damage-btn').click((event) => {
       this.actor.takeDamage();
     });
-
-
     html.find('.roll-skill').click((event) => {
       let attrKey = $(event.currentTarget).data("attr-key")
       let skillKey = $(event.currentTarget).data("skill-key")
-      this.actor.rollSkill(attrKey, skillKey)
+      this.actor.rollSkill(attrKey, skillKey, !shift)
     });   
-
+    html.find('.change-stance').click((event) => {
+      const li = $(event.currentTarget).parents(".item");
+      this.actor.changeStance( li.data("item-id") )
+    });    
     html.find('.roll-spell').click((event) => {
       const li = $(event.currentTarget).parents(".item");
-      this.actor.rollSpell( li.data("item-id") )
+      this.actor.rollSpell( li.data("item-id"), !shift)
+    });    
+    html.find('.roll-spell-damage').click((event) => {
+      const li = $(event.currentTarget).parents(".item");
+      this.actor.rollSpellDamage( li.data("item-id"), !shift)
     });    
     html.find('.roll-crafting').click((event) => {
       const li = $(event.currentTarget).parents(".item");
-      this.actor.rollCrafting( li.data("item-id") )
+      this.actor.rollCrafting( li.data("item-id"), !shift )
     });    
     html.find('.roll-universal').click((event) => {
       let skillKey = $(event.currentTarget).data("skill-key")
     
-      this.actor.rollUniversal(skillKey)
+      this.actor.rollUniversal(skillKey, !shift)
     });    
-    
     html.find('.roll-weapon').click((event) => {
       const li = $(event.currentTarget).parents(".item");
       const weponId = li.data("item-id")
-      this.actor.rollWeapon(weponId)
-     
+      this.actor.rollWeapon(weponId, !shift)
     });
-
-
     html.find('#import-character').click((event) => {
       this.importData("TEST");
     });
-    
-
+    html.find('.use-action').click((event) => {
+      const li = $(event.currentTarget).parents(".item");
+      const actionId = li.data("item-id");
+      this.actor.useAction(actionId)
+    });
     html.find('.roll-weapon-damage').click((event) => {
       const li = $(event.currentTarget).parents(".item");
       const dmg = $(event.currentTarget).data("damage")
       const weaponId = li.data("item-id")
-      this.actor.rollWeaponDamage(weaponId, dmg)
+      this.actor.rollWeaponDamage(weaponId, dmg, !shift)
     });
-    
     html.find('.roll-secondary-weapon-damage').click((event) => {
       const li = $(event.currentTarget).parents(".item");
       const dmg = $(event.currentTarget).data("damage")
       const weaponId = li.data("item-id")
-      this.actor.rollSecondaryWeaponDamage(weaponId, dmg)
+      this.actor.rollSecondaryWeaponDamage(weaponId, dmg, !shift)
     });
-
     html.find('.roll-tertiary-weapon-damage').click((event) => {
       const li = $(event.currentTarget).parents(".item");
       const dmg = $(event.currentTarget).data("damage")
       const weaponId = li.data("item-id")
-      this.actor.rollTertiaryWeaponDamage(weaponId, dmg)
+      this.actor.rollTertiaryWeaponDamage(weaponId, dmg, !shift)
     });
-    
     html.find('.lock-unlock-sheet').click((event) => {
       this.options.editScore = !this.options.editScore;
       this.render(true);
@@ -244,14 +237,11 @@ export class Avd12ActorSheet extends ActorSheet {
       this.actor.equipItem( li.data("item-id") );
       this.render(true);      
     });
-
     html.find('.update-field').change(ev => {
       const fieldName = $(ev.currentTarget).data("field-name");
       let value = Number(ev.currentTarget.value);
       this.actor.update( { [`${fieldName}`]: value } );
     });    
-  
-
   }
   
   /* -------------------------------------------- */
@@ -266,6 +256,7 @@ export class Avd12ActorSheet extends ActorSheet {
 
   /* -------------------------------------------- */
   async _onDropItem(event, dragData) {
+    console.log("DRAG DATA:::", dragData);
     const item = fromUuidSync(dragData.uuid)
     let itemFull
     if (item == undefined) {

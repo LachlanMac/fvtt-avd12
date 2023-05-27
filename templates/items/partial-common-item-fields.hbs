@@ -32,44 +32,80 @@
 </li>
 
 <li class='flexrow'>
-  {{#each system.bonus as |bonus key|}}
-    <div>
+
+    <div class="flex-center flexcol">
       <label class='item-field-label-short'>
-        {{upperFirst key}}
+       Block
       </label>
       <input
         type='text'
-        class='item-field-label-short padd-right'
-        name="system.bonus.{{key}}.value"
-        value="{{bonus.value}}"
+        class='item-field-label-short'
+        name="system.bonus.block.value"
+        value="{{system.bonus.block.value}}"
         data-dtype='Number'
       />
-      <label>
-        &nbsp;
-      </label>
+     
     </div>
-  {{/each}}
+
+    <div class="flex-center flexcol">
+      <label class='item-field-label-short'>
+       Dodge
+      </label>
+      <input
+        type='text'
+        class='item-field-label-short'
+        name="system.bonus.dodge.value"
+        value="{{system.bonus.dodge.value}}"
+        data-dtype='Number'
+      />
+      
+    </div>
+
+    <div class="flex-center flexcol">
+      <label class='item-field-label-short'>
+       Resist
+      </label>
+      <input
+        type='text'
+        class='item-field-label-short'
+        name="system.bonus.resistance.value"
+        value="{{system.bonus.resistance.value}}"
+        data-dtype='Number'
+      />
+   
+    </div>
+
+
+    <div class="flex-center flexcol">
+      <label class='item-field-label-short'>
+        Movespeed
+      </label>
+      <input
+        type='text'
+        class='item-field-label-short'
+        name="system.bonus.movespeed"
+        value="{{system.bonus.movespeed}}"
+        data-dtype='Number'
+      />
+    
+    </div>
+    
+    <div class="flex-center flexcol">
+      <label class='item-field-label-short'>
+        Health
+      </label>
+      <input
+        type='text'
+        class='item-field-label-short'
+        name="system.bonus.health"
+        value="{{system.bonus.health}}"
+        data-dtype='Number'
+      />
+    </div>
 </li>
 
-{{#if (eq type "weapon")}}
-  <li class='flexrow'>
-      <div>
-        <label class='item-field-label-short'>
-          Attack Bonus
-        </label>
-        <input
-          type='text'
-          class='item-field-label-short padd-right'
-          name="system.attackbonus"
-          value="{{system.attackbonus}}"
-          data-dtype='Number'
-        />
-        <label>
-          &nbsp;
-        </label>
-      </div>
-  </li>
-{{/if}}
+  
+
 
 <li class='flexrow'>
   <h3 class='item-field-label-long'>
@@ -95,15 +131,6 @@
           {{> systems/fvtt-avd12/templates/items/partial-options-focus-bond.hbs}}
         {{/select}}
       </select> 
-      </li>
-      <li class='flexrow'>
-        <span>Focus Points : {{focusData.focusPoints}} </span>
-        <span>Burn Chance : {{focusData.burnChance}} </span>
-        <span>Focus Regen : {{focusData.focusRegen}} </span>
-      </li>
-      <li class='flexrow'>
-        <span>Spell Attack Bonus : {{focusData.spellAttackBonus}} </span>
-        <span>Spell Damage Bonus : {{focusData.spellDamageBonus}} </span>
       </li>
   {{/if}}
 <li class='flexrow'>
@@ -145,7 +172,51 @@
     value="{{system.burnchancebonus}}"
     data-dtype='Number'
   />
+
+ <label class='item-field-label-short'>
+    &nbsp;
+  </label>
+
+  <label class='item-field-label-long'>
+      Spell Attack Bonus
+    </label>
+    <input
+      type='text'
+      class='item-field-label-short'
+      name='system.bonus.spellattack'
+      value="{{system.bonus.spellattack}}"
+      data-dtype='Number'
+    />
 </li>
+
+
+<li class='flexrow'>
+  <label class='item-field-label-long'>
+    Spell Damage Bonus
+  </label>
+  <input
+    type='text'
+    class='item-field-label-short'
+    name='system.bonus.spelldamage'
+    value="{{system.bonus.spelldamage}}"
+    data-dtype='Number'
+  />
+
+ <label class='item-field-label-short'>
+    &nbsp;
+  </label>
+  
+</li>
+
+      <!-- "attack": 0,
+          "spellattack":0,
+          "movespeed":0,
+          "health":0,
+          "power":0,
+          "powerregen":0,
+          "spelldamage":0-->
+
+
 
 <li class='flexrow'>
   <h3 class='item-field-label-long'>
@@ -177,34 +248,6 @@
     class='item-field-label-short'
     name='system.cost'
     value="{{system.cost}}"
-    data-dtype='Number'
-  />
-</li>
-
-<li class='flexrow'>
-  <label class='item-field-label-long'>
-    Health
-  </label>
-  <input
-    type='text'
-    class='item-field-label-short'
-    name='system.health'
-    value="{{system.health}}"
-    data-dtype='Number'
-  />
-
-  <label class='item-field-label-short'>
-    &nbsp;
-  </label>
-
-  <label class='item-field-label-long'>
-    Move speed
-  </label>
-  <input
-    type='text'
-    class='item-field-label-short'
-    name='system.movespeed'
-    value="{{system.movespeed}}"
     data-dtype='Number'
   />
 </li>

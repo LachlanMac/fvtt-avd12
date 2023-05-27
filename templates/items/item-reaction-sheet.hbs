@@ -6,26 +6,8 @@
       </div>
   </header>
   
-  {{> systems/fvtt-avd12/templates/items/partial-item-nav.hbs}}
-
-
   {{!-- Sheet Body --}}
   <section class="sheet-body">
-
-    {{> systems/fvtt-avd12/templates/items/partial-item-description.hbs}}
-    
-    <div class="tab details" data-group="primary" data-tab="details">
-
-      <div class="tab" data-group="primary">
-        <ul>
-          <li class="flexrow">
-            <label class="item-field-label-long">Selected</label>
-            <input type="checkbox" class="item-field-label-short" name="system.selected" {{checked system.selected}} />
-          </li>
-
-        </ul>
-    </div>
-  </div>
-
+    {{> systems/fvtt-avd12/templates/items/partial-rollable.hbs}}
   </section>
 </form>

@@ -44,8 +44,10 @@
   font-size: 16px;
   letter-spacing: 1px;
   font-family: 'Kanit', serif;
-  
+}
 
+.text-center{
+  text-align: center;
 }
 
 form button {
@@ -339,6 +341,14 @@ table {border: 1px solid #7a7971;}
   background: #fff;
 }
 
+.fvtt-avd12 .editor-content {
+  background: #313131;
+  color: white;
+  padding:5px;
+  border: 5px purple solid;
+  border-radius: 5px;
+}
+
 .fvtt-avd12 .tox .tox-edit-area {
   padding: 0 8px;
 }
@@ -467,6 +477,8 @@ section.sheet-body{padding: 0.25rem 0.5rem;}
   object-fit: cover;
   object-position: 50% 0;
   margin: 0.5rem 0 0.5rem  0.5rem;
+  width:128px;
+  height:128px;
   padding: 0;
 }
 
@@ -628,12 +640,14 @@ ul, li {
 }
 
 .sheet-competence-img {
-  width: 24px;
-  max-width: 24px;
-  height: 24px;
-  max-height: 24px;
+  width: 32px;
+  max-width: 32px;
+  height: 32px;
+  max-height: 32px;
   flex-grow: 0;
   margin-right: 0.25rem;
+  
+  
 }
 .competence-column {
   flex-direction: column;
@@ -834,11 +848,16 @@ ul, li {
   text-align: center;
 }
 input[type="checkbox"] {
+  width: 20px;                         /* Set width */
+  height: 20px;                        /* Set height */
+  clip-path: circle(46% at 50% 50%);   /* Set the clip path of circle*/
+}
+
+input[type="checkbox"] .skillcheck {
   width: 45px;                         /* Set width */
   height: 45px;                        /* Set height */
   clip-path: circle(46% at 50% 50%);   /* Set the clip path of circle*/
 }
-
 
 .skill-label {
   font-size: 0.7rem;
@@ -1133,6 +1152,11 @@ input[type="checkbox"] {
   transition: opacity 0.3s;
 }
 
+.use-action{
+  text-align: center;
+  font-size: 20px;
+}
+
 
 .tooltip-nobottom {
   border-bottom: unset; /* If you want dots under the hoverable text */
@@ -1395,6 +1419,12 @@ input[type="checkbox"] {
   align-content: space-between;
 }
 
+.v-center{ 
+  display: flex;
+  justify-content: center;
+  align-items:center;
+}
+
 
 .large-skill{
   font-size: 16px;
@@ -1509,7 +1539,7 @@ select[type="text"]{
 }
 .roll-description{
   font-size:1.1em;
-  padding:0px 5px 0px 5px;
+
 }
 
 .big-label{
@@ -1806,10 +1836,86 @@ select[type="text"]{
 
 }
 
-.health-bar{
- 
-
+.active-stance{
+  border: 2px white solid;
+  background:rgb(43, 43, 43);
 }
 
+.roll-d4{
+  position: relative;
+  min-width: 24px;
+  line-height: 24px;
+  float: left;
+  margin-right: 1px;
+  background-image: url(/icons/svg/d4-grey.svg);
+  background-repeat: no-repeat;
+  background-size: 24px 24px;
+  font-size: var(--font-size-16);
+  color: #000;
+  font-weight: bold;
+  text-align: center;
+}
 
+.roll-d6{
+  position: relative;
+  min-width: 24px;
+  line-height: 24px;
+  float: left;
+  margin-right: 1px;
+  background-image: url(/icons/svg/d6-grey.svg);
+  background-repeat: no-repeat;
+  background-size: 24px 24px;
+  font-size: var(--font-size-16);
+  color: #000;
+  font-weight: bold;
+  text-align: center;
+}
 
+.roll-d8{
+  position: relative;
+  min-width: 24px;
+  line-height: 24px;
+  float: left;
+  margin-right: 1px;
+  background-image: url(/icons/svg/d8-grey.svg);
+  background-repeat: no-repeat;
+  background-size: 24px 24px;
+  font-size: var(--font-size-16);
+  color: #000;
+  font-weight: bold;
+  text-align: center;
+}
+
+.roll-d10{
+  position: relative;
+  min-width: 24px;
+  line-height: 24px;
+  float: left;
+  margin-right: 1px;
+  background-image: url(/icons/svg/d10-grey.svg);
+  background-repeat: no-repeat;
+  background-size: 24px 24px;
+  font-size: var(--font-size-16);
+  color: #000;
+  font-weight: bold;
+  text-align: center;
+}
+
+.roll-d12{
+  position: relative;
+  min-width: 24px;
+  line-height: 24px;
+  float: left;
+  margin-right: 1px;
+  background-image: url(/icons/svg/d12-grey.svg);
+  background-repeat: no-repeat;
+  background-size: 24px 24px;
+  font-size: var(--font-size-16);
+  color: #000;
+  font-weight: bold;
+  text-align: center;
+}
+
+.action-roll-btn{
+  width:150px;
+}

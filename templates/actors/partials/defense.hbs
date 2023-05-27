@@ -1,0 +1,42 @@
+
+
+<ul class="stat-list alternate-list">
+            <li class="item flexrow list-item items-title-bg">
+              <span class="item-name-label-header-long">
+                <h3><label class="items-title-text">Defense</label></h3>
+              </span>
+            </li>
+
+            <div class="flexrow flexrow-no-expand flex-center">
+              <span class="item-field-skill skill-label large-skill">
+
+                <div class="flexcol">
+                  <a class="flex-center">Dodge:{{system.attributes.agility.skills.dodge.finalvalue}}</a>
+                  <a class=""> <img class=" roll-skill ui-dice flex-center"   width="32px" height="32px" src="systems/fvtt-avd12/images/ui/D12_White.webp" data-skill-key="dodge" data-attr-key="agility"/></a>
+                </div>
+            </span>
+              <span class="item-field-skill skill-label large-skill">
+              <div class="flexcol">
+                  <a class="flex-center">Block:{{system.attributes.might.skills.block.finalvalue}}</a>
+                  <a class=""> <img class=" roll-skill ui-dice flex-center"   width="32px" height="32px" src="systems/fvtt-avd12/images/ui/D12_White.webp" data-skill-key="block" data-attr-key="might"/></a>
+                </div>              </span>
+              <span class="item-field-skill skill-label large-skill">
+            <div class="flexcol">
+                  <a class="flex-center">Resist:{{system.attributes.willpower.skills.resistance.finalvalue}}</a>
+                  <a class=""> <img class=" roll-skill ui-dice flex-center"   width="32px" height="32px" src="systems/fvtt-avd12/images/ui/D12_White.webp" data-skill-key="resistance" data-attr-key="willpower"/></a>
+                </div>              </span>
+            </div>
+              
+            <div class="flex-row">
+              <button id="take-damage-btn" class="flex0">Take Damage</button>
+            </div>
+
+            {{#each system.mitigation as |mitigation key|}}
+            {{#if (ne mitigation.value 0)}}
+            <li class="item flexrow list-item list-item-shadow" data-mitigation-id="{{key}} ">
+              <span class="item-name-label-medium">{{mitigation.label}}</span>
+              <span class="item-name-label-short">{{mitigation.value}}</span>
+            </li>
+            {{/if}}
+            {{/each}}
+          </ul>

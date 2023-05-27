@@ -10,10 +10,14 @@
   <div class="flexcol">
     <div>
       <ul>
+        {{#if (eq actor.type 'npc')}}
+        <li><b>{{actor.name}} took {{description}} {{damageType}} Damage!</b></li>
+        {{else}}
         <li><b>{{actor.name}} took {{adjusted}} {{damageType}} Damage {{#if lifeline}}and they are now in Lifeline{{/if}}!</b></li>
         <li>Total Damage : {{totalDamage}} </li>
         <li>{{damageType}} Mitigation : {{mitigation}} </li>
         <li>Mitigation Modifier : {{damageModifier}} </li>
+        {{/if}}
       </ul>  
     </div>
     </div>

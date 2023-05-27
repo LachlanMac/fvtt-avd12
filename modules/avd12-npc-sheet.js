@@ -20,7 +20,9 @@ export class Avd12NPCSheet extends ActorSheet {
         editScore: true
       });
     }
-  
+    
+
+
     /* -------------------------------------------- */
     async getData() {
       let formData = {
@@ -28,17 +30,20 @@ export class Avd12NPCSheet extends ActorSheet {
         id: this.actor.id,
         bonuses: this.actor.system.bonus,
         type: this.actor.type,
+        character: this.actor.type == "character",
         img: this.actor.img,
         name: this.actor.name,
+        creatureSize: Avd12Utility.getSize(this.actor.system.biodata.size),
+        creatureType: this.actor.system.creature_type,
         editable: this.isEditable,
         cssClass: this.isEditable ? "editable" : "locked",
         system: duplicate(this.object.system),
         limited: this.object.limited,
         modules: this.actor.getModules(),
-        traits: this.actor.getTraits(),
-        actions: this.actor.getActions(),
-        reactions: this.actor.getReactions(),
-        freeactions: this.actor.getFreeActions(),
+        traits: this.actor.getNpcTraits(),
+        actions: this.actor.getNpcActions(),
+        reactions: this.actor.getNpcReactions(),
+        freeactions: this.actor.getNpcFreeactions(),
         ballads: this.actor.getBallads(),
         weapons: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getWeapons()) ),
         armors: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getArmors())),
@@ -126,7 +131,14 @@ export class Avd12NPCSheet extends ActorSheet {
         this.actor.takeDamage();
       });
   
-  
+      html.find('.use-action').click((event) => {
+        const li = $(event.currentTarget).parents(".item");
+        const actionId = li.data("item-id");
+        this.actor.useAction(actionId)
+      });
+
+      
+
       html.find('.roll-skill').click((event) => {
         let attrKey = $(event.currentTarget).data("attr-key")
         let skillKey = $(event.currentTarget).data("skill-key")
@@ -150,7 +162,7 @@ export class Avd12NPCSheet extends ActorSheet {
       html.find('.roll-weapon').click((event) => {
         const li = $(event.currentTarget).parents(".item");
         const weponId = li.data("item-id")
-        this.actor.rollWeapon(weponId)
+        this.actor.rollWeapon(weponId, event.which)
       });
   
   

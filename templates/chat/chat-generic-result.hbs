@@ -2,32 +2,74 @@
   {{#if actorImg}}
   <img class="actor-icon" src="{{actorImg}}" alt="{{alias}}" />
   {{/if}}
-  <h4 class=chat-actor-name>{{alias}}</h4>
+  <h4 class="chat-actor-name">{{alias}}</h4>
 </div>
 
   <hr>
   
   {{#if img}}
-  <div >
+  <div>
     <img class="chat-icon" src="{{img}}" alt="{{name}}" />
   </div>
   {{/if}}
 
   <div class="flexcol">
+     {{#if action}}     
+      <span style="font-size:16px;"><b>{{action.name}}</b></span>
+    {{/if}}
+
     <div>
       <ul>
+        {{#if action}}
+          {{#if (eq action.type "action")}}
+          <li><b>[Roll]</b></li>
+          {{/if}}
+          {{#if (eq action.type "damage")}}
+          <li><b>[Damage]</b></li>
+          {{/if}}
+          {{#if (eq action.type "damage-secondary")}}
+          <li><b>[Secondary Damage]</b></li>
+          {{/if}}
+          {{#if (eq action.type "damage-tertiary")}}
+          <li><b>[Tertiary Damage]</b></li>
+          {{/if}}
+          <li>Bonus Modifier : <b>{{bonusMalusRoll}}</b></li>
+          <li>Formula : <b>{{diceFormula}}</b> </li>
+
+          {{#if (eq action.type "action")}}
+            <li>Total : <b>{{roll.total}}</b></li>
+          {{/if}}
+          {{#if (eq action.type "damage")}}
+            <li>Total : <b>{{roll.total}} {{upperFirst action.system.damage_type}} Damage</b></li>
+          {{/if}}
+          {{#if (eq action.type "damage-secondary")}}
+            <li>Total : <b>{{roll.total}} {{upperFirst action.system.secondary_damage_type}} Damage</b></li>
+          {{/if}}
+          {{#if (eq action.type "damage-tertiary")}}
+            <li>Total : <b>{{roll.total}} {{upperFirst action.system.tertiary_damage_type}} Damage</b></li>
+          {{/if}}
+          <ol>{{{roll.diceData}}}</ol>
+        
+        {{/if}}
         {{#if skill}}
           <li>Skill : {{skill.name}} ({{skill.finalvalue}}) </li>
           <li>Modifier : <b>{{bonusMalusRoll}}</b></li>
           <li>Dice Formula : <b>{{diceFormula}}</b> </li>
-          <li>Result : <b>{{roll.total}}</b></li>
+          <li>Total : <b>{{roll.total}} </b></li>
+        {{/if}}
+
+        {{#if weapon}}
+          <li>Skill : {{weapon.name}}</li>
+          <li>Modifier : <b>{{bonusMalusRoll}}</b></li>
+          <li>Dice Formula : <b>{{diceFormula}}</b> </li>
+          <li>Total : <b>{{roll.total}}</b></li>
         {{/if}}
 
         {{#if crafting}}
         <li>Crafting : {{crafting.name}} ({{crafting.system.level}}) </li>
         <li>Modifier : <b>{{bonusMalusRoll}}</b></li>
         <li>Dice Formula : <b>{{diceFormula}}</b> </li>
-        <li>Result : <b>{{roll.total}}</b></li>
+        <li>Total : <b>{{roll.total}}</b></li>
         {{/if}}
 
         {{#if spell}}
@@ -36,13 +78,13 @@
           <li>Focus Points Spent : <b>{{spellCost}}</b></li>
           <li>Modifier : <b>{{bonusMalusRoll}}</b></li>
           <li>Dice Formula : <b>{{diceFormula}}</b> </li>
-          <li>Result : <b>{{roll.total}}</b></li>
+          <li>Total : <b>{{roll.total}}</b></li>
         {{/if}}
 
         {{#if burn}}
            <li><b>Essence Burn</b>
             <li>Dice Formula : <b>{{diceFormula}} </b></li>
-          <li>Result :  <b>({{roll.total}}) {{#if (gt roll.total 0)}}Success!{{else}}Failure!{{/if}}</b></li>
+          <li>Total :  <b>({{roll.total}}) {{#if (gt roll.total 0)}}Success!{{else}}Failure!{{/if}}</b></li>
         {{/if}}
       </ul>  
     </div>

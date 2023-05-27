@@ -1,0 +1,60 @@
+<div class="grid grid-2col">
+        <div>
+          <ul class="item-list alternate-list">
+            <li class="item flexrow">
+              <label class="generic-label">Origin</label>
+              <input type="text" class="item-field-label-long flex2" name="system.biodata.origin" value="{{system.biodata.origin}}"
+                data-dtype="String" />
+            </li>
+            <li class="item flexrow">
+               <input type="text" class="" name="system.uuid" value="{{system.uuid}}"
+                data-dtype="String" />
+                {{#if isGM}}
+               <button id="import-character" class="flex0">Import Character</button>
+               {{/if}}
+            </li>
+          </ul>
+        </div>
+       <div>
+          <ul>
+            <li class="flexrow item">
+              <label class="generic-label">Size</label>
+              <select class="competence-base flexrow" type="text" name="system.biodata.size" value="{{data.biodata.size}}" data-dtype="Number">
+                {{#select system.biodata.size}}
+                  <option value="1">Tiny</option>
+                  <option value="2">Small</option>
+                  <option value="3">Medium</option>
+                  <option value="4">Large</option>
+                  <option value="5">Huge</option>
+                  <option value="6">Gargantuan</option>
+                {{/select}}
+              </select> 
+            </li>
+            <li class="flexrow item">
+              <label class="generic-label">Type</label>
+              <select class="competence-base flexrow" type="text" name="system.creature_type" value="{{system.creature_type}}" data-dtype="String">
+                {{#select system.creature_type}}
+                  {{> systems/fvtt-avd12/templates/actors/partials/creature-type.hbs}}
+                {{/select}}
+    
+              </select> 
+              
+           
+           
+            </li>
+          </ul>
+        </div>
+      </div>
+      <hr>
+      <h3>Background : </h3>
+      <div class="form-group editor">
+        {{editor data.biodata.description target="system.biodata.description" button=true owner=owner
+        editable=editable}}
+      </div>
+      <hr>
+      <h3>Notes : </h3>
+      <div class="form-group editor">
+        {{editor data.biodata.notes target="system.biodata.notes" button=true owner=owner editable=editable}}
+      </div>
+      <hr>
+      </article>

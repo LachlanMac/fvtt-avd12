@@ -10,7 +10,11 @@
   <div class="flexcol">
     <div>
       <ul>
+        {{#if breather}} 
+         <li><b>{{actor.name}}</b> took a Breather!</b></li>
+        {{else}}
         <li><b>{{actor.name}}</b> completed a {{favorable}} Rest and recovered <b>{{health}}</b> Health and <b>{{power}}</b> Power!</b></li>
+        {{/if}}
       </ul>  
     </div>
     </div>

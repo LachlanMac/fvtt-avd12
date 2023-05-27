@@ -1,0 +1,273 @@
+<ul class="item-list alternate-list">
+     {{#if character}}
+      <li class="item flexrow list-item items-title-bg">
+        <a class="item-edit item-name-img" title="Edit Item"></a>
+        <span class="flex1">
+           <h3 class="text-center"><label class="items-title-text">Actions</label></h3>
+        </span>
+          
+            <span class="flex1 flex-center" style="padding-top:5px;">
+          <label class="items-title-text">Uses</label>
+                </span>
+         
+          <span class="flex3 flex-center" style="padding-top:5px;">
+            <label class="items-title-text">Description</label>
+          </span>
+      <div class="item-controls item-controls-fixed">
+          <a class="item-control item-add" data-type="action" title="Create Item"><i class="fas fa-plus"></i></a>
+        </div>
+      </li>
+      {{#each actions as |action key|}}
+      <li class="item flexrow list-item list-item-shadow" data-item-id="{{action._id}}">
+        <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
+            src="{{action.img}}" /></a>
+        <a class="flex1 big-label use-action"><p>{{action.name}}</p></a>
+        <a class="flex1 big-label flex-center">
+          {{#if (eq action.system.uses.current 3) }}
+              <i style="padding-left:5px; padding-right:5px;" class="fa-solid fa-circle"></i><i  style="padding-left:5px; padding-right:5px;" class="fa-solid fa-circle"></i><i  style="padding-left:5px; padding-right:5px;" class="fa-solid fa-circle"></i>
+          {{/if}}
+          {{#if (eq action.system.uses.current 2) }}
+              <i  style="padding-left:5px; padding-right:5px;" class="fa-solid fa-circle"></i><i  style="padding-left:5px; padding-right:5px;" class="fa-solid fa-circle"></i><i  style="padding-left:5px; padding-right:5px;" class="fa-regular fa-circle"></i>
+          {{/if}}
+            {{#if (eq action.system.uses.current 1) }}
+              <i  style="padding-left:5px; padding-right:5px;" class="fa-solid fa-circle"></i><i  style="padding-left:5px; padding-right:5px;" class="fa-regular fa-circle"></i><i  style="padding-left:5px; padding-right:5px;" class="fa-regular fa-circle"></i>
+          {{/if}}
+          {{#if (eq action.system.uses.current 0) }}
+            <i  style="padding-left:5px; padding-right:5px;" class="fa-regular fa-circle"></i><i  style="padding-left:5px; padding-right:5px;" class="fa-regular fa-circle"></i><i  style="padding-left:5px; padding-right:5px;" class="fa-regular fa-circle"></i>
+          {{/if}}
+        </a>
+        <span class="flex3 item-description">{{{action.system.description}}}</span>
+        <div class="item-controls item-controls-fixed">
+          <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+        </div>
+      </li>
+      {{/each}}
+      {{else}}
+
+  <li class="item flexrow list-item items-title-bg">
+        <a class="item-edit item-name-img" title="Edit Item"></a>
+        <span class="flex1">
+            <h3 class="text-center"><label class="items-title-text">Actions</label></h3>
+        </span>
+          <span class="flex3 flex-center" style="padding-top:5px;">
+            <label class="items-title-text">Description</label>
+          </span>
+      <div class="item-controls item-controls-fixed">
+          <a class="item-control item-add" data-type="action" title="Create Item"><i class="fas fa-plus"></i></a>
+        </div>
+      </li>
+      {{#each actions as |action key|}}
+      <li class="item flexrow list-item list-item-shadow" data-item-id="{{action._id}}">
+        <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
+            src="{{action.img}}" /></a>
+        <a class="flex1  use-action big-label"><p>{{action.name}}</p></a>
+        <span class="flex3 item-description">{{{action.system.description}}}</span>
+        <div class="item-controls item-controls-fixed">
+          <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+        </div>
+      </li>
+      {{/each}}
+      {{/if}}
+    </ul>
+      <ul class="item-list alternate-list">
+        {{#if character}}
+        <li class="item flexrow list-item items-title-bg">
+          <a class="item-edit item-name-img" title="Edit Item"></a>
+          <span class="flex1">
+              <h3 class="text-center"><label class="items-title-text">Reactions</label></h3>
+          </span>
+          
+            <span class="flex1 flex-center" style="padding-top:5px;">
+              <label class="items-title-text">Uses</label>
+            </span>
+              <span class="flex3 flex-center" style="padding-top:5px;">
+              <label class="items-title-text">Description</label>
+              </span>
+          <div class="item-controls item-controls-fixed">
+            <a class="item-control item-add" data-type="reaction" title="Create Item"><i class="fas fa-plus"></i></a>
+          </div>
+        </li>
+        {{#each reactions as |action key|}}
+        <li class="item flexrow list-item list-item-shadow" data-item-id="{{action._id}}">
+          <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
+              src="{{action.img}}" /></a>
+          <a class="flex1 big-label use-action"><p>{{action.name}}</p></a>
+            
+            <a class="flex1 big-label flex-center">
+              {{#if (eq action.system.uses.current 2) }}
+                  <i  style="padding-left:5px; padding-right:5px;" class="fa-solid fa-circle"></i><i  style="padding-left:5px; padding-right:5px;" class="fa-solid fa-circle"></i>
+              {{/if}}
+               {{#if (eq action.system.uses.current 1) }}
+                  <i  style="padding-left:5px; padding-right:5px;" class="fa-solid fa-circle"></i><i  style="padding-left:5px; padding-right:5px;" class="fa-regular fa-circle"></i>
+              {{/if}}
+              {{#if (eq action.system.uses.current 0) }}
+                <i  style="padding-left:5px; padding-right:5px;" class="fa-regular fa-circle"></i><i  style="padding-left:5px; padding-right:5px;" class="fa-regular fa-circle"></i>
+               {{/if}}
+            </a>
+          
+          <span class="flex3 item-description">{{{action.system.description}}}</span>
+          <div class="item-controls item-controls-fixed">
+            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+          </div>
+        </li>
+        {{/each}}
+
+        {{else}}
+
+        <li class="item flexrow list-item items-title-bg">
+          <a class="item-edit item-name-img" title="Edit Item"></a>
+          <span class="flex1">
+              <h3 class="text-center"><label class="items-title-text">Reactions</label></h3>
+          </span>
+              <span class="flex3 flex-center" style="padding-top:5px;">
+              <label class="items-title-text">Description</label>
+              </span>
+          <div class="item-controls item-controls-fixed">
+            <a class="item-control item-add" data-type="reaction" title="Create Item"><i class="fas fa-plus"></i></a>
+          </div>
+        </li>
+        {{#each reactions as |action key|}}
+        <li class="item flexrow list-item list-item-shadow" data-item-id="{{action._id}}">
+          <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
+              src="{{action.img}}" /></a>
+          <a class="flex1 big-label use-action"><p>{{action.name}}</p></a>
+            
+          
+          
+          <span class="flex3 item-description">{{{action.system.description}}}</span>
+          <div class="item-controls item-controls-fixed">
+            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+          </div>
+        </li>
+        {{/each}}
+
+
+        {{/if}}
+
+
+
+
+      </ul>
+        <!-- BALLADS -->
+        {{#if (and ballads character)}}
+        <ul class="item-list alternate-list">
+        <li class="item flexrow list-item items-title-bg">
+          <a class="item-edit item-name-img" title="Edit Item"></a>
+          <span class="flex1">
+             <h3 class="text-center"><label class="items-title-text">Ballads</label></h3>
+          </span>
+            <span class="flex3 flex-center" style="padding-top:5px;">
+            <label class="items-title-text">Description</label>
+          </span>
+          <div class="item-controls item-controls-fixed">
+            <a class="item-control item-add" data-type="ballad" title="Create Item"><i class="fas fa-plus"></i></a>
+          </div>
+        </li>
+        {{#each ballads as |action key|}}
+        <li class="item flexrow list-item list-item-shadow" data-item-id="{{action._id}}">
+          <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
+              src="{{action.img}}" /></a>
+          <a class="flex1 big-label use-action"><p>{{action.name}}</p></a>
+          <span class="flex3 item-description">{{{action.system.description}}}</span>
+          <div class="item-controls item-controls-fixed">
+            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+          </div>
+        </li>
+        {{/each}}
+      </ul>
+        {{/if}}
+
+      <ul class="item-list alternate-list">
+        <li class="item flexrow list-item items-title-bg">
+          <a class="item-edit item-name-img" title="Edit Item"></a>
+          <span class="flex1">
+             <h3 class="text-center"><label class="items-title-text">Free Actions</label></h3>
+          </span>
+          <span class="flex3 flex-center" style="padding-top:5px;">
+            <label class="items-title-text">Description</label>
+          </span>
+          <div class="item-controls item-controls-fixed">
+            <a class="item-control item-add" data-type="freeaction" title="Create Item"><i class="fas fa-plus"></i></a>
+          </div>
+        </li>
+        {{#each freeactions as |action key|}}
+        <li class="item flexrow list-item list-item-shadow" data-item-id="{{action._id}}">
+          <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
+              src="{{action.img}}" /></a>
+          <a class="flex1 big-label use-action"><p>{{action.name}}</p></a>
+          <span class="flex3 item-description">{{{action.system.description}}}</span>
+          <div class="item-controls item-controls-fixed">
+            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+ 
+          </div>
+        </li>
+        {{/each}}
+      </ul>
+    {{#if character}}
+      <ul class="stat-list alternate-list">
+        <li class="item flexrow list-item items-title-bg">
+          
+          <a class="item-edit item-name-img" title="Edit Item"></a>
+          
+          <span class="flex1">
+            <h3 class="text-center"><label class="items-title-text">Stances</label></h3>
+          </span>
+          
+          <span class="flex3 flex-center" style="padding-top:5px;">
+            <label class="items-title-text">Description</label>
+          </span>
+            
+            <div class="item-controls item-controls-fixed">
+              <a class="item-control item-add" data-type="ballad" title="Create Item"><i class="fas fa-plus"></i></a>
+          </div>
+        </li>
+          {{#each stances as |stance key|}}
+        <li class="item stat flexrow list-item list-item-shadow  spell-card {{#if stance.system.active}}active-stance {{/if}}" data-item-id="{{stance._id}}">
+          <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"src="{{stance.img}}" /></a>
+          
+          <span class="text-center">
+            <a class="change-stance"><p>{{stance.name}}</p></a>
+          </span>
+          
+          <span class="flex3">{{upperFirst stance.system.description}}</span>
+          
+          <div class="item-controls item-controls-fixed">
+            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+          </div>
+          
+        </li>
+        {{/each}}
+      </ul> 
+    {{else}}
+    
+        <ul class="stat-list alternate-list">
+          <li class="item flexrow list-item items-title-bg">
+            <a class="item-edit item-name-img" title="Edit Item"></a>
+            <span class="flex1">
+              <h3 class="text-center"><label class="items-title-text">Traits</label></h3>
+            </span>
+            <span class="flex3 flex-center" style="padding-top:5px;">
+              <label class="items-title-text">Description</label>
+            </span>
+            <div class="item-controls item-controls-fixed">
+              <a class="item-control item-add" data-type="trait" title="Create Item"><i class="fas fa-plus"></i></a>
+            </div>
+          </li>
+          {{#each traits as |trait key|}}
+          <li class="item stat flexrow list-item list-item-shadow" data-item-id="{{trait._id}}">
+            <a class="item-edit item-name-img" title="Edit Item">
+              <img class="sheet-competence-img"src="{{trait.img}}" />
+            </a>
+            <span class="text-center"><p>{{trait.name}}</p></span>
+            <span class="flex3">{{{upperFirst trait.system.description}}}</span>
+            <div class="item-controls item-controls-fixed">
+              <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+            </div>
+          </li>
+          {{/each}}
+        </ul>
+    
+    {{/if}}
+
+
+    

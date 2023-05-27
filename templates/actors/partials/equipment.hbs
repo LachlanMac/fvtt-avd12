@@ -1,0 +1,249 @@
+      <!--
+      <div class="flexrow">
+        <h3>Encumbrance</h3>
+        <span class="small-label">Current : {{encCurrent}}</span>
+        <span class="small-label">Capacity : {{encCapacity}}</span>
+      </div>
+      -->
+<ul class="item-list alternate-list">
+        <li class="item flexrow list-item items-title-bg">
+           <a class="item-edit item-name-img" title="Edit Item"></a>
+          <span class="flex1">
+            <h3><label class="items-title-text">Weapons</label></h3>
+          </span>
+         
+            <span class="flex3 flex-center" style="padding-top:5px;">
+            <label class="items-title-text">Description</label>
+          </span>
+          <div class="item-controls item-controls-fixed">
+            <a class="item-control item-add" data-type="weapon" title="Create Item"><i class="fas fa-plus"></i></a>
+          </div>
+        </li>
+        {{#each weapons as |weapon key|}}
+        <li class="item flexrow list-item list-item-shadow" data-item-id="{{weapon._id}}">
+          <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
+              src="{{weapon.img}}" /></a>
+          <span class="flex1 big-label">{{weapon.name}}</span>
+          <span class="flex3 item-description">{{{weapon.system.description}}}</span>
+          <div class="item-controls item-controls-fixed">
+            <a class="item-control item-equip" title="Worn">{{#if weapon.system.equipped}}<i
+                class="fas fa-circle"></i>{{else}}<i class="fas fa-genderless"></i>{{/if}}</a>
+            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+          </div>
+        </li>
+        {{/each}}
+      </ul>
+
+
+      <ul class="item-list alternate-list">
+        <li class="item flexrow list-item items-title-bg">
+           <a class="item-edit item-name-img" title="Edit Item"></a>
+          <span class="flex1">
+            <h3><label class="items-title-text">Armor</label></h3>
+          </span>
+        
+           <span class="flex3 flex-center" style="padding-top:5px;">
+            <label class="items-title-text">Description</label>
+          </span>
+          <div class="item-controls item-controls-fixed">
+            <a class="item-control item-add" data-type="armor" title="Create Item"><i class="fas fa-plus"></i></a>
+          </div>
+        </li>
+        {{#each armors as |weapon key|}}
+        <li class="item flexrow list-item list-item-shadow" data-item-id="{{weapon._id}}">
+          <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
+              src="{{weapon.img}}" /></a>
+          <span class="flex1 big-label">{{weapon.name}}</span>
+          <span class="flex3 item-description">{{{weapon.system.description}}}</span>
+          <div class="item-controls item-controls-fixed">
+            <a class="item-control item-equip" title="Worn">{{#if weapon.system.equipped}}<i
+                class="fas fa-circle"></i>{{else}}<i class="fas fa-genderless"></i>{{/if}}</a>
+            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+          </div>
+        </li>
+        {{/each}}
+      </ul>
+
+      <ul class="item-list alternate-list">
+        <li class="item flexrow list-item items-title-bg">
+           <a class="item-edit item-name-img" title="Edit Item"></a>
+          <span class="flex1">
+            <h3><label class="items-title-text">Shields</label></h3>
+          </span>
+         
+             <span class="flex3 flex-center" style="padding-top:5px;">
+            <label class="items-title-text">Description</label>
+          </span>
+          <div class="item-controls item-controls-fixed">
+            <a class="item-control item-add" data-type="shield" title="Create Item"><i class="fas fa-plus"></i></a>
+          </div>
+        </li>
+        {{#each shields as |weapon key|}}
+        <li class="item flexrow list-item list-item-shadow" data-item-id="{{weapon._id}}">
+          <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
+              src="{{weapon.img}}" /></a>
+          <span class="flex1 big-label">{{weapon.name}}</span>
+          <span class="flex3 item-description">{{{weapon.system.description}}}</span>
+          <div class="item-controls item-controls-fixed">
+            <a class="item-control item-equip" title="Worn">{{#if weapon.system.equipped}}<i
+                class="fas fa-circle"></i>{{else}}<i class="fas fa-genderless"></i>{{/if}}</a>
+            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+          </div>
+        </li>
+        {{/each}}
+      </ul>
+
+       <ul class="item-list alternate-list">
+        <li class="item flexrow list-item items-title-bg">
+           <a class="item-edit item-name-img" title="Edit Item"></a>
+          <span class="flex1">
+            <h3><label class="items-title-text">Gloves</label></h3>
+          </span>
+         
+             <span class="flex3 flex-center" style="padding-top:5px;">
+            <label class="items-title-text">Description</label>
+          </span>
+          <div class="item-controls item-controls-fixed">
+            <a class="item-control item-add" data-type="gloves" title="Create Item"><i class="fas fa-plus"></i></a>
+          </div>
+        </li>
+        {{#each gloves as |weapon key|}}
+        <li class="item flexrow list-item list-item-shadow" data-item-id="{{weapon._id}}">
+          <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
+              src="{{weapon.img}}" /></a>
+          <span class="flex1 big-label">{{weapon.name}}</span>
+          <span class="flex3 item-description">{{{weapon.system.description}}}</span>
+          <div class="item-controls item-controls-fixed">
+            <a class="item-control item-equip" title="Worn">{{#if weapon.system.equipped}}<i
+                class="fas fa-circle"></i>{{else}}<i class="fas fa-genderless"></i>{{/if}}</a>
+            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+          </div>
+        </li>
+        {{/each}}
+      </ul>
+
+
+    <ul class="item-list alternate-list">
+        <li class="item flexrow list-item items-title-bg">
+          <a class="item-edit item-name-img" title="Edit Item"></a>
+          <span class="flex1">
+            <h3><label class="items-title-text">Boots</label></h3>
+          </span>
+         
+            <span class="flex3 flex-center" style="padding-top:5px;">
+            <label class="items-title-text">Description</label>
+          </span>
+          <div class="item-controls item-controls-fixed">
+            <a class="item-control item-add" data-type="boots" title="Create Item"><i class="fas fa-plus"></i></a>
+          </div>
+        </li>
+        {{#each boots as |weapon key|}}
+        <li class="item flexrow list-item list-item-shadow" data-item-id="{{weapon._id}}">
+          <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
+              src="{{weapon.img}}" /></a>
+          <span class="flex1 big-label">{{weapon.name}}</span>
+          <span class="flex3 item-description">{{{weapon.system.description}}}</span>
+          <div class="item-controls item-controls-fixed">
+            <a class="item-control item-equip" title="Worn">{{#if weapon.system.equipped}}<i
+                class="fas fa-circle"></i>{{else}}<i class="fas fa-genderless"></i>{{/if}}</a>
+            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+          </div>
+        </li>
+        {{/each}}
+      </ul>
+
+
+      <ul class="item-list alternate-list">
+        <li class="item flexrow list-item items-title-bg">
+          <a class="item-edit item-name-img" title="Edit Item"></a>
+          <span class="flex1">
+            <h3><label class="items-title-text">Rings</label></h3>
+          </span>
+         
+            <span class="flex3 flex-center" style="padding-top:5px;">
+            <label class="items-title-text">Description</label>
+          </span>
+          <div class="item-controls item-controls-fixed">
+            <a class="item-control item-add" data-type="ring" title="Create Item"><i class="fas fa-plus"></i></a>
+          </div>
+        </li>
+        {{#each rings as |weapon key|}}
+        <li class="item flexrow list-item list-item-shadow" data-item-id="{{weapon._id}}">
+          <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
+              src="{{weapon.img}}" /></a>
+          <span class="flex1 big-label">{{weapon.name}}</span>
+          <span class="flex3 item-description">{{{weapon.system.description}}}</span>
+          <div class="item-controls item-controls-fixed">
+            <a class="item-control item-equip" title="Worn">{{#if weapon.system.equipped}}<i
+                class="fas fa-circle"></i>{{else}}<i class="fas fa-genderless"></i>{{/if}}</a>
+            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+          </div>
+        </li>
+        {{/each}}
+      </ul>
+
+
+      <ul class="item-list alternate-list">
+        <li class="item flexrow list-item items-title-bg">
+          <a class="item-edit item-name-img" title="Edit Item"></a>
+          <span class="flex1">
+            <h3><label class="items-title-text">Cloaks</label></h3>
+          </span>
+        
+             <span class="flex3 flex-center" style="padding-top:5px;">
+            <label class="items-title-text">Description</label>
+          </span>
+          <div class="item-controls item-controls-fixed">
+            <a class="item-control item-add" data-type="cloak" title="Create Item"><i class="fas fa-plus"></i></a>
+          </div>
+        </li>
+        {{#each cloaks as |weapon key|}}
+        <li class="item flexrow list-item list-item-shadow" data-item-id="{{weapon._id}}">
+          <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
+              src="{{weapon.img}}" /></a>
+          <span class="flex1 big-label">{{weapon.name}}</span>
+          <span class="flex3 item-description">{{{weapon.system.description}}}</span>
+          <div class="item-controls item-controls-fixed">
+            <a class="item-control item-equip" title="Worn">{{#if weapon.system.equipped}}<i
+                class="fas fa-circle"></i>{{else}}<i class="fas fa-genderless"></i>{{/if}}</a>
+            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+          </div>
+        </li>
+        {{/each}}
+      </ul>
+
+  
+      <ul class="item-list alternate-list">
+        <li class="item flexrow list-item items-title-bg">
+          <a class="item-edit item-name-img" title="Edit Item"></a>
+          <span class="flex1">
+            <h3><label class="items-title-text">Equipment</label></h3>
+          </span>
+          
+          <span class="item-field-label-long flex-center">
+            <label class="items-title-text flex-center">Quantity</label>
+          </span>
+          <span class="flex3 flex-center" style="padding-top:5px;padding-right:74px;">
+            <label  class="flex-center">Description</label>
+          </span>
+          <div class="item-controls item-controls-fixed">
+            <a class="item-control item-add" data-type="cloak" title="Create Item"><i class="fas fa-plus"></i></a>
+          </div>
+        </li>
+        {{#each equipments as |weapon key|}}
+        <li class="item flexrow list-item list-item-shadow" data-item-id="{{weapon._id}}">
+          <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
+              src="{{weapon.img}}" /></a>
+          <span class="flex1 big-label">{{weapon.name}}</span>
+          <span class="item-field-label-long flex-center"><label>
+              {{weapon.system.quantity}}
+              <a class="quantity-minus plus-minus-button"> -</a>/<a class="quantity-plus plus-minus-button">+</a>
+            </label>
+          </span>
+          <span class="flex3 item-description">{{{weapon.system.description}}}</span>
+          <div class="item-controls item-controls-fixed flex-center">
+            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+          </div>
+        </li>
+        {{/each}}
+      </ul>

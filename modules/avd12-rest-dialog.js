@@ -16,6 +16,12 @@ export class Avd12RestDialog extends Dialog {
       title: "Rest",
       content: html,
       buttons: {
+        breather:{
+          icon: '<i class="fas fa-check"></i>',
+          label: "Take a Breather",
+          callback: () => { this.breather() }
+      },
+
         unfavorable:{
             icon: '<i class="fas fa-check"></i>',
             label: "Take Rest",
@@ -42,6 +48,9 @@ export class Avd12RestDialog extends Dialog {
   }
   unfavorableRest() {
     this.actor.takeRest(this.restData, false);
+  }
+  breather() {
+    this.actor.takeBreather(this.restData);
   }
 
   /* -------------------------------------------- */

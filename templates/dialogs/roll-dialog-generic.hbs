@@ -8,6 +8,23 @@
 
     <div class="flexcol">
       
+
+      {{#if action}}
+        {{#if (eq action.type "action")}}
+        
+        {{/if}}
+        {{#if (eq action.type "damage")}}
+          
+        {{/if}}
+        {{#if (eq type "check")}}
+         
+        {{/if}}
+
+
+
+
+      {{/if}}
+
       {{#if skill}}
       <div class="flexrow">
         <span class="roll-dialog-label">Skill : </span>
@@ -49,6 +66,8 @@
         <input type="text" class=" flex-center" id="bonusMalusRoll" name="bonusMalusRoll" value="0" data-dtype="Number"/>  
 
       </div>
+
+      
 
       {{#if (eq skillKey "initiative") }}
 

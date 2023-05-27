@@ -1,0 +1,15 @@
+          <li class="item stat flexrow list-item list-item-shadow spell-card" data-item-id="{{spell._id}}">
+            <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"src="{{spell.img}}" /></a>
+            <span class="item-name-label"><a class="roll-spell"></i>{{spell.name}}</a></span>
+            <span class="item-field-label-medium flex-center">{{upperFirst spell.system.spelltype}}</span>
+             <span class="item-field-label-medium flex-center">{{upperFirst spell.system.rangeDescription}}</span>
+            <span class="item-field-label-medium flex-center">{{upperFirst spell.system.actionDescription}}</span>
+            <a class="item-field-label-medium flex-center roll-spell-damage">{{upperFirst spell.system.damageDescription}}</a>
+            <span class="item-field-label-extra-short flex-center">{{#if spell.system.sustained}}<i class="fas fa-circle"></i>{{/if}}</span>
+            <span class="item-field-label-extra-short flex-center">{{#if spell.system.reaction}}<i class="fas fa-circle"></i>{{/if}}</span>
+            <span class="item-field-label-extra-short flex-center">{{#if spell.system.components}}<i class="fas fa-circle"></i>{{/if}}</span>
+            <span class="item-filler">&nbsp;</span>
+            <div class="item-controls item-controls-fixed">
+              <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+            </div>  
+          </li>

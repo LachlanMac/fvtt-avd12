@@ -1,0 +1,135 @@
+{{#if character}}
+
+<ul class="stat-list alternate-list">
+          <li class="item flexrow list-item items-title-bg">
+            <span class="item-name-label-header-long">
+              <h3><label class="items-title-text">Offense</label></h3>
+            </span>
+          </li>
+          {{#if (or (ne 0 system.bonus.slash.attack) (ne 0 system.bonus.slash.damage))}}
+          <li class="item flexrow list-item list-item-shadow">
+            <span class="item-name-label-medium">Slashing Weapons</span>
+            <ul class="ul-level1">
+              <li class="item flexrow list-item list-item-shadow">
+                <span class="item-name-label-short">Attack</span>
+                <span class="item-name-label-short">{{system.bonus.slash.attack}}</span>
+              </li>
+              <li class="item flexrow list-item list-item-shadow">
+                <span class="item-name-label-short">Damage</span>
+                <span class="item-name-label-short">{{system.bonus.slash.damage}}</span>
+              </li>
+            </ul>
+          </li>
+          {{/if}}
+          {{#if (or (ne 0 system.bonus.blunt.attack) (ne 0 system.bonus.blunt.damage))}}
+            <li class="item flexrow list-item list-item-shadow">
+            <span class="item-name-label-medium">Blunt Weapons</span>
+            <ul class="ul-level1">
+              <li class="item flexrow list-item list-item-shadow">
+                <span class="item-name-label-short">Attack</span>
+                <span class="item-name-label-short">{{system.bonus.blunt.attack}}</span>
+              </li>
+              <li class="item flexrow list-item list-item-shadow">
+                <span class="item-name-label-short">Damage</span>
+                <span class="item-name-label-short">{{system.bonus.blunt.damage}}</span>
+              </li>
+            </ul>
+          </li>
+          {{/if}}
+          {{#if (or (ne 0 system.bonus.pierce.attack) (ne 0 system.bonus.pierce.damage))}}
+            <li class="item flexrow list-item list-item-shadow">
+            <span class="item-name-label-medium">Piercing Weapons</span>
+            <ul class="ul-level1">
+              <li class="item flexrow list-item list-item-shadow">
+                <span class="item-name-label-short">Attack</span>
+                <span class="item-name-label-short">{{system.bonus.pierce.attack}}</span>
+              </li>
+              <li class="item flexrow list-item list-item-shadow">
+                <span class="item-name-label-short">Damage</span>
+                <span class="item-name-label-short">{{system.bonus.pierce.damage}}</span>
+              </li>
+            </ul>
+          </li>
+          {{/if}}
+          {{#if (or (ne 0 system.bonus.unarmed.attack) (ne 0 system.bonus.unarmed.damage))}}
+           <li class="item flexrow list-item list-item-shadow">
+            <span class="item-name-label-medium">Unarmed</span>
+            <ul class="ul-level1">
+              <li class="item flexrow list-item list-item-shadow">
+                <span class="item-name-label-short">Attack</span>
+                <span class="item-name-label-short">{{system.bonus.unarmed.attack}}</span>
+              </li>
+              <li class="item flexrow list-item list-item-shadow">
+                <span class="item-name-label-short">Damage</span>
+                <span class="item-name-label-short">{{system.bonus.unarmed.damage}}</span>
+              </li>
+            </ul>
+          </li>
+          {{/if}}
+          {{#if (or (ne 0 system.bonus.ranged.attack) (ne 0 system.bonus.ranged.damage))}}
+          <li class="item flexrow list-item list-item-shadow">
+            <span class="item-name-label-medium">Ranged Weapons</span>
+            <ul class="ul-level1">
+              <li class="item flexrow list-item list-item-shadow">
+                <span class="item-name-label-short">Attack</span>
+                <span class="item-name-label-short">{{system.bonus.ranged.attack}}</span>
+              </li>
+              <li class="item flexrow list-item list-item-shadow">
+                <span class="item-name-label-short">Damage</span>
+                <span class="item-name-label-short">{{system.bonus.ranged.damage}}</span>
+              </li>
+            </ul>
+          </li>
+          {{/if}}
+          {{#if (or (ne 0 system.bonus.spell.attack) (ne 0 system.bonus.spell.damage))}}
+          <li class="item flexrow list-item list-item-shadow">
+            <span class="item-name-label-medium">Spells</span>
+            <ul class="ul-level1">
+              <li class="item flexrow list-item list-item-shadow">
+                <span class="item-name-label-short">Attack</span>
+                <span class="item-name-label-short">{{system.bonus.spell.attack}}</span>
+              </li>
+              <li class="item flexrow list-item list-item-shadow">
+                <span class="item-name-label-short">Damage</span>
+                <span class="item-name-label-short">{{system.bonus.spell.damage}}</span>
+              </li>
+            </ul>
+          </li>
+            {{/if}}
+        </ul>
+
+{{else}}
+    <ul class="stat-list alternate-list">
+      <li class="item flexrow list-item items-title-bg">
+        <span class="item-name-label-header-long">
+          <h3><label class="items-title-text">NPC Skills</label></h3>
+        </span>
+      </li>
+      <li class="item flexrow list-item list-item-shadow">
+        <span class="item-name-label-medium">Attack</span>
+        <ul class="ul-level1">
+          <li class="item flexrow list-item list-item-shadow flex-center" >
+            <span class="item-name-label-short">Accuracy</span>
+            <input type="text" class="item-field-label-long flex2" name="system.bonus.npc.attack_accuracy" value="{{system.bonus.npc.attack_accuracy}}" data-dtype="Number"/>
+          </li>
+          <li class="item flexrow list-item list-item-shadow flex-center" >
+            <span class="item-name-label-short">Power</span>
+            <input type="text" class="item-field-label-long flex2" name="system.bonus.npc.attack_power" value="{{system.bonus.npc.attack_power}}" data-dtype="Number"/>
+          </li>
+        </ul>
+      </li>
+        <li class="item flexrow list-item list-item-shadow">
+        <span class="item-name-label-medium">Spell Attack</span>
+        <ul class="ul-level1">
+          <li class="item flexrow list-item list-item-shadow flex-center" >
+            <span class="item-name-label-short">Accuracy</span>
+            <input type="text" class="item-field-label-long flex2" name="system.bonus.npc.spell_accuracy" value="{{system.bonus.npc.spell_accuracy}}" data-dtype="Number"/>
+          </li>
+          <li class="item flexrow list-item list-item-shadow flex-center" >
+            <span class="item-name-label-short">Power</span>
+            <input type="text" class="item-field-label-long flex2" name="system.bonus.npc.spell_power" value="{{system.bonus.npc.spell_power}}" data-dtype="Number"/>
+          </li>
+        </ul>
+      </li>
+    </ul>
+{{/if}}

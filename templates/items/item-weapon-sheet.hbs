@@ -44,7 +44,7 @@
               Range
             </h3>
           </li>
-
+      
           <li class="flexrow">
             <label class="item-field-label-long">Min Range</label>
             <input type="text" class="item-field-label-short" name="system.minrange" value="{{system.minrange}}" data-dtype="Number"/>
@@ -81,9 +81,44 @@
           </li>
 
           <li class="flexrow">
-              <h3 class="item-field-label-long">Damages</h3>
+              <h3 class="item-field-label-long">Damage</h3>
           </li>
+          {{#if (eq type "weapon")}}
+            <li class='flexrow'>
+                <div>
+                  <label class='item-field-label-short'>
+                    Attack Bonus
+                  </label>
+                  <input
+                    type='text'
+                    class='item-field-label-short padd-right'
+                    name="system.bonus.attack"
+                    value="{{system.bonus.attack}}"
+                    data-dtype='Number'
+                  />
+                  <label>
+                    &nbsp;
+                  </label>
+                </div>
 
+                  <div>
+                  <label class='item-field-label-short'>
+                    Ammo Capacity
+                  </label>
+                  <input
+                    type='text'
+                    class='item-field-label-short padd-right'
+                    name="system.ammocapacity"
+                    value="{{system.ammocapacity}}"
+                    data-dtype='Number'
+                  />
+                  <label>
+                    &nbsp;
+                  </label>
+                </div>
+            </li>
+            
+          {{/if}}
           <li class="flexrow">
           {{#each system.damages as |damage key|}}
             <div class="flexcol">

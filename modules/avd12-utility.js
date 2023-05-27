@@ -1,4 +1,5 @@
 /* -------------------------------------------- */
+import { Avd12Actor } from "./avd12-actor.js";
 import { Avd12Combat } from "./avd12-combat.js";
 import { Avd12Commands } from "./avd12-commands.js";
 
@@ -19,20 +20,59 @@ const __armorPenalties = {"light": { block: -2, dodge: -1},
     "heavyshield": {dodge: -2, block: 2, speed: -1, stealth: -1} }
 
 
+
+
+
 /* -------------------------------------------- */
 export class Avd12Utility {
 
+  static getMappedValue(actor, key){
+    switch(key){
+      case "@thename":
+        return "The " + actor.name;
+      case "@name":
+        return actor.name;
+      case "@damage":
+        return actor.system.bonus.npc.attack_power;
+      case "@sdamage":
+        return actor.system.bonus.npc.spell_power;
+      case "@attack":
+        return actor.system.bonus.npc.attack_accuracy;
+      case "@sattack":
+          return actor.system.bonus.npc.spell_accuracy; 
+      case "@dodge":
+        return actor.system.attributes.agility.skills.dodge.finalvalue; 
+      
+      default:
+        return -1;
+    }
+  }
+
+
+  static displayChatActionButtons(message, html, data) {
+    const chatCard = html.find(".avd12-use-action");
+    if ( chatCard.length > 0 ) {
+      // If the user is the message author or the actor owner, proceed
+      let actor = game.actors.get(data.message.speaker.actor);
+      if ( actor && actor.isOwner ) {
+        const buttons = chatCard.find("button[data-action]");
+        return;
+      }
+      else if ( game.user.isGM || (data.author.id === game.user.id)) return;
+      // Otherwise conceal action buttons except for saving throw
+      const buttons = chatCard.find("button[data-action]");
+      buttons.each((i, btn) => {
+        if ( btn.dataset.action === "save" ) return;
+        btn.style.display = "none";
+      });
+    }
+  }
 
   /* -------------------------------------------- */
   static async init() {
     Hooks.on('renderChatLog', (log, html, data) => Avd12Utility.chatListeners(html));
-    /*Hooks.on("dropCanvasData", (canvas, data) => {
-      Avd12Utility.dropItemOnToken(canvas, data)
-    });*/
+    Hooks.on("renderChatMessage", Avd12Utility.displayChatActionButtons);
 
-    //system.healthEstimate.core.custom.FractionHP
-    console.log(game.healthEstimate);
-    console.log("SYSTEM::",);
     await Avd12Utility.verifyPath(Avd12Utility.parse("avd12/characters/"));
 
     this.rollDataStore = {}
@@ -43,6 +83,20 @@ export class Avd12Utility {
     Handlebars.registerHelper('count', function (list) {
       return list.length;
     })
+
+    Handlebars.registerHelper('map', function (text, actor) {
+      let parseTokens = Avd12Utility.findAtTokens(text)
+      for(let i =0; i < parseTokens.length; i++){
+        let val = Avd12Utility.getMappedValue(actor, parseTokens[i])
+        if(val == "-1"){
+            text = text.replace(parseTokens[i], "");
+        }else{
+            text = text.replace(parseTokens[i], val);
+        }
+      }
+      return text
+    })
+
     Handlebars.registerHelper('includes', function (array, val) {
       return array.includes(val);
     })
@@ -64,6 +118,10 @@ export class Avd12Utility {
     })
     Handlebars.registerHelper('add', function (a, b) {
       return parseInt(a) + parseInt(b);
+    })
+
+    Handlebars.registerHelper('sub', function (a, b) {
+      return parseInt(a) - parseInt(b);
     })
   }
 
@@ -109,6 +167,11 @@ export class Avd12Utility {
     for (let key in game.system.model.Actor.character.universal.skills) {
       bonusList.push("universal.skills." + key + ".modifier")
     }
+    for (let key in game.system.model.Actor.character.mitigation) {
+      bonusList.push("mitigation." + key + ".value")
+    }
+
+    bonusList.push("mitigation.elemental.value");
     return bonusList
   }
 
@@ -131,6 +194,7 @@ export class Avd12Utility {
 
   /* -------------------------------------------- */
   static async loadCompendiumData(compendium) {
+    
     const pack = game.packs.get(compendium)
     return await pack?.getDocuments() ?? []
   }
@@ -151,7 +215,6 @@ export class Avd12Utility {
 
   /* -------------------------------------------- */
   static async chatListeners(html) {
-
     html.on("click", '.view-item-from-chat', event => {
       game.system.avd12.creator.openItemView(event)
     })
@@ -172,6 +235,8 @@ export class Avd12Utility {
         defender.rollDefenseRanged(rollData)
       }
     })
+
+    Avd12Actor.chatListener(html);
 
   }
 
@@ -195,8 +260,44 @@ export class Avd12Utility {
       'systems/fvtt-avd12/templates/items/partial-options-focus-bond.hbs',
       'systems/fvtt-avd12/templates/items/partial-options-focus-treatment.hbs',
       'systems/fvtt-avd12/templates/items/partial-options-focus-core.hbs',
+      'systems/fvtt-avd12/templates/items/partial-options-crit-level.hbs',
+      'systems/fvtt-avd12/templates/items/partial-options-attack-type.hbs',
+      'systems/fvtt-avd12/templates/items/partial-options-skills.hbs',
+      'systems/fvtt-avd12/templates/items/partial-rollable.hbs',
+      'systems/fvtt-avd12/templates/actors/partials/moves.hbs',
+      'systems/fvtt-avd12/templates/actors/partials/skills.hbs',
+      'systems/fvtt-avd12/templates/actors/partials/defense.hbs',
+      'systems/fvtt-avd12/templates/actors/partials/offense.hbs',
+      'systems/fvtt-avd12/templates/actors/partials/traits.hbs',
+      'systems/fvtt-avd12/templates/actors/partials/header.hbs',
+      'systems/fvtt-avd12/templates/actors/partials/spells.hbs',
+      'systems/fvtt-avd12/templates/actors/partials/equipment.hbs',
+      'systems/fvtt-avd12/templates/actors/partials/weapons.hbs',
+      'systems/fvtt-avd12/templates/actors/partials/biography.hbs',
+      'systems/fvtt-avd12/templates/actors/partials/crafting.hbs',
+      'systems/fvtt-avd12/templates/actors/partials/modules.hbs',
+      'systems/fvtt-avd12/templates/actors/partials/navigation.hbs',
+      'systems/fvtt-avd12/templates/actors/partials/creature-type.hbs',
+      
     ]
     return loadTemplates(templatePaths);
+  }
+
+  static getSize(value){
+    switch(Number(value)){
+      case 1: 
+        return "Tiny";
+      case 2: 
+        return "Small";
+      case 3: 
+        return "Medium";
+      case 4: 
+        return "Large";
+      case 5: 
+        return "Huge";
+      case 6: 
+        return "Gargantuan";
+    }
   }
 
   /* -------------------------------------------- */
@@ -278,131 +379,8 @@ export class Avd12Utility {
     return this.rollDataStore[id]
   }
 
-  /* -------------------------------------------- */
-  static async displayDefenseMessage(rollData) {
-    if (rollData.mode == "weapon" && rollData.defenderTokenId) {
-      let defender = game.canvas.tokens.get(rollData.defenderTokenId).actor
-      if (game.user.isGM || (game.user.character && game.user.character.id == defender.id)) {
-        rollData.defender = defender
-        rollData.defenderWeapons = defender.getEquippedWeapons()
-        rollData.isRangedAttack = rollData.weapon?.system.isranged
-        this.createChatWithRollMode(defender.name, {
-          name: defender.name,
-          alias: defender.name,
-          //user: defender.id,
-          content: await renderTemplate(`systems/fvtt-avd12/templates/chat-request-defense.html`, rollData),
-          whisper: [defender.id].concat(ChatMessage.getWhisperRecipients('GM')),
-        })
-      }
-    }
-  }
 
-  /* -------------------------------------------- */
-  static getSuccessResult(rollData) {
-    if (rollData.sumSuccess <= -3) {
-      if (rollData.attackRollData.weapon.system.isranged) {
-        return { result: "miss", fumble: true, hpLossType: "melee" }
-      } else {
-        return { result: "miss", fumble: true, attackerHPLoss: "2d3", hpLossType: "melee" }
-      }
-    }
-    if (rollData.sumSuccess == -2) {
-      if (rollData.attackRollData.weapon.system.isranged) {
-        return { result: "miss", dangerous_fumble: true }
-      } else {
-        return { result: "miss", dangerous_fumble: true, attackerHPLoss: "1d3", hpLossType: "melee" }
-      }
-    }
-    if (rollData.sumSuccess == -1) {
-      return { result: "miss" }
-    }
-    if (rollData.sumSuccess == 0) {
-      if (rollData.attackRollData.weapon.system.isranged) {
-        return { result: "target_space", aoe: true }
-      } else {
-        return { result: "clash", hack_vs_shields: true }
-      }
-    }
-    if (rollData.sumSuccess == 1) {
-      return { result: "hit", defenderDamage: "1", entangle: true, knockback: true }
-    }
-    if (rollData.sumSuccess == 2) {
-      return { result: "hit", defenderDamage: "2", critical_1: true, entangle: true, knockback: true, penetrating_impale: true, hack_armors: true }
-    }
-    if (rollData.sumSuccess >= 3) {
-      return { result: "hit", defenderDamage: "3", critical_2: true, entangle: true, knockback: true, penetrating_impale: true, hack_armors: true }
-    }
-  }
-
-  /* -------------------------------------------- */
-  static async getFumble(weapon) {
-    const pack = game.packs.get("fvtt-avd12.rolltables")
-    const index = await pack.getIndex()
-    let entry
-
-    if (weapon.isranged) {
-      entry = index.find(e => e.name === "Fumble! (ranged)")
-    }
-    if (!weapon.isranged) {
-      entry = index.find(e => e.name === "Fumble! (melee)")
-    }
-    let table = await pack.getDocument(entry._id)
-    const draw = await table.draw({ displayChat: false, rollMode: "gmroll" })
-    return draw.results.length > 0 ? draw.results[0] : undefined
-  }
-
-  /* -------------------------------------------- */
-  static async processSuccessResult(rollData) {
-    if (game.user.isGM) { // Only GM process this
-      let result = rollData.successDetails
-      let attacker = game.actors.get(rollData.actorId)
-      let defender = game.canvas.tokens.get(rollData.attackRollData.defenderTokenId).actor
-
-      if (attacker && result.attackerHPLoss) {
-        result.attackerHPLossValue = await attacker.incDecHP("-" + result.attackerHPLoss)
-      }
-      if (attacker && defender && result.defenderDamage) {
-        let dmgDice = (rollData.attackRollData.weapon.system.isranged) ? "d6" : "d8"
-        result.damageWeaponFormula = result.defenderDamage + dmgDice
-        result.defenderHPLossValue = await defender.incDecHP("-" + result.damageWeaponFormula)
-      }
-      if (result.fumble || (result.dangerous_fumble && Avd12Utility.isWeaponDangerous(rollData.attackRollData.weapon))) {
-        result.fumbleDetails = await this.getFumble(rollData.weapon)
-      }
-      if (result.critical_1 || result.critical_2) {
-        let isDeadly = Avd12Utility.isWeaponDeadly(rollData.attackRollData.weapon)
-        result.critical = await this.getCritical((result.critical_1) ? "I" : "II", rollData.attackRollData.weapon)
-        result.criticalText = result.critical.text
-      }
-      this.createChatWithRollMode(rollData.alias, {
-        content: await renderTemplate(`systems/fvtt-avd12/templates/chat-attack-defense-result.html`, rollData)
-      })
-    }
-  }
-
-  /* -------------------------------------------- */
-  static async processAttackDefense(rollData) {
-    if (rollData.attackRollData) {
-      let defender = game.canvas.tokens.get(rollData.attackRollData.defenderTokenId).actor
-      let sumSuccess = rollData.attackRollData.nbSuccess - rollData.nbSuccess
-      if (sumSuccess > 0) {
-        let armorResult = await defender.rollArmorDie(rollData)
-        rollData.armorResult = armorResult
-        sumSuccess += rollData.armorResult.nbSuccess
-        if (sumSuccess < 0) { // Never below 0
-          sumSuccess = 0
-        }
-      }
-      rollData.sumSuccess = sumSuccess
-      rollData.successDetails = this.getSuccessResult(rollData)
-      if (game.user.isGM) {
-        this.processSuccessResult(rollData)
-      } else {
-        game.socket.emit("system.fvtt-avd12", { msg: "msg_gm_process_attack_defense", data: rollData });
-      }
-    }
-  }
-
+  
   /* -------------------------------------------- */
   static async onSocketMesssage(msg) {
     if (msg.name == "msg_update_roll") {
@@ -519,65 +497,79 @@ export class Avd12Utility {
     if (skill.system.level > 7) { skill.system.level = 7 }
     skill.system.skilldice = __skillLevel2Dice[skill.system.level]
   }
+  
+  static findAtTokens(inputString) {
+    let regex = /@\w+/g;
+    let result = inputString.match(regex);
+    return result || [];
+}
 
-  /* -------------------------------------------- */
-  static getDiceFromCover(cover) {
-    if (cover == "cover50") return 1
-    return 0
-  }
-  /* -------------------------------------------- */
-  static getDiceFromSituational(cover) {
-    if (cover == "prone") return 1
-    if (cover == "dodge") return 1
-    if (cover == "moving") return 1
-    if (cover == "engaged") return 1
-    return 0
-  }
+
+
 
   /* -------------------------------------------- */
   static async rollAvd12(rollData) {
-
     let actor = game.actors.get(rollData.actorId)
-
-  
     // Build the dice formula
     let diceFormula = "1d12"
-    if (rollData.skill) {
+    if (rollData.skill)
       diceFormula += "+" + rollData.skill.finalvalue
-    }
-    if (rollData.crafting) {
+    if (rollData.crafting) 
       diceFormula += "+" + rollData.crafting.system.level
-    }
-    if (rollData.spellAttack) {
+    if (rollData.spellAttack) 
       diceFormula += "+" + rollData.spellAttack
-    }
-    diceFormula += "+" + rollData.bonusMalusRoll
-    if (rollData.skill && rollData.skill.good) {
+    if (rollData.skill && rollData.skill.good) 
       diceFormula = "3d4+" + rollData.skill.finalvalue;
-    }
-    if (rollData.weapon ) {
-      diceFormula += "+" + rollData.weapon.attackBonus
-    }
-    if(rollData.burn){
+    if (rollData.weapon ) 
+      diceFormula += "+" + rollData.weapon.attackBonus;
+    if(rollData.burn)
       diceFormula = "1d12 -" + rollData.burn.burnValue;
+    if(rollData.action){
+      switch(rollData.action.type){
+        case "action":
+          diceFormula = rollData.diceFormula;
+          console.log(rollData.diceFormula);
+          break;
+        case "utility":
+          diceFormula = rollData.diceFormula;
+          console.log("UTILITY*****\n\n", rollData.diceFormula);
+          break;
+        case "damage":
+          diceFormula = rollData.diceFormula;
+          break;
+        case "damage-tertiary":
+          diceFormula = rollData.diceFormula;
+          break;
+        case "damage-secondary":
+          diceFormula = rollData.diceFormula;
+          break;
+        case "check":
+          diceFormula = rollData.diceFormula;
+          break;
+      }
+      let parseTokens = Avd12Utility.findAtTokens(diceFormula)
+      
+      for(let i =0; i < parseTokens.length; i++){
+        let val = Avd12Utility.getMappedValue(actor, parseTokens[i])
+        if(val == "-1" || isNaN(val)){
+            diceFormula = diceFormula.replace(parseTokens[i], "");
+        }else{
+            diceFormula = diceFormula.replace(parseTokens[i], Number(val));
+        }
+      }
     }
+  
+    diceFormula += "+" + rollData.bonusMalusRoll  
     rollData.diceFormula = diceFormula
 
     // Performs roll
     let myRoll = rollData.roll
     if (!myRoll) { // New rolls only of no rerolls
       myRoll = new Roll(diceFormula).roll({ async: false })
+      myRoll.diceData = this.setDiceDisplay(myRoll);
       await this.showDiceSoNice(myRoll, game.settings.get("core", "rollMode"))
     }
     rollData.roll = myRoll
-
-    rollData.isSuccess = false
-    if (rollData.targetCheck != "none") {
-      if (myRoll.total >= Number(rollData.targetCheck)) {
-        rollData.isSuccess = true
-      }
-    }
-
     if (rollData.spell) {
       actor.spentFocusPoints(rollData.spell)
     }
@@ -586,12 +578,54 @@ export class Avd12Utility {
       content: await renderTemplate(`systems/fvtt-avd12/templates/chat/chat-generic-result.hbs`, rollData)
     })
 
-
     msg.setFlag("world", "rolldata", rollData)
     if (rollData.skillKey == "initiative") {
       actor.setFlag("world", "initiative", myRoll.total) 
     }
+  }
 
+  static setDiceDisplay(result){
+    console.log(result.dice);
+    let str = "";
+    for(let i in result.dice){
+
+      let currResult = result.dice[i];
+
+      switch(Number(currResult.faces)){
+        case 4:
+          for(let j = 0; j < currResult.results.length; j++){
+            str += `<li class='roll-d4'>${result.dice[i].results[j].result}</li>`
+          }
+          break;
+        case 6:
+          for(let j = 0; j < currResult.results.length; j++){
+            str += `<li class='roll-d6'>${result.dice[i].results[j].result}</li>`
+          }
+          break;  
+        case 8:
+          for(let j = 0; j < currResult.results.length; j++){
+            str += `<li class='roll-d8'>${result.dice[i].results[j].result}</li>`
+          }
+          break;
+        case 10:
+          for(let j = 0; j < currResult.results.length; j++){
+            str += `<li class='roll-d10'>${result.dice[i].results[j].result}</li>`
+          }
+        break;
+        case 12:
+          for(let j = 0; j < currResult.results.length; j++){
+            str += `<li class='roll-d12'>${result.dice[i].results[j].result}</li>`
+          }
+          break;
+        case 20:
+          for(let j = 0; j < currResult.results.length; j++){
+            str += `<li class='roll-d20'>${result.dice[i].results[j].result}</li>`
+          }
+          break;
+      }
+    }
+
+    return str;
   }
 
   /* -------------------------------------------- */
@@ -833,28 +867,19 @@ export class Avd12Utility {
     return ChatMessage.create(chatOptions);
   }
 
-  static async displayDefenseMessage(rollData) {
-    if (rollData.mode == "weapon" && rollData.defenderTokenId) {
-      let defender = game.canvas.tokens.get(rollData.defenderTokenId).actor
-      if (game.user.isGM || (game.user.character && game.user.character.id == defender.id)) {
-        rollData.defender = defender
-        rollData.defenderWeapons = defender.getEquippedWeapons()
-        rollData.isRangedAttack = rollData.weapon?.system.isranged
-        this.createChatWithRollMode(defender.name, {
-          name: defender.name,
-          alias: defender.name,
-          //user: defender.id,
-          content: await renderTemplate(`systems/fvtt-avd12/templates/chat-request-defense.html`, rollData),
-        })
-      }
-    }
-  }
-
   static async createDamageChatMessage(damageData) {
     return ChatMessage.create({
       name : damageData.actor.name, 
       alias : damageData.actor.name, 
       content : await renderTemplate(`systems/fvtt-avd12/templates/chat/take-damage-result.hbs`, damageData)
+    });
+  }
+
+  static async createUseActionChatMessage(actionData) {
+    return ChatMessage.create({
+      name : actionData.actor.name, 
+      alias : actionData.actor.name, 
+      content : await renderTemplate(`systems/fvtt-avd12/templates/chat/chat-use-action.hbs`, actionData)
     });
   }
 
@@ -865,7 +890,6 @@ export class Avd12Utility {
       content : await renderTemplate(`systems/fvtt-avd12/templates/chat/take-rest.hbs`, restData)
     });
   }
-
 
   /* -------------------------------------------- */
   static getBasicRollData() {
@@ -889,9 +913,38 @@ export class Avd12Utility {
 
   /* -------------------------------------------- */
   static createChatWithRollMode(name, chatOptions) {
+    console.log(name, chatOptions);
     return this.createChatMessage(name, game.settings.get("core", "rollMode"), chatOptions)
   }
 
+
+  static getStanceId(id){
+
+    const idToValue = {
+      "1": "NCEq4AOX8Kvncmw2",
+      "2": "3TqyZJjHnVIdYf2D",
+      "3": "TySBH1U1KHDMKHYh",
+      "4": "RJQUTk0E4pzY5mu5",
+      "5": "ncPdN83j5FGqpUvJ",
+      "6": "e0BA0soylepbF7UW",
+      "7": "wDd0r83QzxZfNLfv",
+      "8": "qznqKa6tYEjNIeP6",
+      "9": "b54615Tqm50544A4",
+      "10": "eNLJUSTFRwQXiBul",
+      "11": "ezKWJyeRdPeJqSR9",
+      "12": "3YhdOrOBbhU5vWxg",
+      "13": "UhmPOlbTqhlPrxix",
+      "14": "UhmPOlbTqhlPrxix",
+      "15": "QXSoaGNidcaKQ6AV",
+      "16": "PZ0cRFmbvULKHc8K",
+      "17": "pt8B35nAVkEt2kOx",
+      "18": "zkqZsHjlpz8kOn6a",
+      "19": "KAkQHJGIkMrGeNGX",
+      "20": "zWANggNp2aMhJXhY",
+      "default": "NCEq4AOX8Kvncmw2"
+    };
+    return idToValue[id] || idToValue.undefined;
+  }
 
   /* -------------------------------------------- */
   static async confirmDelete(actorSheet, li) {

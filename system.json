@@ -62,7 +62,17 @@
       "system": "fvtt-avd12",
       "private": false,
       "flags": {}
+    },
+    {
+      "type": "Item",
+      "label": "Stances",
+      "name": "stances",
+      "path": "packs/stances.db",
+      "system": "fvtt-avd12",
+      "private": false,
+      "flags": {}
     }
+    
   ],
   "title": "AnyVenture D12 RPG",
   "url": "https://www.uberwald.me/gitea/public/fvtt-avd12",
