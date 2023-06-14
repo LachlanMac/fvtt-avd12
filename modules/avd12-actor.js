@@ -21,6 +21,7 @@ export class Avd12Actor extends Actor {
    * @param {Object} options     (Unused) Additional options which customize the creation workflow.
    */
   static async create(data, options) {
+    console.log("CREATING! WTF??!");
     if (data instanceof Array) {
       return super.create(data, options);
     }
@@ -119,16 +120,27 @@ export class Avd12Actor extends Actor {
       this.system.movement.walk.value = 6;
       this.system.encCapacity = this.getEncumbranceCapacity()
       this.buildContainerTree()
+      console.log("Clear Data");
       this.clearData()
+      console.log("Rebuild Skills Data");
       this.rebuildSkills()
+      console.log("Rebuild Size Data");
       this.rebuildSize()
+      console.log("Rebuild Traits Data");
       this.rebuildTraits()
+      console.log("Rebuild Modules Data");
       this.rebuildModules()
+      console.log("Rebuild Bonuses Data");
       this.rebuildBonuses()
+      console.log("Rebuild Mitigations Data");
       this.rebuildMitigations()
+      console.log("Rebuild Equipment Data");
       this.rebuildEquipment()
+      console.log("Rebuild Stances Data");
       this.parseStances()
+      console.log("Rebuild Active Effects Data");
       this.parseActiveEffects()
+      console.log("Rebuild Bonuses Data");
       this.rebuildBonuses()
     }
     super.prepareDerivedData();
@@ -165,7 +177,33 @@ export class Avd12Actor extends Actor {
         skill.finalvalue = skill.modifier + attr.value
       }
     }
-    
+
+
+    //the master formula for sizes
+      switch(Number(this.system.biodata.size)){
+        case 1: 
+          this.system.attributes.agility.skills.dodge.finalvalue += 2; 
+          this.system.attributes.might.skills.block.finalvalue -= 2; 
+          break;
+        case 2: 
+          this.system.attributes.agility.skills.dodge.finalvalue += 1; 
+          this.system.attributes.might.skills.block.finalvalue -= 1;
+          break;
+        case 3: 
+          break;
+        case 4:  
+          this.system.attributes.agility.skills.dodge.finalvalue -= 1; 
+          break;
+        case 5: 
+          this.system.attributes.agility.skills.dodge.finalvalue -= 2; 
+          this.system.attributes.might.skills.block.finalvalue -= 1;
+          break;
+        case 6: 
+          this.system.attributes.agility.skills.dodge.finalvalue -= 2; 
+          this.system.attributes.might.skills.block.finalvalue -= 2;
+          break;
+      
+      }
 
 
     for (let skillKey in this.system.universal.skills) {
@@ -405,7 +443,6 @@ export class Avd12Actor extends Actor {
           break;
       }
     })
-  
     if(lightsource && LightSourceOn){
       protoToken.update({"light.dim":lightsource.dim})
       protoToken.update({"light.animation":lightsource.animation})
@@ -1580,15 +1617,6 @@ export class Avd12Actor extends Actor {
 
   }
 
-  /* -------------------------------------------- */
-  async incDecHP(formula) {
-    let dmgRoll = new Roll(formula).roll({ async: false })
-    await Avd12Utility.showDiceSoNice(dmgRoll, game.settings.get("core", "rollMode"))
-    let hp = duplicate(this.system.secondary.hp)
-    hp.value = Number(hp.value) + Number(dmgRoll.total)
-    this.update({ 'system.secondary.hp': hp })
-    return Number(dmgRoll.total)
-  }
 
   /* -------------------------------------------- */
   async addObjectToContainer(itemId, containerId) {

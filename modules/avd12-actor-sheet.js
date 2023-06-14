@@ -74,7 +74,6 @@ export class Avd12ActorSheet extends ActorSheet {
       weapons: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getWeapons()) ),
       armors: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getArmors())),
       shields: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getShields())),
-      spells: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getSpells())),
       beginnerSpells: this.actor.getBeginnerSpells(duplicate(this.actor.getSpells())),
       noviceSpells: this.actor.getNoviceSpells(duplicate(this.actor.getSpells())),
       expertSpells: this.actor.getExpertSpells(duplicate(this.actor.getSpells())),

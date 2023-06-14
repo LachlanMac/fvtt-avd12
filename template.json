@@ -217,6 +217,12 @@
             "modifier": 0,
             "value": 0,
             "primary": false
+          },
+          "swim": {
+            "label": "Swim",
+            "modifier": 0,
+            "value": 0,
+            "primary": false
           }
         },
         "health": {

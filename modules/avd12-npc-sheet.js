@@ -48,7 +48,11 @@ export class Avd12NPCSheet extends ActorSheet {
         weapons: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getWeapons()) ),
         armors: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getArmors())),
         shields: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getShields())),
-        spells: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getSpells())),
+        beginnerSpells: this.actor.getBeginnerSpells(duplicate(this.actor.getSpells())),
+        noviceSpells: this.actor.getNoviceSpells(duplicate(this.actor.getSpells())),
+        expertSpells: this.actor.getExpertSpells(duplicate(this.actor.getSpells())),
+        masterSpells: this.actor.getMasterSpells(duplicate(this.actor.getSpells())),
+        grandmasterSpells: this.actor.getGrandmasterSpells(duplicate(this.actor.getSpells())),
         equipments: this.actor.checkAndPrepareEquipments(duplicate(this.actor.getEquipmentsOnly()) ),
         equippedWeapons: this.actor.checkAndPrepareEquipments(duplicate(this.actor.getEquippedWeapons()) ),
         equippedArmor: this.actor.getEquippedArmor(),
@@ -64,6 +68,8 @@ export class Avd12NPCSheet extends ActorSheet {
         isGM: game.user.isGM
       }
       this.formData = formData;
+      console.log("DSPLSLE", this.formData.spells);
+
       return formData;
     }
   
