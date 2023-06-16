@@ -73,8 +73,6 @@ export class Avd12Utility {
     Hooks.on('renderChatLog', (log, html, data) => Avd12Utility.chatListeners(html));
     Hooks.on("renderChatMessage", Avd12Utility.displayChatActionButtons);
 
-    await Avd12Utility.verifyPath(Avd12Utility.parse("avd12/characters/"));
-
     this.rollDataStore = {}
     this.defenderStore = {}
 
@@ -528,11 +526,9 @@ export class Avd12Utility {
       switch(rollData.action.type){
         case "action":
           diceFormula = rollData.diceFormula;
-          console.log(rollData.diceFormula);
           break;
         case "utility":
           diceFormula = rollData.diceFormula;
-          console.log("UTILITY*****\n\n", rollData.diceFormula);
           break;
         case "damage":
           diceFormula = rollData.diceFormula;
@@ -585,7 +581,6 @@ export class Avd12Utility {
   }
 
   static setDiceDisplay(result){
-    console.log(result.dice);
     let str = "";
     for(let i in result.dice){
 
@@ -628,8 +623,27 @@ export class Avd12Utility {
     return str;
   }
 
+  static reverseString(str) {
+    // Step 1. Use the split() method to return a new array
+    var splitString = str.split(""); // var splitString = "hello".split("");
+    // ["h", "e", "l", "l", "o"]
+ 
+    // Step 2. Use the reverse() method to reverse the new created array
+    var reverseArray = splitString.reverse(); // var reverseArray = ["h", "e", "l", "l", "o"].reverse();
+    // ["o", "l", "l", "e", "h"]
+ 
+    // Step 3. Use the join() method to join all elements of the array into a string
+    var joinArray = reverseArray.join(""); // var joinArray = ["o", "l", "l", "e", "h"].join("");
+    // "olleh"
+    
+    //Step 4. Return the reversed string
+    return joinArray; // "olleh"
+}
+
   /* -------------------------------------------- */
   static sortArrayObjectsByName(myArray) {
+
+    
     myArray.sort((a, b) => {
       let fa = a.name.toLowerCase();
       let fb = b.name.toLowerCase();
@@ -913,7 +927,6 @@ export class Avd12Utility {
 
   /* -------------------------------------------- */
   static createChatWithRollMode(name, chatOptions) {
-    console.log(name, chatOptions);
     return this.createChatMessage(name, game.settings.get("core", "rollMode"), chatOptions)
   }
 

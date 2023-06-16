@@ -4,29 +4,23 @@
   {{/if}}
   <h4 class=chat-actor-name>{{alias}}</h4>
 </div>
-
   <hr>
-  
   {{#if img}}
   <div >
     <img class="chat-icon" src="{{img}}" alt="{{name}}" />
   </div>
   {{/if}}
-
   <div class="flexcol">
-    </div>
-
-    <div>
-      <ul>
-        <li><b>{{weapon.name}}</b></li>
-        <li>Damage formula : <b>{{damageFormula}}</b>
-        </li>
-        <li>Damage type : <b>{{upperFirst damageType}}</b>
-        </li>
-        <li>Total : <b>{{roll.total}}</b>
-        </li>
-
-      </ul>  
-    </div>
-
   </div>
+  <div>
+    <ul>  
+      <li><b>{{weapon.name}}</b></li>
+      <li>Damage formula : <b>{{damageFormula}}</b></li>
+      <li>Damage type : <b>{{upperFirst damageType}}</b></li>
+      <li style="font-size:20px;">Total : <b>{{roll.total}}</b></li>
+      <div class="flex1">
+        {{{roll.diceData}}}
+      </div>
+    </ul>  
+  </div>
+</div>

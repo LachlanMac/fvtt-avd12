@@ -24,9 +24,9 @@
   ],
   "license": "LICENSE.txt",
   "compatibility": {
-    "minimum": "10",
-    "verified": "10",
-    "maximum": "10"
+    "minimum": "11",
+    "verified": "11",
+    "maximum": "11"
   },
   "id": "fvtt-avd12",
   "primaryTokenAttribute": "secondary.health",

@@ -1,0 +1,65 @@
+<style>
+      .dialog-buttons  {
+        display:flex;
+        flex-direction:row;
+        padding:4px;
+      }  
+      .dialog-buttons .dialog-button {
+        flex-direction:row;
+        background:#1c2058;
+        padding: 0px 4px 0px 4px;
+        color:white;
+        
+      }  
+
+  </style>
+
+<form class="skill-roll-dialog">
+  <header class="roll-dialog-header">
+    {{#if img}}
+    <img class="actor-icon" src="{{img}}" data-edit="img" title="{{name}}" />
+    {{/if}}
+    <h1 class="dialog-roll-title roll-dialog-header">Weapon Damage</h1>
+  </header>
+    <div class="flexcol">
+      <div class="flexrow">
+        <span class="roll-dialog-label">Extra Damage : </span>
+        <input type="text" class=" flex-center" id="extra-damage" name="total-damage" value="0" data-dtype="Number"/>  
+      </div>
+    </div>
+
+    <div class="flexcol">
+        <li class="flexrow">
+            <span class="roll-dialog-label">Hit Type</span>
+            <select id="hit-type" class="" type="text" name="hitType" value="{{hitType}}" data-dtype="String">
+                {{#select system.hitType}}
+                    <option value="normal">Normal</option>
+                    <option value="critical">Critical</option>
+                    <option value="brutal">Brutal Critical</option>
+                    <option value="halved">Halved</option>
+                    <option value="nobonus">No Bonus Modifier</option>
+                {{/select}}
+            </select> 
+        </li>
+    </div>
+
+    <div class="flexcol">
+        <li class="flexrow">
+            <span class="roll-dialog-label">Damage Type</span>
+            <select id="damage-type" class="" type="text" name="damageType" value="{{damageType}}" data-dtype="String">
+                {{#select damageType}}
+                    <option value="physical">Physical</option>
+                    <option value="psychic">Psychic</option>
+                    <option value="fire">Fire</option>
+                    <option value="lightning">Lightning</option>
+                    <option value="cold">Cold</option>
+                    <option value="dark">Dark</option>
+                    <option value="divine">Divine</option>
+                    <option value="arcane">Arcane</option>
+                    <option value="true">True</option>
+                {{/select}}
+            </select> 
+        </li>
+    </div>
+
+</form>

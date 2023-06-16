@@ -25,6 +25,7 @@ import { Avd12Hotbar } from "./avd12-hotbar.js"
 /************************************************************************************/
 Hooks.once("init", async function () {
 
+
   console.log(`Initializing AVD12 RPG`);
   
   game.system.avd12 = {
@@ -52,9 +53,6 @@ Hooks.once("init", async function () {
   CONFIG.Combat.documentClass = Avd12Combat
   CONFIG.Actor.documentClass = Avd12Actor
   CONFIG.Item.documentClass = Avd12Item
-
-
-
   CONFIG.statusEffects =  [
     {
       id: "dead",
@@ -187,7 +185,7 @@ Hooks.once("init", async function () {
       icon: "systems/fvtt-avd12/images/conditions/light.svg"
     }
   ]
-
+  
   /* -------------------------------------------- */
   // Register sheet application classes
   Actors.unregisterSheet("core", ActorSheet);
@@ -233,7 +231,12 @@ Hooks.once("ready", function () {
   welcomeMessage();
   Avd12Utility.ready()
   Avd12Utility.init()
+
+  
+
 })
+
+
 
 /* -------------------------------------------- */
 /*  Foundry VTT Initialization                  */

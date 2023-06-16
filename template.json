@@ -17,6 +17,7 @@
       },
       "core": {
         "uuid":"",
+        "trait":0,
         "subactors": [],
         "alert":false,
         "attributes": {
@@ -310,7 +311,10 @@
             "spellshot":0,
             "wideattacks":0,
             "dueling":0,
-            "quicktoss":0
+            "quicktoss":0,
+            "chucker":0,
+            "dragonhorde":0,
+            "skilledchucking":0
           },
           "immunities": {
             "poison": 0,
@@ -663,6 +667,7 @@
         "primary": {
           "damagetype": "physical",
           "dice": "1d4",
+          "thrown":"0",
           "bonus": "0"
         },
         "secondary": {

@@ -206,21 +206,24 @@ export class Avd12ActorSheet extends ActorSheet {
     });
     html.find('.roll-weapon-damage').click((event) => {
       const li = $(event.currentTarget).parents(".item");
-      const dmg = $(event.currentTarget).data("damage")
       const weaponId = li.data("item-id")
-      this.actor.rollWeaponDamage(weaponId, dmg, !shift)
+      this.actor.showWeaponDamageDialog(weaponId, "normal", !shift)
     });
+    html.find('.roll-thrown-weapon-damage').click((event) => {
+      const li = $(event.currentTarget).parents(".item");
+      const weaponId = li.data("item-id")
+      this.actor.showWeaponDamageDialog(weaponId, "thrown", !shift)
+    });
+
     html.find('.roll-secondary-weapon-damage').click((event) => {
       const li = $(event.currentTarget).parents(".item");
-      const dmg = $(event.currentTarget).data("damage")
       const weaponId = li.data("item-id")
-      this.actor.rollSecondaryWeaponDamage(weaponId, dmg, !shift)
+      this.actor.rollSecondaryWeaponDamage(weaponId, "secondary", !shift)
     });
     html.find('.roll-tertiary-weapon-damage').click((event) => {
       const li = $(event.currentTarget).parents(".item");
-      const dmg = $(event.currentTarget).data("damage")
       const weaponId = li.data("item-id")
-      this.actor.rollTertiaryWeaponDamage(weaponId, dmg, !shift)
+      this.actor.rollTertiaryWeaponDamage(weaponId, "tertiary", !shift)
     });
     html.find('.lock-unlock-sheet').click((event) => {
       this.options.editScore = !this.options.editScore;
@@ -255,7 +258,6 @@ export class Avd12ActorSheet extends ActorSheet {
 
   /* -------------------------------------------- */
   async _onDropItem(event, dragData) {
-    console.log("DRAG DATA:::", dragData);
     const item = fromUuidSync(dragData.uuid)
     let itemFull
     if (item == undefined) {
