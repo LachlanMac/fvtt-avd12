@@ -358,7 +358,6 @@ export class Avd12Utility {
 
   /* -------------------------------------------- */
   static updateRollData(rollData) {
-
     let id = rollData.rollId
     let oldRollData = this.rollDataStore[id] || {}
     let newRollData = mergeObject(oldRollData, rollData)
@@ -497,6 +496,7 @@ export class Avd12Utility {
   }
   
   static findAtTokens(inputString) {
+    console.log("CHECKING::", inputString);
     let regex = /@\w+/g;
     let result = inputString.match(regex);
     return result || [];
@@ -513,7 +513,7 @@ export class Avd12Utility {
     if (rollData.skill)
       diceFormula += "+" + rollData.skill.finalvalue
     if (rollData.crafting) 
-      diceFormula += "+" + rollData.crafting.system.level
+      diceFormula += "+" + rollData.crafting.skill
     if (rollData.spellAttack) 
       diceFormula += "+" + rollData.spellAttack
     if (rollData.skill && rollData.skill.good) 
@@ -928,6 +928,7 @@ export class Avd12Utility {
   /* -------------------------------------------- */
   static createChatWithRollMode(name, chatOptions) {
     return this.createChatMessage(name, game.settings.get("core", "rollMode"), chatOptions)
+   
   }
 
 

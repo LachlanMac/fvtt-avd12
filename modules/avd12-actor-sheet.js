@@ -60,6 +60,7 @@ export class Avd12ActorSheet extends ActorSheet {
       limited: this.object.limited,
       modules: this.actor.getModules(),
       traits: this.actor.getTraits(),
+      craftingTraits: this.actor.getCraftingTraits(),
       character: this.actor.type == "character",
       actions: this.actor.getActions(),
       reactions: this.actor.getReactions(),
@@ -83,7 +84,6 @@ export class Avd12ActorSheet extends ActorSheet {
       equippedWeapons: this.actor.checkAndPrepareEquipments(duplicate(this.actor.getEquippedWeapons()) ),
       equippedArmor: this.actor.getEquippedArmor(),
       equippedShield: this.actor.getEquippedShield(),
-      craftingSkills: this.actor.getCraftingSkills(),
       subActors: duplicate(this.actor.getSubActors()),
       moneys: duplicate(this.actor.getMoneys()),
       focusData: this.actor.computeFinalFocusData(),
@@ -182,13 +182,14 @@ export class Avd12ActorSheet extends ActorSheet {
       const li = $(event.currentTarget).parents(".item");
       this.actor.rollSpellDamage( li.data("item-id"), !shift)
     });    
-    html.find('.roll-crafting').click((event) => {
-      const li = $(event.currentTarget).parents(".item");
-      this.actor.rollCrafting( li.data("item-id"), !shift )
+
+    html.find('.roll-craft').click((event) => {
+      let skillKey = $(event.currentTarget).data("skill-key")
+      this.actor.rollCrafting(skillKey, !shift)
     });    
+
     html.find('.roll-universal').click((event) => {
       let skillKey = $(event.currentTarget).data("skill-key")
-    
       this.actor.rollUniversal(skillKey, !shift)
     });    
     html.find('.roll-weapon').click((event) => {
@@ -196,8 +197,13 @@ export class Avd12ActorSheet extends ActorSheet {
       const weponId = li.data("item-id")
       this.actor.rollWeapon(weponId, !shift)
     });
-    html.find('#import-character').click((event) => {
-      this.importData("TEST");
+    html.find('#import-character').click(async (event) => {
+      console.log("DISABLE");
+      html.find("#import-character").disabled = true;
+      await this.importData("TEST").then(()=>{
+        console.log("ENABLE!");
+        html.find("#import-character").disabled = false;
+      });
     });
     html.find('.use-action').click((event) => {
       const li = $(event.currentTarget).parents(".item");

@@ -902,6 +902,16 @@ input[type="checkbox"] .skillcheck {
   background: rgba(0,0,0,0.05);
   cursor: pointer;
 }
+
+.chat-message {
+  margin: 3px;
+  padding: 5px;
+  color: red;
+  background: black;
+  border: 2px solid #a8802f;
+  border-radius: 5px;
+}
+
 .chat-message-header {
   font-size: 1.1rem;
   height: 48px;
@@ -909,7 +919,11 @@ input[type="checkbox"] .skillcheck {
   vertical-align: middle;
   display: flex;
   align-items: center; 
+  color:white;
+  background-color: rgba(105, 9, 97, 0.75);
 }
+
+
 
 .chat-message.whisper {
   background: rgba(105, 9, 97, 0.75);
@@ -922,7 +936,12 @@ input[type="checkbox"] .skillcheck {
 }
 
 .chat-message .message-header{
- color:white;
+ color:rgb(255, 255, 255);
+ 
+}
+
+.chat-message .message-sender{
+  color:white;
 }
 
 .chat-message .message-content {
@@ -932,10 +951,7 @@ input[type="checkbox"] .skillcheck {
   color:white;
 }
 
-li .chat-message{
-  color:pink;
-  background-color: pink;
- }
+
 
 .chat-actor-name {
   padding: 4px;

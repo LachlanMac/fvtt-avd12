@@ -57,7 +57,6 @@ export class Avd12NPCSheet extends ActorSheet {
         equippedWeapons: this.actor.checkAndPrepareEquipments(duplicate(this.actor.getEquippedWeapons()) ),
         equippedArmor: this.actor.getEquippedArmor(),
         equippedShield: this.actor.getEquippedShield(),
-        craftingSkills: this.actor.getCraftingSkills(),
         subActors: duplicate(this.actor.getSubActors()),
         moneys: duplicate(this.actor.getMoneys()),
         focusData: this.actor.computeFinalFocusData(),
@@ -68,8 +67,6 @@ export class Avd12NPCSheet extends ActorSheet {
         isGM: game.user.isGM
       }
       this.formData = formData;
-      console.log("DSPLSLE", this.formData.spells);
-
       return formData;
     }
   
@@ -171,11 +168,12 @@ export class Avd12NPCSheet extends ActorSheet {
         this.actor.rollWeapon(weponId, event.which)
       });
   
-  
+      
       html.find('.roll-weapon-damage').click((event) => {
         const li = $(event.currentTarget).parents(".item");
         const dmg = $(event.currentTarget).data("damage")
         const weaponId = li.data("item-id")
+        console.log("THIS HAPPENED??");
         this.actor.rollWeaponDamage(weaponId, dmg)
       });
       

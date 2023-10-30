@@ -3,16 +3,14 @@ import { Avd12Utility } from "./avd12-utility.js";
 export class Avd12WeaponDamageDialog extends Dialog {
 
   /* -------------------------------------------- */
-  static async create(actor, damageData) {
-
-    console.log("XXXXX", damageData);
+  static async create(actor, weapon) {
     let options = { classes: ["Avd12Dialog"], width: 540, height: 'fit-content', 'z-index': 99999 };
-    let html = await renderTemplate('systems/fvtt-avd12/templates/dialogs/roll-weapon-damage.hbs', damageData);
-    return new Avd12WeaponDamageDialog(actor, damageData, html, options);
+    let html = await renderTemplate('systems/fvtt-avd12/templates/dialogs/roll-weapon-damage.hbs', weapon);
+    return new Avd12WeaponDamageDialog(actor, weapon, html, options);
   }
 
   /* -------------------------------------------- */
-  constructor(actor, data, html, options, close = undefined) {
+  constructor(actor, weapon, html, options, close = undefined) {
 
     let conf = {
       options:{id:"weaponDamageDialog"},
@@ -33,19 +31,19 @@ export class Avd12WeaponDamageDialog extends Dialog {
     }
     super(conf, options);
     this.actor = actor;
-    this.originalData = data;
-    this.userData = {extraDamage:0, hitType:"normal", damageType: data.damageType};
+    this.weapon = weapon;
+    this.userData = {extraDamage:0, hitType:"normal", damageType: "physical"};
   }
 
   /* -------------------------------------------- */
   confirmDamage() {
-    this.actor.rollWeaponDamage(this.userData, this.originalData);
+    this.actor.rollWeaponDamage(this.userData, this.weapon);
   }
 
   /* -------------------------------------------- */
   async refreshDialog() {
-    const content = await renderTemplate("systems/fvtt-avd12/templates/dialogs/roll-weapon-damage.hbs", this.rollData)
-    this.data.content = content
+    const content = await renderTemplate("systems/fvtt-avd12/templates/dialogs/roll-weapon-damage.hbs", this.weapon)
+    this.data.content = this.weapon
     this.render(true)
   }
 

@@ -32,27 +32,56 @@ Hooks.once("init", async function () {
     Avd12Hotbar
   }
 
-  /* -------------------------------------------- */
+
   // preload handlebars templates
   Avd12Utility.preloadHandlebarsTemplates();
 
-  /* -------------------------------------------- */
+
   // Set an initiative formula for the system 
   CONFIG.Combat.initiative = {
     formula: "1d12",
     decimals: 1
   };
 
-  /* -------------------------------------------- */
+
   game.socket.on("system.fvtt-avd12", data => {
     Avd12Utility.onSocketMesssage(data)
   });
 
-  /* -------------------------------------------- */
+  
+
   // Define custom Entity classes
   CONFIG.Combat.documentClass = Avd12Combat
   CONFIG.Actor.documentClass = Avd12Actor
   CONFIG.Item.documentClass = Avd12Item
+  
+  
+  /* -------------------------------------------- */
+  // Register sheet application classes
+  Actors.unregisterSheet("core", ActorSheet);
+  Actors.registerSheet("fvtt-avd12", Avd12ActorSheet, { types: ["character"], makeDefault: true });
+  Actors.registerSheet("fvtt-avd12", Avd12NPCSheet, { types: ["npc"], makeDefault: false });
+  Items.unregisterSheet("core", ItemSheet);
+  Items.registerSheet("fvtt-avd12", Avd12ItemSheet, { makeDefault: true });
+
+  Avd12Utility.init()
+});
+
+
+/* -------------------------------------------- */
+function welcomeMessage() {
+  ChatMessage.create({
+    user: game.user.id,
+    whisper: [game.user.id],
+    content: `<div id="welcome-message-avd12"><span class="rdd-roll-part">
+    <strong>Welcome to the AVD12 RPG.</strong>
+    ` });
+}
+
+
+Hooks.once("ready", function () {
+  
+  //load after
   CONFIG.statusEffects =  [
     {
       id: "dead",
@@ -63,6 +92,16 @@ Hooks.once("init", async function () {
       id: "unconscious",
       label: "Unconscious",
       icon: "systems/fvtt-avd12/images/conditions/unconscious.svg"
+    },
+    {
+      id: "alert",
+      label: "Alert",
+      icon: "systems/fvtt-avd12/images/conditions/alert.svg"
+    },
+    {
+      id: "flying",
+      label: "Flying",
+      icon: "systems/fvtt-avd12/images/conditions/fly.svg"
     },
     {
       id: "dazed",
@@ -150,6 +189,21 @@ Hooks.once("init", async function () {
       icon: "systems/fvtt-avd12/images/conditions/invisible.svg"
     },
     {
+      id: "hidden",
+      label: "Hidden",
+      icon: "systems/fvtt-avd12/images/conditions/hidden.svg"
+    },
+    {
+      id: "partialcover",
+      label: "Partial Cover",
+      icon: "systems/fvtt-avd12/images/conditions/partialcover.svg"
+    },
+    {
+      id: "fullcover",
+      label: "Full Cover",
+      icon: "systems/fvtt-avd12/images/conditions/fullcover.svg"
+    },
+    {
       id: "exhausted1",
       label: "Exhausted - Tier 1",
       icon: "systems/fvtt-avd12/images/conditions/exhaustT1.svg"
@@ -180,38 +234,21 @@ Hooks.once("init", async function () {
       icon: "systems/fvtt-avd12/images/conditions/woundedT3.svg"
     },
     {
+      id: "encumbered",
+      label: "Encumbered",
+      icon: "systems/fvtt-avd12/images/conditions/encumbered.svg"
+    },
+    {
+      id: "focusing",
+      label: "Focusing",
+      icon: "systems/fvtt-avd12/images/conditions/focus.svg"
+    },
+    {
       id: "lightsource",
       label: "Light Source",
       icon: "systems/fvtt-avd12/images/conditions/light.svg"
     }
   ]
-  
-  /* -------------------------------------------- */
-  // Register sheet application classes
-  Actors.unregisterSheet("core", ActorSheet);
-  Actors.registerSheet("fvtt-avd12", Avd12ActorSheet, { types: ["character"], makeDefault: true });
-  Actors.registerSheet("fvtt-avd12", Avd12NPCSheet, { types: ["npc"], makeDefault: false });
-  Items.unregisterSheet("core", ItemSheet);
-  Items.registerSheet("fvtt-avd12", Avd12ItemSheet, { makeDefault: true });
-
-  Avd12Utility.init()
-});
-
-
-/* -------------------------------------------- */
-function welcomeMessage() {
-  ChatMessage.create({
-    user: game.user.id,
-    whisper: [game.user.id],
-    content: `<div id="welcome-message-avd12"><span class="rdd-roll-part">
-    <strong>Welcome to the AVD12 RPG.</strong>
-    ` });
-}
-
-/* -------------------------------------------- */
-/*  Foundry VTT Initialization                  */
-/* -------------------------------------------- */
-Hooks.once("ready", function () {
 
   // User warning
   if (!game.user.isGM && game.user.character == undefined) {
@@ -231,10 +268,8 @@ Hooks.once("ready", function () {
   welcomeMessage();
   Avd12Utility.ready()
   Avd12Utility.init()
-
-  
-
 })
+
 
 
 

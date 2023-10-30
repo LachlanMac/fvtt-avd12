@@ -58,6 +58,8 @@
           <li>Total : <b>{{roll.total}} </b></li>
         {{/if}}
 
+     
+
         {{#if weapon}}
           <li>Skill : {{weapon.name}}</li>
           <li>Modifier : <b>{{bonusMalusRoll}}</b></li>
@@ -66,7 +68,7 @@
         {{/if}}
 
         {{#if crafting}}
-        <li>Crafting : {{crafting.name}} ({{crafting.system.level}}) </li>
+        <li>Crafting : {{crafting.name}} ({{crafting.skill}}) </li>
         <li>Modifier : <b>{{bonusMalusRoll}}</b></li>
         <li>Dice Formula : <b>{{diceFormula}}</b> </li>
         <li>Total : <b>{{roll.total}}</b></li>

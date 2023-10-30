@@ -1,44 +1,31 @@
 {
-  "ACTOR": {
-    "TypeCharacter": "Character",
-    "TypeNpc": "NPC"
-  },
-  "ITEM": {
-    "TypeWeapon": "Weapon",
-    "TypeBallad": "Ballad",
-    "TypeHeadwear": "Headwear",
-    "TypeGloves": "Gloves",
-    "TypeBoots": "Boots",
-    "TypeCloak": "Cloak",
-    "TypeRing": "Ring",
-    "TypeShield": "Shield",
-    "TypeEquipable": "Equipable",
-    "TypeArmor": "Armor",
-    "TypeSpell": "Spell",
-    "TypeModule": "Module",
-    "TypeMoney": "Money",
-    "TypeEquipment": "Equipment",
-    "TypeAction": "Action",
-    "TypeFreeaction": "Free Action",
-    "TypeReaction": "Reaction",
-    "TypeStance": "Stance",
-    "TypeTrait": "Trait",
-    "TypeCondition": "Condition",
-    "TypeCraftingskill": "Crafting Skill"
-  },
-  "STATUS":{
-    "ConditionDead":"Dead",
-    "ConditionUnconscious":"Unconcious",
-    "ConditionDead":"Dead",
-    "ConditionDead":"Dead",
-    "ConditionDead":"Dead",
-    "ConditionDead":"Dead",
-    "ConditionDead":"Dead",
-    "ConditionDead":"Dead",
-    "ConditionDead":"Dead",
-    "ConditionDead":"Dead",
-    "ConditionDead":"Dead",
-    "ConditionDead":"Dead"
-
+  "TYPES":{
+    "Actor": {
+      "Character": "Character",
+      "npc": "NPC"
+    },
+    "Item": {
+      "TypeWeapon": "Weapon",
+      "TypeBallad": "Ballad",
+      "TypeHeadwear": "Headwear",
+      "TypeGloves": "Gloves",
+      "TypeBoots": "Boots",
+      "TypeCloak": "Cloak",
+      "TypeRing": "Ring",
+      "TypeShield": "Shield",
+      "TypeEquipable": "Equipable",
+      "TypeArmor": "Armor",
+      "TypeSpell": "Spell",
+      "TypeModule": "Module",
+      "TypeMoney": "Money",
+      "TypeEquipment": "Equipment",
+      "TypeAction": "Action",
+      "TypeFreeaction": "Free Action",
+      "TypeReaction": "Reaction",
+      "TypeStance": "Stance",
+      "TypeTrait": "Trait",
+      "TypeCondition": "Condition",
+      "TypeCraftingskill": "Crafting Skill"
+    }
   }
 }

@@ -42,6 +42,7 @@ export class Avd12Actor extends Actor {
   }
 
   async importData(data){
+
     let actorRef= this;
     //deletes all items
     await this.deleteEmbeddedDocuments("Item", [], {
@@ -71,8 +72,8 @@ export class Avd12Actor extends Actor {
       }
     });
 
-    await this.createEmbeddedDocuments("Item", data.items);
-    // ***** IMPORT STANCES ******
+    await this.createEmbeddedDocuments("Item", data.items); 
+
     let stanceData = data.system.stance_data.split("-");
     let activeStance = stanceData.pop();
     let uniqueStances = [...new Set(stanceData)];
@@ -87,13 +88,14 @@ export class Avd12Actor extends Actor {
     //  ***** IMPORT IMAGES *****
     //const image = await Avd12Utility.downloadImage(`https://localhost/upload/${data.imgurl}`)
     const image = await Avd12Utility.downloadImage(`https://anyventured12.com/upload/${data.imgurl}`)
+    
     if(image){
       let options = Avd12Utility.parse("avd12/characters/");
       var file = new File([image], data.imgurl);
       await Avd12Utility.uploadToPath(options.current, file);
       await this.update({ 'img': `avd12/characters/${data.imgurl}`})
-      //await this.update({ 'prototypeToken.texture.src': `avd12/characters/${data.imgurl}`})
     }
+  
   }
 
   getPowerPercentage(){
@@ -116,6 +118,12 @@ export class Avd12Actor extends Actor {
       let items = this.items.filter(item => item.type == "weapon" || item.type == "armor");
       items.forEach(item =>{
         //item.system.equipped = true;
+        if(item.type == "armor"){
+          //build armor
+        }else if(item.type == "weapon"){
+          //build weapon
+        }
+
       });
       this.rebuildNPCSkills()
       this.parseActiveEffects()
@@ -130,6 +138,7 @@ export class Avd12Actor extends Actor {
       this.clearData()
       this.rebuildSkills()
       this.rebuildSize()
+  
       this.rebuildTraits()
       this.rebuildMainTrait()
       this.rebuildModules()
@@ -142,6 +151,14 @@ export class Avd12Actor extends Actor {
      
     }
     super.prepareDerivedData();
+  }
+
+
+  isDuelistElligble(){
+
+    
+
+
   }
 
   rebuildNPCSkills() {
@@ -522,9 +539,10 @@ export class Avd12Actor extends Actor {
       if ( !actor ) {console.log("*AVD12 Error: No Actor*");return};
       if ( !(game.user.isGM || actor.isOwner) ) return;
 
-      let actorAction = await actor.getActionById(card.dataset.actionId);
-      if(!actorAction){console.log("*AVD12 Error: No Action*");return;}
-
+      let actAction = await actor.getActionById(card.dataset.actionId);
+      if(!actAction){console.log("*AVD12 Error: No Action*");return;}
+      
+      let actorAction = duplicate(actAction);
       actorAction.type = action;
       actorAction.action = "action";
       switch ( action ) {
@@ -606,9 +624,8 @@ export class Avd12Actor extends Actor {
     let damageData = duplicate(dd);
     
     damageData.mitigation = this.system.mitigation[damageData.damageType.toLowerCase()].value
-    damageData.mitigated = damageData.mitigation + damageData.damageModifier;
+    damageData.mitigated = Number(damageData.mitigation) + Number(damageData.damageModifier);
     damageData.adjusted = Math.max(0,damageData.totalDamage - damageData.mitigated);
-    
     if(damageData.mitigated >= 15){
       damageData.description = "Greatly Reduced"  
     }else if(damageData.mitigated > 8){
@@ -672,10 +689,6 @@ export class Avd12Actor extends Actor {
     actionClone.actor = this;
     actionClone.uses = this.findIn(action._id);
     this.displayActionCard(actionClone, {});
-    
-    //Avd12Utility.createUseActionChatMessage(actionClone);
-    
-   
   }
 
   ZREALM_CRAFTS = ["Ammocraft", "Alchemy", "Smithing", "Cooking", "Scribing", "Runecarving", "Engineering"];
@@ -744,10 +757,18 @@ export class Avd12Actor extends Actor {
     return false;
   }
 
+
+  getSpellShotFocus(){
+    let equippedWeapons = this.items.filter(item => (item.system.category == "lightranged" ||item.system.category == "heavyranged" || item.system.category == "ulightranged" ) && item.type == "weapon" && item.system.equipped && item.system.focus.isfocus)
+    return equippedWeapons[0] || null;
+
+  }
+
   rebuildEquipment(){
     let allEquippedItems = this.items.filter(item => item.system.equipped)
     allEquippedItems.forEach(item => {
       this.parseItemSkills(item.system.skills, item.system.craft_skills)
+      this.parseItemBonuses(item);
       if(item.system.focus.isfocus){
         this.parseFocus(item);
       }
@@ -980,6 +1001,14 @@ export class Avd12Actor extends Actor {
     }
   }
 
+  parseItemBonuses(item){
+    //health
+    this.system.health.bonus += item.system.bonus.health;
+    this.system.movement.walk.value += item.system.bonus.movespeed;
+
+
+  }
+
   rebuildBonuses(){
     this.system.bonus.blunt.damage += this.system.bonus.weapon.damage;
     this.system.bonus.slash.damage += this.system.bonus.weapon.damage;
@@ -999,14 +1028,14 @@ export class Avd12Actor extends Actor {
       this.system.bonus.pierce.attack = highest;
       this.system.bonus.ranged.attack = highest;
     }
-
     if(this.system.bonus.traits.spellsword){
       if(this.system.bonus.slash.attack < this.system.bonus.spell.attack)
         this.system.bonus.slash.attack = this.system.bonus.spell.attack;
     }
-
-
+   
     //reset 
+
+
     this.system.bonus.weapon.damage = 0;
     this.system.bonus.weapon.attack = 0;
     this.system.health.bonus = 0;
@@ -1092,6 +1121,7 @@ export class Avd12Actor extends Actor {
 
   /* -------------------------------------------- */
   rebuildModules() {
+    this.tmpCraftingTraits = [];
     this.tmpTraits = [];
     this.tmpFreeActions = [];
     this.tmpActions = [];
@@ -1135,9 +1165,14 @@ export class Avd12Actor extends Actor {
                       _.set(this.system, data.system.bonusdata, _.get(this.system, data.system.bonusdata) + data.system.bonusvalue)
                       break;
                     case "feature":
+                      this.tmpTraits.push(data);
                       //maybe decide what to do here?
                       break;
+                    case "crafting":
+                      this.tmpCraftingTraits.push(data);
+                      break;
                     default:
+                      //console.log("DEFAULT???", data);
                       break;
                   }
                 break;
@@ -1195,11 +1230,11 @@ export class Avd12Actor extends Actor {
     super._preUpdate(changed, options, user);
   }
 
-  /*
+  
   _onUpdateEmbeddedDocuments( embeddedName, ...args ) {
     super._onUpdateEmbeddedDocuments(embeddedName, ...args)
   }
-  */
+  
 
   /* -------------------------------------------- */
   getEncumbranceCapacity() {
@@ -1277,12 +1312,6 @@ export class Avd12Actor extends Actor {
     return comp;
   }
 
-  /* -------------------------------------------- */
-  getCraftingSkills() {
-    let comp = duplicate(this.items.filter(item => item.type == 'craftingskill') || [])
-    Avd12Utility.sortArrayObjectsByName(comp)
-    return comp;
-  }
   /* -------------------------------------------- */
   getArmors() {
     let comp = duplicate(this.items.filter(item => item.type == 'armor') || []);
@@ -1370,7 +1399,6 @@ export class Avd12Actor extends Actor {
   }
   /* -------------------------------------------- */
   addPrimaryDamage(damage, bonusDamage, dice, extraDamage) {
-
     if (damage.damagetype != "none" && damage.dice) {
       let fullBonus = Number(bonusDamage) + Number(damage.bonus)
       damage.dice = dice;
@@ -1386,7 +1414,6 @@ export class Avd12Actor extends Actor {
   }
 
   addPrimaryThrownDamage(damage, bonusDamage, dice) {
-
     if (damage.damagetype != "none" && damage.dice) {
       let fullBonus = Number(bonusDamage) + Number(damage.bonus)
       damage.thrown = dice + '+' + fullBonus;
@@ -1397,6 +1424,8 @@ export class Avd12Actor extends Actor {
       }
     }
   }
+
+
 
 
   addOtherDamage(damage, bonusDamage) {
@@ -1414,12 +1443,20 @@ export class Avd12Actor extends Actor {
 
   /* -------------------------------------------- */
   prepareWeapon(weapon) {
-
     if(weapon.type == 'equipable'){
       return;
     }
     weapon.attackBonus = this.system.bonus.weapon.attack + weapon.system.bonus.attack + this.system.bonus[weapon.system.weapontype].attack
     let bonusDamage = this.system.bonus.weapon.damage;
+
+    if(this.system.bonus.dueling){
+      let equippedShield = this.items.find(item => item.type == "shield" && item.system.equipped)
+      if(!equippedShield){
+        bonusDamage += 2;
+      }
+    }
+    
+
     let upgraded = this.system.bonus[weapon.system.weapontype].upgraded;
     let dice = "";
     let thrownDice = "";
@@ -1428,7 +1465,6 @@ export class Avd12Actor extends Actor {
       bonusDamage = this.system.bonus.npc.attack_power;
     }
 
-  
     switch(weapon.system.category){
       case "unarmed":
         upgraded == 1 ? dice = "1d8" : dice = "1d6"
@@ -1458,79 +1494,80 @@ export class Avd12Actor extends Actor {
       case "heavyranged":
         upgraded == 1 ? dice = "3d6" : dice = "2d6"
         break;
-  }
+    }
+    if(weapon.system.damages.primary.dice == "1d4"){
+      weapon.system.thrown = false;
+    }
 
-
-    if(weapon.system.thrown){
-      switch(weapon.system.category){
-        case "ulightranged":
-          weapon.system.minrange -= this.system.bonus.ranged.min_range_bonus_ulight;
-          weapon.system.maxrange += this.system.bonus.ranged.max_range_bonus_ulight;
-          break;
-        case "lightranged":
-          weapon.system.minrange -= this.system.bonus.ranged.min_range_bonus_light;
-          weapon.system.maxrange += this.system.bonus.ranged.max_range_bonus_light;
-          break;
-        case "heavyranged":
-          weapon.system.minrange -= this.system.bonus.ranged.min_range_bonus_heavy;
-          weapon.system.maxrange += this.system.bonus.ranged.max_range_bonus_heavy;
-          break;
-        case "light1h":
-        case "light2h":
+    switch(weapon.system.category){
+      case "ulightranged":
+        weapon.system.minrange -= this.system.bonus.ranged.min_range_bonus_ulight;
+        weapon.system.maxrange += this.system.bonus.ranged.max_range_bonus_ulight;
+        break;
+      case "lightranged":
+        weapon.system.minrange -= this.system.bonus.ranged.min_range_bonus_light;
+        weapon.system.maxrange += this.system.bonus.ranged.max_range_bonus_light;
+        break;
+      case "heavyranged":
+        weapon.system.minrange -= this.system.bonus.ranged.min_range_bonus_heavy;
+        weapon.system.maxrange += this.system.bonus.ranged.max_range_bonus_heavy;
+        break;
+      case "light1h":
+      case "light2h":
+        if(weapon.system.thrown){
+        weapon.system.minrange = 1;
+        weapon.system.maxrange = Math.max(4, 4 + this.system.attributes.might.skills.athletics.finalvalue);
+        if(this.system.bonus.traits.quicktoss)
+          this.system.bonus.traits.chucker == 1 ? thrownDice = "2d8" : thrownDice = "2d6"         
+        else
+          this.system.bonus.traits.chucker == 1 ? thrownDice = "1d8" : thrownDice = "1d6"
+        if(this.system.bonus.traits.skilledchucking && weapon.attackBonus + 4> weapon.system.maxrange)
+          weapon.system.maxrange = weapon.attackBonus + 4;
+        break;
+        }
+      case "heavy1h":
+      case "heavy2h":
+        if(weapon.system.thrown){
           weapon.system.minrange = 1;
-          weapon.system.maxrange = Math.max(4, 4 + this.system.attributes.might.skills.athletics.finalvalue);
-          if(this.system.bonus.traits.skilledchucking && weapon.attackBonus + 4> weapon.system.maxrange)
-            weapon.system.maxrange = weapon.attackBonus + 4;
-          break;
-        case "heavy1h":
-        case "heavy2h":
-            weapon.system.minrange = 1;
-            weapon.system.maxrange = Math.max(0, 1 + this.system.attributes.might.skills.athletics.finalvalue);
-            if(this.system.bonus.traits.skilledchucking && weapon.attackBonus + 1 > weapon.system.maxrange)
-              weapon.system.maxrange = weapon.attackBonus + 1;
-            break;
-      }
-
-      switch(weapon.system.category){
-        case "light1h":
-        case "light2h":
-          if(this.system.bonus.traits.quicktoss)
-            this.system.bonus.traits.chucker == 1 ? thrownDice = "2d8" : thrownDice = "2d6"         
-          else
-            this.system.bonus.traits.chucker == 1 ? thrownDice = "1d8" : thrownDice = "1d6"
-          break;
-        case "heavy1h":
-        case "heavy2h":
+          weapon.system.maxrange = Math.max(0, 1 + this.system.attributes.might.skills.athletics.finalvalue);
+          if(this.system.bonus.traits.skilledchucking && weapon.attackBonus + 1 > weapon.system.maxrange)
+            weapon.system.maxrange = weapon.attackBonus + 1;
           if(this.system.bonus.traits.quicktoss)
             this.system.bonus.traits.chucker == 1 ? thrownDice = "2d12" : thrownDice = "2d8"
           else
             this.system.bonus.traits.chucker == 1 ? thrownDice = "1d12" : thrownDice = "1d8"
-           
           break;
-      }
-    }
-    if(weapon.system.minrange < 0)
-      weapon.system.minrange = 0;
-    if(weapon.system.damages.primary.dice == "1d4"){
-      this.addPrimaryDamage(weapon.system.damages.primary, bonusDamage, "1d4")
-      this.addOtherDamage(weapon.system.damages.secondary, bonusDamage)
-      this.addOtherDamage(weapon.system.damages.tertiary, bonusDamage)
-    }else{
-      let extraDamage = "";
-      if(this.system.bonus.traits.flowingstrikes && weapon.system.category == "unarmed")
-        extraDamage = "+1d4";
+        }
+    } 
+    
+  if(weapon.system.minrange < 0)
+    weapon.system.minrange = 0;
+  if(weapon.system.damages.primary.dice == "1d4"){
+    this.thrown = false;
+    this.addPrimaryDamage(weapon.system.damages.primary, bonusDamage, "1d4", "")
+    this.addOtherDamage(weapon.system.damages.secondary, bonusDamage)
+    this.addOtherDamage(weapon.system.damages.tertiary, bonusDamage)
+  }else{
+    let extraDamage = "";
+    if(this.system.bonus.traits.flowingstrikes && weapon.system.category == "unarmed")
+      extraDamage = "+1d4";
+      
+    weapon.dice = dice;
+    weapon.extraDamage = extraDamage;
+    weapon.critEligble =  bonusDamage + this.system.bonus[weapon.system.weapontype].damage;
 
-      weapon.dice = dice;
-      weapon.extraDamage = extraDamage;
-      weapon.critEligble =  bonusDamage + this.system.bonus[weapon.system.weapontype].damage;
-      this.addPrimaryDamage(weapon.system.damages.primary, bonusDamage + this.system.bonus[weapon.system.weapontype].damage, dice, extraDamage)
-      if(weapon.system.thrown){
-        weapon.throwndice = weapon.system.damages.primary.dice;
-        this.addPrimaryThrownDamage(weapon.system.damages.primary, bonusDamage + this.system.bonus[weapon.system.weapontype].damage, thrownDice, "")
-      }
-      this.addOtherDamage(weapon.system.damages.secondary, bonusDamage)
-      this.addOtherDamage(weapon.system.damages.tertiary, bonusDamage)
+
+
+    this.addPrimaryDamage(weapon.system.damages.primary, bonusDamage + this.system.bonus[weapon.system.weapontype].damage, dice, extraDamage)
+    
+    if(weapon.system.thrown){
+      this.addPrimaryThrownDamage(weapon.system.damages.primary, bonusDamage + this.system.bonus[weapon.system.weapontype].damage, thrownDice, "")
+      weapon.throwndice = thrownDice;
     }
+
+    this.addOtherDamage(weapon.system.damages.secondary, bonusDamage)
+    this.addOtherDamage(weapon.system.damages.tertiary, bonusDamage)
+  }
   }
   /* -------------------------------------------- */
   getItemById(id) {
@@ -1556,8 +1593,28 @@ export class Avd12Actor extends Actor {
     return this.tmpTraits;
   }
 
+  getCraftingTraits(){
+    return this.tmpCraftingTraits;
+  }
+
   getFreeActions(){
     return this.tmpFreeActions;
+  }
+
+
+  santizeFormula(formula){
+    let parseTokens = Avd12Utility.findAtTokens(formula)
+    if(parseTokens){
+        for(let i =0; i < parseTokens.length; i++){
+          let val = Avd12Utility.getMappedValue(this, parseTokens[i])
+          if(val == "-1"){
+            formula = formula.replace(parseTokens[i], "");
+          }else{
+            formula = formula.replace(parseTokens[i], val);
+          }
+        }
+      }
+      return formula;
   }
 
   sanitizeItem(list){
@@ -1944,14 +2001,15 @@ export class Avd12Actor extends Actor {
 
 
   /* -------------------------------------------- */
-  rollFormula(actionData, diceFormula, showDialog) {
+  async rollFormula(actionData, diceFormula, showDialog) {
+
+
     let rollData = this.getCommonRollData()
     rollData.action = actionData;
     rollData.diceFormula = diceFormula
     rollData.title = actionData.name;
     rollData.img = actionData.img;
-    this.startRoll(rollData, showDialog)
-    
+    await this.startRoll(rollData, showDialog)
   }
 
 
@@ -1973,7 +2031,16 @@ export class Avd12Actor extends Actor {
     }
   }
 
-  /* -------------------------------------------- */
+  rollCrafting(craftKey) {
+    let craft = {skill : this.system.bonus.craft[craftKey]};
+    craft.name = Avd12Utility.upperFirst(craftKey)
+    let rollData = this.getCommonRollData()
+    rollData.mode = "craft"
+    rollData.crafting = craft;
+    rollData.title = "Roll Skill " + craft.name 
+    this.startRoll(rollData)
+  }
+
   rollUniversal(skillKey) {
     let skill = this.system.universal.skills[skillKey]
     if (skill) {
@@ -1981,7 +2048,6 @@ export class Avd12Actor extends Actor {
       skill.name = Avd12Utility.upperFirst(skillKey)
       let rollData = this.getCommonRollData()
       rollData.mode = "skill"
-      //rollData.skillKey = skillKey
       rollData.skill = skill
       rollData.title = "Roll Skill " + skill.name 
       rollData.img = skill.img
@@ -2002,6 +2068,21 @@ export class Avd12Actor extends Actor {
     await this.updateEmbeddedDocuments("Item", [{ _id: stance.id, 'system.active': true }]);
   }
 
+  getSpellShotAttack(){
+
+    let focus = this.getSpellShotFocus();
+    
+    if(focus){
+      console.log("FOCKIII ", focus);
+      return focus.system.bonus.attack +  this.system.bonus.ranged.attack;
+    }else{
+      console.log("UH OH");
+      return 0;
+    }
+    
+
+  }
+
   /* -------------------------------------------- */
   async rollSpell(spellId) {
     let spell = this.items.get(spellId)
@@ -2011,6 +2092,12 @@ export class Avd12Actor extends Actor {
       rollData.mode = "spell"
       rollData.spell = spell
       rollData.spellAttack = this.system.bonus.spell.attack
+
+      //Spellshot
+      if(this.system.bonus.traits.spellshot && (spell.system.spelltype == "projectile" || spell.system.spelltype == "ray")){
+        rollData.spellAttack = Math.max(this.getSpellShotAttack(), this.system.bonus.spell.attack);
+      }
+      
       rollData.spellDamage = this.system.bonus.spell.damage
       rollData.spellCost = Avd12Utility.getSpellCost(spell)
       rollData.title = "Roll Spell " + spell.name
@@ -2066,19 +2153,7 @@ export class Avd12Actor extends Actor {
     this.update({ 'system.focus': focusData })
   }
   /* -------------------------------------------- */
-  rollCrafting(craftId) {
-    let crafting = this.items.get(craftId)
-    if (crafting) {
-      crafting = duplicate(crafting)
-      let rollData = this.getCommonRollData()
-      rollData.mode = "crafting"
-      rollData.crafting = crafting
-      rollData.img = crafting.img
-      this.startRoll(rollData)
-    } else {
-      ui.notifications.warn("Unable to find the relevant weapon ")
-    }
-  }
+
   /* -------------------------------------------- */
   rollWeapon(weaponId, showDialog) {
 
@@ -2168,96 +2243,60 @@ export class Avd12Actor extends Actor {
   }
 
 
-  async rollWeaponDamage(userData, data){
+  async rollWeaponDamage(userData, weapon){
+    let baseDice = ""
+    if(weapon.hitType == "normal"){
+      baseDice = weapon.dice;
+    }else if(weapon.hitType == "thrown"){
+      baseDice = weapon.throwndice;
+    }else{}
+    if(weapon.extraDamage == ""){weapon.extraDamage = 0}
     let formula = "";
     switch(userData.hitType){
       case "normal":
-        formula = data.dice + "+" + data.critEligible + data.extraDamage + "+" + userData.extraDamage;
+        formula = baseDice + "+" + weapon.critEligble + (weapon.extraDamage != 0 ? "+" + weapon.extraDamage  : "") + (userData.extraDamage == "" ? "" : "+" + userData.extraDamage );
         break;
       case "critical":
-        formula = data.dice + "+" + (data.critEligible * 2) + data.extraDamage + "+" + userData.extraDamage;
+        formula = baseDice + "+" + (weapon.critEligble * 2)+ (weapon.extraDamage != 0 ? "+" + weapon.extraDamage  : "") + (userData.extraDamage == "" ? "" : "+" + userData.extraDamage );
         break;
       case "brutal":
-        let coef = Number(data.dice.split('d')[0]) * 2 + "d" + data.dice.split('d')[1];
-        formula = coef + "+" + (data.critEligible * 2) + data.extraDamage+ "+" + userData.extraDamage;
+        let coef = Number(baseDice.split('d')[0]) * 2 + "d" + baseDice.split('d')[1];
+        formula = coef + "+" + (weapon.critEligble * 2)  + (weapon.extraDamage != 0 ? "+" + weapon.extraDamage  : "") + (userData.extraDamage == "" ? "" : "+" + userData.extraDamage );
         break;
       case "halved":
         break;
       case "nobonus":
-        break;
+        break; 
     }
-
-    let weapon = this.items.get(data.weaponId)
-    if (weapon) {
-      weapon = duplicate(weapon)
-      this.prepareWeapon(weapon)
       let rollData = this.getCommonRollData()
-
       rollData.damageFormula = formula
       rollData.mode = "weapon-damage"
       rollData.weapon = weapon
       rollData.damageType = userData.damageType;
       rollData.img = weapon.img
-
-      
-  
-      //END
       let myRoll = new Roll(rollData.damageFormula).roll({ async: false })
       myRoll.diceData = Avd12Utility.setDiceDisplay(myRoll);
-      console.log("DICE DATA:: ", myRoll.diceData);
       await Avd12Utility.showDiceSoNice(myRoll, game.settings.get("core", "rollMode"))
       rollData.roll = myRoll
       let msg = await Avd12Utility.createChatWithRollMode(rollData.alias, {
         content: await renderTemplate(`systems/fvtt-avd12/templates/chat/chat-damage-result.hbs`, rollData)
       })
       msg.setFlag("world", "rolldata", rollData)
-    } else {
-      ui.notifications.warn("Unable to find the relevant weapon ")
-    }
-
   }
 
   async showWeaponDamageDialog(weaponId, hitType, shift){
-    
-
+    let dice = "";
     if(!shift){
       this.rollQuickWeaponDamage(weaponId, hitType);
     }else{
       let weapon = this.items.get(weaponId)
-      let damageData = {};
       if(!weapon)
         return;
       this.prepareWeapon(weapon)
-      let damageType = "";
-      switch(hitType){
-        case "normal":
-            damageType= weapon.system.damages.primary.damagetype;
-            damageData.dice = weapon.dice;
-        case "thrown":
-            damageType= weapon.system.damages.primary.damagetype;
-            damageData.dice = weapon.throwndice;
-            break;
-        case "secondary":
-            damageData.dice = weapon.system.damages.secondary["normal"];
-            damageType = weapon.system.damages.secondary.damagetype;
-            break;
-        case "tertiary":
-            damageData.dice = weapon.system.damages.tertiary["normal"];
-            damageType = weapon.system.damages.tertiary.damagetype;
-            break;
-      } 
-      damageData.damageType = damageType;
-      damageData.name = weapon.name;
-      damageData.hitType = hitType;
-      damageData.extraDamage = weapon.extraDamage;
-      damageData.critEligible = weapon.critEligble;
-      damageData.damageType = damageType;
-      damageData.weaponId = weaponId;
-     
-      let dialog = await Avd12WeaponDamageDialog.create(this, damageData)
+      weapon.hitType = hitType;
+      let dialog = await Avd12WeaponDamageDialog.create(this, weapon)
       dialog.render(true)
     }
-    
   }
 
   
@@ -2268,26 +2307,13 @@ export class Avd12Actor extends Actor {
       weapon = duplicate(weapon)
       this.prepareWeapon(weapon)
       let rollData = this.getCommonRollData()
+     
+      rollData.damageFormula = weapon.system.damages.primary[hitType]
+      rollData.mode = "weapon-damage"
+      rollData.weapon = weapon
+      rollData.damageType = weapon.system.damages.primary.damagetype;
+      rollData.img = weapon.img
 
-      switch(hitType){
-        case "normal":
-          rollData.damageFormula = weapon.system.damages.primary[hitType]
-          rollData.mode = "weapon-damage"
-          rollData.weapon = weapon
-          rollData.damageType = weapon.system.damages.primary.damagetype;
-          rollData.img = weapon.img
-          break;
-        case "thrown":
-          rollData.damageFormula = weapon.system.damages.primary[hitType]
-          rollData.mode = "weapon-damage"
-          rollData.weapon = weapon
-          rollData.damageType = weapon.system.damages.primary.damagetype;
-          rollData.img = weapon.img
-          break;
-      }
-
-      
-      
       let myRoll = new Roll(rollData.damageFormula).roll({ async: false })
       await Avd12Utility.showDiceSoNice(myRoll, game.settings.get("core", "rollMode"))
       rollData.roll = myRoll
