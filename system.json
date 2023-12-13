@@ -18,7 +18,7 @@
   ],
   "authors": [
     {
-      "name": "Uberwald",
+      "name": "Lachlan",
       "flags": {}
     }
   ],
@@ -76,8 +76,8 @@
   ],
   "title": "AnyVenture D12 RPG",
   "url": "https://github.com/LachlanMac/fvtt-avd12",
-  "version": "0.9.5",
-  "download": "hhttps://github.com/LachlanMac/fvtt-avd12/files/13657154/fvtt-avd12-release-0.9.5.zip",
+  "version": "11.1.0",
+  "download": "https://github.com/LachlanMac/fvtt-avd12/releases/download/fvtt-avd12-v11.1.0/release.zip",
   "background": "systems/fvtt-avd12/images/ui/avd12_welcome_page.webp",
   "manifest": "https://github.com/LachlanMac/avd12-data/blob/main/system.json"
 }
