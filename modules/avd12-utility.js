@@ -170,12 +170,12 @@ export class Avd12Utility {
 
   /* -------------------------------------------- */
   static async ready() {
-    const skills = await Avd12Utility.loadCompendium("fvtt-avd12.skills")
+    const skills = await Avd12Utility.loadCompendium("avd12.skills")
     this.skills = skills.map(i => i.toObject())
     this.weaponSkills = duplicate(this.skills.filter(item => item.system.isweaponskill))
     this.shieldSkills = duplicate(this.skills.filter(item => item.system.isshieldskill))
 
-    const rollTables = await Avd12Utility.loadCompendium("fvtt-avd12.rolltables")
+    const rollTables = await Avd12Utility.loadCompendium("avd12.rolltables")
     this.rollTables = rollTables.map(i => i.toObject())
 
   }
@@ -237,40 +237,40 @@ export class Avd12Utility {
   static async preloadHandlebarsTemplates() {
 
     const templatePaths = [
-      'systems/fvtt-avd12/templates/actors/editor-notes-gm.hbs',
-      'systems/fvtt-avd12/templates/items/partial-item-nav.hbs',
-      'systems/fvtt-avd12/templates/items/partial-item-description.hbs',
-      'systems/fvtt-avd12/templates/items/partial-common-item-fields.hbs',
-      'systems/fvtt-avd12/templates/items/partial-options-damage-types.hbs',
-      'systems/fvtt-avd12/templates/items/partial-options-weapon-types.hbs',
-      'systems/fvtt-avd12/templates/items/partial-options-weapon-categories.hbs',
-      'systems/fvtt-avd12/templates/items/partial-options-attributes.hbs',
-      'systems/fvtt-avd12/templates/items/partial-options-equipment-types.hbs',
-      'systems/fvtt-avd12/templates/items/partial-options-armor-types.hbs',
-      'systems/fvtt-avd12/templates/items/partial-options-spell-types.hbs',
-      'systems/fvtt-avd12/templates/items/partial-options-spell-levels.hbs',
-      'systems/fvtt-avd12/templates/items/partial-options-spell-schools.hbs',
-      'systems/fvtt-avd12/templates/items/partial-options-focus-bond.hbs',
-      'systems/fvtt-avd12/templates/items/partial-options-focus-treatment.hbs',
-      'systems/fvtt-avd12/templates/items/partial-options-focus-core.hbs',
-      'systems/fvtt-avd12/templates/items/partial-options-crit-level.hbs',
-      'systems/fvtt-avd12/templates/items/partial-options-attack-type.hbs',
-      'systems/fvtt-avd12/templates/items/partial-options-skills.hbs',
-      'systems/fvtt-avd12/templates/items/partial-rollable.hbs',
-      'systems/fvtt-avd12/templates/actors/partials/moves.hbs',
-      'systems/fvtt-avd12/templates/actors/partials/skills.hbs',
-      'systems/fvtt-avd12/templates/actors/partials/defense.hbs',
-      'systems/fvtt-avd12/templates/actors/partials/offense.hbs',
-      'systems/fvtt-avd12/templates/actors/partials/traits.hbs',
-      'systems/fvtt-avd12/templates/actors/partials/header.hbs',
-      'systems/fvtt-avd12/templates/actors/partials/spells.hbs',
-      'systems/fvtt-avd12/templates/actors/partials/equipment.hbs',
-      'systems/fvtt-avd12/templates/actors/partials/weapons.hbs',
-      'systems/fvtt-avd12/templates/actors/partials/biography.hbs',
-      'systems/fvtt-avd12/templates/actors/partials/crafting.hbs',
-      'systems/fvtt-avd12/templates/actors/partials/modules.hbs',
-      'systems/fvtt-avd12/templates/actors/partials/navigation.hbs',
-      'systems/fvtt-avd12/templates/actors/partials/creature-type.hbs',
+      'systems/avd12/templates/actors/editor-notes-gm.hbs',
+      'systems/avd12/templates/items/partial-item-nav.hbs',
+      'systems/avd12/templates/items/partial-item-description.hbs',
+      'systems/avd12/templates/items/partial-common-item-fields.hbs',
+      'systems/avd12/templates/items/partial-options-damage-types.hbs',
+      'systems/avd12/templates/items/partial-options-weapon-types.hbs',
+      'systems/avd12/templates/items/partial-options-weapon-categories.hbs',
+      'systems/avd12/templates/items/partial-options-attributes.hbs',
+      'systems/avd12/templates/items/partial-options-equipment-types.hbs',
+      'systems/avd12/templates/items/partial-options-armor-types.hbs',
+      'systems/avd12/templates/items/partial-options-spell-types.hbs',
+      'systems/avd12/templates/items/partial-options-spell-levels.hbs',
+      'systems/avd12/templates/items/partial-options-spell-schools.hbs',
+      'systems/avd12/templates/items/partial-options-focus-bond.hbs',
+      'systems/avd12/templates/items/partial-options-focus-treatment.hbs',
+      'systems/avd12/templates/items/partial-options-focus-core.hbs',
+      'systems/avd12/templates/items/partial-options-crit-level.hbs',
+      'systems/avd12/templates/items/partial-options-attack-type.hbs',
+      'systems/avd12/templates/items/partial-options-skills.hbs',
+      'systems/avd12/templates/items/partial-rollable.hbs',
+      'systems/avd12/templates/actors/partials/moves.hbs',
+      'systems/avd12/templates/actors/partials/skills.hbs',
+      'systems/avd12/templates/actors/partials/defense.hbs',
+      'systems/avd12/templates/actors/partials/offense.hbs',
+      'systems/avd12/templates/actors/partials/traits.hbs',
+      'systems/avd12/templates/actors/partials/header.hbs',
+      'systems/avd12/templates/actors/partials/spells.hbs',
+      'systems/avd12/templates/actors/partials/equipment.hbs',
+      'systems/avd12/templates/actors/partials/weapons.hbs',
+      'systems/avd12/templates/actors/partials/biography.hbs',
+      'systems/avd12/templates/actors/partials/crafting.hbs',
+      'systems/avd12/templates/actors/partials/modules.hbs',
+      'systems/avd12/templates/actors/partials/navigation.hbs',
+      'systems/avd12/templates/actors/partials/creature-type.hbs',
       
     ]
     return loadTemplates(templatePaths);
@@ -360,7 +360,7 @@ export class Avd12Utility {
   }
   /* -------------------------------------------- */
   static saveRollData(rollData) {
-    game.socket.emit("system.fvtt-avd12", {
+    game.socket.emit("system.avd12", {
       name: "msg_update_roll", data: rollData
     }); // Notify all other clients of the roll    
     this.updateRollData(rollData)
@@ -566,7 +566,7 @@ export class Avd12Utility {
     }
 
     let msg = await this.createChatWithRollMode(rollData.alias, {
-      content: await renderTemplate(`systems/fvtt-avd12/templates/chat/chat-generic-result.hbs`, rollData)
+      content: await renderTemplate(`systems/avd12/templates/chat/chat-generic-result.hbs`, rollData)
     })
 
     msg.setFlag("world", "rolldata", rollData)
@@ -671,7 +671,7 @@ export class Avd12Utility {
       },
       "flags": {},
       "_stats": {
-          "systemId": "fvtt-avd12",
+          "systemId": "avd12",
           "systemVersion": "10.0.25",
           "coreVersion": "10.291",
           "createdTime": 1680974863058,
@@ -793,7 +793,7 @@ export class Avd12Utility {
       },
       "flags": {},
       "_stats": {
-          "systemId": "fvtt-avd12",
+          "systemId": "avd12",
           "systemVersion": "10.0.25",
           "coreVersion": "10.291",
           "createdTime": 1680974863058,
@@ -833,7 +833,7 @@ export class Avd12Utility {
     chatGM.whisper = this.getUsers(user => user.isGM);
     chatGM.content = "Blinde message of " + game.user.name + "<br>" + chatOptions.content;
     console.log("blindMessageToGM", chatGM);
-    game.socket.emit("system.fvtt-avd12", { msg: "msg_gm_chat_message", data: chatGM });
+    game.socket.emit("system.avd12", { msg: "msg_gm_chat_message", data: chatGM });
   }
 
 
@@ -880,7 +880,7 @@ export class Avd12Utility {
     return ChatMessage.create({
       name : damageData.actor.name, 
       alias : damageData.actor.name, 
-      content : await renderTemplate(`systems/fvtt-avd12/templates/chat/take-damage-result.hbs`, damageData)
+      content : await renderTemplate(`systems/avd12/templates/chat/take-damage-result.hbs`, damageData)
     });
   }
 
@@ -888,7 +888,7 @@ export class Avd12Utility {
     return ChatMessage.create({
       name : actionData.actor.name, 
       alias : actionData.actor.name, 
-      content : await renderTemplate(`systems/fvtt-avd12/templates/chat/chat-use-action.hbs`, actionData)
+      content : await renderTemplate(`systems/avd12/templates/chat/chat-use-action.hbs`, actionData)
     });
   }
 
@@ -896,7 +896,7 @@ export class Avd12Utility {
     return ChatMessage.create({
       name : restData.actor.name, 
       alias : restData.actor.name, 
-      content : await renderTemplate(`systems/fvtt-avd12/templates/chat/take-rest.hbs`, restData)
+      content : await renderTemplate(`systems/avd12/templates/chat/take-rest.hbs`, restData)
     });
   }
 

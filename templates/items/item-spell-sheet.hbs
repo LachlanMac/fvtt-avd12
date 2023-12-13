@@ -6,13 +6,13 @@
       </div>
   </header>
   
-  {{> systems/fvtt-avd12/templates/items/partial-item-nav.hbs}}
+  {{> systems/avd12/templates/items/partial-item-nav.hbs}}
 
 
   {{!-- Sheet Body --}}
   <section class="sheet-body">
 
-    {{> systems/fvtt-avd12/templates/items/partial-item-description.hbs}}
+    {{> systems/avd12/templates/items/partial-item-description.hbs}}
     
     <div class="tab details" data-group="primary" data-tab="details">
 
@@ -22,7 +22,7 @@
             <label class="item-field-label-long">Type</label>
             <select class="item-field-label-long" type="text" name="system.spelltype" value="{{system.spelltype}}" data-dtype="String">
               {{#select system.spelltype}}
-                {{> systems/fvtt-avd12/templates/items/partial-options-spell-types.hbs}}
+                {{> systems/avd12/templates/items/partial-options-spell-types.hbs}}
               {{/select}}
             </select> 
           </li>
@@ -31,7 +31,7 @@
             <label class="item-field-label-long">Level</label>
             <select class="item-field-label-long" type="text" name="system.level" value="{{system.level}}" data-dtype="String">
               {{#select system.level}}
-                {{> systems/fvtt-avd12/templates/items/partial-options-spell-levels.hbs}}
+                {{> systems/avd12/templates/items/partial-options-spell-levels.hbs}}
               {{/select}}
             </select> 
           </li>
@@ -50,7 +50,7 @@
             <label class="item-field-label-long">School</label>
             <select class="item-field-label-long" type="text" name="system.school" value="{{system.school}}" data-dtype="String">
               {{#select system.school}}
-                {{> systems/fvtt-avd12/templates/items/partial-options-spell-schools.hbs}}
+                {{> systems/avd12/templates/items/partial-options-spell-schools.hbs}}
               {{/select}}
             </select> 
           </li>
@@ -64,7 +64,7 @@
             <label class="item-field-label-long">Damage Type</label>
             <select class="item-field-label-long" type="text" name="system.damagetype" value="{{system.damagetype}}" data-dtype="String">
               {{#select system.damagetype}}
-                {{> systems/fvtt-avd12/templates/items/partial-options-damage-types.hbs}}
+                {{> systems/avd12/templates/items/partial-options-damage-types.hbs}}
               {{/select}}
             </select> 
           </li>
@@ -78,7 +78,7 @@
             <label class="item-field-label-long">Secondary Damage Type</label>
             <select class="item-field-label-long" type="text" name="system.damagesecondarytype" value="{{system.damagesecondarytype}}" data-dtype="String">
               {{#select system.damagetype}}
-                {{> systems/fvtt-avd12/templates/items/partial-options-damage-types.hbs}}
+                {{> systems/avd12/templates/items/partial-options-damage-types.hbs}}
               {{/select}}
             </select> 
           </li>

@@ -6,7 +6,7 @@ export class Avd12DamageDialog extends Dialog {
   static async create(actor, damageData) {
 
     let options = { classes: ["Avd12Dialog"], width: 540, height: 'fit-content', 'z-index': 99999 };
-    let html = await renderTemplate('systems/fvtt-avd12/templates/dialogs/roll-damage-generic.hbs', damageData);
+    let html = await renderTemplate('systems/avd12/templates/dialogs/roll-damage-generic.hbs', damageData);
     return new Avd12DamageDialog(actor, damageData, html, options);
   }
 
@@ -42,7 +42,7 @@ export class Avd12DamageDialog extends Dialog {
 
   /* -------------------------------------------- */
   async refreshDialog() {
-    const content = await renderTemplate("systems/fvtt-avd12/templates/dialogs/roll-damage-generic.hbs", this.rollData)
+    const content = await renderTemplate("systems/avd12/templates/dialogs/roll-damage-generic.hbs", this.rollData)
     this.data.content = content
     this.render(true)
   }

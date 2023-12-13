@@ -11,8 +11,8 @@ export class Avd12NPCSheet extends ActorSheet {
     /** @override */
     static get defaultOptions() {
       return mergeObject(super.defaultOptions, {
-        classes: ["fvtt-avd12", "sheet", "actor"],
-        template: "systems/fvtt-avd12/templates/actors/actor-sheet.hbs",
+        classes: ["avd12", "sheet", "actor"],
+        template: "systems/avd12/templates/actors/actor-sheet.hbs",
         width: 960,
         height: 740,
         tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "skills" }],

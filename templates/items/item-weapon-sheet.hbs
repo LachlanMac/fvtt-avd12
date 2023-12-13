@@ -6,13 +6,13 @@
       </div>
   </header>
   
-  {{> systems/fvtt-avd12/templates/items/partial-item-nav.hbs}}
+  {{> systems/avd12/templates/items/partial-item-nav.hbs}}
 
 
   {{!-- Sheet Body --}}
   <section class="sheet-body">
 
-    {{> systems/fvtt-avd12/templates/items/partial-item-description.hbs}}
+    {{> systems/avd12/templates/items/partial-item-description.hbs}}
     
     <div class="tab details" data-group="primary" data-tab="details">
 
@@ -22,7 +22,7 @@
             <label class="item-field-label-long">Weapon category</label>
             <select class="item-field-label-long" type="text" name="system.category" value="{{system.category}}" data-dtype="String">
               {{#select system.category}}
-                {{> systems/fvtt-avd12/templates/items/partial-options-weapon-categories.hbs}}
+                {{> systems/avd12/templates/items/partial-options-weapon-categories.hbs}}
               {{/select}}
             </select> 
 
@@ -31,13 +31,13 @@
             <label class="item-field-label-long">Weapon type</label>
             <select class="item-field-label-long" type="text" name="system.weapontype" value="{{system.weapontype}}" data-dtype="String">
               {{#select system.weapontype}}
-                {{> systems/fvtt-avd12/templates/items/partial-options-weapon-types.hbs}}
+                {{> systems/avd12/templates/items/partial-options-weapon-types.hbs}}
               {{/select}}
             </select> 
 
           </li>
 
-          {{> systems/fvtt-avd12/templates/items/partial-common-item-fields.hbs}}
+          {{> systems/avd12/templates/items/partial-common-item-fields.hbs}}
 
           <li class='flexrow'>
             <h3 class='item-field-label-long'>
@@ -127,7 +127,7 @@
                 <label class="item-field-label-short">Type</label>
                 <select class="item-field-label-long" type="text" name="system.damages.{{key}}.damagetype" value="{{damage.damagetype}}" data-dtype="String">
                   {{#select damage.damagetype}}
-                    {{> systems/fvtt-avd12/templates/items/partial-options-damage-types.hbs}}
+                    {{> systems/avd12/templates/items/partial-options-damage-types.hbs}}
                   {{/select}}
                 </select> 
               </div>

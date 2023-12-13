@@ -5,7 +5,7 @@ export class Avd12WeaponDamageDialog extends Dialog {
   /* -------------------------------------------- */
   static async create(actor, weapon) {
     let options = { classes: ["Avd12Dialog"], width: 540, height: 'fit-content', 'z-index': 99999 };
-    let html = await renderTemplate('systems/fvtt-avd12/templates/dialogs/roll-weapon-damage.hbs', weapon);
+    let html = await renderTemplate('systems/avd12/templates/dialogs/roll-weapon-damage.hbs', weapon);
     return new Avd12WeaponDamageDialog(actor, weapon, html, options);
   }
 
@@ -42,7 +42,7 @@ export class Avd12WeaponDamageDialog extends Dialog {
 
   /* -------------------------------------------- */
   async refreshDialog() {
-    const content = await renderTemplate("systems/fvtt-avd12/templates/dialogs/roll-weapon-damage.hbs", this.weapon)
+    const content = await renderTemplate("systems/avd12/templates/dialogs/roll-weapon-damage.hbs", this.weapon)
     this.data.content = this.weapon
     this.render(true)
   }

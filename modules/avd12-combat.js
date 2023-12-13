@@ -38,7 +38,7 @@ export class Avd12Combat extends Combat {
       //initRoll.diceFormula = formula;
   
       await Avd12Utility.createChatWithRollMode(initRoll.alias, {
-        content: await renderTemplate(`systems/fvtt-avd12/templates/chat/chat-initiative-result.hbs`, initRoll)
+        content: await renderTemplate(`systems/avd12/templates/chat/chat-initiative-result.hbs`, initRoll)
       })
 
 

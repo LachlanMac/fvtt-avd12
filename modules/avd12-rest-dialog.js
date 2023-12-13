@@ -6,7 +6,7 @@ export class Avd12RestDialog extends Dialog {
   static async create(actor) {
 
     let options = { classes: ["Avd12Dialog"], width: 540, height: 'fit-content', 'z-index': 99999 };
-    let html = await renderTemplate('systems/fvtt-avd12/templates/dialogs/rest.hbs');
+    let html = await renderTemplate('systems/avd12/templates/dialogs/rest.hbs');
     return new Avd12RestDialog(actor, html, options);
   }
 
@@ -55,7 +55,7 @@ export class Avd12RestDialog extends Dialog {
 
   /* -------------------------------------------- */
   async refreshDialog() {
-    const content = await renderTemplate("systems/fvtt-avd12/templates/dialogs/rest.hbs", this.rollData)
+    const content = await renderTemplate("systems/avd12/templates/dialogs/rest.hbs", this.rollData)
     this.data.content = content
     this.render(true)
   }

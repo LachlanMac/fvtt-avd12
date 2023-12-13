@@ -10,8 +10,8 @@ export class Avd12ItemSheet extends ItemSheet {
   static get defaultOptions() {
 
     return mergeObject(super.defaultOptions, {
-      classes: ["fvtt-avd12", "sheet", "item"],
-      template: "systems/fvtt-avd12/templates/item-sheet.hbs",
+      classes: ["avd12", "sheet", "item"],
+      template: "systems/avd12/templates/item-sheet.hbs",
       dragDrop: [{ dragSelector: null, dropSelector: null }],
       width: 620,
       height: 480,
@@ -283,7 +283,7 @@ export class Avd12ItemSheet extends ItemSheet {
   /* -------------------------------------------- */
   get template() {
     let type = this.item.type;
-    return `systems/fvtt-avd12/templates/items/item-${type}-sheet.hbs`
+    return `systems/avd12/templates/items/item-${type}-sheet.hbs`
   }
 
   /* -------------------------------------------- */

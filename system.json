@@ -1,11 +1,25 @@
 {
+  "id": "avd12",
+  "title": "AnyVenture D12 RPG",
   "description": "Anyventure D12 system for FoundryVTT",
-  "esmodules": [
-    "modules/avd12-main.js"
+  "version": "10.0.25",
+  "compatibility": {
+    "minimum": "11",
+    "verified": "11",
+    "maximum": "11"
+  },
+  "url": "https://github.com/LachlanMac/avd12",
+  "manifest": "https://github.com/LachlanMac/avd12-data/blob/main/system.json",
+  "download": "https://github.com/LachlanMac/avd12/files/13657236/release.zip",
+  "authors": [
+    {
+      "name": "Lachlan",
+      "flags": {}
+    }
   ],
-  "scripts":[
-    "js/lodash.js"
-  ],
+  "esmodules": ["modules/avd12-main.js"],
+  "scripts": ["js/lodash.js"],
+  "background": "systems/avd12/images/ui/avd12_welcome_page.webp",
   "gridDistance": 1,
   "gridUnits": "u",
   "languages": [
@@ -16,32 +30,18 @@
       "flags": {}
     }
   ],
-  "authors": [
-    {
-      "name": "Lachlan",
-      "flags": {}
-    }
-  ],
   "license": "LICENSE.txt",
-  "compatibility": {
-    "minimum": "11",
-    "verified": "11",
-    "maximum": "11"
-  },
-  "id": "fvtt-avd12",
   "primaryTokenAttribute": "secondary.health",
   "secondaryTokenAttribute": "secondary.power",
   "socket": true,
-  "styles": [
-    "styles/simple.css"
-  ],
+  "styles": ["styles/simple.css"],
   "packs": [
     {
       "type": "Item",
       "label": "Armors",
       "name": "armors",
       "path": "packs/armors.db",
-      "system": "fvtt-avd12",
+      "system": "avd12",
       "private": false,
       "flags": {}
     },
@@ -50,7 +50,7 @@
       "label": "Spells",
       "name": "spells",
       "path": "packs/spells.db",
-      "system": "fvtt-avd12",
+      "system": "avd12",
       "private": false,
       "flags": {}
     },
@@ -59,7 +59,7 @@
       "label": "Weapons",
       "name": "weapons",
       "path": "packs/weapons.db",
-      "system": "fvtt-avd12",
+      "system": "avd12",
       "private": false,
       "flags": {}
     },
@@ -68,16 +68,9 @@
       "label": "Stances",
       "name": "stances",
       "path": "packs/stances.db",
-      "system": "fvtt-avd12",
+      "system": "avd12",
       "private": false,
       "flags": {}
     }
-    
-  ],
-  "title": "AnyVenture D12 RPG",
-  "url": "https://github.com/LachlanMac/fvtt-avd12",
-  "version": "11.1.0",
-  "download": "https://github.com/LachlanMac/fvtt-avd12/releases/download/fvtt-avd12-v11.1.0/release.zip",
-  "background": "systems/fvtt-avd12/images/ui/avd12_welcome_page.webp",
-  "manifest": "https://github.com/LachlanMac/avd12-data/blob/main/system.json"
+  ]
 }

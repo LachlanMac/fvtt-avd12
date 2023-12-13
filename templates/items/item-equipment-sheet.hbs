@@ -6,13 +6,13 @@
       </div>
   </header>
   
-  {{> systems/fvtt-avd12/templates/items/partial-item-nav.hbs}}
+  {{> systems/avd12/templates/items/partial-item-nav.hbs}}
 
 
   {{!-- Sheet Body --}}
   <section class="sheet-body">
 
-    {{> systems/fvtt-avd12/templates/items/partial-item-description.hbs}}
+    {{> systems/avd12/templates/items/partial-item-description.hbs}}
     
     <div class="tab details" data-group="primary" data-tab="details">
 
@@ -22,13 +22,13 @@
             <label class="item-field-label-long">Type</label>
             <select class="item-field-label-long" type="text" name="system.equiptype" value="{{system.equiptype}}" data-dtype="String">
               {{#select system.equiptype}}
-                {{> systems/fvtt-avd12/templates/items/partial-options-equipment-types.hbs}}
+                {{> systems/avd12/templates/items/partial-options-equipment-types.hbs}}
               {{/select}}
             </select> 
 
           </li>
 
-          {{> systems/fvtt-avd12/templates/items/partial-common-item-fields.hbs}}
+          {{> systems/avd12/templates/items/partial-common-item-fields.hbs}}
 
           <li class="flexrow">
             <label class="item-field-label-long">Quantity</label>

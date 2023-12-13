@@ -1,9 +1,9 @@
 <form class="{{cssClass}}" autocomplete="off">
   {{!-- Sheet Header --}}
   <header class="sheet-header">
-    {{> systems/fvtt-avd12/templates/actors/partials/header.hbs}}
+    {{> systems/avd12/templates/actors/partials/header.hbs}}
   </header>
-  {{> systems/fvtt-avd12/templates/actors/partials/navigation.hbs}}
+  {{> systems/avd12/templates/actors/partials/navigation.hbs}}
 
   {{#if (eq type "character")}}
   <section class="sheet-body">
@@ -11,50 +11,50 @@
     <div class="tab main" data-group="primary" data-tab="main">
       <div class="grid-2col">
         <div>
-           {{> systems/fvtt-avd12/templates/actors/partials/skills.hbs}}
+           {{> systems/avd12/templates/actors/partials/skills.hbs}}
         </div>
         <div>
-          {{> systems/fvtt-avd12/templates/actors/partials/defense.hbs}}
-          {{> systems/fvtt-avd12/templates/actors/partials/offense.hbs}}
+          {{> systems/avd12/templates/actors/partials/defense.hbs}}
+          {{> systems/avd12/templates/actors/partials/offense.hbs}}
         </div>
       </div>
     </div>
     {{!-- Modules Tab --}}
     <div class="tab modules" data-group="primary" data-tab="modules">
       <div class="flexcol">
-           {{> systems/fvtt-avd12/templates/actors/partials/modules.hbs}}
+           {{> systems/avd12/templates/actors/partials/modules.hbs}}
         </div>
     </div>
     {{!-- Spells Tab --}}
     <div class="tab spells" data-group="primary" data-tab="spells">
-      {{> systems/fvtt-avd12/templates/actors/partials/spells.hbs}}
+      {{> systems/avd12/templates/actors/partials/spells.hbs}}
     </div>
     {{!-- moves Tab --}}
     <div class="tab moves" data-group="primary" data-tab="moves">
       <div class="flexcol">
-        {{> systems/fvtt-avd12/templates/actors/partials/weapons.hbs}}
-        {{> systems/fvtt-avd12/templates/actors/partials/moves.hbs}}
+        {{> systems/avd12/templates/actors/partials/weapons.hbs}}
+        {{> systems/avd12/templates/actors/partials/moves.hbs}}
       </div>
     </div>
     {{!-- traits Tab --}}
     <div class="tab traits" data-group="primary" data-tab="traits">
       <div class="flexcol">
-        {{> systems/fvtt-avd12/templates/actors/partials/traits.hbs}}
+        {{> systems/avd12/templates/actors/partials/traits.hbs}}
       </div>
     </div>
     {{!-- Equipement Tab --}}
     <div class="tab equipment" data-group="primary" data-tab="equipment">
-      {{> systems/fvtt-avd12/templates/actors/partials/equipment.hbs}}
+      {{> systems/avd12/templates/actors/partials/equipment.hbs}}
       <hr>
     </div>
     {{!-- Equipement Tab --}}
     <div class="tab crafting" data-group="primary" data-tab="crafting">
-       {{> systems/fvtt-avd12/templates/actors/partials/crafting.hbs}}
+       {{> systems/avd12/templates/actors/partials/crafting.hbs}}
     </div>
 
     {{!-- Biography Tab --}}
     <div class="tab biodata" data-group="primary" data-tab="biodata">
-        {{> systems/fvtt-avd12/templates/actors/partials/biography.hbs}}
+        {{> systems/avd12/templates/actors/partials/biography.hbs}}
     </div>
   </section>
   {{else if (eq type "npc")}}
@@ -63,43 +63,43 @@
     <div class="tab main" data-group="primary" data-tab="main">
       <div class="grid-2col">
         <div>
-            {{> systems/fvtt-avd12/templates/actors/partials/skills.hbs}}
+            {{> systems/avd12/templates/actors/partials/skills.hbs}}
         </div>
         <div>
-          {{> systems/fvtt-avd12/templates/actors/partials/defense.hbs}}
-          {{> systems/fvtt-avd12/templates/actors/partials/offense.hbs}}
+          {{> systems/avd12/templates/actors/partials/defense.hbs}}
+          {{> systems/avd12/templates/actors/partials/offense.hbs}}
         </div>
       </div>
     </div>
     {{!-- Spells Tab --}}
     <div class="tab spells" data-group="primary" data-tab="spells">
-      {{> systems/fvtt-avd12/templates/actors/partials/spells.hbs}}
+      {{> systems/avd12/templates/actors/partials/spells.hbs}}
     </div>
 
     {{!-- moves Tab --}}
     <div class="tab moves" data-group="primary" data-tab="moves">
       <div class="flexcol">
-        {{> systems/fvtt-avd12/templates/actors/partials/weapons.hbs}}
-        {{> systems/fvtt-avd12/templates/actors/partials/moves.hbs}}
+        {{> systems/avd12/templates/actors/partials/weapons.hbs}}
+        {{> systems/avd12/templates/actors/partials/moves.hbs}}
       </div>
     </div>
 
     {{!-- traits Tab --}}
     <div class="tab traits" data-group="primary" data-tab="traits">
       <div class="flexcol">
-        {{> systems/fvtt-avd12/templates/actors/partials/traits.hbs}}
+        {{> systems/avd12/templates/actors/partials/traits.hbs}}
       </div>
     </div>
 
     {{!-- Equipement Tab --}}
     <div class="tab equipment" data-group="primary" data-tab="equipment">
-      {{> systems/fvtt-avd12/templates/actors/partials/equipment.hbs}}
+      {{> systems/avd12/templates/actors/partials/equipment.hbs}}
       <hr>
     </div>
 
     {{!-- Biography Tab --}}
     <div class="tab biodata" data-group="primary" data-tab="biodata">
-        {{> systems/fvtt-avd12/templates/actors/partials/biography.hbs}}
+        {{> systems/avd12/templates/actors/partials/biography.hbs}}
     </div>
   </section>
   {{/if}}

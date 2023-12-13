@@ -78,7 +78,7 @@ export class Avd12Actor extends Actor {
     let activeStance = stanceData.pop();
     let uniqueStances = [...new Set(stanceData)];
     for(let i = 0; i < uniqueStances.length; i++){
-      await  game.packs.get('fvtt-avd12.stances').getDocument(uniqueStances[i]).then(async function(x){
+      await  game.packs.get('avd12.stances').getDocument(uniqueStances[i]).then(async function(x){
         if(uniqueStances[i]._id == activeStance)
           x.system.active = true;
         await actorRef.createEmbeddedDocuments('Item', [x]);
@@ -269,7 +269,7 @@ export class Avd12Actor extends Actor {
   
   async addStance(stance){
     let actorRef = this;
-    await game.packs.get('fvtt-avd12.stances').getDocument(stance).then(function(x){
+    await game.packs.get('avd12.stances').getDocument(stance).then(function(x){
       x.system.active = false;
       actorRef.createEmbeddedDocuments('Item', [x])
     });
@@ -592,7 +592,7 @@ export class Avd12Actor extends Actor {
         alias:action.actor.name
       };
 
-      const html = await renderTemplate("systems/fvtt-avd12/templates/chat/chat-use-action.hbs", templateData);
+      const html = await renderTemplate("systems/avd12/templates/chat/chat-use-action.hbs", templateData);
       
       // Create the ChatMessage data object
       const chatData = {
@@ -2122,7 +2122,7 @@ export class Avd12Actor extends Actor {
       } else {
         this.spentFocusPoints(spell)
         let msg = await Avd12Utility.createChatWithRollMode(rollData.alias, {
-          content: await renderTemplate(`systems/fvtt-avd12/templates/chat/chat-utility-spell.hbs`, rollData)
+          content: await renderTemplate(`systems/avd12/templates/chat/chat-utility-spell.hbs`, rollData)
         })
         msg.setFlag("world", "rolldata", rollData)
       }
@@ -2150,7 +2150,7 @@ export class Avd12Actor extends Actor {
       await Avd12Utility.showDiceSoNice(myRoll, game.settings.get("core", "rollMode"))
       rollData.roll = myRoll
       let msg = await Avd12Utility.createChatWithRollMode(rollData.alias, {
-        content: await renderTemplate(`systems/fvtt-avd12/templates/chat/chat-damage-result.hbs`, rollData)
+        content: await renderTemplate(`systems/avd12/templates/chat/chat-damage-result.hbs`, rollData)
       });
 
       msg.setFlag("world", "rolldata", rollData)
@@ -2204,7 +2204,7 @@ export class Avd12Actor extends Actor {
       await Avd12Utility.showDiceSoNice(myRoll, game.settings.get("core", "rollMode"))
       rollData.roll = myRoll
       let msg = await Avd12Utility.createChatWithRollMode(rollData.alias, {
-        content: await renderTemplate(`systems/fvtt-avd12/templates/chat/chat-damage-result.hbs`, rollData)
+        content: await renderTemplate(`systems/avd12/templates/chat/chat-damage-result.hbs`, rollData)
       })
       msg.setFlag("world", "rolldata", rollData)
 
@@ -2228,7 +2228,7 @@ export class Avd12Actor extends Actor {
       await Avd12Utility.showDiceSoNice(myRoll, game.settings.get("core", "rollMode"))
       rollData.roll = myRoll
       let msg = await Avd12Utility.createChatWithRollMode(rollData.alias, {
-        content: await renderTemplate(`systems/fvtt-avd12/templates/chat/chat-damage-result.hbs`, rollData)
+        content: await renderTemplate(`systems/avd12/templates/chat/chat-damage-result.hbs`, rollData)
       })
       msg.setFlag("world", "rolldata", rollData)
 
@@ -2294,7 +2294,7 @@ export class Avd12Actor extends Actor {
       await Avd12Utility.showDiceSoNice(myRoll, game.settings.get("core", "rollMode"))
       rollData.roll = myRoll
       let msg = await Avd12Utility.createChatWithRollMode(rollData.alias, {
-        content: await renderTemplate(`systems/fvtt-avd12/templates/chat/chat-damage-result.hbs`, rollData)
+        content: await renderTemplate(`systems/avd12/templates/chat/chat-damage-result.hbs`, rollData)
       })
       msg.setFlag("world", "rolldata", rollData)
   }
@@ -2333,7 +2333,7 @@ export class Avd12Actor extends Actor {
       await Avd12Utility.showDiceSoNice(myRoll, game.settings.get("core", "rollMode"))
       rollData.roll = myRoll
       let msg = await Avd12Utility.createChatWithRollMode(rollData.alias, {
-        content: await renderTemplate(`systems/fvtt-avd12/templates/chat/chat-damage-result.hbs`, rollData)
+        content: await renderTemplate(`systems/avd12/templates/chat/chat-damage-result.hbs`, rollData)
       })
       msg.setFlag("world", "rolldata", rollData)
 

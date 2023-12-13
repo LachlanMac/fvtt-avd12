@@ -44,7 +44,7 @@ Hooks.once("init", async function () {
   };
 
 
-  game.socket.on("system.fvtt-avd12", data => {
+  game.socket.on("system.avd12", data => {
     Avd12Utility.onSocketMesssage(data)
   });
 
@@ -59,10 +59,10 @@ Hooks.once("init", async function () {
   /* -------------------------------------------- */
   // Register sheet application classes
   Actors.unregisterSheet("core", ActorSheet);
-  Actors.registerSheet("fvtt-avd12", Avd12ActorSheet, { types: ["character"], makeDefault: true });
-  Actors.registerSheet("fvtt-avd12", Avd12NPCSheet, { types: ["npc"], makeDefault: false });
+  Actors.registerSheet("avd12", Avd12ActorSheet, { types: ["character"], makeDefault: true });
+  Actors.registerSheet("avd12", Avd12NPCSheet, { types: ["npc"], makeDefault: false });
   Items.unregisterSheet("core", ItemSheet);
-  Items.registerSheet("fvtt-avd12", Avd12ItemSheet, { makeDefault: true });
+  Items.registerSheet("avd12", Avd12ItemSheet, { makeDefault: true });
 
   Avd12Utility.init()
 });
@@ -86,167 +86,167 @@ Hooks.once("ready", function () {
     {
       id: "dead",
       label: "Dead",
-      icon: "systems/fvtt-avd12/images/conditions/dead.svg",
+      icon: "systems/avd12/images/conditions/dead.svg",
     },
     {
       id: "unconscious",
       label: "Unconscious",
-      icon: "systems/fvtt-avd12/images/conditions/unconscious.svg"
+      icon: "systems/avd12/images/conditions/unconscious.svg"
     },
     {
       id: "alert",
       label: "Alert",
-      icon: "systems/fvtt-avd12/images/conditions/alert.svg"
+      icon: "systems/avd12/images/conditions/alert.svg"
     },
     {
       id: "flying",
       label: "Flying",
-      icon: "systems/fvtt-avd12/images/conditions/fly.svg"
+      icon: "systems/avd12/images/conditions/fly.svg"
     },
     {
       id: "dazed",
       label: "Dazed",
-      icon: "systems/fvtt-avd12/images/conditions/dazed.svg"
+      icon: "systems/avd12/images/conditions/dazed.svg"
     },
     {
       id: "stunned",
       label: "Stunned",
-      icon: "systems/fvtt-avd12/images/conditions/stunned.svg"
+      icon: "systems/avd12/images/conditions/stunned.svg"
     },
     {
       id: "confused",
       label: "Confused",
-      icon: "systems/fvtt-avd12/images/conditions/confused.svg"
+      icon: "systems/avd12/images/conditions/confused.svg"
     },
     {
       id: "prone",
       label: "Prone",
-      icon: "systems/fvtt-avd12/images/conditions/prone.svg"
+      icon: "systems/avd12/images/conditions/prone.svg"
     },
     {
       id: "grappled",
       label: "Grappled",
-      icon: "systems/fvtt-avd12/images/conditions/grappled.svg"
+      icon: "systems/avd12/images/conditions/grappled.svg"
     },
     {
       id: "paralyzed",
       label: "Paralyzed",
-      icon: "systems/fvtt-avd12/images/conditions/paralyzed.svg"
+      icon: "systems/avd12/images/conditions/paralyzed.svg"
     },
     {
       id: "charmed",
       label: "Charmed",
-      icon: "systems/fvtt-avd12/images/conditions/charmed.svg"
+      icon: "systems/avd12/images/conditions/charmed.svg"
     },
     {
       id: "blind",
       label: "Blinded",
-      icon: "systems/fvtt-avd12/images/conditions/blind.svg"
+      icon: "systems/avd12/images/conditions/blind.svg"
     },
     {
       id: "deafened",
       label: "Deafened",
-      icon: "systems/fvtt-avd12/images/conditions/deafened.svg"
+      icon: "systems/avd12/images/conditions/deafened.svg"
     },
     {
       id: "muted",
       label: "Muted",
-      icon: "systems/fvtt-avd12/images/conditions/muted.svg"
+      icon: "systems/avd12/images/conditions/muted.svg"
     },
     {
       id: "afraid",
       label: "Afraid",
-      icon: "systems/fvtt-avd12/images/conditions/afraid.svg"
+      icon: "systems/avd12/images/conditions/afraid.svg"
     },
     {
       id: "ignited",
       label: "Ignited",
-      icon: "systems/fvtt-avd12/images/conditions/ignited.svg"
+      icon: "systems/avd12/images/conditions/ignited.svg"
     },
     {
       id: "frozen",
       label: "Frozen",
-      icon: "systems/fvtt-avd12/images/conditions/frozen.svg"
+      icon: "systems/avd12/images/conditions/frozen.svg"
     },
     {
       id: "bleeding",
       label: "Bleeding",
-      icon: "systems/fvtt-avd12/images/conditions/bleeding.svg"
+      icon: "systems/avd12/images/conditions/bleeding.svg"
     },
     {
       id: "disease",
       label: "Disease",
-      icon: "systems/fvtt-avd12/images/conditions/diseased.svg"
+      icon: "systems/avd12/images/conditions/diseased.svg"
     },
     {
       id: "poison",
       label: "Poison",
-      icon: "systems/fvtt-avd12/images/conditions/poisoned.svg"
+      icon: "systems/avd12/images/conditions/poisoned.svg"
     },
     {
       id: "invisible",
       label: "Invisible",
-      icon: "systems/fvtt-avd12/images/conditions/invisible.svg"
+      icon: "systems/avd12/images/conditions/invisible.svg"
     },
     {
       id: "hidden",
       label: "Hidden",
-      icon: "systems/fvtt-avd12/images/conditions/hidden.svg"
+      icon: "systems/avd12/images/conditions/hidden.svg"
     },
     {
       id: "partialcover",
       label: "Partial Cover",
-      icon: "systems/fvtt-avd12/images/conditions/partialcover.svg"
+      icon: "systems/avd12/images/conditions/partialcover.svg"
     },
     {
       id: "fullcover",
       label: "Full Cover",
-      icon: "systems/fvtt-avd12/images/conditions/fullcover.svg"
+      icon: "systems/avd12/images/conditions/fullcover.svg"
     },
     {
       id: "exhausted1",
       label: "Exhausted - Tier 1",
-      icon: "systems/fvtt-avd12/images/conditions/exhaustT1.svg"
+      icon: "systems/avd12/images/conditions/exhaustT1.svg"
     },
     {
       id: "exhausted2",
       label: "Exhausted - Tier 2",
-      icon: "systems/fvtt-avd12/images/conditions/exhaustT2.svg"
+      icon: "systems/avd12/images/conditions/exhaustT2.svg"
     },
     {
       id: "exhausted3",
       label: "Exhausted - Tier 3",
-      icon: "systems/fvtt-avd12/images/conditions/exhaustT3.svg"
+      icon: "systems/avd12/images/conditions/exhaustT3.svg"
     },
     {
       id: "wounded1",
       label: "Wounded - Tier 1",
-      icon: "systems/fvtt-avd12/images/conditions/woundedT1.svg"
+      icon: "systems/avd12/images/conditions/woundedT1.svg"
     },
     {
       id: "wounded2",
       label: "Wounded - Tier 2",
-      icon: "systems/fvtt-avd12/images/conditions/woundedT2.svg"
+      icon: "systems/avd12/images/conditions/woundedT2.svg"
     },
     {
       id: "wounded3",
       label: "Wounded - Tier 3",
-      icon: "systems/fvtt-avd12/images/conditions/woundedT3.svg"
+      icon: "systems/avd12/images/conditions/woundedT3.svg"
     },
     {
       id: "encumbered",
       label: "Encumbered",
-      icon: "systems/fvtt-avd12/images/conditions/encumbered.svg"
+      icon: "systems/avd12/images/conditions/encumbered.svg"
     },
     {
       id: "focusing",
       label: "Focusing",
-      icon: "systems/fvtt-avd12/images/conditions/focus.svg"
+      icon: "systems/avd12/images/conditions/focus.svg"
     },
     {
       id: "lightsource",
       label: "Light Source",
-      icon: "systems/fvtt-avd12/images/conditions/light.svg"
+      icon: "systems/avd12/images/conditions/light.svg"
     }
   ]
 
