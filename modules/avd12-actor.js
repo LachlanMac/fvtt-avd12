@@ -314,6 +314,8 @@ export class Avd12Actor extends Actor {
           break;
       case 8://dueling
           this.system.bonus.traits.dueling = 1;
+          this.system.attributes.might.skills.block.finalvalue += 1;
+          this.system.attributes.agility.skills.dodge.finalvalue += 1;
           break;
       case 9://quicktooss
           this.system.bonus.traits.quicktoss = 1;
@@ -1350,6 +1352,11 @@ export class Avd12Actor extends Actor {
     return comp
   }
 
+  getJourneymanSpells(spells) {
+    let comp = duplicate(spells.filter(item => item.system.level == 'journeyman') || []);
+    return comp
+  }
+
   getExpertSpells(spells) {
     let comp = duplicate(spells.filter(item => item.system.level == 'expert') || []);
     return comp
@@ -1471,9 +1478,15 @@ export class Avd12Actor extends Actor {
       break;
       case "light1h":
         weapon.system.thrown = true;
+        if(this.system.bonus.traits.dueling == 1)
+          bonusDamage += 2
         upgraded == 1 ? dice = "2d6" : dice = "1d8"
         break;
       case "heavy1h":
+        if(this.system.bonus.traits.dueling == 1)
+          bonusDamage += 2
+        if(this.system.bonus.traits.juggernaut == 1)
+          bonusDamage += 2
         weapon.system.thrown = true;
         upgraded == 1 ? dice = "2d8" : dice = "1d10"
         break;
@@ -1482,6 +1495,8 @@ export class Avd12Actor extends Actor {
         upgraded == 1 ? dice = "3d6" : dice = "3d4"
         break;
       case "heavy2h":
+        if(this.system.bonus.traits.juggernaut == 1)
+          bonusDamage += 2
         weapon.system.thrown = true;
         upgraded == 1 ? dice = "3d8" : dice = "2d8"
         break;
@@ -1515,7 +1530,7 @@ export class Avd12Actor extends Actor {
       case "light1h":
       case "light2h":
         if(weapon.system.thrown){
-        weapon.system.minrange = 1;
+        weapon.system.minrange = 2;
         weapon.system.maxrange = Math.max(4, 4 + this.system.attributes.might.skills.athletics.finalvalue);
         if(this.system.bonus.traits.quicktoss)
           this.system.bonus.traits.chucker == 1 ? thrownDice = "2d8" : thrownDice = "2d6"         
@@ -1528,7 +1543,7 @@ export class Avd12Actor extends Actor {
       case "heavy1h":
       case "heavy2h":
         if(weapon.system.thrown){
-          weapon.system.minrange = 1;
+          weapon.system.minrange = 2;
           weapon.system.maxrange = Math.max(0, 1 + this.system.attributes.might.skills.athletics.finalvalue);
           if(this.system.bonus.traits.skilledchucking && weapon.attackBonus + 1 > weapon.system.maxrange)
             weapon.system.maxrange = weapon.attackBonus + 1;

@@ -5,24 +5,19 @@ import { Avd12Commands } from "./avd12-commands.js";
 
 /* -------------------------------------------- */
 const __ALLOWED_MODULE_TYPES = { "action": 1, "reaction": 1, "freeaction": 1, "trait": 1 }
-const __focusCore = { "corenone": 0, "core1gp": 6, "core5gp": 8, "core50gp": 10, "core100gp": 12, "core300gp": 16, "core500gp": 20, "core800gp": 26, "core1000gp": 32 }
-const __burnChanceTreatment = { "treatmentnone": 0, "treatment1gp": 8, "treatment4gp": 7, "treatment20gp": 6, "treatment50gp": 5, "treatment500gp": 4, "treatment1000gp": 3, "treatment5000gp": 2, "treatment10000gp": 1 }
-const __focusPointTreatment = { "treatmentnone": 0, "treatment1gp": 0, "treatment4gp": 1, "treatment20gp": 2, "treatment50gp": 4, "treatment500gp": 6, "treatment1000gp": 8, "treatment5000gp": 14, "treatment10000gp": 20 }
+const __focusCore = { "corenone": 0, "core5gp": 6, "core20gp": 8, "core50gp": 10, "core100gp": 12, "core300gp": 16, "core500gp": 20, "core800gp": 26, "core1000gp": 32 }
+const __burnChanceTreatment = { "treatmentnone": 0, "treatment4gp": 8, "treatment20gp": 7, "treatment50gp": 6, "treatment100gp": 5, "treatment500gp": 4, "treatment1000gp": 3, "treatment5000gp": 2, "treatment10000gp": 1 }
+const __focusPointTreatment = { "treatmentnone": 0, "treatment4gp": 0, "treatment20gp": 1, "treatment50gp": 2, "treatment100gp": 4, "treatment500gp": 6, "treatment1000gp": 8, "treatment5000gp": 14, "treatment10000gp": 20 }
 const __focusRegenBond = { "bondnone": 6, "bondeasy": 8, "bondcommon": 12, "bonduncommon": 16, "bondrare": 22, "bondlegendary": 26, "bondmythic": 36, "bonddivine": 48 }
 const __bonusSpellDamageBond = { "bondnone": 0, "bondeasy": 1, "bondcommon": 1, "bonduncommon": 1, "bondrare": 2, "bondlegendary": 2, "bondmythic": 3, "bonddivine": 4 }
 const __bonusSpellAttackBond = { "bondnone": 0, "bondeasy": 0, "bondcommon": 1, "bonduncommon": 1, "bondrare": 2, "bondlegendary": 2, "bondmythic": 3, "bonddivine": 4 }
-const __spellCost = { "beginner": 1, "novice": 2, "expert": 4, "master": 6, "grandmaster": 8 }
+const __spellCost = { "beginner": 1, "novice": 2, "journeyman": 4, "expert": 8, "master": 16, "grandmaster": 32 }
 const __armorPenalties = {"light": { block: -2, dodge: -1}, 
     "medium": { dodge: -3, block: -2, castingtime: 1, stealth: -2, speed: -1}, 
     "heavy": { dodge: -4, block: -3, stealth: -3, castingtime: 2, speed: -3 },
      "ultraheavy": { dodge: -5, block: -4, stealth: -5, castingtime: 2, speed: -3 }, 
     "lightshield": {dodge: -1, block: +1}, 
     "heavyshield": {dodge: -2, block: 2, speed: -1, stealth: -1} }
-
-
-
-
-
 /* -------------------------------------------- */
 export class Avd12Utility {
 

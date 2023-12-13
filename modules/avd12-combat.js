@@ -10,6 +10,7 @@ export class Avd12Combat extends Combat {
     for (let cId = 0; cId < ids.length; cId++) {
       const c = this.combatants.get(ids[cId]);
       let id = c._id || c.id;
+    
       let initBonus = c.actor ? c.actor.getInitiativeScore( this.id, id ) : -1;
 
       let formula = "1d12+";
@@ -17,14 +18,24 @@ export class Avd12Combat extends Combat {
         formula = "3d4+";
       }
       
-      let initRoll = new Roll(formula + initBonus).roll({ async: false })
-      await Avd12Utility.showDiceSoNice(initRoll, game.settings.get("core", "rollMode"));
-      await this.updateEmbeddedDocuments("Combatant", [ { _id: id, initiative: initRoll.total } ]);
+      let initTotal = c.actor.system.universal.skills.initiative.finalvalue;
+      //console.log("*******", initTotal);
+      if(c.actor.system.universal.skills.initiative.good){
+        initTotal+=2;
+      }
+      //let initRoll = new Roll(formula + initBonus).roll({ async: false })
 
-      formula += initBonus;
-      initRoll.bonusMalusRoll = initBonus;
+      let initRoll = {total:initTotal}
+      //await Avd12Utility.showDiceSoNice(initRoll, game.settings.get("core", "rollMode"));
+
+      //await this.updateEmbeddedDocuments("Combatant", [ { _id: id, initiative: initRoll.total } ]);
+      await this.updateEmbeddedDocuments("Combatant", [ { _id: id, initiative: initTotal } ]);
+
+      //formula += initBonus;
+      //initRoll.bonusMalusRoll = initBonus;
       initRoll.skill = c.actor.system.universal.skills.initiative;
-      initRoll.diceFormula = formula;
+      initRoll.name = c.actor.name;
+      //initRoll.diceFormula = formula;
   
       await Avd12Utility.createChatWithRollMode(initRoll.alias, {
         content: await renderTemplate(`systems/fvtt-avd12/templates/chat/chat-initiative-result.hbs`, initRoll)
