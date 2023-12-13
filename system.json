@@ -75,9 +75,9 @@
     
   ],
   "title": "AnyVenture D12 RPG",
-  "url": "https://www.uberwald.me/gitea/public/fvtt-avd12",
-  "version": "10.0.25",
-  "download": "https://www.uberwald.me/gitea/public/fvtt-avd12/archive/fvtt-avd12-v10.0.25.zip",
+  "url": "https://github.com/LachlanMac/fvtt-avd12",
+  "version": "0.9.5",
+  "download": "hhttps://github.com/LachlanMac/fvtt-avd12/files/13657154/fvtt-avd12-release-0.9.5.zip",
   "background": "systems/fvtt-avd12/images/ui/avd12_welcome_page.webp",
-  "manifest": "https://www.uberwald.me/gitea/public/fvtt-avd12/raw/branch/master/system.json"
+  "manifest": "https://github.com/LachlanMac/avd12-data/blob/main/system.json"
 }
