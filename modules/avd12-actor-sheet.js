@@ -66,23 +66,26 @@ export class Avd12ActorSheet extends ActorSheet {
       reactions: this.actor.getReactions(),
       freeactions: this.actor.getFreeActions(),
       ballads: this.actor.getBallads(),
-      stances: this.actor.checkAndPrepareEquipments(duplicate(this.actor.getStances())),
-      gloves: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getGloves()) ),
-      rings: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getRings()) ),
-      cloaks: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getCloaks()) ),
-      boots: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getBoots()) ),
-      headwear: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getHeadwear()) ),
-      weapons: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getWeapons()) ),
-      armors: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getArmors())),
-      shields: this.actor.checkAndPrepareEquipments( duplicate(this.actor.getShields())),
+      ammunition:this.actor.getAmmunition(),
+      light_sources:this.actor.getLightSources(),
+      stances: this.actor.getStances(),
+      gloves: this.actor.getGloves(),
+      rings: this.actor.getRings(),
+      cloaks:this.actor.getCloaks(),
+      boots: this.actor.getBoots(),
+      headwear: this.actor.getHeadwear(),
+      weapons: this.actor.getWeapons(),
+      armors: this.actor.getArmors(),
+      shields:this.actor.getShields(),
       beginnerSpells: this.actor.getBeginnerSpells(duplicate(this.actor.getSpells())),
       noviceSpells: this.actor.getNoviceSpells(duplicate(this.actor.getSpells())),
       journeymanSpells: this.actor.getJourneymanSpells(duplicate(this.actor.getSpells())),
       expertSpells: this.actor.getExpertSpells(duplicate(this.actor.getSpells())),
       masterSpells: this.actor.getMasterSpells(duplicate(this.actor.getSpells())),
       grandmasterSpells: this.actor.getGrandmasterSpells(duplicate(this.actor.getSpells())),
-      equipments: this.actor.checkAndPrepareEquipments(duplicate(this.actor.getEquipmentsOnly()) ),
-      equippedWeapons: this.actor.checkAndPrepareEquipments(duplicate(this.actor.getEquippedWeapons()) ),
+      equipments: duplicate(this.actor.getEquipmentsOnly()),
+      equippedWeapons: duplicate(this.actor.getEquippedWeapons()),
+      equippedThrowing: duplicate(this.actor.getThrowingEquipment()),
       equippedArmor: this.actor.getEquippedArmor(),
       equippedShield: this.actor.getEquippedShield(),
       subActors: duplicate(this.actor.getSubActors()),
@@ -193,6 +196,11 @@ export class Avd12ActorSheet extends ActorSheet {
       let skillKey = $(event.currentTarget).data("skill-key")
       this.actor.rollUniversal(skillKey, !shift)
     });    
+    html.find('.roll-throw-object').click((event) => {
+      const li = $(event.currentTarget).parents(".item");
+      const weponId = li.data("item-id")
+      this.actor.rollThrowObject(weponId, !shift)
+    });
     html.find('.roll-weapon').click((event) => {
       const li = $(event.currentTarget).parents(".item");
       const weponId = li.data("item-id")
@@ -216,6 +224,14 @@ export class Avd12ActorSheet extends ActorSheet {
       const weaponId = li.data("item-id")
       this.actor.showWeaponDamageDialog(weaponId, "normal", !shift)
     });
+
+    html.find('.roll-throw-damage').click((event) => {
+      const li = $(event.currentTarget).parents(".item");
+      const weaponId = li.data("item-id")
+      this.actor.showWeaponDamageDialog(weaponId, "throw", !shift)
+    });
+
+
     html.find('.roll-thrown-weapon-damage').click((event) => {
       const li = $(event.currentTarget).parents(".item");
       const weaponId = li.data("item-id")

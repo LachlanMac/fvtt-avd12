@@ -4,19 +4,16 @@ import { Avd12Utility } from "./avd12-utility.js";
 /* -------------------------------------------- */
 export class Avd12Combat extends Combat {
   
+
   /* -------------------------------------------- */
   async rollInitiative(ids, formula = undefined, messageOptions = {} ) {
+
+
     ids = typeof ids === "string" ? [ids] : ids;
     for (let cId = 0; cId < ids.length; cId++) {
       const c = this.combatants.get(ids[cId]);
       let id = c._id || c.id;
-    
-      let initBonus = c.actor ? c.actor.getInitiativeScore( this.id, id ) : -1;
-
-      let formula = "1d12+";
-      if(c.actor.system.universal.skills.initiative.good){
-        formula = "3d4+";
-      }
+  
       
       let initTotal = c.actor.system.universal.skills.initiative.finalvalue;
       //console.log("*******", initTotal);
@@ -24,9 +21,12 @@ export class Avd12Combat extends Combat {
         initTotal+=2;
       }
       //let initRoll = new Roll(formula + initBonus).roll({ async: false })
-
       let initRoll = {total:initTotal}
-      //await Avd12Utility.showDiceSoNice(initRoll, game.settings.get("core", "rollMode"));
+
+      //cheese to allow characters to break ties.
+      if(c.actor.type == "character"){
+        initTotal += 0.001;
+      }
 
       //await this.updateEmbeddedDocuments("Combatant", [ { _id: id, initiative: initRoll.total } ]);
       await this.updateEmbeddedDocuments("Combatant", [ { _id: id, initiative: initTotal } ]);
@@ -46,9 +46,6 @@ export class Avd12Combat extends Combat {
     return this;
   }
 
-  /* -------------------------------------------- */
-  _onUpdate(changed, options, userId) {
-  }
 
   /* -------------------------------------------- */
   static async checkTurnPosition() {

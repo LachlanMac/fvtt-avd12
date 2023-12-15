@@ -65,3 +65,41 @@
         {{/each}}
       </ul>
 {{/if}}
+
+
+{{#if equippedThrowing}}
+      <ul class="item-list alternate-list">
+        <li class="item flexrow list-item items-title-bg">
+          <h3 class="flex3"><label class="items-title-text">Throwing Items</label></h3>
+          <label class="flex1 flex-center">Range</label>
+          <label class="flex1 flex-center">Attack</label>
+          <label class="flex1 flex-center">Damage</label>
+          <a class="flex1"></a>
+          <a class="flex1"></a>
+        </li>
+
+      {{#each equippedThrowing as |weapon key|}}
+        <section class="spell-card">
+        <li class="item flexrow list-item list-item-shadow" data-item-id="{{weapon._id}}">
+          <span class="flex3"><b>{{weapon.name}}</b></span>
+          {{#if weapon.thrown}}
+          <span class="flex1"></span>
+          {{else}}
+          <span class="flex1 flex-center"><label class="roll-description flex-center">{{#if (gt weapon.system.maxrange 0)}}{{weapon.system.minrange}}u - {{weapon.system.maxrange}}u{{/if}}</label></span>
+
+          {{/if}}
+          <a class="flex1 flex-center roll-text roll-throw-object"><img class="ui-dice" width="20px" height="20px" src="systems/avd12/images/ui/D12_White.webp"/><span class="roll-description">+{{weapon.attackBonus}}</span></a>
+          <a class="flex1 flex-center roll-text roll-throw-damage" data-damage="normal"><img class="ui-dice" width="20px" height="20px" src="systems/avd12/images/ui/D12_White.webp"/><span class="roll-description">{{weapon.system.damages.primary.normal}}</span></a>
+          <a class="flex1"></a>
+          <a class="flex1"></a>
+          <!--
+          <a class="flex1 flex-center roll-text roll-weapon-damage" data-damage="critical"><img class="ui-dice" width="20px" height="20px" src="systems/avd12/images/ui/D12_White.webp"/><span class="roll-description">{{weapon.system.damages.primary.critical}}</span></a>
+          <a class="flex1 flex-center roll-text roll-weapon-damage" data-damage="brutal"><img class="ui-dice" width="20px" height="20px" src="systems/avd12/images/ui/D12_White.webp"/><span class="roll-description">{{weapon.system.damages.primary.brutal}}</span></a>
+          -->
+        </li>
+        </section>
+      
+
+        {{/each}}
+      </ul>
+{{/if}}

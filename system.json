@@ -2,15 +2,15 @@
   "id": "avd12",
   "title": "AnyVenture D12 RPG",
   "description": "Anyventure D12 system for FoundryVTT",
-  "version": "10.0.25",
+  "version": "12.0.0",
   "compatibility": {
     "minimum": "11",
     "verified": "11",
     "maximum": "11"
   },
   "url": "https://github.com/LachlanMac/avd12",
-  "manifest": "https://github.com/LachlanMac/avd12-data/blob/main/system.json",
-  "download": "https://github.com/LachlanMac/avd12/files/13657236/release.zip",
+  "manifest": "https://github.com/LachlanMac/fvtt-avd12/releases/latest/download/system.json",
+  "download": "https://github.com/LachlanMac/fvtt-avd12/releases/latest/download/avd12.zip",
   "authors": [
     {
       "name": "Lachlan",

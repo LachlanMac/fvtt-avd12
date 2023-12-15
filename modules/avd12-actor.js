@@ -1250,6 +1250,15 @@ export class Avd12Actor extends Actor {
     return comp;
   }
 
+  getThrowingEquipment(){
+    let comp = duplicate(this.items.filter(item => item.type == 'equipment' && item.system.quantity > 0 && (item.system.throwtype == "throwable" || item.system.throwtype == "throwing_ammo")) || [])
+    comp.forEach(item => {
+      this.prepareThrowing(item)
+    })
+    Avd12Utility.sortArrayObjectsByName(comp)
+    return comp;
+  }
+
   getEquippedWeapons() {
     let comp = duplicate(this.items.filter(item => item.type == 'weapon' && item.system.equipped) || [])
   
@@ -1320,12 +1329,21 @@ export class Avd12Actor extends Actor {
     Avd12Utility.sortArrayObjectsByName(comp)
     return comp;
   }
+
   getEquippedArmor() {
     let comp = this.items.find(item => item.type == 'armor' && item.system.equipped)
     if (comp) {
       return duplicate(comp)
     }
     return undefined
+  }
+
+  getAmmunition(){
+    return duplicate(this.items.filter(item => item.type == 'equipment' && item.system.quantity > 0 && item.system.throwtype != ""));
+  }
+  //light_sources: this.actor.checkAndPrepareEquipments(duplicate(this.actor.getLightSources())),
+  getLightSources(){
+    return duplicate(this.items.filter(item => item.type == 'equipment' && item.system.light.lightsource));
   }
 
   getSpells(){
@@ -1385,18 +1403,6 @@ export class Avd12Actor extends Actor {
     }
     return undefined
   }
-  /* -------------------------------------------- */
-  checkAndPrepareEquipment(item) {
-    //why are we doing this?
-  }
-
-  /* -------------------------------------------- */
-  checkAndPrepareEquipments(listItem) {
-    for (let item of listItem) {
-      this.checkAndPrepareEquipment(item)
-    }
-    return listItem
-  }
 
   /* -------------------------------------------- */
   getConditions() {
@@ -1432,9 +1438,6 @@ export class Avd12Actor extends Actor {
     }
   }
 
-
-
-
   addOtherDamage(damage, bonusDamage) {
     if (damage.damagetype != "none" && damage.dice) {
       let fullBonus = Number(bonusDamage) + Number(damage.bonus)
@@ -1445,6 +1448,42 @@ export class Avd12Actor extends Actor {
         nbDice = Number(parser[1]) * 2
       }
      
+    }
+  }
+
+  prepareThrowing(ammo){
+    if(ammo.system.throwtype == "throwing_ammo" || ammo.system.throwtype == "throwable"){
+      ammo.system.minrange = 2;
+      ammo.system.maxrange = Math.max(4, 4 + this.system.attributes.might.skills.athletics.finalvalue);
+    }
+    let dice = "";
+    if(ammo.system.throwtype == "throwing_ammo"){
+      dice = "1d6";
+      ammo.system.maxrange += 2;
+      if(this.system.bonus.traits.deadlythrowing == 1)
+        dice = "1d10";
+    }
+
+    ammo.system.damages.primary.normal = dice;
+    ammo.attackBonus = this.system.attributes.might.skills.athletics.finalvalue;
+    ammo.dice = dice;
+    console.log("\n\nSET DICE:", ammo.dice);
+    this.addPrimaryThrowDamage(ammo.system.damages.primary, this.system.attributes.might.skills.athletics.finalvalue, dice)
+  }
+
+  addPrimaryThrowDamage(damage, bonusDamage, dice) {
+    console.log(damage, bonusDamage, dice);
+    if (damage.damagetype != "none" && damage.dice) {
+      let fullBonus = Number(bonusDamage) + Number(damage.bonus)
+      damage.dice = dice;
+      damage.normal = damage.dice + '+' + fullBonus ;
+      damage.critical = damage.dice + '+' + Number(fullBonus) * 2;
+      let parser = damage.dice.match(/(\d+)(d\d+)/)
+      let nbDice = 2
+      if (parser && parser[1]) {
+        nbDice = Number(parser[1]) * 2
+      }
+      damage.brutal = nbDice + parser[2] + "+" + (Number(fullBonus) * 2);
     }
   }
 
@@ -1462,8 +1501,7 @@ export class Avd12Actor extends Actor {
         bonusDamage += 2;
       }
     }
-    
-
+  
     let upgraded = this.system.bonus[weapon.system.weapontype].upgraded;
     let dice = "";
     let thrownDice = "";
@@ -2186,6 +2224,22 @@ export class Avd12Actor extends Actor {
       ui.notifications.warn("Unable to find the relevant weapon ")
     }
   }
+  rollThrowObject(weaponId, showDialog) {
+
+    let weapon = this.items.get(weaponId)
+    if (weapon) {
+      weapon = duplicate(weapon)
+      this.prepareThrowing(weapon)
+      let rollData = this.getCommonRollData()
+      rollData.modifier = this.system.bonus[weapon.system.weapontype]
+      rollData.mode = "weapon"
+      rollData.weapon = weapon
+      rollData.img = weapon.img
+      this.startRoll(rollData, showDialog)
+    } else {
+      ui.notifications.warn("Unable to find the relevant weapon ")
+    }
+  }
   
 
   /* -------------------------------------------- */
@@ -2259,24 +2313,38 @@ export class Avd12Actor extends Actor {
 
 
   async rollWeaponDamage(userData, weapon){
+    console.log(weapon);
     let baseDice = ""
     if(weapon.hitType == "normal"){
       baseDice = weapon.dice;
     }else if(weapon.hitType == "thrown"){
       baseDice = weapon.throwndice;
-    }else{}
-    if(weapon.extraDamage == ""){weapon.extraDamage = 0}
+    }else if(weapon.hitType == "throw"){
+      baseDice = weapon.dice;
+    }else{
+    }
+    if(!weapon.extraDamage){weapon.extraDamage = 0}
     let formula = "";
+
     switch(userData.hitType){
       case "normal":
-        formula = baseDice + "+" + weapon.critEligble + (weapon.extraDamage != 0 ? "+" + weapon.extraDamage  : "") + (userData.extraDamage == "" ? "" : "+" + userData.extraDamage );
+        if(weapon.hitType == "throw")
+          formula = baseDice + "+" + this.system.attributes.might.skills.athletics.finalvalue;
+        else
+          formula = baseDice + "+" + weapon.critEligble + (weapon.extraDamage != 0 ? "+" + weapon.extraDamage  : "") + (userData.extraDamage == "" ? "" : "+" + userData.extraDamage );
         break;
       case "critical":
-        formula = baseDice + "+" + (weapon.critEligble * 2)+ (weapon.extraDamage != 0 ? "+" + weapon.extraDamage  : "") + (userData.extraDamage == "" ? "" : "+" + userData.extraDamage );
+        if(weapon.hitType == "throw")
+          formula = baseDice + "+" + (this.system.attributes.might.skills.athletics.finalvalue * 2);
+        else
+          formula = baseDice + "+" + (weapon.critEligble * 2)+ (weapon.extraDamage != 0 ? "+" + weapon.extraDamage  : "") + (userData.extraDamage == "" ? "" : "+" + userData.extraDamage );
         break;
       case "brutal":
         let coef = Number(baseDice.split('d')[0]) * 2 + "d" + baseDice.split('d')[1];
-        formula = coef + "+" + (weapon.critEligble * 2)  + (weapon.extraDamage != 0 ? "+" + weapon.extraDamage  : "") + (userData.extraDamage == "" ? "" : "+" + userData.extraDamage );
+        if(weapon.hitType == "throw")
+          formula = coef + "+" + (this.system.attributes.might.skills.athletics.finalvalue * 2);
+        else
+          formula = coef + "+" + (weapon.critEligble * 2)  + (weapon.extraDamage != 0 ? "+" + weapon.extraDamage  : "") + (userData.extraDamage == "" ? "" : "+" + userData.extraDamage );
         break;
       case "halved":
         break;
@@ -2300,6 +2368,7 @@ export class Avd12Actor extends Actor {
   }
 
   async showWeaponDamageDialog(weaponId, hitType, shift){
+    console.log("SHOW DIALOAGUE:: ", hitType)
     let dice = "";
     if(!shift){
       this.rollQuickWeaponDamage(weaponId, hitType);
@@ -2307,7 +2376,13 @@ export class Avd12Actor extends Actor {
       let weapon = this.items.get(weaponId)
       if(!weapon)
         return;
-      this.prepareWeapon(weapon)
+      if(hitType == "throw"){
+        this.prepareThrowing(weapon)
+        console.log(weapon);
+      
+      }else{
+        this.prepareWeapon(weapon) 
+      }
       weapon.hitType = hitType;
       let dialog = await Avd12WeaponDamageDialog.create(this, weapon)
       dialog.render(true)

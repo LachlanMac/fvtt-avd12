@@ -314,7 +314,8 @@
             "quicktoss":0,
             "chucker":0,
             "dragonhorde":0,
-            "skilledchucking":0
+            "skilledchucking":0,
+            "deadlythrowing":0
           },
           "immunities": {
             "poison": 0,
@@ -653,6 +654,7 @@
     },
     "weapon": {
       "weapontype": "",
+      "throwtype":"",
       "category": "",
       "templates": ["commonitem"],
       "minrange": 0,
