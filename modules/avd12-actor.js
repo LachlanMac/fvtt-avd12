@@ -157,20 +157,28 @@ export class Avd12Actor extends Actor {
   isDuelistElligble(){
 
     
-
-
   }
 
   rebuildNPCSkills() {
     let armorPenalties = Avd12Utility.getArmorPenalty(this.items.find(item => item.type == "armor"))
     let shieldPenalties = Avd12Utility.getArmorPenalty(this.items.find(item => item.type == "shield"))
 
+
+    let spello = this.getSpells();
+    console.log(spello);
+    
+
     for (let attrKey in this.system.attributes) {
       let attr = this.system.attributes[attrKey]
       for (let skillKey in attr.skills) {
         let dataPath = attrKey + ".skills." + skillKey + ".modifier"
         let skill = attr.skills[skillKey]
-        skill.modifier = 0
+
+        //SOFT RESET
+        if(this.system.imported == 0)
+          skill.modifier = 0
+        
+
         let availableTraits = this.items.filter(t => t.type == "trait" && t.system.computebonus && t.system.bonusdata == dataPath)
         for (let trait of availableTraits) {
           skill.modifier += Number(trait.system.bonusvalue)
@@ -235,6 +243,7 @@ export class Avd12Actor extends Actor {
 
 
     for(let mitiKey in this.system.mitigation){
+      if(this.system.imported == 0)
         this.system.mitigation[mitiKey].value = 0;
     }
 

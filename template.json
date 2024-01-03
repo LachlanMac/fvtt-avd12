@@ -16,6 +16,7 @@
         }
       },
       "core": {
+        "imported":0,
         "uuid":"",
         "trait":0,
         "subactors": [],
@@ -315,16 +316,33 @@
             "chucker":0,
             "dragonhorde":0,
             "skilledchucking":0,
-            "deadlythrowing":0
+            "deadlythrowing":0,
+            "koboldthrowing":0,
+            "swim_at_walk":0
           },
           "immunities": {
-            "poison": 0,
-            "disease": 0,
+            "poisoned": 0,
+            "diseased": 0,
             "afraid": 0,
             "charmed": 0,
-            "exhaustion": 0,
+            "exhausted": 0,
             "prone": 0,
-            "curses": 0
+            "curses": 0,
+            "bleeding":0,
+            "blinded":0,
+            "confused":0,
+            "dazed":0,
+            "deafened":0,
+            "grappled":0,
+            "frozen":0,
+            "ignited":0,
+            "maddened":0,
+            "muted":0,
+            "paralyzed":0,
+            "sleep":0, 
+            "stunned":0,
+            "unconscious":0,
+            "wounded":0
           },
           "ranged": {
             "attack": 0,
