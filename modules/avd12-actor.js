@@ -163,11 +163,6 @@ export class Avd12Actor extends Actor {
     let armorPenalties = Avd12Utility.getArmorPenalty(this.items.find(item => item.type == "armor"))
     let shieldPenalties = Avd12Utility.getArmorPenalty(this.items.find(item => item.type == "shield"))
 
-
-    let spello = this.getSpells();
-    console.log(spello);
-    
-
     for (let attrKey in this.system.attributes) {
       let attr = this.system.attributes[attrKey]
       for (let skillKey in attr.skills) {
@@ -1183,7 +1178,7 @@ export class Avd12Actor extends Actor {
                       this.tmpCraftingTraits.push(data);
                       break;
                     default:
-                      //console.log("DEFAULT???", data);
+              
                       break;
                   }
                 break;
@@ -1476,12 +1471,10 @@ export class Avd12Actor extends Actor {
     ammo.system.damages.primary.normal = dice;
     ammo.attackBonus = this.system.attributes.might.skills.athletics.finalvalue;
     ammo.dice = dice;
-    console.log("\n\nSET DICE:", ammo.dice);
     this.addPrimaryThrowDamage(ammo.system.damages.primary, this.system.attributes.might.skills.athletics.finalvalue, dice)
   }
 
   addPrimaryThrowDamage(damage, bonusDamage, dice) {
-    console.log(damage, bonusDamage, dice);
     if (damage.damagetype != "none" && damage.dice) {
       let fullBonus = Number(bonusDamage) + Number(damage.bonus)
       damage.dice = dice;
@@ -2135,10 +2128,8 @@ export class Avd12Actor extends Actor {
     let focus = this.getSpellShotFocus();
     
     if(focus){
-      console.log("FOCKIII ", focus);
       return focus.system.bonus.attack +  this.system.bonus.ranged.attack;
     }else{
-      console.log("UH OH");
       return 0;
     }
     
@@ -2322,7 +2313,6 @@ export class Avd12Actor extends Actor {
 
 
   async rollWeaponDamage(userData, weapon){
-    console.log(weapon);
     let baseDice = ""
     if(weapon.hitType == "normal"){
       baseDice = weapon.dice;
@@ -2377,7 +2367,6 @@ export class Avd12Actor extends Actor {
   }
 
   async showWeaponDamageDialog(weaponId, hitType, shift){
-    console.log("SHOW DIALOAGUE:: ", hitType)
     let dice = "";
     if(!shift){
       this.rollQuickWeaponDamage(weaponId, hitType);
@@ -2387,8 +2376,6 @@ export class Avd12Actor extends Actor {
         return;
       if(hitType == "throw"){
         this.prepareThrowing(weapon)
-        console.log(weapon);
-      
       }else{
         this.prepareWeapon(weapon) 
       }

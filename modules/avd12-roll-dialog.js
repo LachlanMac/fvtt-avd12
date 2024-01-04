@@ -87,33 +87,11 @@ export class Avd12RollDialog extends Dialog {
         this.rollData.diceFormula += " + " + diceTokens[i];
       }
     }
-    
-    /*
-
-    if(match){
-        let dice = match[1].split("d");
-        let updatedDice = Number(dice[0]) + "d" + dice[1];;
-        let modifier = 0;
-        if(match[2]){
-          modifier = Number(match[2]) * 2; // If there's no modifier, default to 0
-        }
-        if(critType == "brutal"){
-          console.log("BRUTAL");
-            updatedDice = Number(dice[0]) * 2 + "d" + dice[1];
-        }
-       
-        this.rollData.diceFormula = this.rollData.diceFormula.replace(match[0], updatedDice +"+" + modifier);
-        console.log("MODIFIER::: ", modifier, this.rollData.diceFormula);
-    }
-    */
   }
 
   /* -------------------------------------------- */
   roll(critical) {
-    console.log("\n\n********* ROLLING ************", this.rollData);
-
     this.crit(critical);
-   
     Avd12Utility.rollAvd12(this.rollData)
   }
 

@@ -46,6 +46,11 @@
   font-family: 'Kanit', serif;
 }
 
+
+textarea:read-only{
+  color:white;
+}
+
 .text-center{
   text-align: center;
 }

@@ -16,7 +16,6 @@ export class Avd12Combat extends Combat {
   
       
       let initTotal = c.actor.system.universal.skills.initiative.finalvalue;
-      //console.log("*******", initTotal);
       if(c.actor.system.universal.skills.initiative.good){
         initTotal+=2;
       }

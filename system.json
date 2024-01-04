@@ -2,7 +2,7 @@
   "id": "avd12",
   "title": "AnyVenture D12 RPG",
   "description": "Anyventure D12 system for FoundryVTT",
-  "version": "12.0.1",
+  "version": "12.0.2",
   "compatibility": {
     "minimum": "11",
     "verified": "11",
@@ -19,7 +19,7 @@
   ],
   "esmodules": ["modules/avd12-main.js"],
   "scripts": ["js/lodash.js"],
-  "background": "systems/avd12/images/ui/avd12_welcome_page.webp",
+  "background": "systems/avd12/images/ui/anyventure_splash.png",
   "gridDistance": 1,
   "gridUnits": "u",
   "languages": [
