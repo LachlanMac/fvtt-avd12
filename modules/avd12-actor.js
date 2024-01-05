@@ -270,6 +270,8 @@ export class Avd12Actor extends Actor {
         }
       }
     }
+    
+
   }
 
   
@@ -1028,6 +1030,8 @@ export class Avd12Actor extends Actor {
     this.system.health.max += this.system.health.bonus;
     this.system.movement.speed = this.system.movement.walk.value;
 
+    
+
     if(this.system.bonus.traits.armsman){
       let highest = Math.max(this.system.bonus.blunt.attack, this.system.bonus.slash.attack, this.system.bonus.pierce.attack, this.system.bonus.ranged.attack);
       this.system.bonus.blunt.attack = highest;
@@ -1165,12 +1169,17 @@ export class Avd12Actor extends Actor {
               let data = features[prop];
               switch(data.type){
                 case "trait" :
+                 
                   switch(data.system.traittype){
                     case "skill":
                     case "bonus":
-                    case "mitigation":  
+                    case "mitigation":
                       _.set(this.system, data.system.bonusdata, _.get(this.system, data.system.bonusdata) + data.system.bonusvalue)
                       break;
+                    case "elemental":
+                      this.system.mitigation.fire.value +=data.system.bonusvalue;
+                      this.system.mitigation.cold.value+=data.system.bonusvalue;
+                      this.system.mitigation.lightning.value+=data.system.bonusvalue;
                     case "feature":
                       this.tmpTraits.push(data);
                       //maybe decide what to do here?

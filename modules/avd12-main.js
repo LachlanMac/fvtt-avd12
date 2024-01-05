@@ -82,7 +82,7 @@ function welcomeMessage() {
 Hooks.once("ready", function () {
   if(game.modules.has("splatter")){
     if(game.modules.get("splatter").active){
-      cosole.log("AVD12: Registering Splatter blood colors")
+      console.log("AVD12: Registering Splatter blood colors")
       const bloodSheetData = {
         beast: "#ff0000d5",         
         construct: "#3b3b3bd8",    
