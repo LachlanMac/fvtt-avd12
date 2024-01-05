@@ -74,7 +74,6 @@ export class Avd12Commands {
 
   /* -------------------------------------------- */
   _processCommand(commandsTable, name, params, content = '', msg = {}, path = "") {
-    console.log("===> Processing command")
     let command = commandsTable[name];
     path = path + name + " ";
     if (command && command.subTable) {

@@ -12,7 +12,6 @@ export class Avd12Hotbar {
     Hooks.on("hotbarDrop", async (bar, documentData, slot) => {
     // Create item macro if rollable item - weapon, spell, prayer, trait, or skill
     if (documentData.type == "Item") {
-      console.log("Drop done !!!", bar, documentData, slot)
       let item = documentData.data
       let command = `game.system.avd12.Avd12Hotbar.rollMacro("${item.name}", "${item.type}");`
       let macro = game.macros.contents.find(m => (m.name === item.name) && (m.command === command))

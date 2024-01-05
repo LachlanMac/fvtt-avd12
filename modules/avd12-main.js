@@ -79,23 +79,24 @@ function welcomeMessage() {
     ` });
 }
 
-
 Hooks.once("ready", function () {
   if(game.modules.has("splatter")){
-    console.log("AVD12: Registering Splatter blood colors")
-    const bloodSheetData = {
-      beast: "#ff0000d5",         
-      construct: "#3b3b3bd8",    
-      dark: "#800080d5",        
-      divine: "#ffd700d8",      
-      elemental: "#00ced1d8",    
-      fey: "#ff69b4d8",        
-      humanoid: "#ff6347d8",     
-      monster: "#800000d8",   
-      plantoid: "#32cd32d8",       
-      undead: "#ffffff00",  
-    };
-    game.settings.set("splatter", "BloodSheetData", bloodSheetData);
+    if(game.modules.get("splatter").active){
+      cosole.log("AVD12: Registering Splatter blood colors")
+      const bloodSheetData = {
+        beast: "#ff0000d5",         
+        construct: "#3b3b3bd8",    
+        dark: "#800080d5",        
+        divine: "#ffd700d8",      
+        elemental: "#00ced1d8",    
+        fey: "#ff69b4d8",        
+        humanoid: "#ff6347d8",     
+        monster: "#800000d8",   
+        plantoid: "#32cd32d8",       
+        undead: "#ffffff00",  
+      };
+      game.settings.set("splatter", "BloodSheetData", bloodSheetData);
+    }
   }
 
   //load after

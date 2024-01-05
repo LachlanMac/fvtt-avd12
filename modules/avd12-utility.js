@@ -6,8 +6,8 @@ import { Avd12Commands } from "./avd12-commands.js";
 /* -------------------------------------------- */
 const __ALLOWED_MODULE_TYPES = { "action": 1, "reaction": 1, "freeaction": 1, "trait": 1 }
 const __focusCore = { "corenone": 0, "core5gp": 6, "core20gp": 8, "core50gp": 10, "core100gp": 12, "core300gp": 16, "core500gp": 20, "core800gp": 26, "core1000gp": 32 }
-const __burnChanceTreatment = { "treatmentnone": 0, "treatment4gp": 8, "treatment20gp": 7, "treatment50gp": 6, "treatment100gp": 5, "treatment500gp": 4, "treatment1000gp": 3, "treatment5000gp": 2, "treatment10000gp": 1 }
-const __focusPointTreatment = { "treatmentnone": 0, "treatment4gp": 0, "treatment20gp": 1, "treatment50gp": 2, "treatment100gp": 4, "treatment500gp": 6, "treatment1000gp": 8, "treatment5000gp": 14, "treatment10000gp": 20 }
+const __burnChanceTreatment = { "treatmentnone": 0, "treatment5gp": 8, "treatment20gp": 7, "treatment50gp": 6, "treatment100gp": 5, "treatment500gp": 4, "treatment1000gp": 3, "treatment5000gp": 2, "treatment10000gp": 1 }
+const __focusPointTreatment = { "treatmentnone": 0, "treatment5gp": 0, "treatment20gp": 1, "treatment50gp": 2, "treatment100gp": 4, "treatment500gp": 6, "treatment1000gp": 8, "treatment5000gp": 14, "treatment10000gp": 20 }
 const __focusRegenBond = { "bondnone": 6, "bondeasy": 8, "bondcommon": 12, "bonduncommon": 16, "bondrare": 22, "bondlegendary": 26, "bondmythic": 36, "bonddivine": 48 }
 const __bonusSpellDamageBond = { "bondnone": 0, "bondeasy": 1, "bondcommon": 1, "bonduncommon": 1, "bondrare": 2, "bondlegendary": 2, "bondmythic": 3, "bonddivine": 4 }
 const __bonusSpellAttackBond = { "bondnone": 0, "bondeasy": 0, "bondcommon": 1, "bonduncommon": 1, "bondrare": 2, "bondlegendary": 2, "bondmythic": 3, "bonddivine": 4 }
@@ -491,7 +491,6 @@ export class Avd12Utility {
   }
   
   static findAtTokens(inputString) {
-    console.log("CHECKING::", inputString);
     let regex = /@\w+/g;
     let result = inputString.match(regex);
     return result || [];

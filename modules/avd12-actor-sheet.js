@@ -207,10 +207,8 @@ export class Avd12ActorSheet extends ActorSheet {
       this.actor.rollWeapon(weponId, !shift)
     });
     html.find('#import-character').click(async (event) => {
-      console.log("DISABLE");
       html.find("#import-character").disabled = true;
       await this.importData("TEST").then(()=>{
-        console.log("ENABLE!");
         html.find("#import-character").disabled = false;
       });
     });

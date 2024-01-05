@@ -74,6 +74,8 @@ export class Avd12Actor extends Actor {
 
     await this.createEmbeddedDocuments("Item", data.items); 
 
+    console.log(game.packs);
+
     let stanceData = data.system.stance_data.split("-");
     let activeStance = stanceData.pop();
     let uniqueStances = [...new Set(stanceData)];
@@ -1008,11 +1010,10 @@ export class Avd12Actor extends Actor {
   }
 
   parseItemBonuses(item){
-    //health
     this.system.health.bonus += item.system.bonus.health;
     this.system.movement.walk.value += item.system.bonus.movespeed;
-
-
+    this.system.bonus.spell.attack += item.system.bonus.spellattack;
+    this.system.bonus.spell.bonus += item.system.bonus.spelldamage;
   }
 
   rebuildBonuses(){

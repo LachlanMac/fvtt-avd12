@@ -190,14 +190,12 @@ export class Avd12ItemSheet extends ItemSheet {
       choice.selected = false // Everybody to false
     }
     levels[levelIndex].choices[choiceIndex].selected = ev.currentTarget.checked
-    //console.log("Added", obj, levels, this.object.actor)
 
     //if there is an actor associated wit this?
     if ( this.object.actor ) {
 
       let obj = await this.object.actor.updateEmbeddedDocuments('Item', [{ _id: this.object.id, 'system.levels': levels }]);
       if ( ev.currentTarget.checked ) {
-        console.log("Added", obj, levels)
         this.object.actor.addModuleLevel( this.object.id, levels[levelIndex].choices[choiceIndex] )
       } else {
         this.object.actor.deleteModuleLevel( this.object.id, levels[levelIndex].choices[choiceIndex] )

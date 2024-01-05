@@ -173,7 +173,6 @@ export class Avd12NPCSheet extends ActorSheet {
         const li = $(event.currentTarget).parents(".item");
         const dmg = $(event.currentTarget).data("damage")
         const weaponId = li.data("item-id")
-        console.log("THIS HAPPENED??");
         this.actor.rollWeaponDamage(weaponId, dmg)
       });
       
