@@ -1622,8 +1622,15 @@ export class Avd12Actor extends Actor {
     weapon.critEligble =  bonusDamage + this.system.bonus[weapon.system.weapontype].damage;
 
 
+  
+    let calculatedDamage = bonusDamage + this.system.bonus[weapon.system.weapontype].damage;
 
-    this.addPrimaryDamage(weapon.system.damages.primary, bonusDamage + this.system.bonus[weapon.system.weapontype].damage, dice, extraDamage)
+    if(this.system.bonus.traits.sentinel == 1 && weapon.system.category == "light2h")
+      calculatedDamage = this.system.attributes.knowledge.skills.academic.finalvalue;
+    
+
+
+    this.addPrimaryDamage(weapon.system.damages.primary, calculatedDamage, dice, extraDamage)
     
     if(weapon.system.thrown){
       this.addPrimaryThrownDamage(weapon.system.damages.primary, bonusDamage + this.system.bonus[weapon.system.weapontype].damage, thrownDice, "")
