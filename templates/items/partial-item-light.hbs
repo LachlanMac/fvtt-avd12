@@ -1,0 +1,133 @@
+<li class='flexrow'>
+  <h3 class='item-field-label-long'>
+    Light
+  </h3>
+</li>
+<li class='flexrow'>
+  <label class='item-field-label-long'>
+    Dim Radius
+  </label>
+  <input
+    type='text'
+    class='item-field-label-short'
+    name='system.light.dim'
+    value="{{system.light.dim}}"
+    data-dtype='Number'
+  />
+    <label class='item-field-label-short'>
+    &nbsp;
+  </label>
+   <label class='item-field-label-long'>
+    Bright Radius
+  </label>
+  <input
+    type='text'
+    class='item-field-label-short'
+    name='system.light.bright'
+     value="{{system.light.bright}}"
+    data-dtype='Number'
+  />
+</li>
+<li class='flexrow'>
+ 
+</li>
+<li class='flexrow'>
+  <label class='item-field-label-long'>
+    Emission Angle
+  </label>
+  <input
+    type='text'
+    class='item-field-label-short'
+    name='system.light.angle'
+    min="0"
+    max="360"
+    value="{{system.light.angle}}"
+    data-dtype='Number'
+  />
+  <label class='item-field-label-short'>
+    &nbsp;
+  </label>
+   <label class='item-field-label-long'>
+    Light Color
+  </label>
+  <input
+    type='color'
+    class='item-field-label-short'
+    name='system.light.color'
+    value="{{system.light.color}}"
+    data-dtype='String'
+  />
+</li>
+<li class='flexrow'>
+ 
+</li>
+<li class='flexrow'>
+  <label class='item-field-label-long'>
+    Color Intensity
+  </label>
+  <input
+    type='range'
+    class='item-field-label-short'
+    name='system.light.color_intensity'
+    value="{{system.light.color_intensity}}"
+    min="0"
+    max="1"
+    step="0.05"
+    data-dtype='Number'
+  />
+  <label class='item-field-label-short'>
+    &nbsp;
+  </label>
+   <label class='item-field-label-long'>
+    Luminosity
+  </label>
+ <input
+    type='range'
+    class='item-field-label-short'
+    name='system.light.luminosity'
+    value="{{system.light.luminosity}}"
+    min="0"
+    max="1"
+    step="0.05"
+    data-dtype='Number'
+  />
+</li>
+<li class='flexrow'>
+  <label class='item-field-label-long'>
+    Animation Type
+  </label>
+  <select class="item-field-label-long" type="text" name="system.light.animation.type" value="{{system.light.animation.type}}" data-dtype="String">
+    {{#select system.light.animation.type}}
+        {{> systems/avd12/templates/items/partial-options-light-animation.hbs}} 
+    {{/select}}
+   </select> 
+</li>
+
+<li class='flexrow'>
+  <label class='item-field-label-long'>
+    Animation Speed
+  </label>
+  <input
+    type='text'
+    class='item-field-label-short'
+    name="system.light.animation.speed"
+    value="{{system.light.animation.speed}}"
+    data-dtype='Number'
+  />
+  <label class='item-field-label-short'>
+    &nbsp;
+  </label>
+  <label class='item-field-label-long'>
+    Animation Intensity
+  </label>
+  <input
+    type='text'
+    class='item-field-label-short'
+    name="system.light.animation.intensity"
+    value="{{system.light.animation.intensity}}"
+    data-dtype='Number'
+  />
+</li>
+<li class='flexrow'>
+ 
+</li>

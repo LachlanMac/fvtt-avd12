@@ -25,10 +25,12 @@
               src="{{weapon.img}}" /></a>
           <span class="flex1 big-label">{{weapon.name}}</span>
           <span class="flex3 item-description">{{{weapon.system.description}}}</span>
-          <div class="item-controls item-controls-fixed">
-            <a class="item-control item-equip" title="Worn">{{#if weapon.system.equipped}}<i
-                class="fas fa-circle"></i>{{else}}<i class="fas fa-genderless"></i>{{/if}}</a>
-            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+          <div class="flex2 item-controls item-controls-fixed">
+            <a class="item-control item-equip" title="Worn">
+              {{#if weapon.system.equipped}}
+              <i class="fa-2x fas fa-circle"></i>{{else}}<i class="fas fa-genderless fa-2x"></i>
+              {{/if}}</a>
+            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash fa-2x"></i></a>
           </div>
         </li>
         {{/each}}

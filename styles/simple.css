@@ -1415,8 +1415,13 @@ input[type="checkbox"] .skillcheck {
   flex-shrink: 7;
 }
 .item-controls-fixed {
-  min-width:2rem;
-  max-width: 2rem;
+  min-width:8rem;
+  max-width: 8rem;
+}
+
+.item-control i{
+  margin-left: 5px;
+  margin-right:5px;
 }
 .attribute-label {
   font-weight: bold;

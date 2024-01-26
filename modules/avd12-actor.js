@@ -390,7 +390,9 @@ export class Avd12Actor extends Actor {
        let LightSourceOn = false;
     let overrideLight = false;
 
-    let lightObj = {dim:0, bright:0,  animation:{type:"none", speed:5, intensity:5, reverse:false}, color:"#000000"}
+    console.log(this);
+
+    let lightObj = {dim:0, bright:0, alpha:0.5, luminosity:0.5, animation:{type:"none", speed:5, intensity:5, reverse:false}, color:"#000000"}
 
     this.temporaryEffects.forEach(effect => {
       switch(effect.statuses.values().next().value){
@@ -473,17 +475,23 @@ export class Avd12Actor extends Actor {
       }
     })
 
+     
+
     if(game.user.isGM){
       if(lightsource && LightSourceOn){
         protoToken.update({"light.dim":lightsource.dim})
         protoToken.update({"light.animation":lightsource.animation})
         protoToken.update({"light.bright":lightsource.bright})
         protoToken.update({"light.color":lightsource.color})
+        protoToken.update({"light.alpha":lightsource.color_intensity})
+        protoToken.update({"light.luminosity":lightsource.luminosity})
       }else if(overrideLight){
         protoToken.update({"light.dim":lightObj.dim})
         protoToken.update({"light.animation":lightObj.animation})
         protoToken.update({"light.bright":lightObj.bright})
         protoToken.update({"light.color":lightObj.color})
+        protoToken.update({"light.alpha":lightObj.color_intensity})
+        protoToken.update({"light.luminosity":lightObj.luminosity})
       }else if(protoToken){
         await protoToken.update({"light.dim":0})
         await protoToken.update({"light.bright":0})
@@ -1015,7 +1023,8 @@ export class Avd12Actor extends Actor {
     this.system.health.bonus += item.system.bonus.health;
     this.system.movement.walk.value += item.system.bonus.movespeed;
     this.system.bonus.spell.attack += item.system.bonus.spellattack;
-    this.system.bonus.spell.bonus += item.system.bonus.spelldamage;
+    this.system.bonus.spell.damage += item.system.bonus.spelldamage;
+    console.log(this.system.bonus.spell.damage);
   }
 
   rebuildBonuses(){
@@ -1301,12 +1310,16 @@ export class Avd12Actor extends Actor {
   getWeapons() {
     let comp = duplicate(this.items.filter(item => item.type == 'weapon' || item.type == 'equipable') || [])
     comp.forEach(item => {
+      console.log("PREPING:", item);
       this.prepareWeapon(item)
     })
     Avd12Utility.sortArrayObjectsByName(comp)
     return comp;
   }
 
+  getLightSources(){
+    return duplicate(this.items.filter(item => item.type == 'equipment' && item.system.light.lightsource));
+  }
   getHeadwear() {
     let comp = duplicate(this.items.filter(item => item.type == 'headgear') || [])
     Avd12Utility.sortArrayObjectsByName(comp)
@@ -1355,10 +1368,7 @@ export class Avd12Actor extends Actor {
   getAmmunition(){
     return duplicate(this.items.filter(item => item.type == 'equipment' && item.system.quantity > 0 && item.system.throwtype != ""));
   }
-  //light_sources: this.actor.checkAndPrepareEquipments(duplicate(this.actor.getLightSources())),
-  getLightSources(){
-    return duplicate(this.items.filter(item => item.type == 'equipment' && item.system.light.lightsource));
-  }
+
 
   getSpells(){
     let comp = duplicate(this.items.filter(item => item.type == 'spell') || []);
