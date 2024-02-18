@@ -61,6 +61,23 @@ export class Avd12Utility {
         btn.style.display = "none";
       });
     }
+
+    const spellCard = html.find(".avd12-use-spell");
+    if ( spellCard.length > 0 ) {
+      // If the user is the message author or the actor owner, proceed
+      let actor = game.actors.get(data.message.speaker.actor);
+      if ( actor && actor.isOwner ) {
+        const buttons = spellCard.find("button[data-spell]");
+        return;
+      }
+      else if ( game.user.isGM || (data.author.id === game.user.id)) return;
+      // Otherwise conceal action buttons except for saving throw
+      const buttons = spellCard.find("button[data-spell]");
+      buttons.each((i, btn) => {
+        if ( btn.dataset.action === "save" ) return;
+        btn.style.display = "none";
+      });
+    }
   }
 
   /* -------------------------------------------- */
@@ -422,7 +439,7 @@ export class Avd12Utility {
 
   /* -------------------------------------------- */
   static getSpellCost(spell) {
-    return __spellCost[spell.system.level]
+    return parseInt(__spellCost[spell.system.level])
   }
 
   /* -------------------------------------------- */
@@ -511,7 +528,7 @@ export class Avd12Utility {
     if (rollData.crafting) 
       diceFormula += "+" + rollData.crafting.skill
     if (rollData.spellAttack) 
-      diceFormula += "+" + rollData.spellAttack
+      diceFormula += "+" + rollData.spellAttack;
     if (rollData.skill && rollData.skill.good) 
       diceFormula = "3d4+" + rollData.skill.finalvalue;
     if (rollData.weapon ) 
@@ -563,7 +580,7 @@ export class Avd12Utility {
     }
     rollData.roll = myRoll
     if (rollData.spell) {
-      actor.spentFocusPoints(rollData.spell)
+      actor.spentFocusPoints(rollData.spellCost);
     }
 
     let msg = await this.createChatWithRollMode(rollData.alias, {

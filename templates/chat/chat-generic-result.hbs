@@ -56,6 +56,9 @@
           <li>Modifier : <b>{{bonusMalusRoll}}</b></li>
           <li>Dice Formula : <b>{{diceFormula}}</b> </li>
           <li>Total : <b>{{roll.total}} </b></li>
+            <div class="flex1">
+            {{{roll.diceData}}}
+          </div>
         {{/if}}
 
      
@@ -65,6 +68,9 @@
           <li>Modifier : <b>{{bonusMalusRoll}}</b></li>
           <li>Dice Formula : <b>{{diceFormula}}</b> </li>
           <li>Total : <b>{{roll.total}}</b></li>
+            <div class="flex1">
+            {{{roll.diceData}}}
+          </div>
         {{/if}}
 
         {{#if crafting}}
@@ -80,7 +86,10 @@
           <li>Focus Points Spent : <b>{{spellCost}}</b></li>
           <li>Modifier : <b>{{bonusMalusRoll}}</b></li>
           <li>Dice Formula : <b>{{diceFormula}}</b> </li>
-          <li>Total : <b>{{roll.total}}</b></li>
+          <li>Spell Attack Check : <b>{{roll.total}}</b></li>
+          <div class="flex1">
+            {{{roll.diceData}}}
+          </div>
         {{/if}}
 
         {{#if burn}}

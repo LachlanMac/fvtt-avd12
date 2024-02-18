@@ -1,0 +1,57 @@
+
+ <div class="chat-message-header">
+  {{#if actor.img}}
+    <img class="actor-icon" src="{{actor.img}}" alt="{{actor.name}}" />
+    {{/if}}
+  <h4 class="chat-actor-name">{{alias}}</h4>
+</div>
+  <div class="avd12-use-spell" data-actor-id="{{actor._id}}" data-spell-id="{{spell._id}}" {{#if tokenId}}data-token-id="{{tokenId}}"{{/if}}>
+    <ul style="padding:5px;">
+      <h3>Spell : {{spell.name}}</h3>
+      
+      <li style="border:1px black solid; border-radius:5px; background-color: rgb(67, 51, 70); padding:10px;">
+        <h4 style="">Level : <span style="font-weight:100">{{upperFirst spell.system.level}}</span></h4>
+        <h4 style="">School : <span style="font-weight:100">{{upperFirst spell.system.school}}</span></h4>
+        <h4 style="">Description : <span style="font-weight:100">{{{map spell.system.description actor}}}</span></h4>
+        {{#if (ne spell.system.chargeeffect "")}}
+        <h4 style="">Charge Effect : <span style="font-weight:100">{{{map spell.system.chargeeffect actor}}}</span></h4>
+        {{/if}}
+        {{#if (ne spell.system.components "")}}
+        <h4 style="">Components : <span style="font-weight:100">{{{map spell.system.components actor}}}</span></h4>
+        {{/if}}
+
+        </li>
+        <div style="padding:4px" class="flexrow">
+          <span class="text-center">{{#if (gt spell.system.range 0)}}{{spell.system.range}}{{/if}} {{upperFirst spell.system.range_type}}</span>
+          {{#if spell.system.reaction}}
+            <span class="text-center">1 Reaction</span>
+          {{else}}
+            <span class="text-center">{{spell.system.actions}} {{upperFirst spell.system.action_type}}{{#if (gt spell.system.actions 1)}}s{{/if}}</span>
+          {{/if}}
+         
+          <span class="text-center">{{upperFirst spell.system.spelltype}}</span>
+        </div>
+          
+
+        {{#if (ne spell.system.spelltype "utility")}}
+        <li style="padding-top:3px;" class="flex-center"><button data-spell="attack" class="spell-roll-btn" >Roll Spell Attack</button></li>
+        {{else}}
+        <li style="padding-top:3px;" class="flex-center"><button data-spell="utility" class="spell-roll-btn" >Channel Spell</button></li>
+        {{/if}}
+
+  
+
+
+        {{#if (ne spell.system.damage "")}}
+          {{#if (eq spell.system.damagetype "healing")}}
+            <li style="padding-top:3px;" class="flex-center"></li><button data-spell="damage" class="spell-roll-btn" >Roll Healing</button></li>
+          {{else if (eq spell.system.damagetype "shielding")}}
+            <li style="padding-top:3px;" class="flex-center"></li><button data-spell="damage" class="spell-roll-btn" >Roll Shielding</button></li>
+          {{else}}
+            <li style="padding-top:3px;" class="flex-center"></li><button data-spell="damage" class="spell-roll-btn" >Roll Damage</button></li>
+          {{/if}}
+        
+        {{/if}}
+    </ul>
+  </div>
+</div>

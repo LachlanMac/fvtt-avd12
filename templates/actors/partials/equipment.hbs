@@ -186,6 +186,35 @@
         {{/each}}
       </ul>
 
+    <ul class="item-list alternate-list">
+        <li class="item flexrow list-item items-title-bg">
+          <a class="item-edit item-name-img" title="Edit Item"></a>
+          <span class="flex1">
+            <h3><label class="items-title-text">Headgear</label></h3>
+          </span>
+         
+            <span class="flex3 flex-center" style="padding-top:5px;">
+            <label class="items-title-text">Description</label>
+          </span>
+          <div class="item-controls item-controls-fixed">
+            <a class="item-control item-add" data-type="boots" title="Create Item"><i class="fas fa-plus"></i></a>
+          </div>
+        </li>
+        {{#each headwear as |weapon key|}}
+        <li class="item flexrow list-item list-item-shadow" data-item-id="{{weapon._id}}">
+          <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
+              src="{{weapon.img}}" /></a>
+          <span class="flex1 big-label">{{weapon.name}}</span>
+          <span class="flex3 item-description">{{{weapon.system.description}}}</span>
+          <div class="item-controls item-controls-fixed">
+            <a class="item-control item-equip" title="Worn">{{#if weapon.system.equipped}}<i
+                class="fas fa-circle"></i>{{else}}<i class="fas fa-genderless"></i>{{/if}}</a>
+            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+          </div>
+        </li>
+        {{/each}}
+      </ul>
+
 
     <ul class="item-list alternate-list">
         <li class="item flexrow list-item items-title-bg">

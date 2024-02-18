@@ -3,6 +3,7 @@ import { Avd12Utility } from "./avd12-utility.js";
 import { Avd12RollDialog } from "./avd12-roll-dialog.js";
 import { Avd12RestDialog } from "./avd12-rest-dialog.js";
 import { Avd12DamageDialog } from "./avd12-damage-dialog.js";
+import { Avd12SpellAttackDialog } from "./avd12-spell-attack-dialog.js";
 import { Avd12WeaponDamageDialog } from "./avd12-weapon-damage-dialog.js";
 /* -------------------------------------------- */
 /* -------------------------------------------- */
@@ -73,9 +74,6 @@ export class Avd12Actor extends Actor {
     });
 
     await this.createEmbeddedDocuments("Item", data.items); 
-
-    console.log(game.packs);
-
     let stanceData = data.system.stance_data.split("-");
     let activeStance = stanceData.pop();
     let uniqueStances = [...new Set(stanceData)];
@@ -390,8 +388,6 @@ export class Avd12Actor extends Actor {
        let LightSourceOn = false;
     let overrideLight = false;
 
-    console.log(this);
-
     let lightObj = {dim:0, bright:0, alpha:0.5, luminosity:0.5, animation:{type:"none", speed:5, intensity:5, reverse:false}, color:"#000000"}
 
     this.temporaryEffects.forEach(effect => {
@@ -542,11 +538,68 @@ export class Avd12Actor extends Actor {
 
   static chatListener(html){
     html.on("click", ".avd12-use-action button", this._onChatCardAction.bind(this));
+    html.on("click", ".avd12-use-spell button", this._onChatCardSpell.bind(this));
+  }
+
+  static async _onChatCardSpell(event){
+    event.preventDefault();
+    const button = event.currentTarget;
+      button.disabled = true;
+      const card = button.closest(".avd12-use-spell");
+      const messageId = card.closest(".message").dataset.messageId;
+      const message = game.messages.get(messageId);
+      const spell = button.dataset.spell;
+      const actor = await game.actors.get(message.speaker.actor);
+
+      let actSpell = await actor.getSpellById(card.dataset.spellId);
+      if(!actSpell){console.log("*AVD12 Error: No Action*");return;}
+
+      let totalFocusPoints =  actor.system.focus.currentfocuspoints;
+      let token = canvas.tokens.placeables.find(t => t.id === message.speaker.token)
+      let actorLink = true;
+      if(token?.document?.actorLink == false){
+        actorLink = false;
+        if(token.document.delta.system?.focus?.currentfocuspoints){
+          //do nothing for now
+        }else
+          token.document.delta.system.focus = duplicate(actor.system.focus); //initialize the delta
+        
+        totalFocusPoints = token.document.delta.system.focus.currentfocuspoints;
+        actSpell.unlinkedToken = token.document.delta;
+      }
+      
+      if ( !actor ) {console.log("*AVD12 Error: No Actor*");return};
+      if ( !(game.user.isGM || actor.isOwner) ) return;
+    
+      switch(spell){
+        case "attack":
+          let dialog = await Avd12SpellAttackDialog.create(actor, actSpell)
+          dialog.render(true)
+          break;
+        case "utility":
+          let rollData = actor.getCommonRollData()
+          rollData.spellCost = Avd12Utility.getSpellCost(actSpell);
+          rollData.mode = "spell"
+          rollData.spell = actSpell
+          if(rollData.spellCost > totalFocusPoints)
+            rollData.nen = true;
+          else
+            if(actor.type == "npc" && !actorLink)
+              token.document.delta.update({ 'system.focus.currentfocuspoints':  token.document.delta.system.focus.currentfocuspoints - rollData.spellCost});
+            else
+              actor.update({ 'system.focus.currentfocuspoints':  actor.system.focus.currentfocuspoints - rollData.spellCost});
+          let msg = await Avd12Utility.createChatWithRollMode(rollData.alias, {
+            content: await renderTemplate(`systems/avd12/templates/chat/chat-utility-spell.hbs`, rollData)
+          })
+          break;
+        case "damage":
+          actor.rollSpellDamage(card.dataset.spellId);
+          break;
+      }
   }
 
   static async _onChatCardAction(event) {
     event.preventDefault();
-
       const button = event.currentTarget;
       button.disabled = true;
       const card = button.closest(".avd12-use-action");
@@ -595,8 +648,32 @@ export class Avd12Actor extends Actor {
       button.disabled = false;
   }
 
+  async displaySpellCard(spell, options){
+    const token = this.token;
+    const templateData = {
+      actor: spell.actor,
+      tokenId: token?.uuid || null,
+      spell: spell,
+      data: await spell.actor.system,
+      labels: spell.actor.labels,
+      name : spell.actor.name, 
+      alias:spell.actor.name
+    };
+    const html = await renderTemplate("systems/avd12/templates/chat/chat-use-spell.hbs", templateData);
+    const chatData = {
+      user: game.user.id,
+      type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+      content: html,
+      speaker: ChatMessage.getSpeaker({actor: this, token}),
+      flags: {"core.canPopout": true}
+    };
+    Hooks.callAll("avd12.preDisplayCard", this, chatData, options);
+    ChatMessage.applyRollMode(chatData, options.rollMode ?? game.settings.get("core", "rollMode"));
+    const card = (options.createMessage !== false) ? await ChatMessage.create(chatData) : chatData;
+    Hooks.callAll("avd12.displayCard", this, card);
+  }
+
   async displayActionCard(action, options){
-      // Render the chat card template
       const token = this.token;
       const templateData = {
         actor: action.actor,
@@ -607,10 +684,7 @@ export class Avd12Actor extends Actor {
         name : action.actor.name, 
         alias:action.actor.name
       };
-
       const html = await renderTemplate("systems/avd12/templates/chat/chat-use-action.hbs", templateData);
-      
-      // Create the ChatMessage data object
       const chatData = {
         user: game.user.id,
         type: CONST.CHAT_MESSAGE_TYPES.OTHER,
@@ -618,29 +692,16 @@ export class Avd12Actor extends Actor {
         speaker: ChatMessage.getSpeaker({actor: this, token}),
         flags: {"core.canPopout": true}
       };
-      
       Hooks.callAll("avd12.preDisplayCard", this, chatData, options);
-
       ChatMessage.applyRollMode(chatData, options.rollMode ?? game.settings.get("core", "rollMode"));
       const card = (options.createMessage !== false) ? await ChatMessage.create(chatData) : chatData;
-
-      /**
-       * A hook event that fires after an item chat card is created.
-       * @function dnd5e.displayCard
-       * @memberof hookEvents
-       * @param {Item5e} item              Item for which the chat card is being displayed.
-       * @param {ChatMessage|object} card  The created ChatMessage instance or ChatMessageData depending on whether
-       *                                   options.createMessage was set to `true`.
-       */
       Hooks.callAll("avd12.displayCard", this, card);
   }
 
 
   /* -------------------------------------------- */
   confirmDamage(dd){
-
     let damageData = duplicate(dd);
-    
     damageData.mitigation = this.system.mitigation[damageData.damageType.toLowerCase()].value
     damageData.mitigated = Number(damageData.mitigation) + Number(damageData.damageModifier);
     damageData.adjusted = Math.max(0,damageData.totalDamage - damageData.mitigated);
@@ -669,7 +730,6 @@ export class Avd12Actor extends Actor {
       this.system.health.tmpvalue -= damageToDo;
     }
 
-
     damageData.lifeline = false;
 
     if(this.system.health.value == 0){
@@ -684,6 +744,23 @@ export class Avd12Actor extends Actor {
    // msg.setFlag("world", "rolldata", damageData)
   }
 
+
+  useSpell(spellId){ 
+    let spell = null;
+    if(this.type == "npc"){
+      spell = this.items.get(spellId);
+    }else if(this.type == "character"){
+      spell =  this.getSpell(spellId);   
+    }
+    if(spell){
+      let spellClone = duplicate(spell);
+      spellClone.actor = this;
+      this.displaySpellCard(spellClone, {});
+    }else{
+      console.log("AVD12 Error : No Spell Found");
+    }
+   
+  }
   
   useAction(actionId){ 
     let action = null;
@@ -1024,7 +1101,6 @@ export class Avd12Actor extends Actor {
     this.system.movement.walk.value += item.system.bonus.movespeed;
     this.system.bonus.spell.attack += item.system.bonus.spellattack;
     this.system.bonus.spell.damage += item.system.bonus.spelldamage;
-    console.log(this.system.bonus.spell.damage);
   }
 
   rebuildBonuses(){
@@ -1189,6 +1265,16 @@ export class Avd12Actor extends Actor {
                       this.system.mitigation.fire.value +=data.system.bonusvalue;
                       this.system.mitigation.cold.value+=data.system.bonusvalue;
                       this.system.mitigation.lightning.value+=data.system.bonusvalue;
+                      break;
+                      case "allcraft":
+                        this.system.bonus.craft.smithing += data.system.bonusvalue
+                        this.system.bonus.craft.runecarving += data.system.bonusvalue
+                        this.system.bonus.craft.scribing += data.system.bonusvalue
+                        this.system.bonus.craft.engineering += data.system.bonusvalue
+                        this.system.bonus.craft.cooking += data.system.bonusvalue
+                        this.system.bonus.craft.alchemy += data.system.bonusvalue
+                        this.system.bonus.craft.ammocraft += data.system.bonusvalue
+                        break;
                     case "feature":
                       this.tmpTraits.push(data);
                       //maybe decide what to do here?
@@ -1310,7 +1396,6 @@ export class Avd12Actor extends Actor {
   getWeapons() {
     let comp = duplicate(this.items.filter(item => item.type == 'weapon' || item.type == 'equipable') || [])
     comp.forEach(item => {
-      console.log("PREPING:", item);
       this.prepareWeapon(item)
     })
     Avd12Utility.sortArrayObjectsByName(comp)
@@ -1321,7 +1406,7 @@ export class Avd12Actor extends Actor {
     return duplicate(this.items.filter(item => item.type == 'equipment' && item.system.light.lightsource));
   }
   getHeadwear() {
-    let comp = duplicate(this.items.filter(item => item.type == 'headgear') || [])
+    let comp = duplicate(this.items.filter(item => item.type == 'headwear') || [])
     Avd12Utility.sortArrayObjectsByName(comp)
     return comp;
   }
@@ -1515,7 +1600,9 @@ export class Avd12Actor extends Actor {
       return;
     }
     weapon.attackBonus = this.system.bonus.weapon.attack + weapon.system.bonus.attack + this.system.bonus[weapon.system.weapontype].attack
-    let bonusDamage = this.system.bonus.weapon.damage;
+    let bonusDamage = parseInt(this.system.bonus.weapon.damage);
+
+  
 
     if(this.system.bonus.dueling){
       let equippedShield = this.items.find(item => item.type == "shield" && item.system.equipped)
@@ -1629,17 +1716,13 @@ export class Avd12Actor extends Actor {
       
     weapon.dice = dice;
     weapon.extraDamage = extraDamage;
-    weapon.critEligble =  bonusDamage + this.system.bonus[weapon.system.weapontype].damage;
+    weapon.critEligble =  bonusDamage + this.system.bonus[weapon.system.weapontype].damage + parseInt(weapon.system.damages.primary.bonus);
 
-
-  
     let calculatedDamage = bonusDamage + this.system.bonus[weapon.system.weapontype].damage;
 
     if(this.system.bonus.traits.sentinel == 1 && weapon.system.category == "light2h")
       calculatedDamage = this.system.attributes.knowledge.skills.academic.finalvalue;
     
-
-
     this.addPrimaryDamage(weapon.system.damages.primary, calculatedDamage, dice, extraDamage)
     
     if(weapon.system.thrown){
@@ -1736,7 +1819,6 @@ export class Avd12Actor extends Actor {
   }
 
   async getActionById(id){
-
     if(this.type == "character"){
       for(let i in this.tmpActions){
         if(this.tmpActions[i]._id == id){
@@ -2161,41 +2243,56 @@ export class Avd12Actor extends Actor {
     }
     
 
-  }
+  }spellCos
 
-  /* -------------------------------------------- */
-  async rollSpell(spellId) {
-    let spell = this.items.get(spellId)
-    if (spell) {
-      spell = duplicate(spell)
-      let rollData = this.getCommonRollData()
-      rollData.mode = "spell"
-      rollData.spell = spell
-      rollData.spellAttack = this.system.bonus.spell.attack
+  async channelSpell(channeledSpell, userData) {
+    let spell = duplicate(channeledSpell)
+    let rollData = this.getCommonRollData()
+    rollData.mode = "spell"
+    rollData.spell = spell
+    rollData.spellAttack = this.system.bonus.spell.attack
 
-      //Spellshot
-      if(this.system.bonus.traits.spellshot && (spell.system.spelltype == "projectile" || spell.system.spelltype == "ray")){
-        rollData.spellAttack = Math.max(this.getSpellShotAttack(), this.system.bonus.spell.attack);
-      }
-      
-      rollData.spellDamage = this.system.bonus.spell.damage
-      rollData.spellCost = Avd12Utility.getSpellCost(spell)
+    //Spellshot
+    if(this.system.bonus.traits.spellshot && (spell.system.spelltype == "projectile" || spell.system.spelltype == "ray")){
+      rollData.spellAttack = Math.max(this.getSpellShotAttack(), this.system.bonus.spell.attack);
+    }
+    //no longer needed...
+    //rollData.spellDamage = this.system.bonus.spell.damage
+    const powerModifier = isNaN(userData.powerModifier) ? 0 : parseInt(userData.powerModifier);
+    const attackModifier = isNaN(userData.attackModifier) ? 0 : parseInt(userData.attackModifier);
+
+    rollData.spellCost = Avd12Utility.getSpellCost(spell) + powerModifier;
+    let currentFocusPoints = this.system.focus.currentfocuspoints;
+    if(channeledSpell.unlinkedToken)
+      currentFocusPoints = channeledSpell.unlinkedToken.system.focus.currentfocuspoints;
+    
+    if(rollData.spellCost > currentFocusPoints){
+      rollData.nen = true;
+      let msg = await Avd12Utility.createChatWithRollMode(rollData.alias, {
+        content: await renderTemplate(`systems/avd12/templates/chat/chat-utility-spell.hbs`, rollData)
+      })
+      msg.setFlag("world", "rolldata", rollData)
+    }else{
+      rollData.spellAttack = rollData.spellAttack;
+      rollData.bonusMalusRoll = attackModifier;
       rollData.title = "Roll Spell " + spell.name
       rollData.img = spell.img
       if (spell.system.spelltype != "utility") {
+        if(channeledSpell.unlinkedToken)
+          channeledSpell.unlinkedToken.update({ 'system.focus.currentfocuspoints':  channeledSpell.unlinkedToken.system.focus.currentfocuspoints - rollData.spellCost});
+        else
+          this.update({ 'system.focus.currentfocuspoints':  this.system.focus.currentfocuspoints - rollData.spellCost});
+        
         this.startRoll(rollData)
-      } else {
-        this.spentFocusPoints(spell)
+      } else {  
         let msg = await Avd12Utility.createChatWithRollMode(rollData.alias, {
           content: await renderTemplate(`systems/avd12/templates/chat/chat-utility-spell.hbs`, rollData)
         })
         msg.setFlag("world", "rolldata", rollData)
       }
-    } else {
-      ui.notifications.warn("Unable to find the relevant spell.")
     }
   }
-
+  
   async rollSpellDamage(spellId) {
     let spell = this.items.get(spellId)
     if (spell) {
@@ -2209,9 +2306,11 @@ export class Avd12Actor extends Actor {
       rollData.img = spell.img
       rollData.mode = "weapon-damage"
       rollData.damageType = spell.system.damagetype;
+      
       rollData.damageFormula = spell.system.damage + "+" + rollData.spellDamage;
       rollData.img = spell.img
       let myRoll = new Roll(rollData.damageFormula).roll({ async: false })
+      myRoll.diceData = Avd12Utility.setDiceDisplay(myRoll);
       await Avd12Utility.showDiceSoNice(myRoll, game.settings.get("core", "rollMode"))
       rollData.roll = myRoll
       let msg = await Avd12Utility.createChatWithRollMode(rollData.alias, {
@@ -2225,12 +2324,10 @@ export class Avd12Actor extends Actor {
   }
 
   /* -------------------------------------------- */
-  spentFocusPoints(spell) {
-    let spellCost = Avd12Utility.getSpellCost(spell)
-    let focusData = duplicate(this.system.focus)
-    focusData.currentfocuspoints -= spellCost
-    focusData.currentfocuspoints = Math.max(focusData.currentfocuspoints, 0)
-    this.update({ 'system.focus': focusData })
+  spentFocusPoints(spellCost) {
+    this.system.focus.currentfocuspoints -= parseInt(spellCost);
+    this.system.focus.currentfocuspoints = Math.max( this.system.focus.currentfocuspoints, 0)
+    this.update({ 'system.focus.currentfocuspoints':  this.system.focus.currentfocuspoints})
   }
   /* -------------------------------------------- */
 
@@ -2318,6 +2415,31 @@ export class Avd12Actor extends Actor {
     }
   }
 
+  async getSpellById(id){
+    if(this.type == "character"){
+      let foundSpell = null;
+      let comp = duplicate(this.items.filter(item => item.type == 'spell') || []);
+      comp.forEach(spell => {
+       if(spell._id == id)
+        foundSpell = spell;
+      });
+      return foundSpell;
+    }else if(this.type == "npc"){
+      return this.items.get(id);
+    }
+  }
+
+  getSpell(id){
+    let foundSpell = null;
+    let comp = duplicate(this.items.filter(item => item.type == 'spell') || []);
+    comp.forEach(spell => {
+     if(spell._id == id){
+      foundSpell = spell;
+     }
+    });
+    return foundSpell;
+  }
+
   getMove(id){
 
     for(let i = 0; i < this.tmpActions.length; i++){
@@ -2346,6 +2468,7 @@ export class Avd12Actor extends Actor {
     }else if(weapon.hitType == "thrown"){
       baseDice = weapon.throwndice;
     }else if(weapon.hitType == "throw"){
+     
       baseDice = weapon.dice;
     }else{
     }

@@ -1,0 +1,23 @@
+<form class="skill-roll-dialog">
+  <header class="roll-dialog-header">
+    {{#if img}}
+    <img class="actor-icon" src="{{img}}" data-edit="img" title="{{name}}" />
+    {{/if}}
+    <h1 class="dialog-roll-title roll-dialog-header">Channel {{spell.name}}</h1>
+  </header>
+
+    <div class="flexcol">
+      <div class="flexrow">
+        <span class="roll-dialog-label">Attack Modifier : </span>
+        <input type="text" class="flex-center" id="attack-modifier" name="attack-modifier" value="0" data-dtype="Number"/>  
+      </div>
+    </div>
+
+    <div class="flexcol">
+      <div class="flexrow">
+        <span class="roll-dialog-label">Power Modifier : </span>
+        <input type="text" class="flex-center" id="power-modifier" name="power-modifier" value="0" data-dtype="Number"/>  
+      </div>
+    </div>
+
+</form>

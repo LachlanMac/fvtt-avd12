@@ -4,24 +4,22 @@
   {{/if}}
   <h4 class=chat-actor-name>{{alias}}</h4>
 </div>
-
   <hr>
-  
   {{#if img}}
   <div >
     <img class="chat-icon" src="{{img}}" alt="{{name}}" />
   </div>
   {{/if}}
-
   <div class="flexcol">
     </div>
-
     <div>
       <ul>
-        <li>Utility Spell {{spell.name}} has been casted !
-        </li>
-        <li>Focus Points Spent : {{spellCost}} 
-        </li>
+        {{#if nen}}
+        <li> {{alias}} does not have enough Power to channel {{spell.name}}.</li>
+        {{else}}
+        <li>{{spell.name}} has been channeled !</li>
+        <li>Focus Points Spent : {{spellCost}} </li>
+         {{/if}}
       </ul>  
     </div>
 

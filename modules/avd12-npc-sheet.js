@@ -26,6 +26,10 @@ export class Avd12NPCSheet extends ActorSheet {
     /* -------------------------------------------- */
     async getData() {
       let formData = {
+        hpOverlayCalculationCurrent1: this.actor.getHealthPercentage().primary,
+        hpOverlayCalculationCurrent2: this.actor.getHealthPercentage().secondary,
+        powerOverlayCalculationCurrent1: this.actor.getPowerPercentage().primary,
+        powerOverlayCalculationCurrent2: this.actor.getPowerPercentage().secondary,
         title: this.title,
         id: this.actor.id,
         bonuses: this.actor.system.bonus,
@@ -140,7 +144,11 @@ export class Avd12NPCSheet extends ActorSheet {
         this.actor.useAction(actionId)
       });
 
-      
+      html.find('.use-spell').click((event) => {
+        const li = $(event.currentTarget).parents(".item");
+        const spellId = li.data("item-id");
+        this.actor.useSpell(spellId)
+      });
 
       html.find('.roll-skill').click((event) => {
         let attrKey = $(event.currentTarget).data("attr-key")

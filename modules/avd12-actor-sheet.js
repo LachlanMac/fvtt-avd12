@@ -212,11 +212,19 @@ export class Avd12ActorSheet extends ActorSheet {
         html.find("#import-character").disabled = false;
       });
     });
+    
     html.find('.use-action').click((event) => {
       const li = $(event.currentTarget).parents(".item");
       const actionId = li.data("item-id");
       this.actor.useAction(actionId)
     });
+
+    html.find('.use-spell').click((event) => {
+      const li = $(event.currentTarget).parents(".item");
+      const spellId = li.data("item-id");
+      this.actor.useSpell(spellId)
+    });
+
     html.find('.roll-weapon-damage').click((event) => {
       const li = $(event.currentTarget).parents(".item");
       const weaponId = li.data("item-id")
