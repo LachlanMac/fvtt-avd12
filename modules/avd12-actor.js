@@ -85,8 +85,6 @@ export class Avd12Actor extends Actor {
       });
     }
 
-    //  ***** IMPORT IMAGES *****
-    //const image = await Avd12Utility.downloadImage(`https://localhost/upload/${data.imgurl}`)
     const image = await Avd12Utility.downloadImage(`https://anyventured12.com/upload/${data.imgurl}`)
     
     if(image){
@@ -300,7 +298,7 @@ export class Avd12Actor extends Actor {
           this.system.movement.walk.value += 1;
           this.system.bonus.weapon.attack -= 1;
           break;
-      case 4://defensieve
+      case 4://defensive
           this.system.attributes.might.skills.block.finalvalue += 1;
           this.system.attributes.agility.skills.dodge.finalvalue -= 1;
           this.system.mitigation.physical.value += 2;
@@ -543,6 +541,7 @@ export class Avd12Actor extends Actor {
 
   static async _onChatCardSpell(event){
     event.preventDefault();
+    Avd12Utility.logMessage("Custom Card Button Click Event");
     const button = event.currentTarget;
       button.disabled = true;
       const card = button.closest(".avd12-use-spell");
@@ -808,7 +807,19 @@ export class Avd12Actor extends Actor {
 ];
 
   parseItemSkills(skills, craft){
-    
+    if(craft){
+      let craft_array = craft.split(",");
+      for(let i in craft_array){
+        craft_array[i] = Number(craft_array[i]);
+      }
+      this.system.bonus.craft.ammocraft += craft_array[0];
+      this.system.bonus.craft.alchemy += craft_array[1];
+      this.system.bonus.craft.smithing += craft_array[2];
+      this.system.bonus.craft.cooking += craft_array[3];
+      this.system.bonus.craft.scribing += craft_array[4];
+      this.system.bonus.craft.runecarving += craft_array[5];
+      this.system.bonus.craft.engineering += craft_array[6];
+    }
     if(skills){
       let skills_array = skills.split(",");
       for(let i in skills_array){
@@ -1101,6 +1112,17 @@ export class Avd12Actor extends Actor {
     this.system.movement.walk.value += item.system.bonus.movespeed;
     this.system.bonus.spell.attack += item.system.bonus.spellattack;
     this.system.bonus.spell.damage += item.system.bonus.spelldamage;
+
+    //we are not utilizing power and stuff here... FLAG
+
+    this.system.focus.focuspoints += item.system.bonus.power;
+    this.system.focus.focusregen += item.system.bonus.powerregen;
+    this.system.focus.burn_chance += item.system.bonus.burnchance;
+
+    //this.system.focus.maxfocuspoints
+    //this.system.focus.focuspoints += item.system.focus.focuspointsbonus;
+
+
   }
 
   rebuildBonuses(){
@@ -2325,9 +2347,9 @@ export class Avd12Actor extends Actor {
 
   /* -------------------------------------------- */
   spentFocusPoints(spellCost) {
-    this.system.focus.currentfocuspoints -= parseInt(spellCost);
-    this.system.focus.currentfocuspoints = Math.max( this.system.focus.currentfocuspoints, 0)
-    this.update({ 'system.focus.currentfocuspoints':  this.system.focus.currentfocuspoints})
+    console.log("CALLING THIS!!");
+    const updatedFocus = Math.max(0, this.system.focus.currentfocuspoints -= parseInt(spellCost));
+    this.update({'system.focus.currentfocuspoints': updatedFocus})
   }
   /* -------------------------------------------- */
 

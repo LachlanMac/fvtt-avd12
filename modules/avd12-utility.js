@@ -12,6 +12,7 @@ const __focusRegenBond = { "bondnone": 6, "bondeasy": 8, "bondcommon": 12, "bond
 const __bonusSpellDamageBond = { "bondnone": 0, "bondeasy": 1, "bondcommon": 1, "bonduncommon": 1, "bondrare": 2, "bondlegendary": 2, "bondmythic": 3, "bonddivine": 4 }
 const __bonusSpellAttackBond = { "bondnone": 0, "bondeasy": 0, "bondcommon": 1, "bonduncommon": 1, "bondrare": 2, "bondlegendary": 2, "bondmythic": 3, "bonddivine": 4 }
 const __spellCost = { "beginner": 1, "novice": 2, "journeyman": 4, "expert": 8, "master": 16, "grandmaster": 32 }
+
 const __armorPenalties = {"light": { block: -2, dodge: -1}, 
     "medium": { dodge: -3, block: -2, castingtime: 1, stealth: -2, speed: -1}, 
     "heavy": { dodge: -4, block: -3, stealth: -3, castingtime: 2, speed: -3 },
@@ -43,6 +44,12 @@ export class Avd12Utility {
     }
   }
 
+  static logMessage(text){
+    console.log(`%cAVD12 Log : [${text}]`, `color: #ADD8E6;`);
+  }
+  static logError(text){
+    console.log(`%cAVD12 Error : [${text}]`, `color: red;`);
+  }
 
   static displayChatActionButtons(message, html, data) {
     const chatCard = html.find(".avd12-use-action");
@@ -570,23 +577,20 @@ export class Avd12Utility {
   
     diceFormula += "+" + rollData.bonusMalusRoll  
     rollData.diceFormula = diceFormula
-
+    if (rollData.spell) {
+      actor.spentFocusPoints(rollData.spellCost);
+    }
     // Performs roll
     let myRoll = rollData.roll
-    if (!myRoll) { // New rolls only of no rerolls
+    if (!myRoll) {
       myRoll = new Roll(diceFormula).roll({ async: false })
       myRoll.diceData = this.setDiceDisplay(myRoll);
       await this.showDiceSoNice(myRoll, game.settings.get("core", "rollMode"))
     }
     rollData.roll = myRoll
-    if (rollData.spell) {
-      actor.spentFocusPoints(rollData.spellCost);
-    }
-
     let msg = await this.createChatWithRollMode(rollData.alias, {
       content: await renderTemplate(`systems/avd12/templates/chat/chat-generic-result.hbs`, rollData)
-    })
-
+    });
     msg.setFlag("world", "rolldata", rollData)
     if (rollData.skillKey == "initiative") {
       actor.setFlag("world", "initiative", myRoll.total) 
