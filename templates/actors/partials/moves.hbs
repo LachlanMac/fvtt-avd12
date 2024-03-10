@@ -1,28 +1,27 @@
 <ul class="item-list alternate-list">
      {{#if character}}
-      <li class="item flexrow list-item items-title-bg">
-        <a class="item-edit item-name-img" title="Edit Item"></a>
+      <li class="item flexrow list-item items-title-bg"> 
+        <div class="item-controls item-controls-fixed">
+          <a class="item-control item-add" data-type="action" title="Create Item" style="margin-left:4px;"><i class="fas fa-plus"></i></a>
+        </div>
         <span class="flex1">
            <h3 class="text-center"><label class="items-title-text">Actions</label></h3>
         </span>
-          
-            <span class="flex1 flex-center" style="padding-top:5px;">
+            <span class="flex-100-fixed  flex-center" style="padding-top:5px;">
           <label class="items-title-text">Uses</label>
                 </span>
          
           <span class="flex3 flex-center" style="padding-top:5px;">
             <label class="items-title-text">Description</label>
           </span>
-      <div class="item-controls item-controls-fixed">
-          <a class="item-control item-add" data-type="action" title="Create Item"><i class="fas fa-plus"></i></a>
-        </div>
       </li>
-      {{#each actions as |action key|}}
-      <li class="item flexrow list-item list-item-shadow" data-item-id="{{action._id}}">
-        <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
-            src="{{action.img}}" /></a>
-        <a class="flex1 big-label use-action"><p>{{action.name}}</p></a>
-        <a class="flex1 big-label flex-center">
+       {{#each actions as |action key|}}
+      <li class="item flexrow list-item list-item-shadow " data-item-id="{{action._id}}">
+        <a class="item-edit item-name-img flex-center" style="margin-left:4px;" title="Edit Item">
+            <img class="sheet-competence-img flex-center" src="{{action.img}}" />
+        </a>
+        <a class="flex1 big-label side-border use-action"><p>{{action.name}}</p></a>
+        <a  class="flex-100-fixed flex-center side-border">
           {{#if (eq action.system.uses.current 3) }}
               <i style="padding-left:5px; padding-right:5px;" class="fa-solid fa-circle"></i><i  style="padding-left:5px; padding-right:5px;" class="fa-solid fa-circle"></i><i  style="padding-left:5px; padding-right:5px;" class="fa-solid fa-circle"></i>
           {{/if}}
@@ -36,16 +35,18 @@
             <i  style="padding-left:5px; padding-right:5px;" class="fa-regular fa-circle"></i><i  style="padding-left:5px; padding-right:5px;" class="fa-regular fa-circle"></i><i  style="padding-left:5px; padding-right:5px;" class="fa-regular fa-circle"></i>
           {{/if}}
         </a>
-        <span class="flex3 item-description">{{{action.system.description}}}</span>
+        <span class="flex3 item-description side-border">{{{action.system.description}}}</span>
         <div class="item-controls item-controls-fixed">
           <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
         </div>
       </li>
       {{/each}}
-      {{else}}
-
+    {{else}}
   <li class="item flexrow list-item items-title-bg">
-        <a class="item-edit item-name-img" title="Edit Item"></a>
+      <span class="create-item flex-center" title="Edit Item" style="margin-left:4px;">
+             <a class="item-control item-add" data-type="action" title="Create Item"><i class="fas fa-plus"></i></a>
+        </span>
+        
         <span class="flex1">
             <h3 class="text-center"><label class="items-title-text">Actions</label></h3>
         </span>
@@ -53,15 +54,15 @@
             <label class="items-title-text">Description</label>
           </span>
       <div class="item-controls item-controls-fixed">
-          <a class="item-control item-add" data-type="action" title="Create Item"><i class="fas fa-plus"></i></a>
+         
         </div>
       </li>
       {{#each actions as |action key|}}
       <li class="item flexrow list-item list-item-shadow" data-item-id="{{action._id}}">
         <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
             src="{{action.img}}" /></a>
-        <a class="flex1  use-action big-label"><p>{{action.name}}</p></a>
-        <span class="flex3 item-description">{{{action.system.description}}}</span>
+        <a class="flex1  use-action big-label side-border"><p>{{action.name}}</p></a>
+        <span class="flex3 item-description side-border">{{{action.system.description}}}</span>
         <div class="item-controls item-controls-fixed">
           <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
         </div>
@@ -91,9 +92,9 @@
         <li class="item flexrow list-item list-item-shadow" data-item-id="{{action._id}}">
           <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
               src="{{action.img}}" /></a>
-          <a class="flex1 big-label use-action"><p>{{action.name}}</p></a>
+          <a class="flex1 big-label use-action side-border"><p>{{action.name}}</p></a>
             
-            <a class="flex1 big-label flex-center">
+            <a class="flex-100-fixed big-label flex-center side-border">
               {{#if (eq action.system.uses.current 2) }}
                   <i  style="padding-left:5px; padding-right:5px;" class="fa-solid fa-circle"></i><i  style="padding-left:5px; padding-right:5px;" class="fa-solid fa-circle"></i>
               {{/if}}
@@ -105,7 +106,7 @@
                {{/if}}
             </a>
           
-          <span class="flex3 item-description">{{{action.system.description}}}</span>
+          <span class="flex3 item-description side-border">{{{action.system.description}}}</span>
           <div class="item-controls item-controls-fixed">
             <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
           </div>
@@ -130,23 +131,14 @@
         <li class="item flexrow list-item list-item-shadow" data-item-id="{{action._id}}">
           <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
               src="{{action.img}}" /></a>
-          <a class="flex1 big-label use-action"><p>{{action.name}}</p></a>
-            
-          
-          
-          <span class="flex3 item-description">{{{action.system.description}}}</span>
+          <a class="flex1 big-label use-action side-border"><p>{{action.name}}</p></a>
+          <span class="flex3 item-description side-border" >{{{action.system.description}}}</span>
           <div class="item-controls item-controls-fixed">
             <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
           </div>
         </li>
         {{/each}}
-
-
         {{/if}}
-
-
-
-
       </ul>
         <!-- BALLADS -->
         {{#if (and ballads character)}}
@@ -157,7 +149,7 @@
              <h3 class="text-center"><label class="items-title-text">Ballads</label></h3>
           </span>
             <span class="flex3 flex-center" style="padding-top:5px;">
-            <label class="items-title-text">Description</label>
+            <label class="items-title-text ">Description</label>
           </span>
           <div class="item-controls item-controls-fixed">
             <a class="item-control item-add" data-type="ballad" title="Create Item"><i class="fas fa-plus"></i></a>
@@ -167,8 +159,8 @@
         <li class="item flexrow list-item list-item-shadow" data-item-id="{{action._id}}">
           <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
               src="{{action.img}}" /></a>
-          <a class="flex1 big-label use-action"><p>{{action.name}}</p></a>
-          <span class="flex3 item-description">{{{action.system.description}}}</span>
+          <a class="flex1 big-label use-action side-border"><p>{{action.name}}</p></a>
+          <span class="flex3 item-description side-border">{{{action.system.description}}}</span>
           <div class="item-controls item-controls-fixed">
             <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
           </div>
@@ -194,8 +186,8 @@
         <li class="item flexrow list-item list-item-shadow" data-item-id="{{action._id}}">
           <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
               src="{{action.img}}" /></a>
-          <a class="flex1 big-label use-action"><p>{{action.name}}</p></a>
-          <span class="flex3 item-description">{{{action.system.description}}}</span>
+          <a class="flex1 big-label use-action side-border"><p>{{action.name}}</p></a>
+          <span class="flex3 item-description side-border">{{{action.system.description}}}</span>
           <div class="item-controls item-controls-fixed">
             <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
  
@@ -225,11 +217,11 @@
         <li class="item stat flexrow list-item list-item-shadow  spell-card {{#if stance.system.active}}active-stance {{/if}}" data-item-id="{{stance._id}}">
           <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"src="{{stance.img}}" /></a>
           
-          <span class="text-center">
-            <a class="change-stance"><p>{{stance.name}}</p></a>
+          <span class="text-center side-border">
+            <a class="change-stance "><p>{{stance.name}}</p></a>
           </span>
           
-          <span class="flex3">{{upperFirst stance.system.description}}</span>
+          <span class="flex3 side-border">{{upperFirst stance.system.description}}</span>
           
           <div class="item-controls item-controls-fixed">
             <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>

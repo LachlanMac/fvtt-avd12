@@ -1,6 +1,6 @@
 {
   "Actor": {
-    "types": ["character", "npc"],
+    "types": ["character", "npc", "expedition"],
     "templates": {
       "biodata": {
         "biodata": {
@@ -482,12 +482,21 @@
       "npccore": {
         "npctype": "",
         "description": ""
+      },"expeditioncore":{
+        "name":"Expedition",
+        "morale":0,
+        "fatigue":0,
+        "supplies":0,
+        "movement": {
+          "speed": 6
+        }
       }
     },
     "character": {
       "templates": ["biodata", "core"]
     },
-    "npc": { "templates": ["biodata","core"] }
+    "npc": { "templates": ["biodata","core"] },
+    "expedition": { "templates": ["expeditioncore"] }
   },
   "Item": {
     "types": [

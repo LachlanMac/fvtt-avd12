@@ -150,6 +150,14 @@ export class Avd12ActorSheet extends ActorSheet {
       let actorId = li.data("actor-id");
       this.actor.delSubActor(actorId);
     });
+
+    html.find('.quantity-change').change(event => {
+      const li = $(event.currentTarget).parents(".item");
+      const ct = event.currentTarget;
+      this.actor.inChangeQuantity( li.data("item-id"), event.currentTarget.value);
+    } );
+
+
     html.find('.quantity-minus').click(event => {
       const li = $(event.currentTarget).parents(".item");
       this.actor.incDecQuantity( li.data("item-id"), -1 );

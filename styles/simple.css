@@ -375,6 +375,7 @@ table {border: 1px solid #7a7971;}
   font-weight: bold;
 }
 
+
 .avd12 .tabs .item.active {
   text-decoration: underline;
   text-shadow: none;
@@ -396,6 +397,11 @@ table {border: 1px solid #7a7971;}
   line-height: 24px;
   padding: 1px 0;
   border-bottom: 1px solid #BBB;
+}
+
+.avd12 .items-list .item .sheet-field {
+  color:green;
+  background-color: white;
 }
 
 .avd12 .items-list .item .item-image {
@@ -420,8 +426,7 @@ table {border: 1px solid #7a7971;}
   text-align: right;
 
 }
-
-
+f
 /* ======================================== */
 /* Sheet  */
 .window-app.sheet .window-content .sheet-header{
@@ -503,6 +508,13 @@ section.sheet-body{padding: 0.25rem 0.5rem;}
   color:beige;
 }
 
+.item-quantity{
+  display: inline-block;
+  width:80px;
+  text-align:center;
+  flex: 0 1 auto;
+}
+
 .notes{
   color:white;
 }
@@ -574,8 +586,8 @@ ul, li {
 }
 
 .sheet li {
-  margin: 0.010rem;
-  padding: 0.25rem;
+  margin: 0.005rem;
+  padding: 0.15rem;
 }
 .header-fields li {
   margin: 0;
@@ -651,8 +663,8 @@ ul, li {
   max-height: 32px;
   flex-grow: 0;
   margin-right: 0.25rem;
-  
-  
+  border:none;
+
 }
 .competence-column {
   flex-direction: column;
@@ -1186,11 +1198,9 @@ input[type="checkbox"] .skillcheck {
   transition: opacity 0.3s;
 }
 
-.use-action{
-  text-align: center;
-  font-size: 20px;
+.use-action:hover{
+  background-color: rgba(0, 0, 0, 0.281);
 }
-
 
 .tooltip-nobottom {
   border-bottom: unset; /* If you want dots under the hoverable text */
@@ -1229,20 +1239,19 @@ input[type="checkbox"] .skillcheck {
 }
 
 .plus-minus-button {
-  box-shadow: inset 0px 1px 0px 0px #a6827e;
-  background: linear-gradient(to bottom, #21374afc 5%, #152833ab 100%);
-  background-color: #7d5d3b00;
-  border-radius: 2px;
-  border: 1px ridge #846109;
   display: inline-block;
   cursor: pointer;
   color: #ffffff;
-  margin: 2px 2px 2px 2px;
-  padding: 2px 2px 2px 2px;
+  border-radius: 50%;
+  margin: 5px 5px 5px 5px;
+  padding: 5px 5px 5px 5px;
   text-decoration: none;
-  text-shadow: 0px 1px 0px #4d3534;
   position: relative;
   margin:0px;
+}
+
+.flex-100-fixed {
+  flex: 0 0 100px; /* This means don't grow, don't shrink, and base size is 50px */
 }
 
 .plus-minus-button:hover,
@@ -1335,11 +1344,19 @@ input[type="checkbox"] .skillcheck {
   height: auto;
   border: 0;
 }
-.item-name-img {
+
+.create-item {
   flex-grow:1;
   max-width: 2rem;
   min-width: 2rem;
 }
+.item-edit {
+  flex-grow:1;
+  max-width: 2rem;
+  min-width: 2rem;
+}
+
+
 .item-name-label-header {
   flex-grow:2;
   max-width: 12rem;
@@ -1415,9 +1432,15 @@ input[type="checkbox"] .skillcheck {
   flex-shrink: 7;
 }
 .item-controls-fixed {
-  min-width:8rem;
-  max-width: 8rem;
+  min-width:4rem;
+  max-width: 4rem;
 }
+
+.item-control-empty{
+  min-width:4rem;
+  max-width: 4rem;
+}
+
 
 .item-control i{
   margin-left: 5px;
@@ -1456,6 +1479,8 @@ input[type="checkbox"] .skillcheck {
 .flex-center {
   align-items: center;
   align-content: space-between;
+  display:flex;
+  align-items:center
 }
 
 .v-center{ 
@@ -1582,9 +1607,17 @@ select[type="text"]{
 }
 
 .big-label{
-  padding-top:4px;
+  padding:8px;
   font-size:1em;
   width: 400px;
+}
+
+.side-border{
+  background-color: rgba(37, 21, 37, 0.205);
+  margin-left:2px;
+  margin-right:2px;
+  border: 1px solid rgba(0, 0, 0, 0.473);
+  border-radius: 5px;
 }
 
 .item-description {

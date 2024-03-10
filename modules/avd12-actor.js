@@ -32,7 +32,9 @@ export class Avd12Actor extends Actor {
     }
     if (data.type == 'character') {
     }
-    if (data.type == 'npc') {
+    else if (data.type == 'npc') {
+
+    }else if(data.type == 'expedition'){
 
     }
     return super.create(data, options);
@@ -61,7 +63,6 @@ export class Avd12Actor extends Actor {
     if(game.user.isGM){
       await Avd12Utility.verifyPath(Avd12Utility.parse("avd12/characters/"));
     }
-  
 
     // ***** IMPORT INVENTORY AND MODULES ******
     data.items.forEach(item =>{
@@ -93,7 +94,6 @@ export class Avd12Actor extends Actor {
       await Avd12Utility.uploadToPath(options.current, file);
       await this.update({ 'img': `avd12/characters/${data.imgurl}`})
     }
-  
   }
 
   getPowerPercentage(){
@@ -125,7 +125,8 @@ export class Avd12Actor extends Actor {
       });
       this.rebuildNPCSkills()
       this.parseActiveEffects()
-    }else if (this.type == 'character' || game.user.isGM) {
+
+    }else if (this.type == 'character' ) { //|| game.user.isGM <--- I dont know what this is
       this.system.health.max = this.system.level.value * 5 + 10;
       this.system.focus.focuspoints = 0;
       this.system.focus.focusregen = 0;
@@ -147,14 +148,14 @@ export class Avd12Actor extends Actor {
       this.parseActiveEffects()
       this.rebuildBonuses()
      
+    }else if (this.type == "expedition"){
+      
     }
     super.prepareDerivedData();
   }
-
-
+  
   isDuelistElligble(){
 
-    
   }
 
   rebuildNPCSkills() {
@@ -2138,9 +2139,13 @@ export class Avd12Actor extends Actor {
       await this.createEmbeddedDocuments('Item', [newItem]);
     }
   }
-
- 
-
+  async inChangeQuantity(objetId, amt) {
+    let objetQ = this.items.get(objetId)
+    if (objetQ) {
+      let newQ = Math.min(999, Math.max(0, amt));
+      const updated = await this.updateEmbeddedDocuments('Item', [{ _id: objetQ.id, 'system.quantity': newQ }]) // pdates one EmbeddedEntity
+    }
+  }
   /* -------------------------------------------- */
   async incDecQuantity(objetId, incDec = 0) {
     let objetQ = this.items.get(objetId)
@@ -2645,10 +2650,7 @@ export class Avd12Actor extends Actor {
     }else{
       restData.favorable = "";
     }
-
-
     Avd12Utility.createRestChatMessage(restData);
-
   }
 
   async rest(){
@@ -2659,7 +2661,6 @@ export class Avd12Actor extends Actor {
 
 
   async essenceBurn(){
-
     /*
      skill = duplicate(skill)
       skill.name = Avd12Utility.upperFirst(skillKey)

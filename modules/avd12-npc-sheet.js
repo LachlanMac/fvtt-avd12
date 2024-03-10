@@ -21,8 +21,6 @@ export class Avd12NPCSheet extends ActorSheet {
       });
     }
     
-
-
     /* -------------------------------------------- */
     async getData() {
       let formData = {

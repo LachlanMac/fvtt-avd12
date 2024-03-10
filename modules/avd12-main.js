@@ -11,6 +11,7 @@
 import { Avd12Actor } from "./avd12-actor.js";
 import { Avd12ItemSheet } from "./avd12-item-sheet.js";
 import { Avd12ActorSheet } from "./avd12-actor-sheet.js";
+import { Avd12ExpeditionSheet } from "./avd12-expedition-sheet.js";
 import { Avd12NPCSheet } from "./avd12-npc-sheet.js";
 import { Avd12Utility } from "./avd12-utility.js";
 import { Avd12Combat } from "./avd12-combat.js";
@@ -48,18 +49,18 @@ Hooks.once("init", async function () {
     Avd12Utility.onSocketMesssage(data)
   });
 
-
   // Define custom Entity classes
   CONFIG.Combat.documentClass = Avd12Combat
   CONFIG.Actor.documentClass = Avd12Actor
   CONFIG.Item.documentClass = Avd12Item
-  
-  
+  CONFIG.Combatant
+
   /* -------------------------------------------- */
   // Register sheet application classes
   Actors.unregisterSheet("core", ActorSheet);
   Actors.registerSheet("avd12", Avd12ActorSheet, { types: ["character"], makeDefault: true });
   Actors.registerSheet("avd12", Avd12NPCSheet, { types: ["npc"], makeDefault: false });
+  Actors.registerSheet("avd12", Avd12ExpeditionSheet, { types: ["expedition"], makeDefault: false });
   Items.unregisterSheet("core", ItemSheet);
   Items.registerSheet("avd12", Avd12ItemSheet, { makeDefault: true });
 
