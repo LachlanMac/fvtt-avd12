@@ -1,10 +1,15 @@
 /* -------------------------------------------- */
+import { Avd12Equipment } from "./character/avd12-equipment.js";
 import { Avd12Utility } from "./avd12-utility.js";
 import { Avd12RollDialog } from "./avd12-roll-dialog.js";
 import { Avd12RestDialog } from "./avd12-rest-dialog.js";
 import { Avd12DamageDialog } from "./avd12-damage-dialog.js";
 import { Avd12SpellAttackDialog } from "./avd12-spell-attack-dialog.js";
 import { Avd12WeaponDamageDialog } from "./avd12-weapon-damage-dialog.js";
+
+
+
+
 /* -------------------------------------------- */
 /* -------------------------------------------- */
 /**
@@ -22,7 +27,6 @@ export class Avd12Actor extends Actor {
    * @param {Object} options     (Unused) Additional options which customize the creation workflow.
    */
   static async create(data, options) {
-
     if (data instanceof Array) {
       return super.create(data, options);
     }
@@ -147,6 +151,7 @@ export class Avd12Actor extends Actor {
       this.parseStances()
       this.parseActiveEffects()
       this.rebuildBonuses()
+     
      
     }else if (this.type == "expedition"){
       
@@ -376,7 +381,6 @@ export class Avd12Actor extends Actor {
     
     if(protoToken){ 
       //unlinked
-  
       lightsource = this.getBestLightSource();
       if(this.getActiveTokens().length > 0){
         protoToken = this.getActiveTokens()[0].document;
@@ -386,81 +390,121 @@ export class Avd12Actor extends Actor {
     }
        let LightSourceOn = false;
     let overrideLight = false;
-
     let lightObj = {dim:0, bright:0, alpha:0.5, luminosity:0.5, animation:{type:"none", speed:5, intensity:5, reverse:false}, color:"#000000"}
 
     this.temporaryEffects.forEach(effect => {
       switch(effect.statuses.values().next().value){
+        case "afraid":
+          this.system.conditions.afraid = 1;
+          break;
+        case "bleeding":
+          this.system.conditions.bleeding = 1;
+          break;
         case "blind":
-          this.system.bonus.weapon.attack -= 2;
-          this.system.bonus.spell.attack -= 2;
-          this.system.attributes.agility.skills.dodge.finalvalue -= 2;
-          this.system.attributes.willpower.skills.resistance.finalvalue -= 2;
-          this.system.attributes.might.skills.block.finalvalue -= 2;
+          this.system.conditions.blinded = 1;
           break;
-        case "invisible":
-          this.system.attributes.agility.skills.stealth.finalvalue += 3;
-          //+2 on melee spells
-          this.system.bonus.weapon.attack += 2;
+        case "charmed":
+          this.system.conditions.charmed = 1;
           break;
-        case "paralyzed":
-            this.system.movement.walk.value = 0;
-            //cant attack with melee weapons
+        case "confused":
+          this.system.conditions.confused = 1;
           break;
-        case "grappled":
-          this.system.movement.walk.value = 0;
-          //cant attack with melee weapons
-          break;
-        case "wounded3":
-          //death roll
-        case "wounded2":
-          this.system.attributes.willpower.skills.resilience.finalvalue -= 2;
-          //disable reactions
-        case "wounded1":
-          this.system.attributes.willpower.skills.resilience.finalvalue -= 2;
+        case "dazed":
+          this.system.conditions.dazed = 1;
           break;
         case "deafened":
-          this.system.attributes.willpower.skills.resistance.finalvalue -= 2;
+          this.system.conditions.deafened = 1;
+          break;
+        case "diseased":
+          this.system.conditions.diseased = 1;
+          break;
+        case "enveloped":
+          this.system.conditions.enveloped = 1;
           break;
         case "exhausted3":
-          //can only channel once
+          this.system.conditions.exhausted = 3;
+          break;
         case "exhausted2":
-          this.system.bonus.weapon.damage = 0;
-          this.system.bonus.ranged.damage = 0;
-          this.system.bonus.spell.damage = 0;
-          this.system.bonus.slash.damage = 0;
-          this.system.bonus.unarmed.damage = 0;
-          this.system.bonus.pierce.damage = 0;
-          this.system.bonus.blunt.damage = 0;
-          //disable reactions
+          this.system.conditions.exhausted = 2;
+            this.system.bonus.weapon.damage = 0;
+            this.system.bonus.ranged.damage = 0;
+            this.system.bonus.spell.damage = 0;
+            this.system.bonus.slash.damage = 0;
+            this.system.bonus.unarmed.damage = 0;
+            this.system.bonus.pierce.damage = 0;
+            this.system.bonus.blunt.damage = 0;
+            //disable reactions
+            break;
         case "exhausted1":
-          this.system.movement.walk.value -= 2;
-          break;
-        case "prone":
-          this.system.bonus.weapon.attack -= 1;
-          this.system.bonus.spell.attack -= 1;
-          this.system.movement.walk.value = 2;
-          break;
+            this.system.conditions.exhausted = 1;
+            this.system.movement.walk.value -= 2;
+            this.system.universal.skills.initiative.finalvalue -= 2;
+            break;
         case "frozen":
-          //blue?
-          this.system.movement.walk.value = 0;
-          this.system.mitigation.physical.value = 0;
-          this.system.mitigation.cold.value = 99;
-          lightObj.dim = 0.2
-          lightObj.bright = 0.1
-          lightObj.color = "#00bfff"
-          lightObj.animation.type = "none"
-          overrideLight = true;
+            this.system.conditions.frozen = 1;
+            //blue?
+            this.system.movement.walk.value = 0;
+            this.system.mitigation.cold.value = 99;
+            lightObj.dim = 0.2
+            lightObj.bright = 0.1
+            lightObj.color = "#00bfff"
+            lightObj.animation.type = "none"
+            overrideLight = true;
+            break;
+        case "grappled":
+          this.system.conditions.grappled = 1;
+          break;
+        case "hidden":
+          this.system.conditions.hidden = 1;
           break;
         case "ignited":
-
+          this.system.conditions.ignited = 1;
           lightObj.dim = 1.5
           lightObj.bright = 1
           lightObj.color = "#ff3a00"
           lightObj.animation.type = "torch"
           overrideLight = true;
           break;
-        case "bleeding":
+        case "invisible":
+          this.system.conditions.invisible = 1;
+          break;
+        case "maddened":
+          this.system.conditions.maddened = 1;
+          break;
+        case "muted":
+          this.system.conditions.muted = 1;
+          break;
+        case "paralyzed":
+          this.system.conditions.paralyzed = 1;
+          break;
+        case "poisoned":
+          this.system.conditions.poisoned = 1;
+          break;
+        case "prone":
+          this.system.conditions.prone = 1;
+          this.system.movement.walk.value = 2;
+          break;
+        case "sleeping":
+          this.system.conditions.sleeping = 1;
+          break;
+        case "stasis":
+          this.system.conditions.stasis = 1;
+          break;
+        case "stunned":
+          this.system.conditions.stunned = 1;
+          break;
+        case "trapped":
+          this.system.conditions.trapped = 1;
+          break;
+        case "unconscious":
+          this.system.conditions.unconscious = 1;
+          break;
+        case "wounded3":
+          this.system.conditions.wounded = 3;
+        case "wounded2":
+          this.system.conditions.wounded = 2;
+        case "wounded1":
+          this.system.conditions.wounded = 1;
           break;
         case "lightsource":
           LightSourceOn = true;
@@ -468,30 +512,39 @@ export class Avd12Actor extends Actor {
         case "default":
           break;
       }
+    
+      this.update({ 'system.conditions':  this.system.conditions});
     })
 
      
 
-    if(game.user.isGM){
-      if(lightsource && LightSourceOn){
-        protoToken.update({"light.dim":lightsource.dim})
-        protoToken.update({"light.animation":lightsource.animation})
-        protoToken.update({"light.bright":lightsource.bright})
-        protoToken.update({"light.color":lightsource.color})
-        protoToken.update({"light.alpha":lightsource.color_intensity})
-        protoToken.update({"light.luminosity":lightsource.luminosity})
-      }else if(overrideLight){
-        protoToken.update({"light.dim":lightObj.dim})
-        protoToken.update({"light.animation":lightObj.animation})
-        protoToken.update({"light.bright":lightObj.bright})
-        protoToken.update({"light.color":lightObj.color})
-        protoToken.update({"light.alpha":lightObj.color_intensity})
-        protoToken.update({"light.luminosity":lightObj.luminosity})
-      }else if(protoToken){
-        await protoToken.update({"light.dim":0})
-        await protoToken.update({"light.bright":0})
+    if (game.user.isGM) {
+      if (lightsource && LightSourceOn) {
+          await protoToken.update({
+              "light.dim": lightsource.dim,
+              "light.animation": lightsource.animation,
+              "light.bright": lightsource.bright,
+              "light.color": lightsource.color,
+              "light.alpha": lightsource.color_intensity,
+              "light.luminosity": lightsource.luminosity
+          });
+      } else if (overrideLight) {
+          await protoToken.update({
+              "light.dim": lightObj.dim,
+              "light.animation": lightObj.animation,
+              "light.bright": lightObj.bright,
+              "light.color": lightObj.color,
+              "light.alpha": lightObj.color_intensity,
+              "light.luminosity": lightObj.luminosity
+          });
+      } else if (protoToken) {
+          await protoToken.update({
+              "light.dim": 0,
+              "light.bright": 0
+          });
       }
-    }
+  }
+  
   }
 
   getBestLightSource(){
@@ -606,7 +659,14 @@ export class Avd12Actor extends Actor {
       const messageId = card.closest(".message").dataset.messageId;
       const message = game.messages.get(messageId);
       const action = button.dataset.action;
-      const actor = await game.actors.get(message.speaker.actor);
+      let actor = await game.actors.get(message.speaker.actor);
+     
+      const tokenDocument = canvas.tokens.placeables.find(t => t.id === message.speaker.token);
+      if (tokenDocument?.document?.actors) {
+        tokenDocument.document.actors.forEach(tokenActor =>{
+          actor = tokenActor;
+        })
+      }
       if ( !actor ) {console.log("*AVD12 Error: No Actor*");return};
       if ( !(game.user.isGM || actor.isOwner) ) return;
 
@@ -703,6 +763,12 @@ export class Avd12Actor extends Actor {
   confirmDamage(dd){
     let damageData = duplicate(dd);
     damageData.mitigation = this.system.mitigation[damageData.damageType.toLowerCase()].value
+    console.log(damageData);
+    
+    if(damageData.damageType == "Poison"){
+      damageData.mitigation = Number(this.system.attributes.willpower.skills.resilience.finalvalue);
+    }
+
     damageData.mitigated = Number(damageData.mitigation) + Number(damageData.damageModifier);
     damageData.adjusted = Math.max(0,damageData.totalDamage - damageData.mitigated);
     if(damageData.mitigated >= 15){
@@ -807,7 +873,40 @@ export class Avd12Actor extends Actor {
     "Wilderness"
 ];
 
-  parseItemSkills(skills, craft){
+  parseItemSkills(skills, craft, weapon){
+    if(weapon){
+      let weapon_array = weapon.split(",");
+      for(let i in weapon_array){
+        weapon_array[i] = Number(weapon_array[i]);
+      }
+      this.system.bonus.blunt.damage += weapon_array[0];
+      this.system.bonus.slash.damage += weapon_array[1];
+      this.system.bonus.pierce.damage += weapon_array[2];
+      this.system.bonus.ranged.damage += weapon_array[3];
+      this.system.bonus.unarmed.damage += weapon_array[4];
+
+      this.system.bonus.blunt.attack += weapon_array[5];
+      this.system.bonus.slash.attack += weapon_array[6];
+      this.system.bonus.pierce.attack += weapon_array[7];
+      this.system.bonus.ranged.attack +=  weapon_array[8];
+      this.system.bonus.unarmed.attack += weapon_array[9];
+      if(weapon_array[10] > 0){
+        weapon_array[10] == "1" ? this.system.bonus.blunt.crits = 1 :  this.system.bonus.blunt.brutals = 1
+      } 
+      if(weapon_array[11] > 0){
+        weapon_array[11] == "1" ? this.system.bonus.slash.crits = 1 :  this.system.bonus.slash.brutals = 1
+      } 
+      if(weapon_array[12] > 0){
+        weapon_array[12] == "1" ? this.system.bonus.pierce.crits = 1 :  this.system.bonus.pierce.brutals = 1
+      } 
+      if(weapon_array[13] > 0){
+        weapon_array[13] == "1" ? this.system.bonus.ranged.crits = 1 :  this.system.bonus.ranged.brutals = 1
+      } 
+      if(weapon_array[14] > 0){
+        weapon_array[14] == "1" ? this.system.bonus.unarmed.crits = 1 :  this.system.bonus.unarmed.brutals = 1
+      } 
+    }
+
     if(craft){
       let craft_array = craft.split(",");
       for(let i in craft_array){
@@ -874,7 +973,7 @@ export class Avd12Actor extends Actor {
   rebuildEquipment(){
     let allEquippedItems = this.items.filter(item => item.system.equipped)
     allEquippedItems.forEach(item => {
-      this.parseItemSkills(item.system.skills, item.system.craft_skills)
+      this.parseItemSkills(item.system.skills, item.system.craft_skills, item.system.weapon_skills)
       this.parseItemBonuses(item);
       if(item.system.focus.isfocus){
         this.parseFocus(item);
@@ -1617,6 +1716,44 @@ export class Avd12Actor extends Actor {
     }
   }
 
+
+/*
+
+  //in progress
+  getParsedWeapon(w){
+    if(w.type == 'equipable'){
+      return;
+    }
+    let weapon = duplicate(w);
+
+    //attack bonus = general attack + weapon bonus + character skill bonus
+    //weapon.attackBonus = this.system.bonus.weapon.attack + weapon.system.bonus.attack + this.system.bonus[weapon.system.weapontype].attack
+
+    //get all bases
+    let weaponDamageBonus = parseInt(this.system.bonus.weapon.damage);  //bonus damage on the weapon
+    let weaponDamageDice = Avd12Equipment.getDamageDice(weapon.system,category,this.system.bonus[weapon.system.weapontype].upgraded);
+    let weaponAttackBonus = this.system.bonus.weapon.attack + weapon.system.bonus.attack + this.system.bonus[weapon.system.weapontype].attack;
+    
+    //STANCES::
+    //check for dueling stance
+    if(this.system.bonus.dueling &&(weapon.system.category == "heavy1h" || weapon.system.category == "light1h") &&!this.items.find(item => item.type == "shield" && item.system.equipped))
+      weaponDamageBonus += 2;
+    //check for sentinel stance
+    else if(this.system.bonus.traits.sentinel == 1 && weapon.system.category == "light2h")
+      weaponDamageBonus += this.system.attributes.knowledge.skills.academic.finalvalue;
+    //check for juggernaut stance
+    else if(this.system.bonus.traits.juggernaut == 1 && (weapon.system.category == "heavy1h" || weapon.system.category == "heavy2h"))
+      weaponDamageBonus += 2;
+    
+
+    let extraNonCritDice = ""
+    let extraNonCritDamage = ""
+    //calculate non-crit eligble damage
+    if(this.system.bonus.traits.flowingstrikes && weapon.system.category == "unarmed"){
+      extraNonCritDice = "+1d4";
+    }
+  }
+
   /* -------------------------------------------- */
   prepareWeapon(weapon) {
     if(weapon.type == 'equipable'){
@@ -1624,8 +1761,6 @@ export class Avd12Actor extends Actor {
     }
     weapon.attackBonus = this.system.bonus.weapon.attack + weapon.system.bonus.attack + this.system.bonus[weapon.system.weapontype].attack
     let bonusDamage = parseInt(this.system.bonus.weapon.damage);
-
-  
 
     if(this.system.bonus.dueling){
       let equippedShield = this.items.find(item => item.type == "shield" && item.system.equipped)
@@ -1644,7 +1779,7 @@ export class Avd12Actor extends Actor {
 
     switch(weapon.system.category){
       case "unarmed":
-        upgraded == 1 ? dice = "1d8" : dice = "1d6"
+        upgraded == 1 ?  (this.system.level.value >= 9? dice = "2d8" : dice = "1d10") : dice = "1d6"
       break;
       case "light1h":
         weapon.system.thrown = true;
@@ -1706,7 +1841,7 @@ export class Avd12Actor extends Actor {
           this.system.bonus.traits.chucker == 1 ? thrownDice = "2d8" : thrownDice = "2d6"         
         else
           this.system.bonus.traits.chucker == 1 ? thrownDice = "1d8" : thrownDice = "1d6"
-        if(this.system.bonus.traits.skilledchucking && weapon.attackBonus + 4> weapon.system.maxrange)
+        if(this.system.bonus.traits.skilledchucking && weapon.attackBonus + 4 > weapon.system.maxrange)
           weapon.system.maxrange = weapon.attackBonus + 4;
         break;
         }
@@ -2187,25 +2322,45 @@ export class Avd12Actor extends Actor {
       ui.notifications.warn("You are targetting a token with a skill : please use a Weapon instead.")
       return
     }
+    rollData.conditions = this.system.conditions;
+    
     Avd12Utility.rollAvd12(rollData)
   }
 
 
   /* -------------------------------------------- */
-  async rollFormula(actionData, diceFormula, showDialog) {
-
-
+  async rollFormula(actionData, diceFormula, skipDialog) {
     let rollData = this.getCommonRollData()
     rollData.action = actionData;
     rollData.diceFormula = diceFormula
     rollData.title = actionData.name;
     rollData.img = actionData.img;
-    await this.startRoll(rollData, showDialog)
+    await this.startRoll(rollData, skipDialog)
   }
 
 
   /* -------------------------------------------- */
-  rollSkill(attrKey, skillKey, showDialog) {
+  rollSkill(attrKey, skillKey, skipDialog) {
+    /*
+    let attr = this.system.attributes[attrKey]
+    let skill = attr.skills[skillKey]
+    if (skill) {
+      skill = duplicate(skill)
+      skill.name = Avd12Utility.upperFirst(skillKey)
+      skill.attr = duplicate(attr)
+      let rollData = this.getCommonRollData()
+      rollData.modifier = this.system.bonus[weapon.system.weapontype]
+      rollData.mode = "weapon"
+      rollData.weapon = weapon
+      rollData.img = weapon.img
+      rollData.conditions = this.system.conditions;  
+      this.startRoll(rollData, skipDialog)
+
+    } else {
+      ui.notifications.warn("Unable to find the relevant weapon ")
+    }
+
+    */
     let attr = this.system.attributes[attrKey]
     let skill = attr.skills[skillKey]
     if (skill) {
@@ -2215,10 +2370,11 @@ export class Avd12Actor extends Actor {
       let rollData = this.getCommonRollData()
       rollData.mode = "skill"
       //rollMode.skillKey = skillKey
+      rollData.modifier = 99
       rollData.skill = skill
       rollData.title = "Roll Skill " + skill.name 
       rollData.img = skill.img
-      this.startRoll(rollData)
+      this.startRoll(rollData, skipDialog)
     }
   }
 
@@ -2245,7 +2401,6 @@ export class Avd12Actor extends Actor {
       this.startRoll(rollData)
     }
   }
-  
 
   async changeStance(stanceId){
     this.items.forEach(async item => {
@@ -2352,30 +2507,29 @@ export class Avd12Actor extends Actor {
 
   /* -------------------------------------------- */
   spentFocusPoints(spellCost) {
-    console.log("CALLING THIS!!");
     const updatedFocus = Math.max(0, this.system.focus.currentfocuspoints -= parseInt(spellCost));
     this.update({'system.focus.currentfocuspoints': updatedFocus})
   }
   /* -------------------------------------------- */
 
   /* -------------------------------------------- */
-  rollWeapon(weaponId, showDialog) {
+  rollWeapon(weaponId, skipDialog) {
 
     let weapon = this.items.get(weaponId)
     if (weapon) {
       weapon = duplicate(weapon)
-      this.prepareWeapon(weapon)
+      this.prepareWeapon(weapon) 
       let rollData = this.getCommonRollData()
       rollData.modifier = this.system.bonus[weapon.system.weapontype]
       rollData.mode = "weapon"
       rollData.weapon = weapon
       rollData.img = weapon.img
-      this.startRoll(rollData, showDialog)
+      this.startRoll(rollData, skipDialog)
     } else {
       ui.notifications.warn("Unable to find the relevant weapon ")
     }
   }
-  rollThrowObject(weaponId, showDialog) {
+  rollThrowObject(weaponId, skipDialog) {
 
     let weapon = this.items.get(weaponId)
     if (weapon) {
@@ -2386,7 +2540,7 @@ export class Avd12Actor extends Actor {
       rollData.mode = "weapon"
       rollData.weapon = weapon
       rollData.img = weapon.img
-      this.startRoll(rollData, showDialog)
+      this.startRoll(rollData, skipDialog)
     } else {
       ui.notifications.warn("Unable to find the relevant weapon ")
     }
@@ -2591,9 +2745,10 @@ export class Avd12Actor extends Actor {
   }
 
   /* -------------------------------------------- */
-  async startRoll(rollData, showDialogue) {
+  async startRoll(rollData, skipDialog) {
     this.syncRoll(rollData)
-    if(showDialogue){
+    rollData.conditions = this.system.conditions;  
+    if(skipDialog){
     let rollDialog = await Avd12RollDialog.create(this, rollData)
     rollDialog.render(true)
     }else{
@@ -2680,7 +2835,7 @@ export class Avd12Actor extends Actor {
       rollData.burn = burn;
 
       rollData.title = "Rolling Essence Burn";
-      
+      rollData.conditions = this.system.conditions;
       //this.syncRoll(rollData)
       Avd12Utility.rollAvd12(rollData)
     

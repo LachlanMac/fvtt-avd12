@@ -113,6 +113,22 @@ Hooks.once("ready", function () {
       icon: "systems/avd12/images/conditions/unconscious.svg"
     },
     {
+      id: "sleeping",
+      label: "Unconscious",
+      icon: "systems/avd12/images/conditions/unconscious.svg"
+    },
+    {
+      id: "enveloped",
+      label: "Enveloped",
+      icon: "systems/avd12/images/conditions/unconscious.svg"
+    },
+    {
+      id: "trapped",
+      label: "Trapped",
+      icon: "systems/avd12/images/conditions/unconscious.svg"
+    },
+
+    {
       id: "alert",
       label: "Alert",
       icon: "systems/avd12/images/conditions/alert.svg"
@@ -168,8 +184,18 @@ Hooks.once("ready", function () {
       icon: "systems/avd12/images/conditions/deafened.svg"
     },
     {
+      id: "maddened",
+      label: "Maddened",
+      icon: "systems/avd12/images/conditions/muted.svg"
+    },
+    {
       id: "muted",
       label: "Muted",
+      icon: "systems/avd12/images/conditions/muted.svg"
+    },
+    {
+      id: "stasis",
+      label: "Statis",
       icon: "systems/avd12/images/conditions/muted.svg"
     },
     {

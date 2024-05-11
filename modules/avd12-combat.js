@@ -24,20 +24,15 @@ export class Avd12Combat extends Combat {
       // If the character is proficient with initiative, add +2 according to AVD12 rules.
       if(c.actor.system.universal.skills.initiative.good)
         initTotal += 2;
-      
       let initRoll = {total: initTotal}
-
       await this.updateEmbeddedDocuments("Combatant", [{ _id: id, initiative: initTotal }]); // Update initiative for the combatant.
-
       //if the token is hidden, do not show it entering combat
       if(c.token.hidden)
         return;
-      
       // Prepare data for the chat card.
       initRoll.skill = c.actor.system.universal.skills.initiative;
       initRoll.name = c.actor.name;
       initRoll.img = c.img;
-      console.log(c);
       // Create a chat message with the roll result.
       await Avd12Utility.createChatWithRollMode(initRoll.alias, {
         content: await renderTemplate(`systems/avd12/templates/chat/chat-initiative-result.hbs`, initRoll)

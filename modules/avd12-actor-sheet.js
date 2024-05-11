@@ -180,7 +180,7 @@ export class Avd12ActorSheet extends ActorSheet {
     html.find('.roll-skill').click((event) => {
       let attrKey = $(event.currentTarget).data("attr-key")
       let skillKey = $(event.currentTarget).data("skill-key")
-      this.actor.rollSkill(attrKey, skillKey, !shift)
+      this.actor.rollSkill(attrKey, skillKey, shift)
     });   
     html.find('.change-stance').click((event) => {
       const li = $(event.currentTarget).parents(".item");
@@ -188,31 +188,31 @@ export class Avd12ActorSheet extends ActorSheet {
     });    
     html.find('.roll-spell').click((event) => {
       const li = $(event.currentTarget).parents(".item");
-      this.actor.rollSpell( li.data("item-id"), !shift)
+      this.actor.rollSpell( li.data("item-id"), shift)
     });    
     html.find('.roll-spell-damage').click((event) => {
       const li = $(event.currentTarget).parents(".item");
-      this.actor.rollSpellDamage( li.data("item-id"), !shift)
+      this.actor.rollSpellDamage( li.data("item-id"), shift)
     });    
 
     html.find('.roll-craft').click((event) => {
       let skillKey = $(event.currentTarget).data("skill-key")
-      this.actor.rollCrafting(skillKey, !shift)
+      this.actor.rollCrafting(skillKey, shift)
     });    
 
     html.find('.roll-universal').click((event) => {
       let skillKey = $(event.currentTarget).data("skill-key")
-      this.actor.rollUniversal(skillKey, !shift)
+      this.actor.rollUniversal(skillKey, shift)
     });    
     html.find('.roll-throw-object').click((event) => {
       const li = $(event.currentTarget).parents(".item");
       const weponId = li.data("item-id")
-      this.actor.rollThrowObject(weponId, !shift)
+      this.actor.rollThrowObject(weponId, shift)
     });
     html.find('.roll-weapon').click((event) => {
       const li = $(event.currentTarget).parents(".item");
       const weponId = li.data("item-id")
-      this.actor.rollWeapon(weponId, !shift)
+      this.actor.rollWeapon(weponId, shift)
     });
     html.find('#import-character').click(async (event) => {
       html.find("#import-character").disabled = true;
@@ -236,31 +236,31 @@ export class Avd12ActorSheet extends ActorSheet {
     html.find('.roll-weapon-damage').click((event) => {
       const li = $(event.currentTarget).parents(".item");
       const weaponId = li.data("item-id")
-      this.actor.showWeaponDamageDialog(weaponId, "normal", !shift)
+      this.actor.showWeaponDamageDialog(weaponId, "normal", shift)
     });
 
     html.find('.roll-throw-damage').click((event) => {
       const li = $(event.currentTarget).parents(".item");
       const weaponId = li.data("item-id")
-      this.actor.showWeaponDamageDialog(weaponId, "throw", !shift)
+      this.actor.showWeaponDamageDialog(weaponId, "throw", shift)
     });
 
 
     html.find('.roll-thrown-weapon-damage').click((event) => {
       const li = $(event.currentTarget).parents(".item");
       const weaponId = li.data("item-id")
-      this.actor.showWeaponDamageDialog(weaponId, "thrown", !shift)
+      this.actor.showWeaponDamageDialog(weaponId, "thrown", shift)
     });
 
     html.find('.roll-secondary-weapon-damage').click((event) => {
       const li = $(event.currentTarget).parents(".item");
       const weaponId = li.data("item-id")
-      this.actor.rollSecondaryWeaponDamage(weaponId, "secondary", !shift)
+      this.actor.rollSecondaryWeaponDamage(weaponId, "secondary", shift)
     });
     html.find('.roll-tertiary-weapon-damage').click((event) => {
       const li = $(event.currentTarget).parents(".item");
       const weaponId = li.data("item-id")
-      this.actor.rollTertiaryWeaponDamage(weaponId, "tertiary", !shift)
+      this.actor.rollTertiaryWeaponDamage(weaponId, "tertiary", shift)
     });
     html.find('.lock-unlock-sheet').click((event) => {
       this.options.editScore = !this.options.editScore;

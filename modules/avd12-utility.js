@@ -6,8 +6,8 @@ import { Avd12Commands } from "./avd12-commands.js";
 /* -------------------------------------------- */
 const __ALLOWED_MODULE_TYPES = { "action": 1, "reaction": 1, "freeaction": 1, "trait": 1 }
 const __focusCore = { "corenone": 0, "core5gp": 6, "core20gp": 8, "core50gp": 10, "core100gp": 12, "core300gp": 16, "core500gp": 20, "core800gp": 26, "core1000gp": 32 }
-const __burnChanceTreatment = { "treatmentnone": 0, "treatment5gp": 8, "treatment20gp": 7, "treatment50gp": 6, "treatment100gp": 5, "treatment500gp": 4, "treatment1000gp": 3, "treatment5000gp": 2, "treatment10000gp": 1 }
-const __focusPointTreatment = { "treatmentnone": 0, "treatment5gp": 0, "treatment20gp": 1, "treatment50gp": 2, "treatment100gp": 4, "treatment500gp": 6, "treatment1000gp": 8, "treatment5000gp": 14, "treatment10000gp": 20 }
+const __burnChanceTreatment = { "treatmentnone": 0, "treatment5gp": 8, "treatment20gp": 7, "treatment50gp": 6, "treatment100gp": 5, "treatment500gp": 4, "treatment1000gp": 3, "treatment2000gp": 2, "treatment5000gp": 1 }
+const __focusPointTreatment = { "treatmentnone": 0, "treatment5gp": 0, "treatment20gp": 1, "treatment50gp": 2, "treatment100gp": 4, "treatment500gp": 6, "treatment1000gp": 8, "treatment2000gp": 14, "treatment5000gp": 20 }
 const __focusRegenBond = { "bondnone": 6, "bondeasy": 8, "bondcommon": 12, "bonduncommon": 16, "bondrare": 22, "bondlegendary": 26, "bondmythic": 36, "bonddivine": 48 }
 const __bonusSpellDamageBond = { "bondnone": 0, "bondeasy": 1, "bondcommon": 1, "bonduncommon": 1, "bondrare": 2, "bondlegendary": 2, "bondmythic": 3, "bonddivine": 4 }
 const __bonusSpellAttackBond = { "bondnone": 0, "bondeasy": 0, "bondcommon": 1, "bonduncommon": 1, "bondrare": 2, "bondlegendary": 2, "bondmythic": 3, "bonddivine": 4 }
@@ -522,9 +522,6 @@ export class Avd12Utility {
     return result || [];
 }
 
-
-
-
   /* -------------------------------------------- */
   static async rollAvd12(rollData) {
     let actor = game.actors.get(rollData.actorId)
@@ -574,8 +571,94 @@ export class Avd12Utility {
         }
       }
     }
-  
-    diceFormula += "+" + rollData.bonusMalusRoll  
+    
+    let penalty = "";
+    let conditions = rollData.conditions;
+ 
+    if(rollData.spellAttack || rollData.weapon || rollData.action){
+      conditions.blinded == 1 ? penalty += "-1d4" : penalty +="";
+      conditions.hidden == 1 ? penalty += "+1d4" : penalty +="";
+      conditions.prone == 1 ? penalty += "+-1d4" : penalty +="";
+    }
+
+    let override = "";
+
+    if(rollData.skill){
+      switch(rollData.skill.name){
+          case "Academics":
+          break;
+          case "Acrobatics":
+            conditions.wounded > 1 ? penalty += "-1d4" : penalty +="";
+          break;
+          case "Animals":
+          break;
+          case "Arcanum":
+          break;
+          case "Athletics":
+            conditions.wounded > 1 ? penalty += "-1d4" : penalty +="";
+          break;
+          case "Concentration":
+            conditions.dazed == 1 ? penalty += "-1d4" : penalty +="";
+          break;
+          case "Initiative":
+            conditions.exhausted > 0 ? penalty += "-1d4" : penalty +="";
+          break;
+          case "Insight":
+          break;
+          case "Medicine":
+          break;
+          case "Performance":
+          break;
+          case "Persuasion":
+          break;
+          case "Resilience":
+            conditions.diseased == 1 ? penalty += "-1d4" : penalty +="";
+            conditions.wounded > 0 ? penalty += "-1d4" : penalty +="";
+          break;
+          case "Search":
+          break;
+          case "Stealth":
+            conditions.wounded > 1 ? penalty += "-1d4" : penalty +="";
+          break;
+          case "Strength":
+            conditions.wounded > 1 ? penalty += "-1d4" : penalty +="";
+          break;
+          case "Thievery":
+          break;
+          case "Wilderness":
+          break;
+          case "Dodge":
+            conditions.wounded > 1 ? penalty += "-1d4" : penalty +="";
+            conditions.stunned == 1 ? penalty += "+-1d4" : penalty +="";
+            if(conditions.frozen || conditions.unconscious || conditions.sleeping || conditions.paralyzed){
+              override = "4"
+            }
+          break;
+          case "Block":
+            conditions.wounded > 1 ? penalty += "-1d4" : penalty +="";
+            conditions.stunned == 1 ? penalty += "+-1d4" : penalty +="";
+            if(conditions.frozen || conditions.unconscious || conditions.sleeping || conditions.paralyzed){
+              override = "4"
+            }
+          break;
+          case "Resistance":
+          conditions.stunned == 1 ? penalty += "+-1d4" : penalty +="";
+          if(conditions.frozen || conditions.unconscious || conditions.sleeping || conditions.paralyzed){
+            override = "4"
+          }
+            conditions.deafened == 1 ? penalty += "-1d4" : penalty +="";
+       
+          break;
+
+
+      }
+    }
+
+    diceFormula += "+" + rollData.bonusMalusRoll +"+"+penalty;
+    if(override != ""){
+      diceFormula = override;
+    }
+    diceFormula = Avd12Utility.formatDiceFormula(diceFormula);
     rollData.diceFormula = diceFormula
     if (rollData.spell) {
       actor.spentFocusPoints(rollData.spellCost);
@@ -600,9 +683,7 @@ export class Avd12Utility {
   static setDiceDisplay(result){
     let str = "";
     for(let i in result.dice){
-
       let currResult = result.dice[i];
-
       switch(Number(currResult.faces)){
         case 4:
           for(let j = 0; j < currResult.results.length; j++){
@@ -639,6 +720,13 @@ export class Avd12Utility {
 
     return str;
   }
+
+  static formatDiceFormula(formula) {
+    return formula.trim()
+                  .replace(/\+0+/g, '')
+                  .replace(/\+-/g, '-')
+                  .replace(/\+$/, '');
+}
 
   static reverseString(str) {
     // Step 1. Use the split() method to return a new array
@@ -861,14 +949,12 @@ export class Avd12Utility {
 
   /* -------------------------------------------- */
   static split3Columns(data) {
-
     let array = [[], [], []];
     if (data == undefined) return array;
-
     let col = 0;
     for (let key in data) {
       let keyword = data[key];
-      keyword.key = key; // Self-reference
+      keyword.key = key;
       array[col].push(keyword);
       col++;
       if (col == 3) col = 0;
@@ -948,9 +1034,7 @@ export class Avd12Utility {
    
   }
 
-
   static getStanceId(id){
-
     const idToValue = {
       "1": "NCEq4AOX8Kvncmw2",
       "2": "3TqyZJjHnVIdYf2D",
