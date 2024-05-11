@@ -513,7 +513,7 @@ export class Avd12Actor extends Actor {
           break;
       }
     
-      this.update({ 'system.conditions':  this.system.conditions});
+      //this.update({ 'system.conditions':  this.system.conditions});
     })
 
      

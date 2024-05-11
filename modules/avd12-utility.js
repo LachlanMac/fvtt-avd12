@@ -647,14 +647,13 @@ export class Avd12Utility {
             override = "4"
           }
             conditions.deafened == 1 ? penalty += "-1d4" : penalty +="";
-       
           break;
-
-
       }
     }
 
+
     diceFormula += "+" + rollData.bonusMalusRoll +"+"+penalty;
+    console.log(diceFormula, penalty);
     if(override != ""){
       diceFormula = override;
     }

@@ -19,7 +19,6 @@ export class Avd12Combat extends Combat {
     for (let cId = 0; cId < ids.length; cId++) {
       const c = this.combatants.get(ids[cId]);
       let id = c._id || c.id;
-    
       let initTotal = c.actor.system.universal.skills.initiative.finalvalue; // Base initiative total from actor's initiative skill.
       // If the character is proficient with initiative, add +2 according to AVD12 rules.
       if(c.actor.system.universal.skills.initiative.good)

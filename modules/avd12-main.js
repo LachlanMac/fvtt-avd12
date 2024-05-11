@@ -114,20 +114,19 @@ Hooks.once("ready", function () {
     },
     {
       id: "sleeping",
-      label: "Unconscious",
-      icon: "systems/avd12/images/conditions/unconscious.svg"
+      label: "Sleeping",
+      icon: "systems/avd12/images/conditions/sleeping.svg"
     },
     {
       id: "enveloped",
       label: "Enveloped",
-      icon: "systems/avd12/images/conditions/unconscious.svg"
+      icon: "systems/avd12/images/conditions/enveloped.svg"
     },
     {
       id: "trapped",
       label: "Trapped",
-      icon: "systems/avd12/images/conditions/unconscious.svg"
+      icon: "systems/avd12/images/conditions/trapped.svg"
     },
-
     {
       id: "alert",
       label: "Alert",
@@ -186,7 +185,7 @@ Hooks.once("ready", function () {
     {
       id: "maddened",
       label: "Maddened",
-      icon: "systems/avd12/images/conditions/muted.svg"
+      icon: "systems/avd12/images/conditions/maddened.svg"
     },
     {
       id: "muted",
@@ -196,7 +195,7 @@ Hooks.once("ready", function () {
     {
       id: "stasis",
       label: "Statis",
-      icon: "systems/avd12/images/conditions/muted.svg"
+      icon: "systems/avd12/images/conditions/stasis.svg"
     },
     {
       id: "afraid",
@@ -219,13 +218,13 @@ Hooks.once("ready", function () {
       icon: "systems/avd12/images/conditions/bleeding.svg"
     },
     {
-      id: "disease",
-      label: "Disease",
+      id: "diseased",
+      label: "Diseased",
       icon: "systems/avd12/images/conditions/diseased.svg"
     },
     {
-      id: "poison",
-      label: "Poison",
+      id: "poisoned",
+      label: "Poisoned",
       icon: "systems/avd12/images/conditions/poisoned.svg"
     },
     {
