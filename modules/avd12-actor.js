@@ -2699,7 +2699,7 @@ export class Avd12Actor extends Actor {
 
   async showWeaponDamageDialog(weaponId, hitType, shift){
     let dice = "";
-    if(!shift){
+    if(shift){
       this.rollQuickWeaponDamage(weaponId, hitType);
     }else{
       let weapon = this.items.get(weaponId)
@@ -2748,7 +2748,7 @@ export class Avd12Actor extends Actor {
   async startRoll(rollData, skipDialog) {
     this.syncRoll(rollData)
     rollData.conditions = this.system.conditions;  
-    if(skipDialog){
+    if(!skipDialog){
     let rollDialog = await Avd12RollDialog.create(this, rollData)
     rollDialog.render(true)
     }else{
@@ -2813,31 +2813,14 @@ export class Avd12Actor extends Actor {
     dialog.render(true)
   }
 
-
-
   async essenceBurn(){
-    /*
-     skill = duplicate(skill)
-      skill.name = Avd12Utility.upperFirst(skillKey)
-      skill.attr = duplicate(attr)
-      let rollData = this.getCommonRollData()
-      rollData.mode = "skill"
-      //rollMode.skillKey = skillKey
-      rollData.skill = skill
-      rollData.title = "Roll Skill " + skill.name 
-      rollData.img = skill.img
-      this.startRoll(rollData)
-      */
-
       let burn = {burnValue : this.system.focus.burn_chance};
       let rollData = this.getCommonRollData()
       rollData.mode = "essenceburn"
       rollData.burn = burn;
-
       rollData.title = "Rolling Essence Burn";
       rollData.conditions = this.system.conditions;
       //this.syncRoll(rollData)
       Avd12Utility.rollAvd12(rollData)
-    
   }  
 }
