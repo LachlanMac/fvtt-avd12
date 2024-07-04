@@ -2432,48 +2432,47 @@ export class Avd12Actor extends Actor {
     let rollData = this.getCommonRollData()
     rollData.mode = "spell"
     rollData.spell = spell
-    rollData.spellAttack = this.system.bonus.spell.attack
+    rollData.spellAttack = this.type == "npc" ? this.system.bonus.npc.spell_accuracy :this.system.bonus.spell.attack
+      //Spellshot
+      if(this.system.bonus.traits.spellshot && (spell.system.spelltype == "projectile" || spell.system.spelltype == "ray")){
+        rollData.spellAttack = Math.max(this.getSpellShotAttack(), this.system.bonus.spell.attack);
+      }
+      //no longer needed...
+      //rollData.spellDamage = this.system.bonus.spell.damage
+      const powerModifier = isNaN(userData.powerModifier) ? 0 : parseInt(userData.powerModifier);
+      const attackModifier = isNaN(userData.attackModifier) ? 0 : parseInt(userData.attackModifier);
 
-    //Spellshot
-    if(this.system.bonus.traits.spellshot && (spell.system.spelltype == "projectile" || spell.system.spelltype == "ray")){
-      rollData.spellAttack = Math.max(this.getSpellShotAttack(), this.system.bonus.spell.attack);
-    }
-    //no longer needed...
-    //rollData.spellDamage = this.system.bonus.spell.damage
-    const powerModifier = isNaN(userData.powerModifier) ? 0 : parseInt(userData.powerModifier);
-    const attackModifier = isNaN(userData.attackModifier) ? 0 : parseInt(userData.attackModifier);
+      rollData.spellCost = Avd12Utility.getSpellCost(spell) + powerModifier;
+      let currentFocusPoints = this.system.focus.currentfocuspoints;
 
-    rollData.spellCost = Avd12Utility.getSpellCost(spell) + powerModifier;
-    let currentFocusPoints = this.system.focus.currentfocuspoints;
-    if(channeledSpell.unlinkedToken)
-      currentFocusPoints = channeledSpell.unlinkedToken.system.focus.currentfocuspoints;
-    
-    if(rollData.spellCost > currentFocusPoints){
-      rollData.nen = true;
-      let msg = await Avd12Utility.createChatWithRollMode(rollData.alias, {
-        content: await renderTemplate(`systems/avd12/templates/chat/chat-utility-spell.hbs`, rollData)
-      })
-      msg.setFlag("world", "rolldata", rollData)
-    }else{
-      rollData.spellAttack = rollData.spellAttack;
-      rollData.bonusMalusRoll = attackModifier;
-      rollData.title = "Roll Spell " + spell.name
-      rollData.img = spell.img
-      if (spell.system.spelltype != "utility") {
-        if(channeledSpell.unlinkedToken)
-          channeledSpell.unlinkedToken.update({ 'system.focus.currentfocuspoints':  channeledSpell.unlinkedToken.system.focus.currentfocuspoints - rollData.spellCost});
-        else
-          this.update({ 'system.focus.currentfocuspoints':  this.system.focus.currentfocuspoints - rollData.spellCost});
-        
-        this.startRoll(rollData)
-      } else {  
+      if(channeledSpell.unlinkedToken)
+        currentFocusPoints = channeledSpell.unlinkedToken.system.focus.currentfocuspoints;
+
+      if(rollData.spellCost > currentFocusPoints){
+        rollData.nen = true;
         let msg = await Avd12Utility.createChatWithRollMode(rollData.alias, {
           content: await renderTemplate(`systems/avd12/templates/chat/chat-utility-spell.hbs`, rollData)
         })
         msg.setFlag("world", "rolldata", rollData)
+      }else{
+        rollData.spellAttack = rollData.spellAttack;
+        rollData.bonusMalusRoll = attackModifier;
+        rollData.title = "Roll Spell " + spell.name
+        rollData.img = spell.img
+        if (spell.system.spelltype != "utility") {
+          if(channeledSpell.unlinkedToken)
+            channeledSpell.unlinkedToken.update({ 'system.focus.currentfocuspoints':  channeledSpell.unlinkedToken.system.focus.currentfocuspoints - rollData.spellCost});
+          else
+            this.update({ 'system.focus.currentfocuspoints':  this.system.focus.currentfocuspoints - rollData.spellCost});
+          this.startRoll(rollData, true)
+        } else {  
+          let msg = await Avd12Utility.createChatWithRollMode(rollData.alias, {
+            content: await renderTemplate(`systems/avd12/templates/chat/chat-utility-spell.hbs`, rollData)
+          })
+          msg.setFlag("world", "rolldata", rollData)
+        }
       }
     }
-  }
   
   async rollSpellDamage(spellId) {
     let spell = this.items.get(spellId)
@@ -2483,7 +2482,8 @@ export class Avd12Actor extends Actor {
       spell = duplicate(spell)
       let rollData = this.getCommonRollData()
       rollData.weapon = spell
-      rollData.spellDamage = this.system.bonus.spell.damage
+      console.log(this.system.bonus.npc);
+      rollData.spellDamage = this.type == "npc" ? this.system.bonus.npc.spell_power :this.system.bonus.spell.damage
       rollData.title = "Roll Spell Damage " + spell.name
       rollData.img = spell.img
       rollData.mode = "weapon-damage"

@@ -2,11 +2,10 @@
   "id": "avd12",
   "title": "AnyVenture D12 RPG",
   "description": "Anyventure D12 system for FoundryVTT",
-  "version": "12.3.2",
+  "version": "12.3.3",
   "compatibility": {
     "minimum": "11",
-    "verified": "11",
-    "maximum": "11"
+    "verified": "11"
   },
   "url": "https://github.com/LachlanMac/avd12",
   "manifest": "https://github.com/LachlanMac/fvtt-avd12/releases/latest/download/system.json",
@@ -17,8 +16,12 @@
       "flags": {}
     }
   ],
-  "esmodules": ["modules/avd12-main.js"],
-  "scripts": ["js/lodash.js"],
+  "esmodules": [
+    "modules/avd12-main.js"
+  ],
+  "scripts": [
+    "js/lodash.js"
+  ],
   "background": "systems/avd12/images/ui/anyventure_splash.png",
   "gridDistance": 1,
   "gridUnits": "u",
@@ -34,43 +37,57 @@
   "primaryTokenAttribute": "secondary.health",
   "secondaryTokenAttribute": "secondary.power",
   "socket": true,
-  "styles": ["styles/simple.css"],
+  "styles": [
+    "styles/simple.css"
+  ],
   "packs": [
     {
       "type": "Item",
       "label": "Armors",
       "name": "armors",
-      "path": "packs/armors.db",
+      "path": "packs/armors",
       "system": "avd12",
-      "private": false,
-      "flags": {}
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
     },
     {
       "type": "Item",
       "label": "Spells",
       "name": "spells",
-      "path": "packs/spells.db",
+      "path": "packs/spells",
       "system": "avd12",
-      "private": false,
-      "flags": {}
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
     },
     {
       "type": "Item",
       "label": "Weapons",
       "name": "weapons",
-      "path": "packs/weapons.db",
+      "path": "packs/weapons",
       "system": "avd12",
-      "private": false,
-      "flags": {}
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
     },
     {
       "type": "Item",
       "label": "Stances",
       "name": "stances",
-      "path": "packs/stances.db",
+      "path": "packs/stances",
       "system": "avd12",
-      "private": false,
-      "flags": {}
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
     }
   ]
 }
