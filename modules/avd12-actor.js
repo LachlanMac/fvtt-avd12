@@ -1759,7 +1759,7 @@ export class Avd12Actor extends Actor {
       return;
     }
   
-    if(this.system.bonus.traits.spellsword){
+    if(this.system.bonus.traits.spellsword && weapon.system.focus?.isfocus){
       weapon.attackBonus = this.system.bonus.spell.attack + weapon.system.bonus.attack;
     }else{
       weapon.attackBonus = this.system.bonus.weapon.attack + weapon.system.bonus.attack + this.system.bonus[weapon.system.weapontype].attack
@@ -1767,7 +1767,9 @@ export class Avd12Actor extends Actor {
 
     let bonusDamage = parseInt(this.system.bonus.weapon.damage);
 
-  
+    
+
+
     if(this.system.bonus.dueling){
       let equippedShield = this.items.find(item => item.type == "shield" && item.system.equipped)
       if(!equippedShield){
@@ -1884,7 +1886,7 @@ export class Avd12Actor extends Actor {
     weapon.critEligble =  bonusDamage + this.system.bonus[weapon.system.weapontype].damage + parseInt(weapon.system.damages.primary.bonus);
     let calculatedDamage = bonusDamage + this.system.bonus[weapon.system.weapontype].damage;
 
-    if(this.system.bonus.traits.spellsword){
+    if(this.system.bonus.traits.spellsword && weapon.system.focus?.isfocus){
       weapon.critEligble =  bonusDamage + this.system.bonus.spell.damage + parseInt(weapon.system.damages.primary.bonus);
       calculatedDamage = bonusDamage + this.system.bonus.spell.damage;
     }
@@ -1896,7 +1898,7 @@ export class Avd12Actor extends Actor {
     this.addPrimaryDamage(weapon.system.damages.primary, calculatedDamage, dice, extraDamage)
     
     if(weapon.system.thrown){
-      if(this.system.bonus.traits.spellsword){
+      if(this.system.bonus.traits.spellsword && weapon.system.focus?.isfocus){
         this.addPrimaryThrownDamage(weapon.system.damages.primary, bonusDamage + this.system.bonus.spell.damage, thrownDice, "")
       }else{
         this.addPrimaryThrownDamage(weapon.system.damages.primary, bonusDamage + this.system.bonus[weapon.system.weapontype].damage, thrownDice, "")
