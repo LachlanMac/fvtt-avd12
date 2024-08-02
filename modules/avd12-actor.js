@@ -306,8 +306,8 @@ export class Avd12Actor extends Actor {
           break;
       case 4://defensive
           this.system.attributes.might.skills.block.finalvalue += 1;
-          this.system.attributes.agility.skills.dodge.finalvalue -= 1;
-          this.system.mitigation.physical.value += 2;
+          this.system.attributes.agility.skills.dodge.finalvalue += 1;
+          this.system.attributes.willpower.skills.resistance.finalvalue += 1;
           this.system.bonus.weapon.attack -= 1;
           break;
       case 5://precise
@@ -1246,11 +1246,7 @@ export class Avd12Actor extends Actor {
       this.system.bonus.pierce.attack = highest;
       this.system.bonus.ranged.attack = highest;
     }
-    if(this.system.bonus.traits.spellsword){
-      if(this.system.bonus.slash.attack < this.system.bonus.spell.attack)
-        this.system.bonus.slash.attack = this.system.bonus.spell.attack;
-    }
-   
+
     //reset 
 
 
@@ -1643,6 +1639,7 @@ export class Avd12Actor extends Actor {
   }
   /* -------------------------------------------- */
   addPrimaryDamage(damage, bonusDamage, dice, extraDamage) {
+    console.log("EEEE", damage, bonusDamage, dice, extraDamage)
     if (damage.damagetype != "none" && damage.dice) {
       let fullBonus = Number(bonusDamage) + Number(damage.bonus)
       damage.dice = dice;
@@ -1653,6 +1650,8 @@ export class Avd12Actor extends Actor {
       if (parser && parser[1]) {
         nbDice = Number(parser[1]) * 2
       }
+
+      console.log(damage);
       damage.brutal = nbDice + parser[2] + "+" + (Number(fullBonus) * 2) + (extraDamage == "" ? "" : extraDamage);
     }
   }
@@ -1759,9 +1758,16 @@ export class Avd12Actor extends Actor {
     if(weapon.type == 'equipable'){
       return;
     }
-    weapon.attackBonus = this.system.bonus.weapon.attack + weapon.system.bonus.attack + this.system.bonus[weapon.system.weapontype].attack
+  
+    if(this.system.bonus.traits.spellsword){
+      weapon.attackBonus = this.system.bonus.spell.attack + weapon.system.bonus.attack;
+    }else{
+      weapon.attackBonus = this.system.bonus.weapon.attack + weapon.system.bonus.attack + this.system.bonus[weapon.system.weapontype].attack
+    }
+
     let bonusDamage = parseInt(this.system.bonus.weapon.damage);
 
+  
     if(this.system.bonus.dueling){
       let equippedShield = this.items.find(item => item.type == "shield" && item.system.equipped)
       if(!equippedShield){
@@ -1874,18 +1880,30 @@ export class Avd12Actor extends Actor {
       
     weapon.dice = dice;
     weapon.extraDamage = extraDamage;
-    weapon.critEligble =  bonusDamage + this.system.bonus[weapon.system.weapontype].damage + parseInt(weapon.system.damages.primary.bonus);
 
+    weapon.critEligble =  bonusDamage + this.system.bonus[weapon.system.weapontype].damage + parseInt(weapon.system.damages.primary.bonus);
     let calculatedDamage = bonusDamage + this.system.bonus[weapon.system.weapontype].damage;
 
+    if(this.system.bonus.traits.spellsword){
+      weapon.critEligble =  bonusDamage + this.system.bonus.spell.damage + parseInt(weapon.system.damages.primary.bonus);
+      calculatedDamage = bonusDamage + this.system.bonus.spell.damage;
+    }
+
     if(this.system.bonus.traits.sentinel == 1 && weapon.system.category == "light2h")
-      calculatedDamage = this.system.attributes.knowledge.skills.academic.finalvalue;
+      calculatedDamage = this.system.attributes.knowledge.skills.academic.finalvalue + bonusDamage;
+    
     
     this.addPrimaryDamage(weapon.system.damages.primary, calculatedDamage, dice, extraDamage)
     
     if(weapon.system.thrown){
-      this.addPrimaryThrownDamage(weapon.system.damages.primary, bonusDamage + this.system.bonus[weapon.system.weapontype].damage, thrownDice, "")
+      if(this.system.bonus.traits.spellsword){
+        this.addPrimaryThrownDamage(weapon.system.damages.primary, bonusDamage + this.system.bonus.spell.damage, thrownDice, "")
+      }else{
+        this.addPrimaryThrownDamage(weapon.system.damages.primary, bonusDamage + this.system.bonus[weapon.system.weapontype].damage, thrownDice, "")
+
+      }
       weapon.throwndice = thrownDice;
+  
     }
 
     this.addOtherDamage(weapon.system.damages.secondary, bonusDamage)
