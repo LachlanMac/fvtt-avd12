@@ -2,7 +2,7 @@
   "id": "avd12",
   "title": "AnyVenture D12 RPG",
   "description": "Anyventure D12 system for FoundryVTT",
-  "version": "12.3.4",
+  "version": "12.4.0",
   "compatibility": {
     "minimum": "11",
     "verified": "11"
@@ -41,6 +41,114 @@
     "styles/simple.css"
   ],
   "packs": [
+    {
+      "type": "Item",
+      "label": "Accessories",
+      "name": "accessories",
+      "path": "packs/accessories",
+      "system": "avd12",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "type": "Item",
+      "label": "Boots",
+      "name": "boots",
+      "path": "packs/boots",
+      "system": "avd12",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "type": "Item",
+      "label": "Cloaks",
+      "name": "cloaks",
+      "path": "packs/cloaks",
+      "system": "avd12",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "type": "Item",
+      "label": "Enhancements",
+      "name": "enhancements",
+      "path": "packs/enhancements",
+      "system": "avd12",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "type": "Item",
+      "label": "Gloves",
+      "name": "gloves",
+      "path": "packs/gloves",
+      "system": "avd12",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "type": "Item",
+      "label": "Headwear",
+      "name": "headwear",
+      "path": "packs/headwear",
+      "system": "avd12",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "type": "Item",
+      "label": "Shields",
+      "name": "shields",
+      "path": "packs/shields",
+      "system": "avd12",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "type": "Item",
+      "label": "Potions",
+      "name": "potions",
+      "path": "packs/potions",
+      "system": "avd12",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "type": "Item",
+      "label": "Items",
+      "name": "items",
+      "path": "packs/items",
+      "system": "avd12",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
     {
       "type": "Item",
       "label": "Armors",

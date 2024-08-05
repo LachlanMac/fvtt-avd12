@@ -57,6 +57,10 @@ export class Avd12Actor extends Actor {
     });
     await this.update({'system.usages':[]});
     /*Handle Attributes*/
+
+    data.system.health.value = this.system.health.value;
+    data.system.focus.currentfocuspoints = this.system.focus.currentfocuspoints;
+    
     await this.update({'system':data.system});
     await this.update({ 'name': data.name})
     await this.update({ 'prototypeToken.name': data.name});
@@ -151,8 +155,6 @@ export class Avd12Actor extends Actor {
       this.parseStances()
       this.parseActiveEffects()
       this.rebuildBonuses()
-     
-     
     }else if (this.type == "expedition"){
       
     }
@@ -176,8 +178,7 @@ export class Avd12Actor extends Actor {
         //SOFT RESET
         if(this.system.imported == 0)
           skill.modifier = 0
-        
-
+      
         let availableTraits = this.items.filter(t => t.type == "trait" && t.system.computebonus && t.system.bonusdata == dataPath)
         for (let trait of availableTraits) {
           skill.modifier += Number(trait.system.bonusvalue)
@@ -224,9 +225,7 @@ export class Avd12Actor extends Actor {
           this.system.attributes.agility.skills.dodge.finalvalue -= 2; 
           this.system.attributes.might.skills.block.finalvalue -= 2;
           break;
-      
       }
-
 
     for (let skillKey in this.system.universal.skills) {
       let skill = this.system.universal.skills[skillKey]
@@ -239,8 +238,6 @@ export class Avd12Actor extends Actor {
       skill.finalvalue = skill.modifier; 
     }
     
-
-
     for(let mitiKey in this.system.mitigation){
       if(this.system.imported == 0)
         this.system.mitigation[mitiKey].value = 0;
@@ -1758,9 +1755,13 @@ export class Avd12Actor extends Actor {
     if(weapon.type == 'equipable'){
       return;
     }
-  
+    console.log(weapon.system.weapontype);
+   
+
     if(this.system.bonus.traits.spellsword && weapon.system.focus?.isfocus){
       weapon.attackBonus = this.system.bonus.spell.attack + weapon.system.bonus.attack;
+    }else if(weapon.system.weapontype == "custom"){
+      weapon.attackBonus = this.system.bonus.weapon.attack + weapon.system.bonus.attack
     }else{
       weapon.attackBonus = this.system.bonus.weapon.attack + weapon.system.bonus.attack + this.system.bonus[weapon.system.weapontype].attack
     }
@@ -1768,8 +1769,6 @@ export class Avd12Actor extends Actor {
     let bonusDamage = parseInt(this.system.bonus.weapon.damage);
 
     
-
-
     if(this.system.bonus.dueling){
       let equippedShield = this.items.find(item => item.type == "shield" && item.system.equipped)
       if(!equippedShield){
@@ -1777,15 +1776,22 @@ export class Avd12Actor extends Actor {
       }
     }
   
-    let upgraded = this.system.bonus[weapon.system.weapontype].upgraded;
+    let upgraded = 0;
     let dice = "";
     let thrownDice = "";
+    if(weapon.system.weapontype != "custom"){
+      upgraded = this.system.bonus[weapon.system.weapontype].upgraded;
+    }
+
     if(this.type == "npc"){
       weapon.attackBonus = this.system.bonus.npc.attack_accuracy + weapon.system.bonus.attack;
       bonusDamage = this.system.bonus.npc.attack_power;
     }
 
     switch(weapon.system.category){
+      case "custom":
+        dice = weapon.system.damages.primary.dice;
+        break;
       case "unarmed":
         upgraded == 1 ?  (this.system.level.value >= 9? dice = "2d8" : dice = "1d10") : dice = "1d6"
       break;
@@ -1883,8 +1889,8 @@ export class Avd12Actor extends Actor {
     weapon.dice = dice;
     weapon.extraDamage = extraDamage;
 
-    weapon.critEligble =  bonusDamage + this.system.bonus[weapon.system.weapontype].damage + parseInt(weapon.system.damages.primary.bonus);
-    let calculatedDamage = bonusDamage + this.system.bonus[weapon.system.weapontype].damage;
+    weapon.critEligble =  bonusDamage + (weapon.system.category == "custom" ? 0 :this.system.bonus[weapon.system.weapontype].damage) + parseInt(weapon.system.damages.primary.bonus);
+    let calculatedDamage = bonusDamage + (weapon.system.category == "custom" ? 0 :this.system.bonus[weapon.system.weapontype].damage);
 
     if(this.system.bonus.traits.spellsword && weapon.system.focus?.isfocus){
       weapon.critEligble =  bonusDamage + this.system.bonus.spell.damage + parseInt(weapon.system.damages.primary.bonus);

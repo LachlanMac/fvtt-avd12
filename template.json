@@ -684,6 +684,7 @@
       "damagesecondarytype": "",
       "range": 0,
       "range_type": "",
+      "area_type": "",
       "components": "",
       "reaction": false,
       "sustained": false,
