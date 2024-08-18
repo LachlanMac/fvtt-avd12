@@ -49,6 +49,9 @@ Hooks.once("init", async function () {
     Avd12Utility.onSocketMesssage(data)
   });
 
+
+ 
+
   // Define custom Entity classes
   CONFIG.Combat.documentClass = Avd12Combat
   CONFIG.Actor.documentClass = Avd12Actor
@@ -68,19 +71,7 @@ Hooks.once("init", async function () {
 });
 
 
-
-
-/* -------------------------------------------- */
-function welcomeMessage() {
-  ChatMessage.create({
-    user: game.user.id,
-    whisper: [game.user.id],
-    content: `<div id="welcome-message-avd12"><span class="rdd-roll-part">
-    <strong>Welcome to the AVD12 RPG.</strong>
-    ` });
-}
-
-Hooks.once("ready", function () {
+function registerModules(){
   if(game.modules.has("splatter")){
     if(game.modules.get("splatter").active){
       console.log("AVD12: Registering Splatter blood colors")
@@ -100,6 +91,28 @@ Hooks.once("ready", function () {
     }
   }
 
+  if (game.modules.get("healthEstimate")?.active) {
+    const defaultFractionHPPath = "actor.system.health";
+    let fractionHPPath = game.settings.get("healthEstimate", "core.custom.FractionHP");
+    if (!fractionHPPath) {
+      game.settings.set("healthEstimate", "core.custom.FractionHP", defaultFractionHPPath);
+    }
+  }
+
+}
+
+/* -------------------------------------------- */
+function welcomeMessage() {
+  ChatMessage.create({
+    user: game.user.id,
+    whisper: [game.user.id],
+    content: `<div id="welcome-message-avd12"><span class="rdd-roll-part">
+    <strong>Welcome to the AVD12 RPG.</strong>
+    ` });
+}
+
+Hooks.once("ready", function () {
+  registerModules();
   //load after
   CONFIG.statusEffects =  [
     {

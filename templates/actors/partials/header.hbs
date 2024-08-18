@@ -3,12 +3,17 @@
         <div class="profile-img-section">
           <div style="position:relative">
           <img class="profile-img" src="{{img}}" data-edit="img" title="{{name}}"/>
-          <div class="health-bar">                                                                              
+          <div class="health-bar"> 
+            <div class="all-health-bar">                                                                         
             <div id="health-container" class="flexrow" style="background: linear-gradient(-90deg,rgba(139, 10, 10, 0.815) 0%,rgba(139, 10, 10, 0.815) calc({{hpOverlayCalculationCurrent1}}),rgba(16, 156, 70, 0.815) calc({{hpOverlayCalculationCurrent2}}),rgba(16, 156, 70, 0.815) 100%);">
                 <input id="current-health-bar" type="text" class="health-bar-field" name="system.health.value" value="{{system.health.value}}" data-dtype="Number"/>
                 <span id="health-divider" class="flex0">/</span>
                 <input id="max-health-bar" type="text" class="health-bar-field" name="system.health.max" value="{{system.health.max}}" data-dtype="Number"/>
             </div>
+            <div id="temp-health-container">
+                <input id="temp-health-bar" type="text" class="temp-health-bar-field" name="system.health.tmpvalue" value="{{system.health.tmpvalue}}" data-dtype="Number"/>
+            </div>
+            </div>    
           </div>
 
           <div id="level-display">

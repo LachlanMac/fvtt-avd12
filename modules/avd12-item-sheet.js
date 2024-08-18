@@ -8,8 +8,7 @@ export class Avd12ItemSheet extends ItemSheet {
 
   /** @override */
   static get defaultOptions() {
-
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["avd12", "sheet", "item"],
       template: "systems/avd12/templates/item-sheet.hbs",
       dragDrop: [{ dragSelector: null, dropSelector: null }],
@@ -18,6 +17,11 @@ export class Avd12ItemSheet extends ItemSheet {
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description" }]
     });
   }
+
+
+
+
+
 
   /* -------------------------------------------- */
   _getHeaderButtons() {
@@ -48,7 +52,6 @@ export class Avd12ItemSheet extends ItemSheet {
 
   /* -------------------------------------------- */
   async getData() {
-
     // Specific case for formating descriptions of sub-items
     if (this.object.type == "module") {
       for (let level of this.object.system.levels) {
@@ -61,7 +64,6 @@ export class Avd12ItemSheet extends ItemSheet {
         }
       }
     }
-
     let formData = {
       title: this.title,
       id: this.id,
@@ -70,7 +72,7 @@ export class Avd12ItemSheet extends ItemSheet {
       name: this.object.name,
       editable: this.isEditable,
       cssClass: this.isEditable ? "editable" : "locked",
-      system: duplicate(this.object.system),
+      system: foundry.utils.duplicate(this.object.system),
       limited: this.object.limited,
       options: this.options,
       owner: this.document.isOwner,
@@ -85,7 +87,7 @@ export class Avd12ItemSheet extends ItemSheet {
     }
 
     this.options.editable = !(this.object.origin == "embeddedItem");
-  
+
     return formData;
   }
 
@@ -103,7 +105,9 @@ export class Avd12ItemSheet extends ItemSheet {
 
   /* -------------------------------------------- */
   postItem() {
-    let chatData = duplicate(this.item)
+
+    let chatData = foundry.utils.duplicate(this.item)
+  
     if (this.actor) {
       chatData.actor = { id: this.actor.id };
     }
@@ -141,8 +145,8 @@ export class Avd12ItemSheet extends ItemSheet {
       return
     }
     if (this.object.type == "module" && Avd12Utility.isModuleItemAllowed(item.type) ) {
-      let levels = duplicate(this.object.system.levels)
-      levels[levelIndex].choices[choiceIndex].features[item.id] = duplicate(item)
+      let levels = foundry.utils.duplicate(this.object.system.levels)
+      levels[levelIndex].choices[choiceIndex].features[item.id] = foundry.utils.duplicate(item)
       this.object.update({ 'system.levels': levels })
       return
     }
@@ -183,7 +187,7 @@ export class Avd12ItemSheet extends ItemSheet {
 
   /* -------------------------------------------- */
   async processChoiceLevelSelection(ev) {
-    let levels = duplicate(this.object.system.levels)
+    let levels = foundry.utils.duplicate(this.object.system.levels)
     let levelIndex = Number($(ev.currentTarget).parents(".item").data("level-index"))
     let choiceIndex = Number($(ev.currentTarget).parents(".item").data("choice-index"))
     for (let choice of levels[levelIndex].choices) {
@@ -214,6 +218,18 @@ export class Avd12ItemSheet extends ItemSheet {
     if (!this.options.editable) return;
 
 
+    /*
+    html.find('.add-module-level').click(ev => {
+         let levels = duplicate(this.object.system.levels)
+         if ( (levels.length+1) % 2 == 0) {
+           levels.push({ choices: [ {selected: false, features: [] }, {selected: false, features: [] } ] })
+       }else {
+           levels.push({ choices: [ {selected: false, features: [] } ] })
+         }
+         this.object.update({ 'system.levels': levels })
+      })
+*/
+
     // Update Inventory Item
     html.find('.item-edit').click(ev => {
       const li = $(ev.currentTarget).parents(".item");
@@ -238,7 +254,7 @@ export class Avd12ItemSheet extends ItemSheet {
 
     
     html.find('.add-module-level').click(ev => {
-      let levels = duplicate(this.object.system.levels)
+      let levels = foundry.utils.duplicate(this.object.system.levels)
       if ( (levels.length+1) % 2 == 0) {
         levels.push({ choices: [ {selected: false, features: {} }, {selected: false, features: {} } ] })
       }else {
@@ -247,19 +263,8 @@ export class Avd12ItemSheet extends ItemSheet {
       this.object.update({ 'system.levels': levels })
     })
     
-   /*
-    html.find('.add-module-level').click(ev => {
-      let levels = duplicate(this.object.system.levels)
-      if ( (levels.length+1) % 2 == 0) {
-        levels.push({ choices: [ {selected: false, features: [] }, {selected: false, features: [] } ] })
-      }else {
-        levels.push({ choices: [ {selected: false, features: [] } ] })
-      }
-      this.object.update({ 'system.levels': levels })
-    })
-*/
     html.find('.module-feature-delete').click(ev => {
-      let levels = duplicate(this.object.system.levels)
+      let levels = foundry.utils.duplicate(this.object.system.levels)
       let levelIndex = Number($(ev.currentTarget).parents(".item").data("level-index"))
       let choiceIndex = Number($(ev.currentTarget).parents(".item").data("choice-index"))
       let featureId = $(ev.currentTarget).parents(".item").data("feature-id")
@@ -267,7 +272,7 @@ export class Avd12ItemSheet extends ItemSheet {
       this.object.update({ 'system.levels': levels })
     })
     html.find('.module-level-delete').click(ev => {
-      let levels = duplicate(this.object.system.levels)
+      let levels = foundry.utils.duplicate(this.object.system.levels)
       let levelIndex = Number($(ev.currentTarget).data("level-index"))
       levels.splice(levelIndex,levelIndex)
       this.object.update({ 'system.levels': levels })

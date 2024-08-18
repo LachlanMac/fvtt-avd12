@@ -101,6 +101,8 @@ export class Avd12Utility {
       return list.length;
     })
 
+
+    
     Handlebars.registerHelper('map', function (text, actor) {
       let parseTokens = Avd12Utility.findAtTokens(text)
       for(let i =0; i < parseTokens.length; i++){
@@ -150,15 +152,15 @@ export class Avd12Utility {
 
   /*-------------------------------------------- */
   static getSkills() {
-    return duplicate(this.skills)
+    return foundry.utils.duplicate(this.skills)
   }
   /*-------------------------------------------- */
   static getWeaponSkills() {
-    return duplicate(this.weaponSkills)
+    return foundry.utils.duplicate(this.weaponSkills)
   }
   /*-------------------------------------------- */
   static getShieldSkills() {
-    return duplicate(this.shieldSkills)
+    return foundry.utils.duplicate(this.shieldSkills)
   }
 
   /* -------------------------------------------- */
@@ -169,22 +171,24 @@ export class Avd12Utility {
   /* -------------------------------------------- */
   static buildBonusList() {
     let bonusList = []
-    for (let key in game.system.model.Actor.character.bonus) {
-      let bonuses = game.system.model.Actor.character.bonus[key]
+    console.log(game.system);
+
+    for (let key in game.system.template.Actor.character.bonus) {
+      let bonuses = game.system.template.Actor.character.bonus[key]
       for (let bonus in bonuses) {
         bonusList.push(key + "." + bonus)
       }
     }
-    for (let key in game.system.model.Actor.character.attributes) {
-      let attrs = game.system.model.Actor.character.attributes[key]
+    for (let key in game.system.template.Actor.character.attributes) {
+      let attrs = game.system.template.Actor.character.attributes[key]
       for (let skillKey in attrs.skills) {
         bonusList.push(key + ".skills." + skillKey + ".modifier")
       }
     }
-    for (let key in game.system.model.Actor.character.universal.skills) {
+    for (let key in game.system.template.Actor.character.universal.skills) {
       bonusList.push("universal.skills." + key + ".modifier")
     }
-    for (let key in game.system.model.Actor.character.mitigation) {
+    for (let key in game.system.template.Actor.character.mitigation) {
       bonusList.push("mitigation." + key + ".value")
     }
 
@@ -196,8 +200,8 @@ export class Avd12Utility {
   static async ready() {
     const skills = await Avd12Utility.loadCompendium("avd12.skills")
     this.skills = skills.map(i => i.toObject())
-    this.weaponSkills = duplicate(this.skills.filter(item => item.system.isweaponskill))
-    this.shieldSkills = duplicate(this.skills.filter(item => item.system.isshieldskill))
+    this.weaponSkills = foundry.utils.duplicate(this.skills.filter(item => item.system.isweaponskill))
+    this.shieldSkills = foundry.utils.duplicate(this.skills.filter(item => item.system.isshieldskill))
 
     const rollTables = await Avd12Utility.loadCompendium("avd12.rolltables")
     this.rollTables = rollTables.map(i => i.toObject())
@@ -297,7 +301,6 @@ export class Avd12Utility {
       'systems/avd12/templates/actors/partials/creature-type.hbs',
       'systems/avd12/templates/items/partial-item-light.hbs',
       'systems/avd12/templates/items/partial-options-light-animation.hbs',
-      
     ]
     return loadTemplates(templatePaths);
   }
@@ -381,7 +384,7 @@ export class Avd12Utility {
   static updateRollData(rollData) {
     let id = rollData.rollId
     let oldRollData = this.rollDataStore[id] || {}
-    let newRollData = mergeObject(oldRollData, rollData)
+    let newRollData = foundry.utils.mergeObject(oldRollData, rollData)
     this.rollDataStore[id] = newRollData
   }
   /* -------------------------------------------- */
@@ -650,10 +653,7 @@ export class Avd12Utility {
           break;
       }
     }
-
-
     diceFormula += "+" + rollData.bonusMalusRoll +"+"+penalty;
-    console.log(diceFormula, penalty);
     if(override != ""){
       diceFormula = override;
     }
@@ -665,7 +665,7 @@ export class Avd12Utility {
     // Performs roll
     let myRoll = rollData.roll
     if (!myRoll) {
-      myRoll = new Roll(diceFormula).roll({ async: false })
+      myRoll = await new Roll(diceFormula).evaluate();
       myRoll.diceData = this.setDiceDisplay(myRoll);
       await this.showDiceSoNice(myRoll, game.settings.get("core", "rollMode"))
     }
@@ -938,7 +938,7 @@ export class Avd12Utility {
 
   /* -------------------------------------------- */
   static blindMessageToGM(chatOptions) {
-    let chatGM = duplicate(chatOptions);
+    let chatGM = foundry.utils.duplicate(chatOptions);
     chatGM.whisper = this.getUsers(user => user.isGM);
     chatGM.content = "Blinde message of " + game.user.name + "<br>" + chatOptions.content;
     console.log("blindMessageToGM", chatGM);
@@ -1010,7 +1010,7 @@ export class Avd12Utility {
   /* -------------------------------------------- */
   static getBasicRollData() {
     let rollData = {
-      rollId: randomID(16),
+      rollId: foundry.utils.randomID(16),
       bonusMalusRoll: 0,
       targetCheck: "none",
       rollMode: game.settings.get("core", "rollMode")

@@ -4,6 +4,7 @@ import { Avd12Utility } from "./avd12-utility.js";
 import { Avd12RollDialog } from "./avd12-roll-dialog.js";
 import { Avd12RestDialog } from "./avd12-rest-dialog.js";
 import { Avd12DamageDialog } from "./avd12-damage-dialog.js";
+import { Avd12HealthDialog } from "./avd12-health-dialog.js";
 import { Avd12SpellAttackDialog } from "./avd12-spell-attack-dialog.js";
 import { Avd12WeaponDamageDialog } from "./avd12-weapon-damage-dialog.js";
 
@@ -612,7 +613,7 @@ export class Avd12Actor extends Actor {
         if(token.document.delta.system?.focus?.currentfocuspoints){
           //do nothing for now
         }else
-          token.document.delta.system.focus = duplicate(actor.system.focus); //initialize the delta
+          token.document.delta.system.focus = foundry.utils.duplicate(actor.system.focus); //initialize the delta
         
         totalFocusPoints = token.document.delta.system.focus.currentfocuspoints;
         actSpell.unlinkedToken = token.document.delta;
@@ -670,7 +671,7 @@ export class Avd12Actor extends Actor {
       let actAction = await actor.getActionById(card.dataset.actionId);
       if(!actAction){console.log("*AVD12 Error: No Action*");return;}
       
-      let actorAction = duplicate(actAction);
+      let actorAction = foundry.utils.duplicate(actAction);
       actorAction.type = action;
       actorAction.action = "action";
       switch ( action ) {
@@ -754,14 +755,30 @@ export class Avd12Actor extends Actor {
       const card = (options.createMessage !== false) ? await ChatMessage.create(chatData) : chatData;
       Hooks.callAll("avd12.displayCard", this, card);
   }
-
+  confirmHealth(dd){
+      switch(dd.recoveryType){
+        case "health":
+          this.system.health.value = Math.min(this.system.health.max, (Number(dd.amount) + this.system.health.value))
+          this.update({ 'system.health.value': this.system.health.value})
+          break;
+        case "temporary_health":
+          if(Number(dd.amount) > this.system.health.tmpvalue){
+            this.system.health.tmpvalue = Number(dd.amount);
+            this.update({ 'system.health.tmpvalue': this.system.health.tmpvalue})
+          }
+          break;
+        case "power":
+          this.system.focus.currentfocuspoints = Math.min(this.system.focus.focuspoints, (Number(dd.amount) + this.system.focus.currentfocuspoints))
+          this.update({ 'system.focus.currentfocuspoints': this.system.focus.currentfocuspoints})
+          break;
+      }
+  }
 
   /* -------------------------------------------- */
   confirmDamage(dd){
-    let damageData = duplicate(dd);
+    let damageData = foundry.utils.duplicate(dd);
     damageData.mitigation = this.system.mitigation[damageData.damageType.toLowerCase()].value
-    console.log(damageData);
-    
+
     if(damageData.damageType == "Poison"){
       damageData.mitigation = Number(this.system.attributes.willpower.skills.resilience.finalvalue);
     }
@@ -816,7 +833,7 @@ export class Avd12Actor extends Actor {
       spell =  this.getSpell(spellId);   
     }
     if(spell){
-      let spellClone = duplicate(spell);
+      let spellClone = foundry.utils.duplicate(spell);
       spellClone.actor = this;
       this.displaySpellCard(spellClone, {});
     }else{
@@ -843,7 +860,7 @@ export class Avd12Actor extends Actor {
         return;
       }
     }
-    let actionClone = duplicate(action);
+    let actionClone = foundry.utils.duplicate(action);
     actionClone.actor = this;
     actionClone.uses = this.findIn(action._id);
     this.displayActionCard(actionClone, {});
@@ -1475,7 +1492,7 @@ export class Avd12Actor extends Actor {
   }
 
   getThrowingEquipment(){
-    let comp = duplicate(this.items.filter(item => item.type == 'equipment' && item.system.quantity > 0 && (item.system.throwtype == "throwable" || item.system.throwtype == "throwing_ammo")) || [])
+    let comp = foundry.utils.duplicate(this.items.filter(item => item.type == 'equipment' && item.system.quantity > 0 && (item.system.throwtype == "throwable" || item.system.throwtype == "throwing_ammo")) || [])
     comp.forEach(item => {
       this.prepareThrowing(item)
     })
@@ -1484,7 +1501,7 @@ export class Avd12Actor extends Actor {
   }
 
   getEquippedWeapons() {
-    let comp = duplicate(this.items.filter(item => item.type == 'weapon' && item.system.equipped) || [])
+    let comp = foundry.utils.duplicate(this.items.filter(item => item.type == 'weapon' && item.system.equipped) || [])
   
     comp.forEach(item => {
       if(item.system.category == "light2h" || item.system.category == "light1h" || item.system.category == "heavy2h" || item.system.category == "heavy1h"){
@@ -1501,7 +1518,7 @@ export class Avd12Actor extends Actor {
   }
 
   parseEquippedGear(){
-    let comp = duplicate(this.items.filter(item => item.type == 'weapon' && item.system.equipped) || [])
+    let comp = foundry.utils.duplicate(this.items.filter(item => item.type == 'weapon' && item.system.equipped) || [])
     comp.forEach(item => {
       this.prepareWeapon(item)
     })
@@ -1509,7 +1526,7 @@ export class Avd12Actor extends Actor {
   }
   /* -------------------------------------------- */
   getWeapons() {
-    let comp = duplicate(this.items.filter(item => item.type == 'weapon' || item.type == 'equipable') || [])
+    let comp = foundry.utils.duplicate(this.items.filter(item => item.type == 'weapon' || item.type == 'equipable') || [])
     comp.forEach(item => {
       this.prepareWeapon(item)
     })
@@ -1518,41 +1535,41 @@ export class Avd12Actor extends Actor {
   }
 
   getLightSources(){
-    return duplicate(this.items.filter(item => item.type == 'equipment' && item.system.light.lightsource));
+    return foundry.utils.duplicate(this.items.filter(item => item.type == 'equipment' && item.system.light.lightsource));
   }
   getHeadwear() {
-    let comp = duplicate(this.items.filter(item => item.type == 'headwear') || [])
+    let comp = foundry.utils.duplicate(this.items.filter(item => item.type == 'headwear') || [])
     Avd12Utility.sortArrayObjectsByName(comp)
     return comp;
   }
 
   getGloves() {
-    let comp = duplicate(this.items.filter(item => item.type == 'gloves') || [])
+    let comp = foundry.utils.duplicate(this.items.filter(item => item.type == 'gloves') || [])
     Avd12Utility.sortArrayObjectsByName(comp)
     return comp;
   }
 
   getBoots() {
-    let comp = duplicate(this.items.filter(item => item.type == 'boots') || [])
+    let comp = foundry.utils.duplicate(this.items.filter(item => item.type == 'boots') || [])
     Avd12Utility.sortArrayObjectsByName(comp)
     return comp;
   }
 
   getCloaks() {
-    let comp = duplicate(this.items.filter(item => item.type == 'cloak') || [])
+    let comp = foundry.utils.duplicate(this.items.filter(item => item.type == 'cloak') || [])
     Avd12Utility.sortArrayObjectsByName(comp)
     return comp;
   }
 
   getRings() {
-    let comp = duplicate(this.items.filter(item => item.type == 'ring') || [])
+    let comp = foundry.utils.duplicate(this.items.filter(item => item.type == 'ring') || [])
     Avd12Utility.sortArrayObjectsByName(comp)
     return comp;
   }
 
   /* -------------------------------------------- */
   getArmors() {
-    let comp = duplicate(this.items.filter(item => item.type == 'armor') || []);
+    let comp = foundry.utils.duplicate(this.items.filter(item => item.type == 'armor') || []);
     Avd12Utility.sortArrayObjectsByName(comp)
     return comp;
   }
@@ -1560,18 +1577,18 @@ export class Avd12Actor extends Actor {
   getEquippedArmor() {
     let comp = this.items.find(item => item.type == 'armor' && item.system.equipped)
     if (comp) {
-      return duplicate(comp)
+      return foundry.utils.duplicate(comp)
     }
     return undefined
   }
 
   getAmmunition(){
-    return duplicate(this.items.filter(item => item.type == 'equipment' && item.system.quantity > 0 && item.system.throwtype != ""));
+    return foundry.utils.duplicate(this.items.filter(item => item.type == 'equipment' && item.system.quantity > 0 && item.system.throwtype != ""));
   }
 
 
   getSpells(){
-    let comp = duplicate(this.items.filter(item => item.type == 'spell') || []);
+    let comp = foundry.utils.duplicate(this.items.filter(item => item.type == 'spell') || []);
     comp.forEach(spell => {
       if(spell.system.damagetype == "none"){
         spell.system.damagetype = "";
@@ -1585,58 +1602,57 @@ export class Avd12Actor extends Actor {
   }
 
   getBeginnerSpells(spells) {
-    let comp = duplicate(spells.filter(item => item.system.level == 'beginner') || []);
+    let comp = foundry.utils.duplicate(spells.filter(item => item.system.level == 'beginner') || []);
     return comp
   }
 
   getNoviceSpells(spells) {
-    let comp = duplicate(spells.filter(item => item.system.level == 'novice') || []);
+    let comp = foundry.utils.duplicate(spells.filter(item => item.system.level == 'novice') || []);
     return comp
   }
 
   getJourneymanSpells(spells) {
-    let comp = duplicate(spells.filter(item => item.system.level == 'journeyman') || []);
+    let comp = foundry.utils.duplicate(spells.filter(item => item.system.level == 'journeyman') || []);
     return comp
   }
 
   getExpertSpells(spells) {
-    let comp = duplicate(spells.filter(item => item.system.level == 'expert') || []);
+    let comp = foundry.utils.duplicate(spells.filter(item => item.system.level == 'expert') || []);
     return comp
   }
 
   getMasterSpells(spells) {
-    let comp = duplicate(spells.filter(item => item.system.level == 'master') || []);
+    let comp = foundry.utils.duplicate(spells.filter(item => item.system.level == 'master') || []);
     return comp
   }
 
   getGrandmasterSpells(spells) {
-    let comp = duplicate(spells.filter(item => item.system.level == 'grandmaster') || []);
+    let comp = foundry.utils.duplicate(spells.filter(item => item.system.level == 'grandmaster') || []);
     return comp
   }
 
   /* -------------------------------------------- */
   getShields() {
-    let comp = duplicate(this.items.filter(item => item.type == 'shield') || []);
+    let comp = foundry.utils.duplicate(this.items.filter(item => item.type == 'shield') || []);
     Avd12Utility.sortArrayObjectsByName(comp)
     return comp;
   }
   getEquippedShield() {
     let comp = this.items.find(item => item.type == 'shield' && item.system.equipped)
     if (comp) {
-      return duplicate(comp)
+      return foundry.utils.duplicate(comp)
     }
     return undefined
   }
 
   /* -------------------------------------------- */
   getConditions() {
-    let comp = duplicate(this.items.filter(item => item.type == 'condition') || []);
+    let comp = foundry.utils.duplicate(this.items.filter(item => item.type == 'condition') || []);
     Avd12Utility.sortArrayObjectsByName(comp)
     return comp;
   }
   /* -------------------------------------------- */
   addPrimaryDamage(damage, bonusDamage, dice, extraDamage) {
-    console.log("EEEE", damage, bonusDamage, dice, extraDamage)
     if (damage.damagetype != "none" && damage.dice) {
       let fullBonus = Number(bonusDamage) + Number(damage.bonus)
       damage.dice = dice;
@@ -1647,8 +1663,6 @@ export class Avd12Actor extends Actor {
       if (parser && parser[1]) {
         nbDice = Number(parser[1]) * 2
       }
-
-      console.log(damage);
       damage.brutal = nbDice + parser[2] + "+" + (Number(fullBonus) * 2) + (extraDamage == "" ? "" : extraDamage);
     }
   }
@@ -1720,7 +1734,7 @@ export class Avd12Actor extends Actor {
     if(w.type == 'equipable'){
       return;
     }
-    let weapon = duplicate(w);
+    let weapon = foundry.utils.duplicate(w);
 
     //attack bonus = general attack + weapon bonus + character skill bonus
     //weapon.attackBonus = this.system.bonus.weapon.attack + weapon.system.bonus.attack + this.system.bonus[weapon.system.weapontype].attack
@@ -1755,9 +1769,6 @@ export class Avd12Actor extends Actor {
     if(weapon.type == 'equipable'){
       return;
     }
-    console.log(weapon.system.weapontype);
-   
-
     if(this.system.bonus.traits.spellsword && weapon.system.focus?.isfocus){
       weapon.attackBonus = this.system.bonus.spell.attack + weapon.system.bonus.attack;
     }else if(weapon.system.weapontype == "custom"){
@@ -1922,20 +1933,20 @@ export class Avd12Actor extends Actor {
   getItemById(id) {
     let item = this.items.find(item => item.id == id);
     if (item) {
-      item = duplicate(item)
+      item = foundry.utils.duplicate(item)
     }
     return item;
   }
 
   getStances(){
-    let originalStances = duplicate(this.items.filter(item => item.type == 'stance') || [])
+    let originalStances = foundry.utils.duplicate(this.items.filter(item => item.type == 'stance') || [])
     let combinedStances = originalStances.concat(this.tmpStances);
     return combinedStances;
   }
 
   /* -------------------------------------------- */
   getModules() {
-    let comp = duplicate(this.items.filter(item => item.type == 'module') || [])
+    let comp = foundry.utils.duplicate(this.items.filter(item => item.type == 'module') || [])
     return comp
   }
   getTraits() {
@@ -1985,20 +1996,20 @@ export class Avd12Actor extends Actor {
   }
 
   getNpcTraits(){
-    let list = duplicate(this.items.filter(item => item.type == 'trait') || []);
+    let list = foundry.utils.duplicate(this.items.filter(item => item.type == 'trait') || []);
     return this.sanitizeItem(list);
   }
 
   getNpcActions(){
-    let list = duplicate(this.items.filter(item => item.type == 'action') || []);
+    let list = foundry.utils.duplicate(this.items.filter(item => item.type == 'action') || []);
     return this.sanitizeItem(list);
   }
   getNpcReactions(){
-    let list = duplicate(this.items.filter(item => item.type == 'reaction') || []);
+    let list = foundry.utils.duplicate(this.items.filter(item => item.type == 'reaction') || []);
     return this.sanitizeItem(list);
   }
   getNpcFreeactions(){
-    let list = duplicate(this.items.filter(item => item.type == 'freeaction') || []);
+    let list = foundry.utils.duplicate(this.items.filter(item => item.type == 'freeaction') || []);
     return this.sanitizeItem(list);
   }
 
@@ -2027,7 +2038,7 @@ export class Avd12Actor extends Actor {
 
   /* -------------------------------------------- */
   getRelevantAttribute(attrKey) {
-    let comp = duplicate(this.items.filter(item => item.type == 'skill' && item.system.attribute == attrKey) || []);
+    let comp = foundry.utils.duplicate(this.items.filter(item => item.type == 'skill' && item.system.attribute == attrKey) || []);
     return comp;
   }
 
@@ -2074,13 +2085,13 @@ export class Avd12Actor extends Actor {
   }
   /* ------------------------------------------- */
   getEquipmentsOnly() {
-    return duplicate(this.items.filter(item => item.type == "equipment") || [])
+    return foundry.utils.duplicate(this.items.filter(item => item.type == "equipment") || [])
   }
 
   /* ------------------------------------------- */
   async addModuleLevel(moduleId, levelChoice) {
     for (let itemId in levelChoice.features) {
-      let itemData = duplicate(levelChoice.features[itemId])
+      let itemData = foundry.utils.duplicate(levelChoice.features[itemId])
       itemData.system.moduleId = moduleId
       itemData.system.originalId = itemId
       //let item = await Item.create(itemData, { temporary: true });
@@ -2103,7 +2114,7 @@ export class Avd12Actor extends Actor {
 
   /* ------------------------------------------- */
   async buildContainerTree() {
-    let equipments = duplicate(this.items.filter(item => item.type == "equipment") || [])
+    let equipments = foundry.utils.duplicate(this.items.filter(item => item.type == "equipment") || [])
     for (let equip1 of equipments) {
       if (equip1.system.iscontainer) {
         equip1.system.contents = []
@@ -2196,7 +2207,7 @@ export class Avd12Actor extends Actor {
       let focusPoints = focusData.focusPoints + focusBonus
       let focusRegen = focusData.focusRegen + focusregenbonus
       if (focusPoints != this.system.focus.focuspoints || focusRegen != this.system.focus.focusregen) {
-        let focusData = duplicate(this.system.focus)
+        let focusData = foundry.utils.duplicate(this.system.focus)
         focusData.focuspoints = focusPoints
         focusData.focusregen = focusRegen
         this.update({ 'system.focus': focusData })
@@ -2249,13 +2260,13 @@ export class Avd12Actor extends Actor {
   getSubActors() {
     let subActors = [];
     for (let id of this.system.subactors) {
-      subActors.push(duplicate(game.actors.get(id)))
+      subActors.push(foundry.utils.duplicate(game.actors.get(id)))
     }
     return subActors;
   }
   /* -------------------------------------------- */
   async addSubActor(subActorId) {
-    let subActors = duplicate(this.system.subactors);
+    let subActors = foundry.utils.duplicate(this.system.subactors);
     subActors.push(subActorId);
     await this.update({ 'system.subactors': subActors });
   }
@@ -2282,7 +2293,7 @@ export class Avd12Actor extends Actor {
   getOneSkill(skillId) {
     let skill = this.items.find(item => item.type == 'skill' && item.id == skillId)
     if (skill) {
-      skill = duplicate(skill);
+      skill = foundry.utils.duplicate(skill);
     }
     return skill;
   }
@@ -2371,9 +2382,9 @@ export class Avd12Actor extends Actor {
     let attr = this.system.attributes[attrKey]
     let skill = attr.skills[skillKey]
     if (skill) {
-      skill = duplicate(skill)
+      skill = foundry.utils.duplicate(skill)
       skill.name = Avd12Utility.upperFirst(skillKey)
-      skill.attr = duplicate(attr)
+      skill.attr = foundry.utils.duplicate(attr)
       let rollData = this.getCommonRollData()
       rollData.modifier = this.system.bonus[weapon.system.weapontype]
       rollData.mode = "weapon"
@@ -2390,9 +2401,9 @@ export class Avd12Actor extends Actor {
     let attr = this.system.attributes[attrKey]
     let skill = attr.skills[skillKey]
     if (skill) {
-      skill = duplicate(skill)
+      skill = foundry.utils.duplicate(skill)
       skill.name = Avd12Utility.upperFirst(skillKey)
-      skill.attr = duplicate(attr)
+      skill.attr = foundry.utils.duplicate(attr)
       let rollData = this.getCommonRollData()
       rollData.mode = "skill"
       //rollMode.skillKey = skillKey
@@ -2417,7 +2428,7 @@ export class Avd12Actor extends Actor {
   rollUniversal(skillKey) {
     let skill = this.system.universal.skills[skillKey]
     if (skill) {
-      skill = duplicate(skill)
+      skill = foundry.utils.duplicate(skill)
       skill.name = Avd12Utility.upperFirst(skillKey)
       let rollData = this.getCommonRollData()
       rollData.mode = "skill"
@@ -2454,7 +2465,7 @@ export class Avd12Actor extends Actor {
   }spellCos
 
   async channelSpell(channeledSpell, userData) {
-    let spell = duplicate(channeledSpell)
+    let spell = foundry.utils.duplicate(channeledSpell)
     let rollData = this.getCommonRollData()
     rollData.mode = "spell"
     rollData.spell = spell
@@ -2505,10 +2516,9 @@ export class Avd12Actor extends Actor {
     if (spell) {
       if(spell.system.damage == "")
         return;
-      spell = duplicate(spell)
+      spell = foundry.utils.duplicate(spell)
       let rollData = this.getCommonRollData()
       rollData.weapon = spell
-      console.log(this.system.bonus.npc);
       rollData.spellDamage = this.type == "npc" ? this.system.bonus.npc.spell_power :this.system.bonus.spell.damage
       rollData.title = "Roll Spell Damage " + spell.name
       rollData.img = spell.img
@@ -2517,7 +2527,8 @@ export class Avd12Actor extends Actor {
       
       rollData.damageFormula = spell.system.damage + "+" + rollData.spellDamage;
       rollData.img = spell.img
-      let myRoll = new Roll(rollData.damageFormula).roll({ async: false })
+      let myRoll = await new Roll(rollData.damageFormula).evaluate();
+  
       myRoll.diceData = Avd12Utility.setDiceDisplay(myRoll);
       await Avd12Utility.showDiceSoNice(myRoll, game.settings.get("core", "rollMode"))
       rollData.roll = myRoll
@@ -2543,7 +2554,7 @@ export class Avd12Actor extends Actor {
 
     let weapon = this.items.get(weaponId)
     if (weapon) {
-      weapon = duplicate(weapon)
+      weapon = foundry.utils.duplicate(weapon)
       this.prepareWeapon(weapon) 
       let rollData = this.getCommonRollData()
       rollData.modifier = this.system.bonus[weapon.system.weapontype]
@@ -2559,7 +2570,7 @@ export class Avd12Actor extends Actor {
 
     let weapon = this.items.get(weaponId)
     if (weapon) {
-      weapon = duplicate(weapon)
+      weapon = foundry.utils.duplicate(weapon)
       this.prepareThrowing(weapon)
       let rollData = this.getCommonRollData()
       rollData.modifier = this.system.bonus[weapon.system.weapontype]
@@ -2577,7 +2588,7 @@ export class Avd12Actor extends Actor {
   async rollSecondaryWeaponDamage(weaponId) {
     let weapon = this.items.get(weaponId)
     if (weapon) {
-      weapon = duplicate(weapon)
+      weapon = foundry.utils.duplicate(weapon)
       this.prepareWeapon(weapon)
       let rollData = this.getCommonRollData()
       rollData.damageFormula = weapon.system.damages.secondary["normal"]
@@ -2585,7 +2596,7 @@ export class Avd12Actor extends Actor {
       rollData.weapon = weapon
       rollData.damageType = weapon.system.damages.secondary.damagetype
       rollData.img = weapon.img
-      let myRoll = new Roll(rollData.damageFormula).roll({ async: false })
+      let myRoll = await new Roll(rollData.damageFormula).evaluate();
       await Avd12Utility.showDiceSoNice(myRoll, game.settings.get("core", "rollMode"))
       rollData.roll = myRoll
       let msg = await Avd12Utility.createChatWithRollMode(rollData.alias, {
@@ -2601,7 +2612,7 @@ export class Avd12Actor extends Actor {
   async rollTertiaryWeaponDamage(weaponId) {
     let weapon = this.items.get(weaponId)
     if (weapon) {
-      weapon = duplicate(weapon)
+      weapon = foundry.utils.duplicate(weapon)
       this.prepareWeapon(weapon)
       let rollData = this.getCommonRollData()
       rollData.damageFormula = weapon.system.damages.tertiary["normal"]
@@ -2609,7 +2620,8 @@ export class Avd12Actor extends Actor {
       rollData.weapon = weapon
       rollData.damageType = weapon.system.damages.tertiary.damagetype
       rollData.img = weapon.img
-      let myRoll = new Roll(rollData.damageFormula).roll({ async: false })
+      let myRoll = await new Roll(rollData.damageFormula).evaluate();
+
       await Avd12Utility.showDiceSoNice(myRoll, game.settings.get("core", "rollMode"))
       rollData.roll = myRoll
       let msg = await Avd12Utility.createChatWithRollMode(rollData.alias, {
@@ -2625,7 +2637,7 @@ export class Avd12Actor extends Actor {
   async getSpellById(id){
     if(this.type == "character"){
       let foundSpell = null;
-      let comp = duplicate(this.items.filter(item => item.type == 'spell') || []);
+      let comp = foundry.utils.duplicate(this.items.filter(item => item.type == 'spell') || []);
       comp.forEach(spell => {
        if(spell._id == id)
         foundSpell = spell;
@@ -2638,7 +2650,7 @@ export class Avd12Actor extends Actor {
 
   getSpell(id){
     let foundSpell = null;
-    let comp = duplicate(this.items.filter(item => item.type == 'spell') || []);
+    let comp = foundry.utils.duplicate(this.items.filter(item => item.type == 'spell') || []);
     comp.forEach(spell => {
      if(spell._id == id){
       foundSpell = spell;
@@ -2705,6 +2717,7 @@ export class Avd12Actor extends Actor {
       case "halved":
         break;
       case "nobonus":
+          formula = baseDice;
         break; 
     }
       let rollData = this.getCommonRollData()
@@ -2713,7 +2726,8 @@ export class Avd12Actor extends Actor {
       rollData.weapon = weapon
       rollData.damageType = userData.damageType;
       rollData.img = weapon.img
-      let myRoll = new Roll(rollData.damageFormula).roll({ async: false })
+      let myRoll = await new Roll(rollData.damageFormula).evaluate();
+
       myRoll.diceData = Avd12Utility.setDiceDisplay(myRoll);
       await Avd12Utility.showDiceSoNice(myRoll, game.settings.get("core", "rollMode"))
       rollData.roll = myRoll
@@ -2747,7 +2761,7 @@ export class Avd12Actor extends Actor {
   async rollQuickWeaponDamage(weaponId, hitType) {
     let weapon = this.items.get(weaponId)
     if (weapon) {
-      weapon = duplicate(weapon)
+      weapon = foundry.utils.duplicate(weapon)
       this.prepareWeapon(weapon)
       let rollData = this.getCommonRollData()
      
@@ -2757,7 +2771,8 @@ export class Avd12Actor extends Actor {
       rollData.damageType = weapon.system.damages.primary.damagetype;
       rollData.img = weapon.img
 
-      let myRoll = new Roll(rollData.damageFormula).roll({ async: false })
+      let myRoll = await new Roll(rollData.damageFormula).evaluate();
+
       await Avd12Utility.showDiceSoNice(myRoll, game.settings.get("core", "rollMode"))
       rollData.roll = myRoll
       let msg = await Avd12Utility.createChatWithRollMode(rollData.alias, {
@@ -2784,6 +2799,11 @@ export class Avd12Actor extends Actor {
 
   async takeDamage(damageData){
     let dialog = await Avd12DamageDialog.create(this, damageData)
+    dialog.render(true)
+  }
+
+  async addHealth(damageData){
+    let dialog = await Avd12HealthDialog.create(this, damageData)
     dialog.render(true)
   }
 

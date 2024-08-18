@@ -1581,6 +1581,10 @@ select[type="text"]{
   width:100%;
   text-align: center;
 }
+#add-health-btn{
+  width:100%;
+  text-align: center;
+}
 
 
 .item-label-title{
@@ -1858,13 +1862,33 @@ select[type="text"]{
   text-align: center;
   justify-content: center;
   flex-grow:1;
-  max-width: 3rem;
-  min-width: 3rem;
+  max-width: 2.6rem;
+  min-width: 2.6rem;
   font-size:1.2rem;
   border-top-right-radius: 25%;
   border-bottom-right-radius: 25%;
   max-height: 20px;
 
+}
+
+#temp-health-bar{
+  border:none;
+  text-decoration: none;
+  border-top-style: hidden;
+  border-right-style: hidden;
+  border-left-style: hidden;
+  background-color:  rgba(247, 247, 247, 0);
+  color:rgb(255, 255, 255);
+  font-weight: bolder;
+  text-align: center;
+  justify-content: center;
+  flex-grow:1;
+  max-width: 2.6rem;
+  min-width: 2.6rem;
+  font-size:1.2rem;
+  border-top-left-radius: 25%;
+  border-bottom-left-radius: 25%;
+  max-height: 20px;
 }
 
 #current-health-bar{
@@ -1879,8 +1903,8 @@ select[type="text"]{
   text-align: center;
   justify-content: center;
   flex-grow:1;
-  max-width: 3rem;
-  min-width: 3rem;
+  max-width: 2.6rem;
+  min-width: 2.6rem;
   font-size:1.2rem;
   border-top-left-radius: 25%;
   border-bottom-left-radius: 25%;
@@ -1897,16 +1921,35 @@ select[type="text"]{
   max-height: 20px;
 }
 
+.all-health-bar{
+  display: inline-flex;
+}
+
+.health-bar{
+  position: absolute;
+  top:120px;
+  left:2px;
+  z-index: 2;
+}
+
 #health-container{
   background-color: rgba(10, 110, 49, 0.815);
   border-radius: 20%;
-  position: absolute;
-  top:112px;
-  left:18px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
   border:#2f3461 4px solid;
-  z-index: 2;
+  border-right: none;
 
 }
+
+#temp-health-container{
+  background-color: rgba(21, 177, 216, 0.815);
+  border-radius: 20%;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border:#2f3461 4px solid;
+}
+
 
 .active-stance{
   border: 2px white solid;

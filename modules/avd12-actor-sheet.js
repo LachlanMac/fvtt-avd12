@@ -10,7 +10,7 @@ export class Avd12ActorSheet extends ActorSheet {
 
   /** @override */
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["avd12", "sheet", "actor"],
       template: "systems/avd12/templates/actors/actor-sheet.hbs",
       width: 960,
@@ -56,7 +56,7 @@ export class Avd12ActorSheet extends ActorSheet {
       name: this.actor.name,
       editable: this.isEditable,
       cssClass: this.isEditable ? "editable" : "locked",
-      system: duplicate(this.object.system),
+      system: foundry.utils.duplicate(this.object.system),
       limited: this.object.limited,
       modules: this.actor.getModules(),
       traits: this.actor.getTraits(),
@@ -77,19 +77,19 @@ export class Avd12ActorSheet extends ActorSheet {
       weapons: this.actor.getWeapons(),
       armors: this.actor.getArmors(),
       shields:this.actor.getShields(),
-      beginnerSpells: this.actor.getBeginnerSpells(duplicate(this.actor.getSpells())),
-      noviceSpells: this.actor.getNoviceSpells(duplicate(this.actor.getSpells())),
-      journeymanSpells: this.actor.getJourneymanSpells(duplicate(this.actor.getSpells())),
-      expertSpells: this.actor.getExpertSpells(duplicate(this.actor.getSpells())),
-      masterSpells: this.actor.getMasterSpells(duplicate(this.actor.getSpells())),
-      grandmasterSpells: this.actor.getGrandmasterSpells(duplicate(this.actor.getSpells())),
-      equipments: duplicate(this.actor.getEquipmentsOnly()),
-      equippedWeapons: duplicate(this.actor.getEquippedWeapons()),
-      equippedThrowing: duplicate(this.actor.getThrowingEquipment()),
+      beginnerSpells: this.actor.getBeginnerSpells(foundry.utils.duplicate(this.actor.getSpells())),
+      noviceSpells: this.actor.getNoviceSpells(foundry.utils.duplicate(this.actor.getSpells())),
+      journeymanSpells: this.actor.getJourneymanSpells(foundry.utils.duplicate(this.actor.getSpells())),
+      expertSpells: this.actor.getExpertSpells(foundry.utils.duplicate(this.actor.getSpells())),
+      masterSpells: this.actor.getMasterSpells(foundry.utils.duplicate(this.actor.getSpells())),
+      grandmasterSpells: this.actor.getGrandmasterSpells(foundry.utils.duplicate(this.actor.getSpells())),
+      equipments: foundry.utils.duplicate(this.actor.getEquipmentsOnly()),
+      equippedWeapons: foundry.utils.duplicate(this.actor.getEquippedWeapons()),
+      equippedThrowing: foundry.utils.duplicate(this.actor.getThrowingEquipment()),
       equippedArmor: this.actor.getEquippedArmor(),
       equippedShield: this.actor.getEquippedShield(),
-      subActors: duplicate(this.actor.getSubActors()),
-      moneys: duplicate(this.actor.getMoneys()),
+      subActors: foundry.utils.duplicate(this.actor.getSubActors()),
+      moneys: foundry.utils.duplicate(this.actor.getMoneys()),
       focusData: this.actor.computeFinalFocusData(),
       encCurrent: this.actor.encCurrent,
       options: this.options,
@@ -177,6 +177,15 @@ export class Avd12ActorSheet extends ActorSheet {
     html.find('#take-damage-btn').click((event) => {
       this.actor.takeDamage();
     });
+
+    html.find('#add-damage-btn').click((event) => {
+      this.actor.takeDamage();
+    });
+
+    html.find('#add-health-btn').click((event) => {
+      this.actor.addHealth();
+    });
+
     html.find('.roll-skill').click((event) => {
       let attrKey = $(event.currentTarget).data("attr-key")
       let skillKey = $(event.currentTarget).data("skill-key")

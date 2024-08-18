@@ -1,0 +1,29 @@
+<form class="skill-roll-dialog">
+  <header class="roll-dialog-header">
+    {{#if img}}
+    <img class="actor-icon" src="{{img}}" data-edit="img" title="{{name}}" />
+    {{/if}}
+    <h1 class="dialog-roll-title roll-dialog-header">Add Health</h1>
+  </header>
+
+    <div class="flexcol">
+      <div class="flexrow">
+        <span class="roll-dialog-label">Recovery Amount : </span>
+        <input type="text" class=" flex-center" id="recovery-amount" name="recovery-amount" value="0" data-dtype="Number"/>  
+      </div>
+    </div>
+
+    <div class="flexcol">
+        <li class="flexrow">
+            <span class="roll-dialog-label">Recovery Type</span>
+            <select id="recovery-type" class="item-field-label-long" type="text" name="system.recovery_type" value="{{system.recovery_type}}" data-dtype="String">
+                {{#select system.recovery_type}}
+                    <option value="health">Health</option>
+                    <option value="temporary_health">Temporary Health</option>
+                    <option value="power">Power</option>
+                {{/select}}
+            </select> 
+        </li>
+    </div>
+
+</form>

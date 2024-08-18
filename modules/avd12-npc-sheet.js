@@ -10,7 +10,7 @@ export class Avd12NPCSheet extends ActorSheet {
 
     /** @override */
     static get defaultOptions() {
-      return mergeObject(super.defaultOptions, {
+      return foundry.utils.mergeObject(super.defaultOptions, {
         classes: ["avd12", "sheet", "actor"],
         template: "systems/avd12/templates/actors/actor-sheet.hbs",
         width: 960,
@@ -39,7 +39,7 @@ export class Avd12NPCSheet extends ActorSheet {
         creatureType: this.actor.system.creature_type,
         editable: this.isEditable,
         cssClass: this.isEditable ? "editable" : "locked",
-        system: duplicate(this.object.system),
+        system: foundry.utils.duplicate(this.object.system),
         limited: this.object.limited,
         modules: this.actor.getModules(),
         traits: this.actor.getNpcTraits(),
@@ -56,11 +56,11 @@ export class Avd12NPCSheet extends ActorSheet {
         masterSpells: this.actor.getMasterSpells(duplicate(this.actor.getSpells())),
         grandmasterSpells: this.actor.getGrandmasterSpells(duplicate(this.actor.getSpells())),
         equipments: this.actor.getEquipmentsOnly(),
-        equippedWeapons: duplicate(this.actor.getEquippedWeapons()),
+        equippedWeapons: foundry.utils.duplicate(this.actor.getEquippedWeapons()),
         equippedArmor: this.actor.getEquippedArmor(),
         equippedShield: this.actor.getEquippedShield(),
-        subActors: duplicate(this.actor.getSubActors()),
-        moneys: duplicate(this.actor.getMoneys()),
+        subActors: foundry.utils.duplicate(this.actor.getSubActors()),
+        moneys: foundry.utils.duplicate(this.actor.getMoneys()),
         focusData: this.actor.computeFinalFocusData(),
         encCurrent: this.actor.encCurrent,
         options: this.options,
@@ -134,6 +134,10 @@ export class Avd12NPCSheet extends ActorSheet {
         
       html.find('#take-damage-btn').click((event) => {
         this.actor.takeDamage();
+      });
+
+      html.find('#add-health-btn').click((event) => {
+        this.actor.addHealth();
       });
   
       html.find('.use-action').click((event) => {

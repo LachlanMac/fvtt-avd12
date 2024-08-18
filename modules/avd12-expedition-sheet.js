@@ -9,7 +9,7 @@ import { Avd12Utility } from "./avd12-utility.js";
 export class Avd12ExpeditionSheet extends ActorSheet {
     /** @override */
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
           classes: ["avd12", "sheet", "expedition"],
           template: "systems/avd12/templates/actors/expedition-sheet.hbs",
           width: 800,
@@ -31,7 +31,7 @@ export class Avd12ExpeditionSheet extends ActorSheet {
           creatureType: this.actor.system.creature_type,
           editable: this.isEditable,
           cssClass: this.isEditable ? "editable" : "locked",
-          system: duplicate(this.object.system),
+          system: foundry.utils.duplicate(this.object.system),
           options: this.options,
           owner: this.document.isOwner,
         }
