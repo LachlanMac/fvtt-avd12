@@ -4,7 +4,7 @@
   "description": "Anyventure D12 system for FoundryVTT",
   "version": "13.0.0",
   "compatibility": {
-    "minimum": "11",
+    "minimum": "12",
     "verified": "12"
   },
   "url": "https://github.com/LachlanMac/avd12",
