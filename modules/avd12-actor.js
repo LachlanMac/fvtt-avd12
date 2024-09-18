@@ -136,6 +136,8 @@ export class Avd12Actor extends Actor {
       this.parseActiveEffects()
 
     }else if (this.type == 'character' ) { //|| game.user.isGM <--- I dont know what this is
+
+     
       this.system.health.max = this.system.level.value * 5 + 10;
       this.system.focus.focuspoints = 0;
       this.system.focus.focusregen = 0;
@@ -146,16 +148,22 @@ export class Avd12Actor extends Actor {
       this.clearData()
       this.rebuildSkills()
       this.rebuildSize()
-  
+     
+     
       this.rebuildTraits()
       this.rebuildMainTrait()
+      console.log("1", this.name, this.system.bonus.ranged.attack);
+    
       this.rebuildModules()
+      console.log("2", this.name, this.system.bonus.ranged.attack);
       this.rebuildBonuses()
+      console.log("3", this.name, this.system.bonus.ranged.attack);
       this.rebuildMitigations()
       this.rebuildEquipment()
       this.parseStances()
       this.parseActiveEffects()
       this.rebuildBonuses()
+      console.log("4", this.name, this.system.bonus.ranged.attack);
     }else if (this.type == "expedition"){
       
     }
@@ -270,11 +278,8 @@ export class Avd12Actor extends Actor {
         }
       }
     }
-    
-
   }
 
-  
   async addStance(stance){
     let actorRef = this;
     await game.packs.get('avd12.stances').getDocument(stance).then(function(x){
@@ -984,6 +989,11 @@ export class Avd12Actor extends Actor {
 
   }
 
+  getSpellFistFocus(){
+    let equippedWeapons = this.items.filter(item => (item.system.category == "unarmed" || item.type == "gloves") && item.system.equipped && item.system.focus.isfocus)
+    return equippedWeapons[0] || null;
+  }
+
   rebuildEquipment(){
     let allEquippedItems = this.items.filter(item => item.system.equipped)
     allEquippedItems.forEach(item => {
@@ -1235,8 +1245,6 @@ export class Avd12Actor extends Actor {
 
     //this.system.focus.maxfocuspoints
     //this.system.focus.focuspoints += item.system.focus.focuspointsbonus;
-
-
   }
 
   rebuildBonuses(){
@@ -1244,15 +1252,19 @@ export class Avd12Actor extends Actor {
     this.system.bonus.slash.damage += this.system.bonus.weapon.damage;
     this.system.bonus.pierce.damage += this.system.bonus.weapon.damage;
     this.system.bonus.ranged.damage += this.system.bonus.weapon.damage;
+    this.system.bonus.unarmed.damage += this.system.bonus.weapon.damage;
+
+
     this.system.bonus.blunt.attack += this.system.bonus.weapon.attack;
     this.system.bonus.slash.attack += this.system.bonus.weapon.attack;
     this.system.bonus.pierce.attack += this.system.bonus.weapon.attack;
     this.system.bonus.ranged.attack += this.system.bonus.weapon.attack;
+    this.system.bonus.unarmed.attack += this.system.bonus.weapon.attack;
+
     this.system.health.max += this.system.health.bonus;
     this.system.movement.speed = this.system.movement.walk.value;
 
-    
-
+  
     if(this.system.bonus.traits.armsman){
       let highest = Math.max(this.system.bonus.blunt.attack, this.system.bonus.slash.attack, this.system.bonus.pierce.attack, this.system.bonus.ranged.attack);
       this.system.bonus.blunt.attack = highest;
@@ -1593,6 +1605,21 @@ export class Avd12Actor extends Actor {
       if(spell.system.damagetype == "none"){
         spell.system.damagetype = "";
       }
+
+      if(this.system.bonus.traits.spellshot && this.isSpellShotSpell(spell)){
+          let focus = this.getSpellShotFocus();
+          if(focus){
+            spell.system.range = this.getSpellShotRange();
+          }
+      }
+
+      //check for spell fist
+      if(this.system.bonus.traits.spellfist && this.isSpellFistSpell(spell) && this.getSpellFistFocus()){
+        spell.system.range = 0;
+        spell.system.range_type = "adjacent";
+        spell.system.spelltype = "melee attack";
+      }
+
       spell.system.rangeDescription = (spell.system.range > 0 ? spell.system.range : "") + " " + spell.system.range_type.charAt(0).toUpperCase() + spell.system.range_type.substring(1, spell.system.range_type.length);
       spell.system.actionDescription = spell.system.actions + " " + spell.system.action_type.charAt(0).toUpperCase() + spell.system.action_type.slice(1) + (spell.system.actions > 1 ? 's' :'');
       spell.system.improvedDescription = spell.system.description  + (spell.system.chargeEffect ? "\nCharge Effect: " + spell.system.chargeEffect:"")  + (spell.system.components ? "\nComponents: " + spell.system.components : "");  
@@ -2452,17 +2479,52 @@ export class Avd12Actor extends Actor {
   }
 
   getSpellShotAttack(){
-
     let focus = this.getSpellShotFocus();
-    
     if(focus){
       return focus.system.bonus.attack +  this.system.bonus.ranged.attack;
     }else{
       return 0;
     }
-    
+  }
 
-  }spellCos
+  getSpellShotRange(){
+    let focus = this.getSpellShotFocus();
+    if(focus){
+      switch(focus.system.category){
+        case "ulightranged":
+          return focus.system.maxrange + this.system.bonus.ranged.max_range_bonus_ulight;
+        case "lightranged":
+          return focus.system.maxrange + this.system.bonus.ranged.max_range_bonus_light;
+      case "heavyranged":
+          return focus.system.maxrange + this.system.bonus.ranged.max_range_bonus_heavy;
+      }
+    }else{
+      return 0;
+    }
+  }
+  
+  getSpellFistAttack(){
+    let focus = this.getSpellFistFocus();
+    if(focus){
+      return focus.system.bonus.attack +  this.system.bonus.unarmed.attack;
+    }else{
+      return 0;
+    }
+  }
+
+  isSpellFistSpell(spell){
+    if((spell.system.spelltype == "projectile" || spell.system.spelltype == "melee attack" || spell.system.spelltype == "ray") && (spell.system.area_type != "radius" && spell.system.area_type != "line" && spell.system.area_type != "cone")){
+      return true;
+    } 
+    return false;
+  }
+
+  isSpellShotSpell(spell){
+    if((spell.system.spelltype == "projectile" || spell.system.spelltype == "ray") && (spell.system.area_type != "radius" && spell.system.area_type != "line" && spell.system.area_type != "cone")){
+      return true;
+    } 
+    return false;
+  }
 
   async channelSpell(channeledSpell, userData) {
     let spell = foundry.utils.duplicate(channeledSpell)
@@ -2473,6 +2535,8 @@ export class Avd12Actor extends Actor {
       //Spellshot
       if(this.system.bonus.traits.spellshot && (spell.system.spelltype == "projectile" || spell.system.spelltype == "ray")){
         rollData.spellAttack = Math.max(this.getSpellShotAttack(), this.system.bonus.spell.attack);
+      }else if(this.system.bonus.traits.spellfist && this.isSpellFistSpell(spell)){
+        rollData.spellAttack = Math.max(this.getSpellFistAttack(), this.system.bonus.spell.attack);
       }
       //no longer needed...
       //rollData.spellDamage = this.system.bonus.spell.damage
