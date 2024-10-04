@@ -2,7 +2,7 @@
   "id": "avd12",
   "title": "AnyVenture D12 RPG",
   "description": "Anyventure D12 system for FoundryVTT",
-  "version": "13.0.1",
+  "version": "13.0.2",
   "compatibility": {
     "minimum": "12",
     "verified": "12"
@@ -192,6 +192,45 @@
       "label": "Stances",
       "name": "stances",
       "path": "packs/stances",
+      "system": "avd12",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+
+    {
+      "type": "Item",
+      "label": "Origin Modules",
+      "name": "origin_modules",
+      "path": "packs/origin_modules",
+      "system": "avd12",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+
+    {
+      "type": "Item",
+      "label": "Core Modules",
+      "name": "core_modules",
+      "path": "packs/core_modules",
+      "system": "avd12",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+
+    {
+      "type": "Item",
+      "label": "Secondary Modules",
+      "name": "secondary_modules",
+      "path": "packs/secondary_modules",
       "system": "avd12",
       "flags": {},
       "ownership": {
