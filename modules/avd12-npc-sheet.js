@@ -52,6 +52,7 @@ export class Avd12NPCSheet extends ActorSheet {
         shields: this.actor.getShields(),
         beginnerSpells: this.actor.getBeginnerSpells(duplicate(this.actor.getSpells())),
         noviceSpells: this.actor.getNoviceSpells(duplicate(this.actor.getSpells())),
+        journeymanSpells: this.actor.getJourneymanSpells(duplicate(this.actor.getSpells())),
         expertSpells: this.actor.getExpertSpells(duplicate(this.actor.getSpells())),
         masterSpells: this.actor.getMasterSpells(duplicate(this.actor.getSpells())),
         grandmasterSpells: this.actor.getGrandmasterSpells(duplicate(this.actor.getSpells())),
