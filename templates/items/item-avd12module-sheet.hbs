@@ -1,0 +1,276 @@
+<form class="{{cssClass}}" autocomplete="off">
+
+  <header class="sheet-header">
+    <img class="item-sheet-img" src="{{img}}" data-edit="img" title="{{name}}" />
+    <div class="header-fields">
+      <h1 class="charname"><input name="name" type="text" value="{{name}}" placeholder="Name" /></h1>
+    </div>
+  </header>
+
+  <section class="sheet-body">
+    {{> systems/avd12/templates/items/partial-item-description.hbs}}
+
+<div class="button-grid">
+  <button class="grid-item centered {{#if system.options.option_1.selected}}color-selected{{/if}}">
+    <div class="button-content toggle-module-option" data-option="option_1">
+      <span class="button-title">{{system.options.option_1.name}}</span>
+      <span class="button-description">{{system.options.option_1.description}}</span>
+      <span class="button-cost">2</span>
+    </div>
+  </button>
+  <button class="grid-item {{#if system.options.option_2a.selected}}color-selected{{/if}}">
+    <div class="button-content toggle-module-option" data-option="option_2a">
+      <span class="button-title">{{system.options.option_2a.name}}</span>
+      <span class="button-description">{{system.options.option_2a.description}}</span>
+      <span class="button-cost">2</span>
+    </div>
+  </button>
+  <button class="grid-item {{#if system.options.option_2b.selected}}color-selected{{/if}}">
+    <div class="button-content toggle-module-option" data-option="option_2b">
+      <span class="button-title">{{system.options.option_2b.name}}</span>
+      <span class="button-description">{{system.options.option_2b.description}}</span>
+      <span class="button-cost">2</span>
+    </div>
+  </button>
+  <button class="grid-item centered {{#if system.options.option_3.selected}}color-selected{{/if}}">
+    <div class="button-content toggle-module-option" data-option="option_3">
+      <span class="button-title">{{system.options.option_3.name}}</span>
+      <span class="button-description">{{system.options.option_3.description}}</span>
+      <span class="button-cost">2</span>
+    </div>
+  </button>
+  <button class="grid-item {{#if system.options.option_4a.selected}}color-selected{{/if}}">
+    <div class="button-content toggle-module-option" data-option="option_4a">
+      <span class="button-title">{{system.options.option_4a.name}}</span>
+      <span class="button-description">{{system.options.option_4a.description}}</span>
+       <span class="button-cost">2</span>
+    </div>
+  </button>
+  <button class="grid-item {{#if system.options.option_4b.selected}}color-selected{{/if}}">
+    <div class="button-content toggle-module-option" data-option="option_4b">
+      <span class="button-title">{{system.options.option_4b.name}}</span>
+      <span class="button-description">{{system.options.option_4b.description}}</span>
+      <span class="button-cost">2</span>
+    </div>
+  </button>
+  <button class="grid-item centered {{#if system.options.option_5.selected}}color-selected{{/if}}">
+    <div class="button-content toggle-module-option" data-option="option_5">
+      <span class="button-title">{{system.options.option_5.name}}</span>
+      <span class="button-description">{{system.options.option_5.description}}</span>
+      {{#if (eq system.type "core")}}
+      <span class="button-cost">2</span>
+      {{else}}
+      <span class="button-cost">3</span>
+      {{/if}}
+     
+    </div>
+  </button>
+
+  {{#if (and (eq system.origin true) (eq system.type "racial"))}}
+  <button class="grid-item color-selected">
+    <div class="button-content toggle-module-option" data-option="option_a">
+      <span class="button-title">{{system.options.option_a.name}}</span>
+      <span class="button-description">{{system.options.option_a.description}}</span>
+      <span class="button-cost"></span>
+    </div>
+  </button>
+  <button class="grid-item color-selected">
+    <div class="button-content toggle-module-option" data-option="option_b">
+      <span class="button-title">{{system.options.option_b.name}}</span>
+      <span class="button-description">{{system.options.option_b.description}}</span>
+      <span class="button-cost"></span>
+    </div>
+  </button>
+  {{/if}}
+
+  {{#if (eq system.type "core")}}
+  <button class="grid-item {{#if system.options.option_6a.selected}}color-selected{{/if}}">
+    <div class="button-content toggle-module-option" data-option="option_6a">
+      <span class="button-title">{{system.options.option_6a.name}}</span>
+      <span class="button-description">{{system.options.option_6a.description}}</span>
+      <span class="button-cost">2</span>
+    </div>
+  </button>
+  <button class="grid-item {{#if system.options.option_6b.selected}}color-selected{{/if}}">
+    <div class="button-content toggle-module-option" data-option="option_6b">
+      <span class="button-title">{{system.options.option_6b.name}}</span>
+      <span class="button-description">{{system.options.option_6b.description}}</span>
+      <span class="button-cost">2</span>
+    </div>
+  </button>
+  <button class="grid-item centered {{#if system.options.option_7.selected}}color-selected{{/if}}">
+    <div class="button-content toggle-module-option" data-option="option_7">
+      <span class="button-title">{{system.options.option_7.name}}</span>
+      <span class="button-description">{{system.options.option_7.description}}</span>
+      <span class="button-cost">3</span>
+    </div>
+  </button>
+  <button class="grid-item {{#if system.options.option_8a.selected}}color-selected{{/if}}">
+    <div class="button-content toggle-module-option" data-option="option_8a">
+      <span class="button-title">{{system.options.option_8a.name}}</span>
+      <span class="button-description">{{system.options.option_8a.description}}</span>
+      <span class="button-cost">2</span>
+    </div>
+  </button>
+  <button class="grid-item {{#if system.options.option_8b.selected}}color-selected{{/if}}">
+    <div class="button-content toggle-module-option" data-option="option_8b">
+      <span class="button-title">{{system.options.option_8b.name}}</span>
+      <span class="button-description">{{system.options.option_8b.description}}</span>
+      <span class="button-cost">2</span>
+    </div>
+  </button>
+  <button class="grid-item centered {{#if system.options.option_9.selected}}color-selected{{/if}}">
+    <div class="button-content toggle-module-option" data-option="option_9">
+      <span class="button-title">{{system.options.option_9.name}}</span>
+      <span class="button-description">{{system.options.option_9.description}}</span>
+      <span class="button-cost">4</span>
+    </div>
+  </button>
+  <button class="grid-item {{#if system.options.option_10a.selected}}color-selected{{/if}}">
+    <div class="button-content toggle-module-option" data-option="option_10a">
+      <span class="button-title">{{system.options.option_10a.name}}</span>
+      <span class="button-description">{{system.options.option_10a.description}}</span>
+      <span class="button-cost">3</span>
+    </div>
+  </button>
+  <button class="grid-item {{#if system.options.option_10b.selected}}color-selected{{/if}}">
+    <div class="button-content toggle-module-option" data-option="option_10b">
+      <span class="button-title">{{system.options.option_10b.name}}</span>
+      <span class="button-description">{{system.options.option_10b.description}}</span>
+      <span class="button-cost">3</span>
+    </div>
+  </button>
+  <button class="grid-item centered {{#if system.options.option_11.selected}}color-selected{{/if}}">
+    <div class="button-content toggle-module-option" data-option="option_11">
+      <span class="button-title">{{system.options.option_11.name}}</span>
+      <span class="button-description">{{system.options.option_11.description}}</span>
+      <span class="button-cost">5</span>
+    </div>
+  </button>
+  {{/if}}
+  
+  {{#if (eq system.type "alteration")}}
+  <button class="grid-item {{#if system.options.option_6a.selected}}color-selected{{/if}}">
+    <div class="button-content toggle-module-option" data-option="option_6a">
+      <span class="button-title">{{system.options.option_6a.name}}</span>
+      <span class="button-description">{{system.options.option_6a.description}}</span>
+      <span class="button-cost">2</span>
+    </div>
+  </button>
+  <button class="grid-item {{#if system.options.option_6b.selected}}color-selected{{/if}}">
+    <div class="button-content toggle-module-option" data-option="option_6b">
+      <span class="button-title">{{system.options.option_6b.name}}</span>
+      <span class="button-description">{{system.options.option_6b.description}}</span>
+      <span class="button-cost">2</span>
+    </div>
+  </button>
+  <button class="grid-item centered {{#if system.options.option_7.selected}}color-selected{{/if}}">
+    <div class="button-content toggle-module-option" data-option="option_7">
+      <span class="button-title">{{system.options.option_7.name}}</span>
+      <span class="button-description">{{system.options.option_7.description}}</span>
+      <span class="button-cost">3</span>
+    </div>
+  </button>
+  <button class="grid-item {{#if system.options.option_8a.selected}}color-selected{{/if}}">
+    <div class="button-content toggle-module-option" data-option="option_8a">
+      <span class="button-title">{{system.options.option_8a.name}}</span>
+      <span class="button-description">{{system.options.option_8a.description}}</span>
+      <span class="button-cost">2</span>
+    </div>
+  </button>
+  <button class="grid-item {{#if system.options.option_8b.selected}}color-selected{{/if}}">
+    <div class="button-content toggle-module-option" data-option="option_8b">
+      <span class="button-title">{{system.options.option_8b.name}}</span>
+      <span class="button-description">{{system.options.option_8b.description}}</span>
+      <span class="button-cost">2</span>
+    </div>
+  </button>
+  <button class="grid-item centered {{#if system.options.option_9.selected}}color-selected{{/if}}">
+    <div class="button-content toggle-module-option" data-option="option_9">
+      <span class="button-title">{{system.options.option_9.name}}</span>
+      <span class="button-description">{{system.options.option_9.description}}</span>
+      <span class="button-cost">4</span>
+    </div>
+  </button>
+  <button class="grid-item color-selected">
+    <div class="button-content toggle-module-option" data-option="option_a">
+      <span class="button-title">{{system.options.option_a.name}}</span>
+      <span class="button-description">{{system.options.option_a.description}}</span>
+      <span class="button-cost"></span>
+    </div>
+  </button>
+  <button class="grid-item color-selected">
+    <div class="button-content toggle-module-option" data-option="option_b">
+      <span class="button-title">{{system.options.option_b.name}}</span>
+      <span class="button-description">{{system.options.option_b.description}}</span>
+      <span class="button-cost"></span>
+    </div>
+  </button>
+  {{/if}}
+</div>
+</section>
+
+</form>
+
+<style>
+.sheet-body {
+  padding: 10px;
+}
+
+.button-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two columns */
+  gap: 10px;
+}
+
+.grid-item {
+  padding: 10px;
+  background-color: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  position: relative; /* For cost positioning */
+}
+
+.grid-item:hover {
+  background-color: #555;
+}
+
+.grid-item.centered {
+  grid-column: 1 / 3; /* Center the button */
+  justify-self: center; /* Center within grid */
+  width: 50%; /* Same width as other buttons */
+}
+
+.button-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centers the name and description */
+}
+
+.button-title {
+  font-weight: bold;
+  margin-bottom: 5px; /* Space between name and description */
+}
+
+.button-description {
+  font-size: 12px;
+  line-height: 14px;
+}
+
+.button-cost {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  font-size: 12px;
+  font-weight: bold;
+  background-color: #444;
+  padding: 2px 5px;
+  border-radius: 3px;
+  color: white;
+}
+
+
+</style>

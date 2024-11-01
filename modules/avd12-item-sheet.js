@@ -18,11 +18,6 @@ export class Avd12ItemSheet extends ItemSheet {
     });
   }
 
-
-
-
-
-
   /* -------------------------------------------- */
   _getHeaderButtons() {
     let buttons = super._getHeaderButtons();
@@ -212,25 +207,24 @@ export class Avd12ItemSheet extends ItemSheet {
   /* -------------------------------------------- */
   /** @override */
   activateListeners(html) {
+    
+
+
     super.activateListeners(html);
 
     // Everything below here is only needed if the sheet is editable
     if (!this.options.editable) return;
 
-
-    /*
-    html.find('.add-module-level').click(ev => {
-         let levels = duplicate(this.object.system.levels)
-         if ( (levels.length+1) % 2 == 0) {
-           levels.push({ choices: [ {selected: false, features: [] }, {selected: false, features: [] } ] })
-       }else {
-           levels.push({ choices: [ {selected: false, features: [] } ] })
-         }
-         this.object.update({ 'system.levels': levels })
-      })
-*/
-
-    // Update Inventory Item
+    html.find('.toggle-module-option').click(ev => {
+      if ( this.object.actor ) {
+        const button = ev.currentTarget;
+        const optionKey = button.dataset.option;
+        const option = this.object.system.options[optionKey];
+        const isSelected = option.selected;
+        this.object.actor.updateModuleSelection(this.object, optionKey, isSelected);
+      }
+    })
+         
     html.find('.item-edit').click(ev => {
       const li = $(ev.currentTarget).parents(".item");
       const item = this.object.options.actor.getOwnedItem(li.data("item-id"));
@@ -241,46 +235,11 @@ export class Avd12ItemSheet extends ItemSheet {
       this.deleteSubitem(ev);
     });
 
-    // Update Inventory Item
     html.find('.item-delete').click(ev => {
       const li = $(ev.currentTarget).parents(".item");
       let itemId = li.data("item-id");
       let itemType = li.data("item-type");
     });
-
-    html.find('.module-feature-view').click(ev => {
-      this.viewSubitem(ev);
-    });
-
-    
-    html.find('.add-module-level').click(ev => {
-      let levels = foundry.utils.duplicate(this.object.system.levels)
-      if ( (levels.length+1) % 2 == 0) {
-        levels.push({ choices: [ {selected: false, features: {} }, {selected: false, features: {} } ] })
-      }else {
-        levels.push({ choices: [ {selected: false, features: {} } ] })
-      }
-      this.object.update({ 'system.levels': levels })
-    })
-    
-    html.find('.module-feature-delete').click(ev => {
-      let levels = foundry.utils.duplicate(this.object.system.levels)
-      let levelIndex = Number($(ev.currentTarget).parents(".item").data("level-index"))
-      let choiceIndex = Number($(ev.currentTarget).parents(".item").data("choice-index"))
-      let featureId = $(ev.currentTarget).parents(".item").data("feature-id")
-      levels[levelIndex].choices[choiceIndex].features[featureId] = undefined
-      this.object.update({ 'system.levels': levels })
-    })
-    html.find('.module-level-delete').click(ev => {
-      let levels = foundry.utils.duplicate(this.object.system.levels)
-      let levelIndex = Number($(ev.currentTarget).data("level-index"))
-      levels.splice(levelIndex,levelIndex)
-      this.object.update({ 'system.levels': levels })
-    })
-      
-    html.find('.choice-level-selected').change(ev =>  {
-      this.processChoiceLevelSelection(ev)
-    })
   }
 
   /* -------------------------------------------- */

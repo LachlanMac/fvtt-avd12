@@ -2,6 +2,7 @@
 import { Avd12Actor } from "./avd12-actor.js";
 import { Avd12Combat } from "./avd12-combat.js";
 import { Avd12Commands } from "./avd12-commands.js";
+import { Avd12ChatBinds } from "./character/avd12-chat-binds.js";
 
 /* -------------------------------------------- */
 const __ALLOWED_MODULE_TYPES = { "action": 1, "reaction": 1, "freeaction": 1, "trait": 1 }
@@ -89,7 +90,7 @@ export class Avd12Utility {
 
   /* -------------------------------------------- */
   static async init() {
-    Hooks.on('renderChatLog', (log, html, data) => Avd12Utility.chatListeners(html));
+    Hooks.on('renderChatLog', (log, html, data) => Avd12ChatBinds.chatListener(html));
     Hooks.on("renderChatMessage", Avd12Utility.displayChatActionButtons);
 
     this.rollDataStore = {}
@@ -257,7 +258,7 @@ export class Avd12Utility {
       }
     })
 
-    Avd12Actor.chatListener(html);
+    Avd12ChatBinds.chatListener(html);
 
   }
 
@@ -361,6 +362,126 @@ export class Avd12Utility {
     return options;
   }
 
+
+  static getSelectedModuleOptionTier(optionKey) {
+    switch(optionKey) {
+        case "option_1":
+            return 1;
+        case "option_2a":
+        case "option_2b":
+            return 2;
+        case "option_3":
+            return 3;
+        case "option_4a":
+        case "option_4b":
+            return 4;
+        case "option_5":
+            return 5;
+        case "option_6a":
+        case "option_6b":
+            return 6;
+        case "option_7":
+            return 7;
+        case "option_8a":
+        case "option_8b":
+            return 8;
+        case "option_9":
+            return 9;
+        case "option_10a":
+        case "option_10b":
+            return 10;
+        case "option_11":
+            return 11;
+        case "option_a":
+        case "option_b":
+            return 0;  
+        default:
+            return undefined;
+    }
+}
+
+static GetOtherTier(optionKey){
+  switch(optionKey) {
+    case "option_2a":
+      return "option_2b";
+    case "option_2b":
+        return "option_2a";
+    case "option_4a":
+        return "option_4b";
+    case "option_4b":
+        return "option_4a";
+    case "option_6a":
+      return "option_6b";
+    case "option_6b":
+      return "option_6a";
+    case "option_8a":
+      return "option_8b";
+    case "option_8b":
+        return "option_8a";
+    case "option_10a":
+      return "option_10b";
+    case "option_10b":
+      return "option_10a";
+
+    default:
+        return undefined;
+}
+}
+  static getHighestTier(module) {
+    let highestTier = 0;
+    // Iterate over each option in the module
+    for (const key in module.system.options) {
+        const option = module.system.options[key];
+        
+        // Check if the option is selected
+        if (option.selected) {
+            // Extract the numeric portion of the key
+            const tierMatch = key.match(/option_(\d+)/);
+
+            // If a numeric tier was found, parse it as an integer
+            if (tierMatch) {
+                const tier = parseInt(tierMatch[1], 10);
+                // Update highestTier if this tier is greater
+                if (tier > highestTier) {
+                    highestTier = tier;
+                }
+            }
+        }
+    }
+
+    return highestTier;
+}
+  static isValidModuleOption(module, optionKey) {
+    
+    if(optionKey == "option_1" || optionKey == "option_b" || optionKey == "option_a"){
+      return false;
+    }
+    let highestTier = Avd12Utility.getHighestTier(module);
+    let selectedTier = Avd12Utility.getSelectedModuleOptionTier(optionKey);
+
+
+    let oppositeKey = Avd12Utility.GetOtherTier(optionKey);
+    if(oppositeKey){
+      if(module.system.options[oppositeKey].selected){
+        console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+        return true;
+      }
+    }
+
+    if(selectedTier > highestTier + 1){//cant go forward
+      console.log(selectedTier, "is higher than", + highestTier);
+      return false;
+    }else if(selectedTier< highestTier){//cant go backwards
+      console.log(selectedTier, "is lower than", + highestTier);
+      return false;
+    }
+
+
+
+
+
+    return true;
+}
   /* -------------------------------------------- */
   static buildListOptions(min, max) {
     let options = ""
@@ -1069,6 +1190,8 @@ export class Avd12Utility {
         icon: '<i class="fas fa-check"></i>',
         label: "Yes, remove it",
         callback: () => {
+          actorSheet.actor.processDeletedItem(itemId);
+
           actorSheet.actor.deleteEmbeddedDocuments("Item", [itemId]);
           li.slideUp(200, () => actorSheet.render(false));
         }

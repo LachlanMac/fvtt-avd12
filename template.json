@@ -5,7 +5,7 @@
       "biodata": {
         "biodata": {
           "age": 0,
-          "size": "",
+          "size": 3,
           "weight": "",
           "hair": "",
           "sex": "",
@@ -17,8 +17,10 @@
       },
       "core": {
         "imported":0,
+        "module_points":8,
+        "created":false,
         "uuid":"",
-        "trait":0,
+        "origin_trait":1,
         "subactors": [],
         "alert":false,
         "conditions":{
@@ -214,7 +216,7 @@
         },
         "size": {
           "label": "Size",
-          "value": ""
+          "value": "medium"
         },
         "movement": {
           "speed": 6,
@@ -548,7 +550,8 @@
       "stance",
       "trait",
       "ballad",
-      "equipable"
+      "equipable",
+      "avd12module"
     ],
     "templates": {
       "roll":{
@@ -748,6 +751,31 @@
     "module": {
       "levels": [],
       "description": ""
+    },"avd12module":{
+      "type":"core",
+      "name":"Default Module",
+      "description":"",
+      "origin":false,
+      "options":{
+        "option_1":{},
+        "option_2a":{},
+        "option_2b":{},
+        "option_3":{},
+        "option_4a":{},
+        "option_4b":{},
+        "option_5":{},
+        "option_6a":{},
+        "option_6b":{},
+        "option_7":{},
+        "option_8a":{},
+        "option_8b":{},
+        "option_9":{},
+        "option_10a":{},
+        "option_10b":{},
+        "option_11":{},
+        "option_a":{},
+        "option_b":{}
+      }
     }
   }
 }

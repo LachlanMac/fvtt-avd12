@@ -1,10 +1,19 @@
 <ul class="stat-list alternate-list">
+
+            <span class="flexrow ">
+             <span class="attribute-label flex1">Module Points</span>
+              <input id="change-module-points" type="text" class="item-field-label-short" name="system.module_points" value="{{system.module_points}}" data-dtype="Number"/>  
+              <span>{{total_module_points}}</span>
+              <span></span>
+            </span>
+
             <li class="item flexrow list-item items-title-bg">
               <span class="item-name-label-header-long">
-                <h3><label class="items-title-text">Modules</label></h3>
+                <h3><label class="items-title-text">Origin Modules</label></h3>
               </span>
             </li>
-            {{#each modules as |module key|}}
+            {{#if origin_modules}}
+            {{#each origin_modules as |module key|}}
             <li class="item flexrow list-item list-item-shadow" data-item-id="{{module._id}}">
               <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
                   src="{{module.img}}" /></a>
@@ -16,4 +25,44 @@
               </div>
             </li>
             {{/each}}
+            {{/if}}
+            {{#if core_modules}}
+             <li class="item flexrow list-item items-title-bg">
+              <span class="item-name-label-header-long">
+                <h3><label class="items-title-text">Core Modules</label></h3>
+              </span>
+            </li>
+            {{#each core_modules as |module key|}}
+            <li class="item flexrow list-item list-item-shadow" data-item-id="{{module._id}}">
+              <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
+                  src="{{module.img}}" /></a>
+              <span class="item-name-label-long"><a class ="item-edit">{{module.name}}</a></span>
+
+              <div class="item-filler">&nbsp;</div>
+              <div class="item-controls item-controls-fixed">
+                <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+              </div>
+            </li>
+            {{/each}}
+            {{/if}}
+
+            {{#if secondary_modules}}
+             <li class="item flexrow list-item items-title-bg">
+              <span class="item-name-label-header-long">
+                <h3><label class="items-title-text">Secondary Modules</label></h3>
+              </span>
+            </li>
+            {{#each secondary_modules as |module key|}}
+            <li class="item flexrow list-item list-item-shadow" data-item-id="{{module._id}}">
+              <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
+                  src="{{module.img}}" /></a>
+              <span class="item-name-label-long"><a class ="item-edit">{{module.name}}</a></span>
+
+              <div class="item-filler">&nbsp;</div>
+              <div class="item-controls item-controls-fixed">
+                <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+              </div>
+            </li>
+            {{/each}}
+            {{/if}}
           </ul>

@@ -1,5 +1,8 @@
 /* -------------------------------------------- */
 import { Avd12Equipment } from "./character/avd12-equipment.js";
+
+
+
 import { Avd12Utility } from "./avd12-utility.js";
 import { Avd12RollDialog } from "./avd12-roll-dialog.js";
 import { Avd12RestDialog } from "./avd12-rest-dialog.js";
@@ -8,9 +11,12 @@ import { Avd12HealthDialog } from "./avd12-health-dialog.js";
 import { Avd12SpellAttackDialog } from "./avd12-spell-attack-dialog.js";
 import { Avd12WeaponDamageDialog } from "./avd12-weapon-damage-dialog.js";
 
-
-
-
+import {importData} from "./character/avd12-character-importer.js"
+import {parseStances, addStance, changeStance} from "./character/avd12-stances.js"
+import {rebuildNPCSkills} from "./npc/avd12-npc.js"
+import {parseActiveEffects, getBestLightSource} from "./character/avd12-effects.js"
+import {getMinimumModulePoints, updateModulePoints, getTotalModulePoints, getSpentModulePoints, updateModuleSelection} from  "./character/avd12-modules.js"
+import {useAction,updateActionUsages,findActionUsages,addActionUsage} from  "./character/avd12-actions.js"
 /* -------------------------------------------- */
 /* -------------------------------------------- */
 /**
@@ -18,12 +24,8 @@ import { Avd12WeaponDamageDialog } from "./avd12-weapon-damage-dialog.js";
  * @extends {Actor}
  */
 export class Avd12Actor extends Actor {
-
   /* -------------------------------------------- */
   /**
-   * Override the create() function to provide additional SoS functionality.
-   * This overrided create() function adds initial items 
-   * Namely: Basic skills, money, 
    * @param {Object} data        Barebones actor data which this function adds onto.
    * @param {Object} options     (Unused) Additional options which customize the creation workflow.
    */
@@ -31,18 +33,21 @@ export class Avd12Actor extends Actor {
     if (data instanceof Array) {
       return super.create(data, options);
     }
+
     if (data.items) {
       let actor = super.create(data, options);
       return actor;
     }
+
+    let actor = await super.create(data, options)
     if (data.type == 'character') {
+
     }
     else if (data.type == 'npc') {
-
     }else if(data.type == 'expedition'){
 
     }
-    return super.create(data, options);
+    return actor;
   }
 
   async prepareData() {
@@ -50,59 +55,7 @@ export class Avd12Actor extends Actor {
   }
 
   async importData(data){
-
-    let actorRef= this;
-    //deletes all items
-    await this.deleteEmbeddedDocuments("Item", [], {
-      deleteAll: true,
-    });
-    await this.update({'system.usages':[]});
-    /*Handle Attributes*/
-
-    data.system.health.value = this.system.health.value;
-    data.system.focus.currentfocuspoints = this.system.focus.currentfocuspoints;
-    
-    await this.update({'system':data.system});
-    await this.update({ 'name': data.name})
-    await this.update({ 'prototypeToken.name': data.name});
-    await this.update({ 'prototypeToken.width': data.prototypeToken.width});
-    await this.update({ 'prototypeToken.height':  data.prototypeToken.height});
-    await this.update({ 'name': data.name})
-
-    if(game.user.isGM){
-      await Avd12Utility.verifyPath(Avd12Utility.parse("avd12/characters/"));
-    }
-
-    // ***** IMPORT INVENTORY AND MODULES ******
-    data.items.forEach(item =>{
-      if(item.type == "action"){
-        item.uses = { current: 3, max : 3};
-      }
-      if(item.type == "reaction"){
-        item.uses = { current: 2, max : 2};
-      }
-    });
-
-    await this.createEmbeddedDocuments("Item", data.items); 
-    let stanceData = data.system.stance_data.split("-");
-    let activeStance = stanceData.pop();
-    let uniqueStances = [...new Set(stanceData)];
-    for(let i = 0; i < uniqueStances.length; i++){
-      await  game.packs.get('avd12.stances').getDocument(uniqueStances[i]).then(async function(x){
-        if(uniqueStances[i]._id == activeStance)
-          x.system.active = true;
-        await actorRef.createEmbeddedDocuments('Item', [x]);
-      });
-    }
-
-    const image = await Avd12Utility.downloadImage(`https://anyventured12.com/upload/${data.imgurl}`)
-    
-    if(image){
-      let options = Avd12Utility.parse("avd12/characters/");
-      var file = new File([image], data.imgurl);
-      await Avd12Utility.uploadToPath(options.current, file);
-      await this.update({ 'img': `avd12/characters/${data.imgurl}`})
-    }
+     importData(actor, data);
   }
 
   getPowerPercentage(){
@@ -119,7 +72,7 @@ export class Avd12Actor extends Actor {
     return {primary:(percentage-5)+"%", secondary:(percentage+5)+"%"}
   }
 
-  prepareDerivedData() {
+  prepareDerivedData(){
     if(this.type == 'npc'){
       //this.clearData()
       let items = this.items.filter(item => item.type == "weapon" || item.type == "armor");
@@ -135,37 +88,78 @@ export class Avd12Actor extends Actor {
       this.rebuildNPCSkills()
       this.parseActiveEffects()
 
-    }else if (this.type == 'character' ) { //|| game.user.isGM <--- I dont know what this is
+    }else if (this.type == 'character' ) { 
+      this.system.movement.walk.value = 6;
+      this.system.health.max = 0;
+  
+      this.clearData()
+      this.rebuildSkills()
+      this.rebuildSize()
+      this.rebuildMainTrait()
+      this.updateModulePoints(0);
+      this.system.health.max += (this.system.level.value * 5 + 10);
+      this.system.focus.focuspoints = 0;
+      this.system.focus.focusregen = 0;
+      this.system.focus.castpenalty = 0;
+      
+      //this.rebuildTraits()
+      //this.rebuildMainTrait()
+      //this.rebuildModules()
+      //this.rebuildBonuses()
+      //this.rebuildMitigations()
+      //this.rebuildEquipment()
+      this.parseStances()
+      this.parseActiveEffects()
+      //this.rebuildBonuses()
+  
+      
+    }else if (this.type == "expedition"){
+      
+    }
+    super.prepareDerivedData();
+  }
 
-     
+  createCharacter(){
+    //show screen for character creation
+    this.update({"system.created":true});
+  }
+
+  prepareDerivedDataOLD() {
+    if(this.type == 'npc'){
+      //this.clearData()
+      let items = this.items.filter(item => item.type == "weapon" || item.type == "armor");
+      items.forEach(item =>{
+        //item.system.equipped = true;
+        if(item.type == "armor"){
+          //build armor
+        }else if(item.type == "weapon"){
+          //build weapon
+        }
+      });
+      this.rebuildNPCSkills()
+      this.parseActiveEffects()
+    }else if (this.type == 'character' ) { //|| game.user.isGM <--- I dont know what this is
       this.system.health.max = this.system.level.value * 5 + 10;
       this.system.focus.focuspoints = 0;
       this.system.focus.focusregen = 0;
       this.system.focus.castpenalty = 0;
       this.system.movement.walk.value = 6;
-      this.system.encCapacity = this.getEncumbranceCapacity()
-      this.buildContainerTree()
+  
       this.clearData()
       this.rebuildSkills()
       this.rebuildSize()
-     
-     
       this.rebuildTraits()
       this.rebuildMainTrait()
-      console.log("1", this.name, this.system.bonus.ranged.attack);
-    
       this.rebuildModules()
-      console.log("2", this.name, this.system.bonus.ranged.attack);
       this.rebuildBonuses()
-      console.log("3", this.name, this.system.bonus.ranged.attack);
       this.rebuildMitigations()
       this.rebuildEquipment()
       this.parseStances()
       this.parseActiveEffects()
       this.rebuildBonuses()
-      console.log("4", this.name, this.system.bonus.ranged.attack);
+      this.getMinimumModulePoints();
     }else if (this.type == "expedition"){
-      
+
     }
     super.prepareDerivedData();
   }
@@ -175,97 +169,7 @@ export class Avd12Actor extends Actor {
   }
 
   rebuildNPCSkills() {
-    let armorPenalties = Avd12Utility.getArmorPenalty(this.items.find(item => item.type == "armor"))
-    let shieldPenalties = Avd12Utility.getArmorPenalty(this.items.find(item => item.type == "shield"))
-
-    for (let attrKey in this.system.attributes) {
-      let attr = this.system.attributes[attrKey]
-      for (let skillKey in attr.skills) {
-        let dataPath = attrKey + ".skills." + skillKey + ".modifier"
-        let skill = attr.skills[skillKey]
-
-        //SOFT RESET
-        if(this.system.imported == 0)
-          skill.modifier = 0
-      
-        let availableTraits = this.items.filter(t => t.type == "trait" && t.system.computebonus && t.system.bonusdata == dataPath)
-        for (let trait of availableTraits) {
-          skill.modifier += Number(trait.system.bonusvalue)
-        }
-        // Apply armor penalties
-        if (armorPenalties[skillKey]) {
-          skill.modifier += Number(armorPenalties[skillKey])
-        }
-        // Apply shield penalties
-        if (shieldPenalties[skillKey]) {
-          skill.modifier += Number(shieldPenalties[skillKey])
-        }
-        // Process additionnal bonuses
-        for (let item of this.items) {
-          if (item.system.bonus && item.system.bonus[skillKey]) {
-            skill.modifier += Number(item.system.bonus[skillKey].value)
-          }
-        }
-        skill.finalvalue = skill.modifier + attr.value
-      }
-    }
-
-
-    //the master formula for sizes
-      switch(Number(this.system.biodata.size)){
-        case 1: 
-          this.system.attributes.agility.skills.dodge.finalvalue += 2; 
-          this.system.attributes.might.skills.block.finalvalue -= 2; 
-          break;
-        case 2: 
-          this.system.attributes.agility.skills.dodge.finalvalue += 1; 
-          this.system.attributes.might.skills.block.finalvalue -= 1;
-          break;
-        case 3: 
-          break;
-        case 4:  
-          this.system.attributes.agility.skills.dodge.finalvalue -= 1; 
-          break;
-        case 5: 
-          this.system.attributes.agility.skills.dodge.finalvalue -= 2; 
-          this.system.attributes.might.skills.block.finalvalue -= 1;
-          break;
-        case 6: 
-          this.system.attributes.agility.skills.dodge.finalvalue -= 2; 
-          this.system.attributes.might.skills.block.finalvalue -= 2;
-          break;
-      }
-
-    for (let skillKey in this.system.universal.skills) {
-      let skill = this.system.universal.skills[skillKey]
-      skill.finalvalue = 0;
-      let dataPath = "universal.skills." + skillKey + ".modifier"
-      let availableTraits = this.items.filter(t => t.type == "trait" && t.system.computebonus && t.system.bonusdata == dataPath)
-      for (let trait of availableTraits) {
-        skill.modifier += Number(trait.system.bonusvalue)
-      } 
-      skill.finalvalue = skill.modifier; 
-    }
-    
-    for(let mitiKey in this.system.mitigation){
-      if(this.system.imported == 0)
-        this.system.mitigation[mitiKey].value = 0;
-    }
-
-    for(let mitiKey in this.system.mitigation){
-      let dataPath = "mitigation." + mitiKey + ".value"
-      let availableTraits = this.items.filter(t => t.type == "trait" && t.system.computebonus && t.system.bonusdata == dataPath)
-      for (let trait of availableTraits) {
-        this.system.mitigation[mitiKey].value += Number(trait.system.bonusvalue)
-      }
-    }
-
-    let availableTraits = this.items.filter(t => t.type == "trait" && t.system.computebonus && t.system.bonusdata == "mitigation.elemental.value")
-    for (let trait of availableTraits) {
-      this.system.mitigation.cold.value += Number(trait.system.bonusvalue)
-      this.system.mitigation.fire.value += Number(trait.system.bonusvalue)
-      this.system.mitigation.lightning.value += Number(trait.system.bonusvalue)
-    }
+    rebuildNPCSkills(this);
   }
 
   /* -------------------------------------------- */
@@ -280,436 +184,32 @@ export class Avd12Actor extends Actor {
     }
   }
 
+  //######## STANCES ###########
   async addStance(stance){
-    let actorRef = this;
-    await game.packs.get('avd12.stances').getDocument(stance).then(function(x){
-      x.system.active = false;
-      actorRef.createEmbeddedDocuments('Item', [x])
-    });
+    addStance(this,stance)
+  }
+
+  async changeStance(stanceId){
+    changeStance(this, stanceId);
   }
 
   parseStances(){
-    let focusing = false;
-    let activeStance = this.items.find(stance => stance.system.active == true && stance.type == "stance");
-
-    if(!activeStance)
-      return;
-    switch(Number(activeStance.system.id)){
-      case 1://neutral
-          break;
-      case 2://savage
-          this.system.attributes.might.skills.block.finalvalue -= 2;
-          this.system.attributes.agility.skills.dodge.finalvalue -= 2;
-          //CRIT ON 11...
-          break;
-      case 3://light
-          this.system.attributes.agility.skills.dodge.finalvalue += 1;
-          this.system.movement.walk.value += 1;
-          this.system.bonus.weapon.attack -= 1;
-          break;
-      case 4://defensive
-          this.system.attributes.might.skills.block.finalvalue += 1;
-          this.system.attributes.agility.skills.dodge.finalvalue += 1;
-          this.system.attributes.willpower.skills.resistance.finalvalue += 1;
-          this.system.bonus.weapon.attack -= 1;
-          break;
-      case 5://precise
-          this.system.bonus.weapon.attack += 2;
-          this.system.bonus.weapon.damage -= 4;
-          break;
-      case 6://focus
-          focusing = true;
-          this.system.attributes.willpower.skills.resistance.finalvalue += 2;
-          break;
-      case 7://wide
-          this.system.bonus.traits.wideattacks = 1;
-          this.system.movement.walk.value -= 1;
-          break;
-      case 8://dueling
-          this.system.bonus.traits.dueling = 1;
-          this.system.attributes.might.skills.block.finalvalue += 1;
-          this.system.attributes.agility.skills.dodge.finalvalue += 1;
-          break;
-      case 9://quicktooss
-          this.system.bonus.traits.quicktoss = 1;
-          break;
-      case 10://pivot
-          //nothing
-          break;
-      case 11://control
-          //nothing
-          break;
-      case 12://screen
-          //partial cover
-          break;
-      case 13://NO EXIST
-          //does not exist
-          break;
-      case 14:  //juggernaut  
-          this.system.movement.walk.value -= 1;
-          this.system.bonus.traits.juggernaut = 1;
-          break;
-      case 15://arsman
-          this.system.bonus.weapon.damage += 2;
-          this.system.bonus.traits.arsman = 1;
-          break;
-      case 16:  //reactive
-          //
-          break;
-      case 17: //marskamn
-          this.system.bonus.ranged.attack += 1;
-          focusing = true;
-          break;
-      case 18:  //flowing strikes
-          this.system.bonus.traits.flowingstrikes = 1;
-          this.system.bonus.unarmed.attack += 1;
-          focusing = true;
-          break;
-      case 19: //sentinel
-          focusing = true;
-          this.system.bonus.traits.sentinel = 1;
-          break;
-      case 20:  //dual wield
-          this.system.bonus.traits.dualwield = 1;
-          //nothing
-          break;
-      default:
-          console.log("unknown active stance", activeStance.system.id);
-    }
+    parseStances(this)
   }
+  //######## END STANCES ###########
 
+  //######### EFFECTS #############
   async parseActiveEffects(){
-    let protoToken = this.prototypeToken;
-    let lightsource = null;
-    
-    if(protoToken){ 
-      //unlinked
-      lightsource = this.getBestLightSource();
-      if(this.getActiveTokens().length > 0){
-        protoToken = this.getActiveTokens()[0].document;
-      }
-    }else{
-
-    }
-       let LightSourceOn = false;
-    let overrideLight = false;
-    let lightObj = {dim:0, bright:0, alpha:0.5, luminosity:0.5, animation:{type:"none", speed:5, intensity:5, reverse:false}, color:"#000000"}
-
-    this.temporaryEffects.forEach(effect => {
-      switch(effect.statuses.values().next().value){
-        case "afraid":
-          this.system.conditions.afraid = 1;
-          break;
-        case "bleeding":
-          this.system.conditions.bleeding = 1;
-          break;
-        case "blind":
-          this.system.conditions.blinded = 1;
-          break;
-        case "charmed":
-          this.system.conditions.charmed = 1;
-          break;
-        case "confused":
-          this.system.conditions.confused = 1;
-          break;
-        case "dazed":
-          this.system.conditions.dazed = 1;
-          break;
-        case "deafened":
-          this.system.conditions.deafened = 1;
-          break;
-        case "diseased":
-          this.system.conditions.diseased = 1;
-          break;
-        case "enveloped":
-          this.system.conditions.enveloped = 1;
-          break;
-        case "exhausted3":
-          this.system.conditions.exhausted = 3;
-          break;
-        case "exhausted2":
-          this.system.conditions.exhausted = 2;
-            this.system.bonus.weapon.damage = 0;
-            this.system.bonus.ranged.damage = 0;
-            this.system.bonus.spell.damage = 0;
-            this.system.bonus.slash.damage = 0;
-            this.system.bonus.unarmed.damage = 0;
-            this.system.bonus.pierce.damage = 0;
-            this.system.bonus.blunt.damage = 0;
-            //disable reactions
-            break;
-        case "exhausted1":
-            this.system.conditions.exhausted = 1;
-            this.system.movement.walk.value -= 2;
-            this.system.universal.skills.initiative.finalvalue -= 2;
-            break;
-        case "frozen":
-            this.system.conditions.frozen = 1;
-            //blue?
-            this.system.movement.walk.value = 0;
-            this.system.mitigation.cold.value = 99;
-            lightObj.dim = 0.2
-            lightObj.bright = 0.1
-            lightObj.color = "#00bfff"
-            lightObj.animation.type = "none"
-            overrideLight = true;
-            break;
-        case "grappled":
-          this.system.conditions.grappled = 1;
-          break;
-        case "hidden":
-          this.system.conditions.hidden = 1;
-          break;
-        case "ignited":
-          this.system.conditions.ignited = 1;
-          lightObj.dim = 1.5
-          lightObj.bright = 1
-          lightObj.color = "#ff3a00"
-          lightObj.animation.type = "torch"
-          overrideLight = true;
-          break;
-        case "invisible":
-          this.system.conditions.invisible = 1;
-          break;
-        case "maddened":
-          this.system.conditions.maddened = 1;
-          break;
-        case "muted":
-          this.system.conditions.muted = 1;
-          break;
-        case "paralyzed":
-          this.system.conditions.paralyzed = 1;
-          break;
-        case "poisoned":
-          this.system.conditions.poisoned = 1;
-          break;
-        case "prone":
-          this.system.conditions.prone = 1;
-          this.system.movement.walk.value = 2;
-          break;
-        case "sleeping":
-          this.system.conditions.sleeping = 1;
-          break;
-        case "stasis":
-          this.system.conditions.stasis = 1;
-          break;
-        case "stunned":
-          this.system.conditions.stunned = 1;
-          break;
-        case "trapped":
-          this.system.conditions.trapped = 1;
-          break;
-        case "unconscious":
-          this.system.conditions.unconscious = 1;
-          break;
-        case "wounded3":
-          this.system.conditions.wounded = 3;
-        case "wounded2":
-          this.system.conditions.wounded = 2;
-        case "wounded1":
-          this.system.conditions.wounded = 1;
-          break;
-        case "lightsource":
-          LightSourceOn = true;
-           break;
-        case "default":
-          break;
-      }
-    
-      //this.update({ 'system.conditions':  this.system.conditions});
-    })
-
-     
-
-    if (game.user.isGM) {
-      if (lightsource && LightSourceOn) {
-          await protoToken.update({
-              "light.dim": lightsource.dim,
-              "light.animation": lightsource.animation,
-              "light.bright": lightsource.bright,
-              "light.color": lightsource.color,
-              "light.alpha": lightsource.color_intensity,
-              "light.luminosity": lightsource.luminosity
-          });
-      } else if (overrideLight) {
-          await protoToken.update({
-              "light.dim": lightObj.dim,
-              "light.animation": lightObj.animation,
-              "light.bright": lightObj.bright,
-              "light.color": lightObj.color,
-              "light.alpha": lightObj.color_intensity,
-              "light.luminosity": lightObj.luminosity
-          });
-      } else if (protoToken) {
-          await protoToken.update({
-              "light.dim": 0,
-              "light.bright": 0
-          });
-      }
-  }
+    parseActiveEffects(this)
   
   }
-
+  
   getBestLightSource(){
-    let lightSources = this.items.filter(item => item.system.equipped && item.system.light)
-    let bestLightSource = null;
-    lightSources.forEach(item => {
-      if(item.system.light.lightsource){
-        if(bestLightSource){
-          if(item.system.light.dim > bestLightSource.system.light.dim)
-          bestLightSource = item;
-        } else {
-          bestLightSource = item;
-        }
-      }
-    })
-
-    if(bestLightSource)
-      return bestLightSource.system.light;
-    else
-      return null;
-    }
-
-    resetLightsource(lightsource){
-    lightsource.alpha = 0.5
-    lightsource.angle = 360
-    lightsource.animation.intensity = 5
-    lightsource.animation.reverse = false
-    lightsource.animation.speed = 5
-    lightsource.animation.type = null
-    lightsource.attenuation = 0.5
-    lightsource.bright = 0
-    //lightsource.color = null
-    lightsource.coloration = 1
-    lightsource.contrast = 0
-    lightsource.darkness.min = 0
-    lightsource.darkness.max = 1
-    lightsource.dim = 0
-    lightsource.luminosity = 0.5
-    lightsource.saturation = 0
-    lightsource.shadows = 0
-    return lightsource
+    getBestLightSource(this);
   }
+  //######### END EFFECTS #############
 
-  static chatListener(html){
-    html.on("click", ".avd12-use-action button", this._onChatCardAction.bind(this));
-    html.on("click", ".avd12-use-spell button", this._onChatCardSpell.bind(this));
-  }
-
-  static async _onChatCardSpell(event){
-    event.preventDefault();
-    Avd12Utility.logMessage("Custom Card Button Click Event");
-    const button = event.currentTarget;
-      button.disabled = true;
-      const card = button.closest(".avd12-use-spell");
-      const messageId = card.closest(".message").dataset.messageId;
-      const message = game.messages.get(messageId);
-      const spell = button.dataset.spell;
-      const actor = await game.actors.get(message.speaker.actor);
-
-      let actSpell = await actor.getSpellById(card.dataset.spellId);
-      if(!actSpell){console.log("*AVD12 Error: No Action*");return;}
-
-      let totalFocusPoints =  actor.system.focus.currentfocuspoints;
-      let token = canvas.tokens.placeables.find(t => t.id === message.speaker.token)
-      let actorLink = true;
-      if(token?.document?.actorLink == false){
-        actorLink = false;
-        if(token.document.delta.system?.focus?.currentfocuspoints){
-          //do nothing for now
-        }else
-          token.document.delta.system.focus = foundry.utils.duplicate(actor.system.focus); //initialize the delta
-        
-        totalFocusPoints = token.document.delta.system.focus.currentfocuspoints;
-        actSpell.unlinkedToken = token.document.delta;
-      }
-      
-      if ( !actor ) {console.log("*AVD12 Error: No Actor*");return};
-      if ( !(game.user.isGM || actor.isOwner) ) return;
-    
-      switch(spell){
-        case "attack":
-          let dialog = await Avd12SpellAttackDialog.create(actor, actSpell)
-          dialog.render(true)
-          break;
-        case "utility":
-          let rollData = actor.getCommonRollData()
-          rollData.spellCost = Avd12Utility.getSpellCost(actSpell);
-          rollData.mode = "spell"
-          rollData.spell = actSpell
-          if(rollData.spellCost > totalFocusPoints)
-            rollData.nen = true;
-          else
-            if(actor.type == "npc" && !actorLink)
-              token.document.delta.update({ 'system.focus.currentfocuspoints':  token.document.delta.system.focus.currentfocuspoints - rollData.spellCost});
-            else
-              actor.update({ 'system.focus.currentfocuspoints':  actor.system.focus.currentfocuspoints - rollData.spellCost});
-          let msg = await Avd12Utility.createChatWithRollMode(rollData.alias, {
-            content: await renderTemplate(`systems/avd12/templates/chat/chat-utility-spell.hbs`, rollData)
-          })
-          break;
-        case "damage":
-          actor.rollSpellDamage(card.dataset.spellId);
-          break;
-      }
-  }
-
-  static async _onChatCardAction(event) {
-    event.preventDefault();
-      const button = event.currentTarget;
-      button.disabled = true;
-      const card = button.closest(".avd12-use-action");
-      const messageId = card.closest(".message").dataset.messageId;
-      const message = game.messages.get(messageId);
-      const action = button.dataset.action;
-      let actor = await game.actors.get(message.speaker.actor);
-     
-      const tokenDocument = canvas.tokens.placeables.find(t => t.id === message.speaker.token);
-      if (tokenDocument?.document?.actors) {
-        tokenDocument.document.actors.forEach(tokenActor =>{
-          actor = tokenActor;
-        })
-      }
-      if ( !actor ) {console.log("*AVD12 Error: No Actor*");return};
-      if ( !(game.user.isGM || actor.isOwner) ) return;
-
-      let actAction = await actor.getActionById(card.dataset.actionId);
-      if(!actAction){console.log("*AVD12 Error: No Action*");return;}
-      
-      let actorAction = foundry.utils.duplicate(actAction);
-      actorAction.type = action;
-      actorAction.action = "action";
-      switch ( action ) {
-        case "action":
-          await actor.rollFormula(actorAction, actorAction.system.attack_roll_formula, true);
-          break;
-        case "utility":
-          await actor.rollFormula(actorAction, actorAction.system.utility_roll_formula, true);
-          break;
-        case "damage":
-          await actor.rollFormula(actorAction, actorAction.system.damage_formula, true);
-          break;
-        case "damage-secondary":
-          await actor.rollFormula(actorAction, actorAction.system.secondary_damage_formula, true);
-          break;
-        case "damage-tertiary":
-          await actor.rollFormula(actorAction, actorAction.system.tertiary_damage_formula, true);
-          break;
-        case "formula":
-          await item.rollFormula({event, spellLevel}); 
-          break;
-        case "check":
-          break;
-        case "placeTemplate":
-          try {
-            //await dnd5e.canvas.AbilityTemplate.fromItem(item)?.drawPreview();
-          } catch(err) {}
-          break;
-        case "abilityCheck":
-          break;
-      }
-      button.disabled = false;
-  }
+ 
 
   async displaySpellCard(spell, options){
     const token = this.token;
@@ -760,6 +260,8 @@ export class Avd12Actor extends Actor {
       const card = (options.createMessage !== false) ? await ChatMessage.create(chatData) : chatData;
       Hooks.callAll("avd12.displayCard", this, card);
   }
+
+
   confirmHealth(dd){
       switch(dd.recoveryType){
         case "health":
@@ -844,32 +346,8 @@ export class Avd12Actor extends Actor {
     }else{
       console.log("AVD12 Error : No Spell Found");
     }
-   
   }
-  
-  useAction(actionId){ 
-    let action = null;
-    if(this.type == "npc"){
-      action = this.items.get(actionId);
-      if(!action)
-        return;
-    }else if(this.type == "character"){
-      action =  this.getMove(actionId);
-      if(action){
-        if(action.type == "action"){
-          this.updateIn(action._id, action.system.uses.current - 1, 3);
-        }else if(action.type == "reaction"){
-          this.updateIn(action._id, action.system.uses.current - 1, 2);
-        }
-      }else{
-        return;
-      }
-    }
-    let actionClone = foundry.utils.duplicate(action);
-    actionClone.actor = this;
-    actionClone.uses = this.findIn(action._id);
-    this.displayActionCard(actionClone, {});
-  }
+
 
   ZREALM_CRAFTS = ["Ammocraft", "Alchemy", "Smithing", "Cooking", "Scribing", "Runecarving", "Engineering"];
   ZREALM_SKILLS = [
@@ -1193,6 +671,20 @@ export class Avd12Actor extends Actor {
     } 
   }
 
+  rebuildTraits(){
+    for (let bonusKey in this.system.bonus) {
+      let bonus = this.system.bonus[bonusKey]
+      for (let content in bonus) {
+        let dataPath = bonusKey + "." + content
+        let availableTraits = this.items.filter(t => t.type == "trait" && t.system.computebonus && t.system.bonusdata == dataPath)
+        for (let trait of availableTraits) {
+          this.tmpTraits.push(trait);
+          bonus[content] += Number(trait.system.bonusvalue)
+        }
+      }
+    } 
+  }
+
   /* -------------------------------------------- */
   rebuildSkills() {
    
@@ -1202,15 +694,15 @@ export class Avd12Actor extends Actor {
         let dataPath = attrKey + ".skills." + skillKey + ".modifier"
         let skill = attr.skills[skillKey]
         skill.modifier = 0
+        /*
         let availableTraits = this.items.filter(t => t.type == "trait" && t.system.computebonus && t.system.bonusdata == dataPath)
         for (let trait of availableTraits) {
           skill.modifier += Number(trait.system.bonusvalue)
         }
-
+        */
         // Process additionnal bonuses
         for (let item of this.items) {
           if (item.system.bonus && item.system.bonus[skillKey]) {
-
             skill.modifier += Number(item.system.bonus[skillKey].value)
           }
         }
@@ -1236,15 +728,9 @@ export class Avd12Actor extends Actor {
     this.system.movement.walk.value += item.system.bonus.movespeed;
     this.system.bonus.spell.attack += item.system.bonus.spellattack;
     this.system.bonus.spell.damage += item.system.bonus.spelldamage;
-
-    //we are not utilizing power and stuff here... FLAG
-
     this.system.focus.focuspoints += item.system.bonus.power;
     this.system.focus.focusregen += item.system.bonus.powerregen;
     this.system.focus.burn_chance += item.system.bonus.burnchance;
-
-    //this.system.focus.maxfocuspoints
-    //this.system.focus.focuspoints += item.system.focus.focuspointsbonus;
   }
 
   rebuildBonuses(){
@@ -1253,14 +739,11 @@ export class Avd12Actor extends Actor {
     this.system.bonus.pierce.damage += this.system.bonus.weapon.damage;
     this.system.bonus.ranged.damage += this.system.bonus.weapon.damage;
     this.system.bonus.unarmed.damage += this.system.bonus.weapon.damage;
-
-
     this.system.bonus.blunt.attack += this.system.bonus.weapon.attack;
     this.system.bonus.slash.attack += this.system.bonus.weapon.attack;
     this.system.bonus.pierce.attack += this.system.bonus.weapon.attack;
     this.system.bonus.ranged.attack += this.system.bonus.weapon.attack;
     this.system.bonus.unarmed.attack += this.system.bonus.weapon.attack;
-
     this.system.health.max += this.system.health.bonus;
     this.system.movement.speed = this.system.movement.walk.value;
 
@@ -1273,9 +756,6 @@ export class Avd12Actor extends Actor {
       this.system.bonus.ranged.attack = highest;
     }
 
-    //reset 
-
-
     this.system.bonus.weapon.damage = 0;
     this.system.bonus.weapon.attack = 0;
     this.system.health.bonus = 0;
@@ -1284,6 +764,7 @@ export class Avd12Actor extends Actor {
   rebuildSize(){
     switch(Number(this.system.biodata.size)){
       case 2://small
+      console.log("twice");
         this.system.attributes.agility.skills.dodge.finalvalue += 1;
         this.system.attributes.agility.skills.stealth.finalvalue += 1;
         this.system.movement.walk.value -= 1;
@@ -1300,24 +781,10 @@ export class Avd12Actor extends Actor {
     }
   }
 
-  rebuildTraits(){
-    for (let bonusKey in this.system.bonus) {
-      let bonus = this.system.bonus[bonusKey]
-      for (let content in bonus) {
-        let dataPath = bonusKey + "." + content
-        let availableTraits = this.items.filter(t => t.type == "trait" && t.system.computebonus && t.system.bonusdata == dataPath)
-        for (let trait of availableTraits) {
-          this.tmpTraits.push(trait);
-          bonus[content] += Number(trait.system.bonusvalue)
-        }
-      }
-    } 
-  }
-
   rebuildMainTrait(){
-    switch (Number(this.system.trait)) {
+    switch (Number(this.system.origin_trait)) {
       case 1: //born adventurer
-          //do nothing
+          this.system.born_adventurer = true;
           break;
       case 2: //pact bound
           break;
@@ -1333,31 +800,21 @@ export class Avd12Actor extends Actor {
     }
   }
 
-  updateIn(id, value, max ){
-    for(let i = 0; i < this.system.usages.length; i++){
-      if(id == this.system.usages[i].key){
-        this.system.usages[i].uses = Math.min(max, Math.max(0, value));
-      }
-    }
-    this.update({ 'system.usages': this.system.usages})
+  useAction(actionId){ 
+    useAction(this,actionId);
   }
 
-  findIn(id){
-    for(let i = 0; i < this.system.usages.length; i++){
-      if(id == this.system.usages[i].key){
-        return this.system.usages[i];
-      }
-    }
+  updateActionUsages(id, value, max ){
+    updateActionUsages(this,id,value,max);
   }
 
-  addTo(id, value, maxValue){
-    for(let i = 0; i < this.system.usages.length; i++){
-      if(id == this.system.usages[i].key){
-        return;
-      }
-    }
-    this.system.usages.push({key:id, uses: value, max: maxValue}); 
-   }
+  findActionUsages(id){
+    findActionUsages(this,id);
+  }
+
+  addActionUsage(id, value, maxValue){
+    addActionUsage(this,id,value,maxValue);
+  }
 
   /* -------------------------------------------- */
   rebuildModules() {
@@ -1432,7 +889,7 @@ export class Avd12Actor extends Actor {
                   }
                 break;
                 case "action":
-                  let usages = this.findIn(data._id);
+                  let usages = this.findActionUsages(data._id);
                   if(usages){
                     data.system.uses = {current : usages.uses, max: 3}
                   }else{
@@ -1442,7 +899,7 @@ export class Avd12Actor extends Actor {
                   this.tmpActions.push(data);
                   break;
                 case "reaction":
-                  let reactionUsages = this.findIn(data._id);
+                  let reactionUsages = this.findActionUsages(data._id);
                   if(reactionUsages){
                     data.system.uses = {current : reactionUsages.uses, max: 2}
                   }else{
@@ -1490,11 +947,6 @@ export class Avd12Actor extends Actor {
     super._onUpdateEmbeddedDocuments(embeddedName, ...args)
   }
   
-
-  /* -------------------------------------------- */
-  getEncumbranceCapacity() {
-    return 1;
-  }
 
   /* -------------------------------------------- */
   getMoneys() {
@@ -1973,9 +1425,23 @@ export class Avd12Actor extends Actor {
 
   /* -------------------------------------------- */
   getModules() {
-    let comp = foundry.utils.duplicate(this.items.filter(item => item.type == 'module') || [])
+    let comp = foundry.utils.duplicate(this.items.filter(item => item.type == 'avd12module') || [])
     return comp
   }
+
+  getCoreModules(modules) {
+    let comp = foundry.utils.duplicate(modules.filter(item => item.system.type == 'core') || []);
+    return comp
+  }
+  getSecondaryModules(modules) {
+    let comp = foundry.utils.duplicate(modules.filter(item => item.system.type == 'secondary') || []);
+    return comp
+  }
+  getOriginModules(modules) {
+    let comp = foundry.utils.duplicate(modules.filter(item => (item.system.type == 'racial') || item.system.type == 'alteration') || []);
+    return comp
+  }
+
   getTraits() {
     return this.tmpTraits;
   }
@@ -1987,7 +1453,6 @@ export class Avd12Actor extends Actor {
   getFreeActions(){
     return this.tmpFreeActions;
   }
-
 
   santizeFormula(formula){
     let parseTokens = Avd12Utility.findAtTokens(formula)
@@ -2052,7 +1517,6 @@ export class Avd12Actor extends Actor {
     }
   }
 
-
   getActions(){
     return this.tmpActions;
   }
@@ -2062,6 +1526,10 @@ export class Avd12Actor extends Actor {
   getBallads(){
     return this.tmpBallads;
   }
+
+
+
+
 
   /* -------------------------------------------- */
   getRelevantAttribute(attrKey) {
@@ -2139,48 +1607,7 @@ export class Avd12Actor extends Actor {
     }
   }
 
-  /* ------------------------------------------- */
-  async buildContainerTree() {
-    let equipments = foundry.utils.duplicate(this.items.filter(item => item.type == "equipment") || [])
-    for (let equip1 of equipments) {
-      if (equip1.system.iscontainer) {
-        equip1.system.contents = []
-        equip1.system.contentsEnc = 0
-        for (let equip2 of equipments) {
-          if (equip1._id != equip2.id && equip2.system.containerid == equip1.id) {
-            equip1.system.contents.push(equip2)
-            let q = equip2.system.quantity ?? 1
-            equip1.system.contentsEnc += q * equip2.system.weight
-          }
-        }
-      }
-    }
 
-    // Compute whole enc
-    let enc = 0
-    for (let item of equipments) {
-      //item.data.idrDice = Avd12Utility.getDiceFromLevel(Number(item.data.idr))
-      if (item.system.equipped) {
-        if (item.system.iscontainer) {
-          enc += item.system.contentsEnc
-        } else if (item.system.containerid == "") {
-          let q = item.system.quantity ?? 1
-          enc += q * item.system.weight
-        }
-      }
-    }
-    for (let item of this.items) { // Process items/shields/armors
-      if ((item.type == "weapon" || item.type == "shield" || item.type == "armor") && item.system.equipped) {
-        let q = item.system.quantity ?? 1
-        enc += q * item.system.weight
-      }
-    }
-
-    // Store local values
-    this.encCurrent = enc
-    this.containersTree = equipments.filter(item => item.system.containerid == "") // Returns the root of equipements without container
-
-  }
 
 
   /* -------------------------------------------- */
@@ -2205,6 +1632,33 @@ export class Avd12Actor extends Actor {
     }
   }
 
+
+
+    //######## MODULES #############
+
+    getMinimumModulePoints() {
+      return getMinimumModulePoints(this);
+    }
+  
+    async updateModulePoints(delta){
+      updateModulePoints(this, delta);
+    }
+  
+    getTotalModulePoints(){
+      return getTotalModulePoints(this);
+    }
+  
+    getSpentModulePoints(module) {
+      return getSpentModulePoints(module);
+    }
+   
+
+  async updateModuleSelection(item, location, selection){
+    updateModuleSelection(this,item,location,selection)
+  } 
+
+   //######## END MODULES #############
+
   /* -------------------------------------------- */
   async preprocessItem(event, item, onDrop = false) {
 
@@ -2213,6 +1667,17 @@ export class Avd12Actor extends Actor {
       if (focusItem) {
         ui.notifications.warn("You already have a Focus Item in your equipment.")
         return false
+      }
+    }else if(item.type == "avd12module"){
+      if(!item.system.origin){
+        if(this.system.module_points < 2){
+          ui.notifications.warn("Not enough module points");
+          return false;
+        }else{(
+          await this.updateModulePoints(-2));
+        }
+      }else{
+         //this costs nothing
       }
     }
 
@@ -2325,12 +1790,31 @@ export class Avd12Actor extends Actor {
     return skill;
   }
 
+  async processDeletedItem(itemId){
+
+    const item = fromUuidSync(itemId)
+    let itemFull
+    if (item == undefined) {
+      itemFull = this.items.get( itemId)
+    } else {
+      if (item && item.system) {
+        itemFull = item
+      } else {
+        itemFull = await Avd12Utility.searchItem( item )
+      }
+    }
+    if(itemFull.type == "avd12module"){
+      //deleted a module
+      let refundedPoints = this.getSpentModulePoints(itemFull);
+      await this.updateModulePoints(refundedPoints);
+    }
+  }
+
   /* -------------------------------------------- */
   async deleteAllItemsByType(itemType) {
     let items = this.items.filter(item => item.type == itemType);
     await this.deleteEmbeddedDocuments('Item', items);
   }
-
   /* -------------------------------------------- */
   async addItemWithoutDuplicate(newItem) {
     let item = this.items.find(item => item.type == newItem.type && item.name.toLowerCase() == newItem.name.toLowerCase())
@@ -2366,10 +1850,8 @@ export class Avd12Actor extends Actor {
     }
   }
 
-  
   /* -------------------------------------------- */
   getCommonRollData() {
-
     let rollData = Avd12Utility.getBasicRollData()
     rollData.alias = this.name
     rollData.actorImg = this.img
@@ -2387,10 +1869,8 @@ export class Avd12Actor extends Actor {
       return
     }
     rollData.conditions = this.system.conditions;
-    
     Avd12Utility.rollAvd12(rollData)
   }
-
 
   /* -------------------------------------------- */
   async rollFormula(actionData, diceFormula, skipDialog) {
@@ -2402,29 +1882,8 @@ export class Avd12Actor extends Actor {
     await this.startRoll(rollData, skipDialog)
   }
 
-
   /* -------------------------------------------- */
   rollSkill(attrKey, skillKey, skipDialog) {
-    /*
-    let attr = this.system.attributes[attrKey]
-    let skill = attr.skills[skillKey]
-    if (skill) {
-      skill = foundry.utils.duplicate(skill)
-      skill.name = Avd12Utility.upperFirst(skillKey)
-      skill.attr = foundry.utils.duplicate(attr)
-      let rollData = this.getCommonRollData()
-      rollData.modifier = this.system.bonus[weapon.system.weapontype]
-      rollData.mode = "weapon"
-      rollData.weapon = weapon
-      rollData.img = weapon.img
-      rollData.conditions = this.system.conditions;  
-      this.startRoll(rollData, skipDialog)
-
-    } else {
-      ui.notifications.warn("Unable to find the relevant weapon ")
-    }
-
-    */
     let attr = this.system.attributes[attrKey]
     let skill = attr.skills[skillKey]
     if (skill) {
@@ -2464,18 +1923,6 @@ export class Avd12Actor extends Actor {
       rollData.img = skill.img
       this.startRoll(rollData)
     }
-  }
-
-  async changeStance(stanceId){
-    this.items.forEach(async item => {
-      if(item.type == "stance"){   
-        item.system.active = false;
-        await this.updateEmbeddedDocuments("Item", [{ _id: item.id, 'system.active': false }]);
-      }
-    })
-    let stance = this.items.get(stanceId);
-    stance.system.active = true;
-    await this.updateEmbeddedDocuments("Item", [{ _id: stance.id, 'system.active': true }]);
   }
 
   getSpellShotAttack(){
@@ -2611,7 +2058,6 @@ export class Avd12Actor extends Actor {
     const updatedFocus = Math.max(0, this.system.focus.currentfocuspoints -= parseInt(spellCost));
     this.update({'system.focus.currentfocuspoints': updatedFocus})
   }
-  /* -------------------------------------------- */
 
   /* -------------------------------------------- */
   rollWeapon(weaponId, skipDialog) {
@@ -2743,7 +2189,6 @@ export class Avd12Actor extends Actor {
     }
   }
 
-
   async rollWeaponDamage(userData, weapon){
     let baseDice = ""
     if(weapon.hitType == "normal"){
@@ -2820,7 +2265,6 @@ export class Avd12Actor extends Actor {
     }
   }
 
-  
   /* -------------------------------------------- */
   async rollQuickWeaponDamage(weaponId, hitType) {
     let weapon = this.items.get(weaponId)
@@ -2880,7 +2324,6 @@ export class Avd12Actor extends Actor {
     restData.breather = true;
     this.update({ 'system.usages': this.system.usages})
     Avd12Utility.createRestChatMessage(restData);
-
   }
 
   async takeRest(data, favorable){

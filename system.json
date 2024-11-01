@@ -212,7 +212,18 @@
         "ASSISTANT": "OWNER"
       }
     },
-
+    {
+      "type": "Item",
+      "label": "Cultural Modules",
+      "name": "cultural_modules",
+      "path": "packs/cultural_modules",
+      "system": "avd12",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
     {
       "type": "Item",
       "label": "Core Modules",

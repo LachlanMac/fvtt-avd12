@@ -3,11 +3,13 @@
   <header class="sheet-header">
     {{> systems/avd12/templates/actors/partials/header.hbs}}
   </header>
-  {{> systems/avd12/templates/actors/partials/navigation.hbs}}
+
 
   {{#if (eq type "character")}}
-  <section class="sheet-body">
-    {{!-- Skills Tab --}}
+    {{#if (eq created true)}}
+    {{> systems/avd12/templates/actors/partials/navigation.hbs}}
+    <section class="sheet-body">
+        {{!-- Skills Tab --}}
     <div class="tab main" data-group="primary" data-tab="main">
       <div class="grid-2col">
         <div>
@@ -57,8 +59,16 @@
         {{> systems/avd12/templates/actors/partials/biography.hbs}}
     </div>
   </section>
+    {{else}}
+         <button id="create-character" class="flex0">Character Creator</button>
+    {{/if}}
+
+
+    
   {{else if (eq type "npc")}}
+   {{> systems/avd12/templates/actors/partials/navigation.hbs}}
     <section class="sheet-body">
+   
     {{!-- Skills Tab --}}
     <div class="tab main" data-group="primary" data-tab="main">
       <div class="grid-2col">

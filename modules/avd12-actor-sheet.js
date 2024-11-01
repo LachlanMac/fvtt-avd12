@@ -50,6 +50,7 @@ export class Avd12ActorSheet extends ActorSheet {
       hasFocusEquipped : this.actor.hasFocusEquipped(),
       title: this.title,
       id: this.actor.id,
+      created:this.actor.system.created,
       bonuses: this.actor.system.bonus,
       type: this.actor.type,
       img: this.actor.img,
@@ -58,7 +59,11 @@ export class Avd12ActorSheet extends ActorSheet {
       cssClass: this.isEditable ? "editable" : "locked",
       system: foundry.utils.duplicate(this.object.system),
       limited: this.object.limited,
+      total_module_points:this.actor.getTotalModulePoints(),
       modules: this.actor.getModules(),
+      origin_modules: this.actor.getOriginModules(this.actor.getModules()),
+      core_modules: this.actor.getCoreModules(this.actor.getModules()),
+      secondary_modules: this.actor.getSecondaryModules(this.actor.getModules()),
       traits: this.actor.getTraits(),
       craftingTraits: this.actor.getCraftingTraits(),
       character: this.actor.type == "character",
@@ -123,6 +128,12 @@ export class Avd12ActorSheet extends ActorSheet {
     html.find('#essence-burn-icon').click(ev => {
       this.actor.essenceBurn();
     });    
+
+    html.find('#create-character').click(ev =>{
+      this.actor.createCharacter();
+      
+    });
+
     // Update Inventory Item
     html.find('.item-edit').click(ev => {
       const li = $(ev.currentTarget).parents(".item")
@@ -158,6 +169,7 @@ export class Avd12ActorSheet extends ActorSheet {
     } );
 
 
+
     html.find('.quantity-minus').click(event => {
       const li = $(event.currentTarget).parents(".item");
       this.actor.incDecQuantity( li.data("item-id"), -1 );
@@ -170,6 +182,7 @@ export class Avd12ActorSheet extends ActorSheet {
       const li = $(event.currentTarget).parents(".item")
       this.actor.incDecAmmo( li.data("item-id"), -1 );
     } );
+
     html.find('.ammo-plus').click(event => {
       const li = $(event.currentTarget).parents(".item")
       this.actor.incDecAmmo( li.data("item-id"), +1 )
@@ -185,6 +198,12 @@ export class Avd12ActorSheet extends ActorSheet {
     html.find('#add-health-btn').click((event) => {
       this.actor.addHealth();
     });
+
+    html.find("#change-module-points").change(event => {
+      let value = Number(event.currentTarget.value);
+      this.actor.updateModulePoints(value - this.actor.system.module_points);
+    });
+
 
     html.find('.roll-skill').click((event) => {
       let attrKey = $(event.currentTarget).data("attr-key")
@@ -254,7 +273,6 @@ export class Avd12ActorSheet extends ActorSheet {
       this.actor.showWeaponDamageDialog(weaponId, "throw", shift)
     });
 
-
     html.find('.roll-thrown-weapon-damage').click((event) => {
       const li = $(event.currentTarget).parents(".item");
       const weaponId = li.data("item-id")
@@ -290,6 +308,8 @@ export class Avd12ActorSheet extends ActorSheet {
       let value = Number(ev.currentTarget.value);
       this.actor.update( { [`${fieldName}`]: value } );
     });    
+
+
   }
   
   /* -------------------------------------------- */

@@ -14,6 +14,8 @@ export class Avd12Combat extends Combat {
    * @param {Object} [messageOptions={}] - Additional options for the message. Not used in this implementation.
    * @returns {Promise<Avd12Combat>} - A promise that resolves with the Avd12Combat instance once initiative has been rolled for all provided combatants.
    */
+
+  
   async rollInitiative(ids, formula = undefined, messageOptions = {} ) {
     ids = typeof ids === "string" ? [ids] : ids; // Ensure 'ids' is an array.
     for (let cId = 0; cId < ids.length; cId++) {
