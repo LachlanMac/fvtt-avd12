@@ -1,6 +1,6 @@
 export async function createCharacter(){
     //set defaults
-    const compendiumPackName = 'avd12.armors';
+    const compendiumPackName = 'avd12.armor';
     const itemName = 'Robe';
     const pack = game.packs.get(compendiumPackName);
     await pack.getIndex();

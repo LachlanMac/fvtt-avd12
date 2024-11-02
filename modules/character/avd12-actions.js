@@ -1,49 +1,41 @@
-export function useAction(actor, actionId){ 
-    let action = null;
-    if(actor.type == "npc"){
+export async function useAction(actor, actionId) { 
+  let action = null;
+  if (actor.type === "npc") {
       action = actor.items.get(actionId);
-      if(!action)
-        return;
-    }else if(actor.type == "character"){
-      action =  actor.getMove(actionId);
-      if(action){
-        if(action.type == "action"){
-          actor.updateIn(action._id, action.system.uses.current - 1, 3);
-        }else if(action.type == "reaction"){
-          actor.updateIn(action._id, action.system.uses.current - 1, 2);
-        }
-      }else{
-        return;
+  } else if (actor.type === "character") {
+      action = actor.getMove(actionId);
+      if (action) {
+          if (action.type === "action") {
+              await updateActionUsages(actor, action.system.avd12_id, action.system.uses.current - 1, 3);
+          } else if (action.type === "reaction") {
+              await updateActionUsages(actor, action.system.avd12_id, action.system.uses.current - 1, 2);
+          }
       }
-    }
-    let actionClone = foundry.utils.duplicate(action);
-    actionClone.actor = actor;
-    actionClone.uses = actor.findActionUsages(action._id);
-    actor.displayActionCard(actionClone, {});
   }
+  if (!action) return;
 
-  export function updateActionUsages(actor, id, value, max ){
-    for(let i = 0; i < actor.system.usages.length; i++){
-      if(id == actor.system.usages[i].key){
-        actor.system.usages[i].uses = Math.min(max, Math.max(0, value));
-      }
-    }
-    actor.update({ 'system.usages': actor.system.usages})
+  const actionClone = foundry.utils.duplicate(action);
+  actionClone.actor = actor;
+  actionClone.uses = findActionUsages(actor, action.system.avd12_id);
+  actor.displayActionCard(actionClone, {});
+}
+
+export async function updateActionUsages(actor, id, value, max) {
+  const usage = findActionUsages(actor, id);
+  if (usage) {
+      usage.uses = Math.min(max, Math.max(0, value));
+      await actor.update({ 'system.usages': actor.system.usages });
   }
+}
 
-  export function findActionUsages(actor, id){
-    for(let i = 0; i < actor.system.usages.length; i++){
-      if(id == actor.system.usages[i].key){
-        return actor.system.usages[i];
-      }
-    }
+export function findActionUsages(actor, id) {
+  let x = actor.system.usages.find(usage => usage.key === id)
+  return x;
+}
+
+export async function addActionUsage(actor, id, value, maxValue) {
+  if (!findActionUsages(actor, id)) {
+      actor.system.usages.push({ key: id, uses: value, max: maxValue });
+      await actor.update({ 'system.usages': actor.system.usages });
   }
-
-  export function addActionUsage(actor, id, value, maxValue){
-    for(let i = 0; i < actor.system.usages.length; i++){
-      if(id == actor.system.usages[i].key){
-        return;
-      }
-    }
-    actor.system.usages.push({key:id, uses: value, max: maxValue}); 
-   }
+}

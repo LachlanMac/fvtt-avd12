@@ -251,7 +251,7 @@ export class Avd12ActorSheet extends ActorSheet {
     
     html.find('.use-action').click((event) => {
       const li = $(event.currentTarget).parents(".item");
-      const actionId = li.data("item-id");
+      const actionId = li.data("use-id");
       this.actor.useAction(actionId)
     });
 

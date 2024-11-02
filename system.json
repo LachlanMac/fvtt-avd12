@@ -153,9 +153,9 @@
     },
     {
       "type": "Item",
-      "label": "Armors",
-      "name": "armors",
-      "path": "packs/armors",
+      "label": "Armor",
+      "name": "armor",
+      "path": "packs/armor",
       "system": "avd12",
       "flags": {},
       "ownership": {

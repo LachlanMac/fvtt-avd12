@@ -16,7 +16,7 @@
           </span>
       </li>
        {{#each actions as |action key|}}
-      <li class="item flexrow list-item list-item-shadow " data-item-id="{{action._id}}">
+      <li class="item flexrow list-item list-item-shadow " data-use-id="{{action.system.avd12_id}}" data-item-id="{{action._id}}">
         <a class="item-edit item-name-img flex-center" style="margin-left:4px;" title="Edit Item">
             <img class="sheet-competence-img flex-center" src="{{action.img}}" />
         </a>
@@ -58,7 +58,7 @@
         </div>
       </li>
       {{#each actions as |action key|}}
-      <li class="item flexrow list-item list-item-shadow" data-item-id="{{action._id}}">
+      <li class="item flexrow list-item list-item-shadow"  data-item-id="{{action._id}}">
         <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
             src="{{action.img}}" /></a>
         <a class="flex1  use-action big-label side-border"><p>{{action.name}}</p></a>
@@ -89,7 +89,7 @@
           </div>
         </li>
         {{#each reactions as |action key|}}
-        <li class="item flexrow list-item list-item-shadow" data-item-id="{{action._id}}">
+        <li class="item flexrow list-item list-item-shadow" data-use-id="{{action.system.avd12_id}}" data-item-id="{{action._id}}">
           <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
               src="{{action.img}}" /></a>
           <a class="flex1 big-label use-action side-border"><p>{{action.name}}</p></a>
@@ -183,7 +183,7 @@
           </div>
         </li>
         {{#each freeactions as |action key|}}
-        <li class="item flexrow list-item list-item-shadow" data-item-id="{{action._id}}">
+        <li class="item flexrow list-item list-item-shadow" data-use-id="{{action.system.avd12_id}}" data-item-id="{{action._id}}">
           <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
               src="{{action.img}}" /></a>
           <a class="flex1 big-label use-action side-border"><p>{{action.name}}</p></a>

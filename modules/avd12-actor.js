@@ -15,7 +15,7 @@ import {importData} from "./character/avd12-character-importer.js"
 import {parseStances, addStance, changeStance} from "./character/avd12-stances.js"
 import {rebuildNPCSkills} from "./npc/avd12-npc.js"
 import {parseActiveEffects, getBestLightSource} from "./character/avd12-effects.js"
-import {getMinimumModulePoints, updateModulePoints, getTotalModulePoints, getSpentModulePoints, updateModuleSelection} from  "./character/avd12-modules.js"
+import {getMinimumModulePoints, updateModulePoints, getTotalModulePoints, getSpentModulePoints, updateModuleSelection, rebuildModules, rebuildModules2} from  "./character/avd12-modules.js"
 import {useAction,updateActionUsages,findActionUsages,addActionUsage} from  "./character/avd12-actions.js"
 /* -------------------------------------------- */
 /* -------------------------------------------- */
@@ -49,8 +49,9 @@ export class Avd12Actor extends Actor {
     }
     return actor;
   }
-
+  
   async prepareData() {
+    //await this.purgeNonCustomActions();
     super.prepareData()
   }
 
@@ -91,9 +92,9 @@ export class Avd12Actor extends Actor {
     }else if (this.type == 'character' ) { 
       this.system.movement.walk.value = 6;
       this.system.health.max = 0;
-  
+      
       this.clearData()
-      this.rebuildSkills()
+      this.rebuildSkills() //rebuild skills based on attributes + items
       this.rebuildSize()
       this.rebuildMainTrait()
       this.updateModulePoints(0);
@@ -101,6 +102,13 @@ export class Avd12Actor extends Actor {
       this.system.focus.focuspoints = 0;
       this.system.focus.focusregen = 0;
       this.system.focus.castpenalty = 0;
+      
+
+      this.rebuildModules2();
+
+
+      this.setItemUsages();
+      
       
       //this.rebuildTraits()
       //this.rebuildMainTrait()
@@ -117,6 +125,18 @@ export class Avd12Actor extends Actor {
       
     }
     super.prepareDerivedData();
+  }
+
+  async setItemUsages(){
+    this.tmpActions.forEach(action =>{  
+      let usages = this.findActionUsages(action.system.avd12_id);
+      if(usages){
+        action.system.uses = {current : usages.uses, max: action.system.uses.max}
+      }else{
+        action.system.uses = {current : action.system.uses.max, max: action.system.uses.max}
+        this.addActionUsage(action.system.avd12_id, action.system.uses.max, action.system.uses.max);
+      }
+    })
   }
 
   createCharacter(){
@@ -671,6 +691,22 @@ export class Avd12Actor extends Actor {
     } 
   }
 
+
+  async purgeNonCustomActions() {
+    // Filter out non-custom actions
+    const nonCustomActions = this.items.filter(item => item.type === "action" && !item.system.custom);
+
+    // Remove each non-custom action
+    const deleteIds = nonCustomActions.map(action => action.id);
+    console.log("---- MOdules to be purged -----", deleteIds);
+    if (deleteIds.length > 0) {
+        await this.deleteEmbeddedDocuments("Item", deleteIds);
+    }
+
+    console.log(`Purged ${nonCustomActions.length} non-custom actions from ${this.name}`);
+}
+
+
   rebuildTraits(){
     for (let bonusKey in this.system.bonus) {
       let bonus = this.system.bonus[bonusKey]
@@ -809,7 +845,7 @@ export class Avd12Actor extends Actor {
   }
 
   findActionUsages(id){
-    findActionUsages(this,id);
+    return findActionUsages(this,id);
   }
 
   addActionUsage(id, value, maxValue){
@@ -818,119 +854,15 @@ export class Avd12Actor extends Actor {
 
   /* -------------------------------------------- */
   rebuildModules() {
-    this.tmpCraftingTraits = [];
-    this.tmpTraits = [];
-    this.tmpFreeActions = [];
-    this.tmpActions = [];
-    this.tmpReactions = [];
-    this.tmpBallads = [];
-    this.tmpStances = [];
-
-    //get loose traits
-    let totalTraits= this.items.filter(item => item.type == 'trait')
-    totalTraits.forEach(item => {
-      switch(item.system.traittype){
-        case "skill":
-        case "bonus":
-        case "mitigation":  
-          _.set(this.system, item.system.bonusdata, _.get(this.system, item.system.bonusdata) + item.system.bonusvalue)
-          break;
-        case "feature":
-          //maybe decide what to do here?
-          break;
-        default:
-          break;
-      }
-    })
-
-    //get traits from modules
-    let totalModules = this.items.filter(item => item.type == 'module')
-    totalModules.forEach(item => {
-      let levels = item.system.levels;
-      levels.forEach(level =>{
-        level.choices.forEach(choice => {
-          if(choice.selected){
-            let features = choice.features;
-            for (var prop in features) {
-              let data = features[prop];
-              switch(data.type){
-                case "trait" :
-                 
-                  switch(data.system.traittype){
-                    case "skill":
-                    case "bonus":
-                    case "mitigation":
-                      _.set(this.system, data.system.bonusdata, _.get(this.system, data.system.bonusdata) + data.system.bonusvalue)
-                      break;
-                    case "elemental":
-                      this.system.mitigation.fire.value +=data.system.bonusvalue;
-                      this.system.mitigation.cold.value+=data.system.bonusvalue;
-                      this.system.mitigation.lightning.value+=data.system.bonusvalue;
-                      break;
-                      case "allcraft":
-                        this.system.bonus.craft.smithing += data.system.bonusvalue
-                        this.system.bonus.craft.runecarving += data.system.bonusvalue
-                        this.system.bonus.craft.scribing += data.system.bonusvalue
-                        this.system.bonus.craft.engineering += data.system.bonusvalue
-                        this.system.bonus.craft.cooking += data.system.bonusvalue
-                        this.system.bonus.craft.alchemy += data.system.bonusvalue
-                        this.system.bonus.craft.ammocraft += data.system.bonusvalue
-                        break;
-                    case "feature":
-                      this.tmpTraits.push(data);
-                      //maybe decide what to do here?
-                      break;
-                    case "crafting":
-                      this.tmpCraftingTraits.push(data);
-                      break;
-                    default:
-              
-                      break;
-                  }
-                break;
-                case "action":
-                  let usages = this.findActionUsages(data._id);
-                  if(usages){
-                    data.system.uses = {current : usages.uses, max: 3}
-                  }else{
-                    data.system.uses = {current : 3, max: 3}
-                    this.addTo(data._id, 3, 3);
-                  }
-                  this.tmpActions.push(data);
-                  break;
-                case "reaction":
-                  let reactionUsages = this.findActionUsages(data._id);
-                  if(reactionUsages){
-                    data.system.uses = {current : reactionUsages.uses, max: 2}
-                  }else{
-                    data.system.uses = {current : 2, max: 2}
-                    this.addTo(data._id, 2, 2);
-                  }
-                  this.tmpReactions.push(data);
-                  break;  
-                case "freeaction":
-                  this.tmpFreeActions.push(data);
-                  break;
-                case "ballad":
-                  this.tmpBallads.push(data);
-                  break;
-                case "feature":
-                  this.tmpTraits.push(data);
-                  break;
-                break;
-              default:
-                break;
-              }
-            }
-          }
-        })
-      })
-    })
-    this.update({ 'system.usages': this.system.usages })
-    return;
+    rebuildModules(this);
+  }
+  rebuildModules2() {
+    rebuildModules2(this);
   }
 
   clearData(){
+    
+
     for (let mitiKey in this.system.mitigation) {
       let mitigation = this.system.mitigation[mitiKey]
       mitigation.value = 0
@@ -1505,10 +1437,10 @@ export class Avd12Actor extends Actor {
     return this.sanitizeItem(list);
   }
 
-  async getActionById(id){
+  getActionById(id){
     if(this.type == "character"){
       for(let i in this.tmpActions){
-        if(this.tmpActions[i]._id == id){
+        if(this.tmpActions[i].system.avd12_id == id){
           return this.tmpActions[i];
         }
       }
@@ -1526,10 +1458,6 @@ export class Avd12Actor extends Actor {
   getBallads(){
     return this.tmpBallads;
   }
-
-
-
-
 
   /* -------------------------------------------- */
   getRelevantAttribute(attrKey) {
@@ -2170,21 +2098,20 @@ export class Avd12Actor extends Actor {
   }
 
   getMove(id){
-
     for(let i = 0; i < this.tmpActions.length; i++){
-      if(id == this.tmpActions[i]._id)
+      if(id == this.tmpActions[i].system.avd12_id)
         return this.tmpActions[i];
     }
     for(let i = 0; i < this.tmpReactions.length; i++){
-      if(id == this.tmpReactions[i]._id)
+      if(id == this.tmpReactions[i].system.avd12_id)
       return this.tmpReactions[i];
     }
     for(let i = 0; i < this.tmpFreeActions.length; i++){
-      if(id == this.tmpFreeActions[i]._id)
+      if(id == this.tmpFreeActions[i].system.avd12_id)
       return this.tmpFreeActions[i];
     }
     for(let i = 0; i < this.tmpBallads.length; i++){
-      if(id == this.tmpBallads[i]._id)
+      if(id == this.tmpBallads[i].system.avd12_id)
       return this.tmpBallads[i];
     }
   }
@@ -2317,7 +2244,18 @@ export class Avd12Actor extends Actor {
 
   async takeBreather(){
     this.system.usages.forEach(use => {
-      use.uses = use.max;
+      let action = this.getActionById(use.key);
+      if(action){
+        console.log(action);
+        if(!action.system.daily){
+          use.uses = use.max;
+        }
+        
+      }else{
+        use.uses = use.max;
+      }
+
+      
     })
     let restData = {};
     restData.actor = this;

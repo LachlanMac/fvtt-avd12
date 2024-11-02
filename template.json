@@ -555,6 +555,7 @@
     ],
     "templates": {
       "roll":{
+        "avd12_id":"0",
         "utility_roll":false,
         "utility_roll_formula": "1d12",
         "utility_roll_bonus_modifier": "0",
@@ -654,7 +655,6 @@
     "action": {
       "templates": ["roll"],
       "description": ""
-     
     },
     "reaction": {
       "templates": ["roll"],
@@ -753,28 +753,28 @@
       "description": ""
     },"avd12module":{
       "type":"core",
-      "name":"Default Module",
+      "avd12_id":"0",
       "description":"",
       "origin":false,
       "options":{
-        "option_1":{},
-        "option_2a":{},
-        "option_2b":{},
-        "option_3":{},
-        "option_4a":{},
-        "option_4b":{},
-        "option_5":{},
-        "option_6a":{},
-        "option_6b":{},
-        "option_7":{},
-        "option_8a":{},
-        "option_8b":{},
-        "option_9":{},
-        "option_10a":{},
-        "option_10b":{},
-        "option_11":{},
-        "option_a":{},
-        "option_b":{}
+        "option_1":{"name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0},
+        "option_2a":{ "name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0},
+        "option_2b":{ "name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0},
+        "option_3":{ "name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0},
+        "option_4a":{ "name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0},
+        "option_4b":{ "name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0},
+        "option_5":{ "name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0},
+        "option_6a":{ "name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0},
+        "option_6b":{ "name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0},
+        "option_7":{ "name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0},
+        "option_8a":{ "name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0},
+        "option_8b":{ "name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0},
+        "option_9":{ "name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0},
+        "option_10a":{ "name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0},
+        "option_10b":{ "name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0},
+        "option_11":{ "name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0},
+        "option_a":{ "name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0},
+        "option_b":{ "name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0}
       }
     }
   }
