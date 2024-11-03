@@ -120,10 +120,10 @@ export class Avd12Actor extends Actor {
   }
 
   async addAllItems(actor) {
+
+    const combinedAbilities = [...actor.tmpActions, ...actor.tmpFreeActions, ...actor.tmpReactions];
     const itemSets = [
-        { items: actor.tmpActions, packName: "avd12.actions", key: 'tmpActions' },
-        { items: actor.tmpFreeActions, packName: "avd12.freeactions", key: 'tmpFreeActions' },
-        { items: actor.tmpReactions, packName: "avd12.reactions", key: 'tmpReactions' },
+        { items: combinedAbilities, packName: "avd12.abilities", key: 'combinedAbilities' },
         { items: actor.tmpLanguages, packName: "avd12.languages", key: 'tmpLanguages' },
         { items: actor.tmpStances, packName: "avd12.stances", key: 'tmpStances' },
         { items: actor.tmpImmunities, packName: "avd12.immunities", key: 'tmpImmunities' }

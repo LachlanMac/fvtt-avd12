@@ -45,9 +45,9 @@
   "packs": [
     {
       "type": "Item",
-      "label": "Accessories",
-      "name": "accessories",
-      "path": "packs/accessories",
+      "label": "AVD12 Modules",
+      "name": "modules",
+      "path": "packs/modules",
       "system": "avd12",
       "flags": {},
       "ownership": {
@@ -57,9 +57,9 @@
     },
     {
       "type": "Item",
-      "label": "Boots",
-      "name": "boots",
-      "path": "packs/boots",
+      "label": "AVD12 Abilities",
+      "name": "abilities",
+      "path": "packs/abilities",
       "system": "avd12",
       "flags": {},
       "ownership": {
@@ -69,9 +69,9 @@
     },
     {
       "type": "Item",
-      "label": "Cloaks",
-      "name": "cloaks",
-      "path": "packs/cloaks",
+      "label": "AVD12 Equipment",
+      "name": "equipment",
+      "path": "packs/equipment",
       "system": "avd12",
       "flags": {},
       "ownership": {
@@ -81,128 +81,7 @@
     },
     {
       "type": "Item",
-      "label": "Actions",
-      "name": "actions",
-      "path": "packs/actions",
-      "system": "avd12",
-      "flags": {},
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
-    },
-    {
-      "type": "Item",
-      "label": "Reactions",
-      "name": "reactions",
-      "path": "packs/reactions",
-      "system": "avd12",
-      "flags": {},
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
-    },
-    
-    {
-      "type": "Item",
-      "label": "Free Actions",
-      "name": "freeactions",
-      "path": "packs/freeactions",
-      "system": "avd12",
-      "flags": {},
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
-    },
-    {
-      "type": "Item",
-      "label": "Languages",
-      "name": "languages",
-      "path": "packs/languages",
-      "system": "avd12",
-      "flags": {},
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
-    },
-    {
-      "type": "Item",
-      "label": "Enhancements",
-      "name": "enhancements",
-      "path": "packs/enhancements",
-      "system": "avd12",
-      "flags": {},
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
-    },
-    {
-      "type": "Item",
-      "label": "Gloves",
-      "name": "gloves",
-      "path": "packs/gloves",
-      "system": "avd12",
-      "flags": {},
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
-    },
-    {
-      "type": "Item",
-      "label": "Headwear",
-      "name": "headwear",
-      "path": "packs/headwear",
-      "system": "avd12",
-      "flags": {},
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
-    },
-    {
-      "type": "Item",
-      "label": "Traits",
-      "name": "traits",
-      "path": "packs/traits",
-      "system": "avd12",
-      "flags": {},
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
-    },
-    {
-      "type": "Item",
-      "label": "Shields",
-      "name": "shields",
-      "path": "packs/shields",
-      "system": "avd12",
-      "flags": {},
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
-    },
-    {
-      "type": "Item",
-      "label": "Potions",
-      "name": "potions",
-      "path": "packs/potions",
-      "system": "avd12",
-      "flags": {},
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
-    },
-    {
-      "type": "Item",
-      "label": "Items",
+      "label": "AVD12 Items",
       "name": "items",
       "path": "packs/items",
       "system": "avd12",
@@ -214,9 +93,9 @@
     },
     {
       "type": "Item",
-      "label": "Armor",
-      "name": "armor",
-      "path": "packs/armor",
+      "label": "AVD12 Languages",
+      "name": "languages",
+      "path": "packs/languages",
       "system": "avd12",
       "flags": {},
       "ownership": {
@@ -226,7 +105,19 @@
     },
     {
       "type": "Item",
-      "label": "Spells",
+      "label": "AVD12 Traits",
+      "name": "traits",
+      "path": "packs/traits",
+      "system": "avd12",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "type": "Item",
+      "label": "AVD12 Spells",
       "name": "spells",
       "path": "packs/spells",
       "system": "avd12",
@@ -238,19 +129,7 @@
     },
     {
       "type": "Item",
-      "label": "Weapons",
-      "name": "weapons",
-      "path": "packs/weapons",
-      "system": "avd12",
-      "flags": {},
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
-    },
-    {
-      "type": "Item",
-      "label": "Stances",
+      "label": "AVD12 Stances",
       "name": "stances",
       "path": "packs/stances",
       "system": "avd12",
@@ -262,70 +141,9 @@
     },
     {
       "type": "Item",
-      "label": "Ballads",
-      "name": "ballads",
-      "path": "packs/ballads",
-      "system": "avd12",
-      "flags": {},
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
-    },
-    {
-      "type": "Item",
-      "label": "Immunities",
+      "label": "AVD12 Immunities",
       "name": "immunities",
       "path": "packs/immunities",
-      "system": "avd12",
-      "flags": {},
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
-    },
-    {
-      "type": "Item",
-      "label": "Origin Modules",
-      "name": "origin_modules",
-      "path": "packs/origin_modules",
-      "system": "avd12",
-      "flags": {},
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
-    },
-    {
-      "type": "Item",
-      "label": "Cultural Modules",
-      "name": "cultural_modules",
-      "path": "packs/cultural_modules",
-      "system": "avd12",
-      "flags": {},
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
-    },
-    {
-      "type": "Item",
-      "label": "Core Modules",
-      "name": "core_modules",
-      "path": "packs/core_modules",
-      "system": "avd12",
-      "flags": {},
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
-    },
-
-    {
-      "type": "Item",
-      "label": "Secondary Modules",
-      "name": "secondary_modules",
-      "path": "packs/secondary_modules",
       "system": "avd12",
       "flags": {},
       "ownership": {
