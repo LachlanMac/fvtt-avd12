@@ -101,7 +101,14 @@ export class Avd12Utility {
     Handlebars.registerHelper('count', function (list) {
       return list.length;
     })
-
+    
+    Handlebars.registerHelper('range', function (min, max, options) {
+      let result = [];
+      for (let i = min; i <= max; i++) {
+        result.push(i);
+      }
+      return result;
+    });
 
     
     Handlebars.registerHelper('map', function (text, actor) {

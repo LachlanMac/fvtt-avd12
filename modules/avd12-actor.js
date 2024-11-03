@@ -10,13 +10,13 @@ import { Avd12DamageDialog } from "./avd12-damage-dialog.js";
 import { Avd12HealthDialog } from "./avd12-health-dialog.js";
 import { Avd12SpellAttackDialog } from "./avd12-spell-attack-dialog.js";
 import { Avd12WeaponDamageDialog } from "./avd12-weapon-damage-dialog.js";
-
 import {importData} from "./character/avd12-character-importer.js"
 import {parseStances, addStance, changeStance} from "./character/avd12-stances.js"
 import {rebuildNPCSkills} from "./npc/avd12-npc.js"
 import {parseActiveEffects, getBestLightSource} from "./character/avd12-effects.js"
-import {getMinimumModulePoints, updateModulePoints, getTotalModulePoints, getSpentModulePoints, updateModuleSelection, rebuildModules, rebuildModules2} from  "./character/avd12-modules.js"
-import {useAction,updateActionUsages,findActionUsages,addActionUsage} from  "./character/avd12-actions.js"
+import {getMinimumModulePoints, updateModulePoints, getTotalModulePoints, getSpentModulePoints, updateModuleSelection, rebuildModules} from  "./character/avd12-modules.js"
+import {useAction,resetActions} from  "./character/avd12-actions.js"
+import {changeBallad} from  "./character/avd12-ballads.js"
 /* -------------------------------------------- */
 /* -------------------------------------------- */
 /**
@@ -49,7 +49,7 @@ export class Avd12Actor extends Actor {
     }
     return actor;
   }
-  
+
   async prepareData() {
     //await this.purgeNonCustomActions();
     super.prepareData()
@@ -84,15 +84,17 @@ export class Avd12Actor extends Actor {
         }else if(item.type == "weapon"){
           //build weapon
         }
-
       });
       this.rebuildNPCSkills()
       this.parseActiveEffects()
 
     }else if (this.type == 'character' ) { 
+
+      if(!this.system.created){
+
+      }
       this.system.movement.walk.value = 6;
       this.system.health.max = 0;
-      
       this.clearData()
       this.rebuildSkills() //rebuild skills based on attributes + items
       this.rebuildSize()
@@ -102,30 +104,67 @@ export class Avd12Actor extends Actor {
       this.system.focus.focuspoints = 0;
       this.system.focus.focusregen = 0;
       this.system.focus.castpenalty = 0;
-      
-
-      this.rebuildModules2();
-
-
-      this.setItemUsages();
-      
-      
-      //this.rebuildTraits()
-      //this.rebuildMainTrait()
-      //this.rebuildModules()
-      //this.rebuildBonuses()
-      //this.rebuildMitigations()
-      //this.rebuildEquipment()
-      this.parseStances()
-      this.parseActiveEffects()
-      //this.rebuildBonuses()
-  
+      this.rebuildModules();
+      if(this.system.created){
+      this.addAllItems(this);
+      this.rebuildEquipment();
+      this.parseStances();
+      this.parseActiveEffects();
+      this.rebuildBonuses();
+      }
       
     }else if (this.type == "expedition"){
       
     }
     super.prepareDerivedData();
   }
+
+  async addAllItems(actor) {
+    const itemSets = [
+        { items: actor.tmpActions, packName: "avd12.actions", key: 'tmpActions' },
+        { items: actor.tmpFreeActions, packName: "avd12.freeactions", key: 'tmpFreeActions' },
+        { items: actor.tmpReactions, packName: "avd12.reactions", key: 'tmpReactions' },
+        { items: actor.tmpLanguages, packName: "avd12.languages", key: 'tmpLanguages' },
+        { items: actor.tmpStances, packName: "avd12.stances", key: 'tmpStances' },
+        { items: actor.tmpImmunities, packName: "avd12.immunities", key: 'tmpImmunities' }
+    ];
+
+    const allItemsToAdd = [];
+    // Loop over each item set
+    for (const { items, packName, key } of itemSets) {
+        // Attempt to retrieve the pack
+        const pack = game.packs.get(packName);
+        if (!pack) {
+            console.error(`Missing pack for ${key}:`, packName);
+            continue;
+        }
+        // Load documents from the pack
+        let compendiumItems = [];
+        try {
+            compendiumItems = await pack.getDocuments();
+        } catch (error) {
+            console.error(`Failed to load documents from pack: ${packName}`, error);
+            continue;
+        }
+        const filteredItems = compendiumItems
+            .filter(item => items.some(comparedItem => comparedItem.custom_id === item.system.avd12_id))
+            .filter(item => !actor.items.some(i => i.system.avd12_id === item.system.avd12_id));
+        actor[key] = items.filter(tmpItem => 
+            !filteredItems.some(addedItem => addedItem.system.avd12_id === tmpItem.custom_id)
+        );
+        // Add items to queue for a single document creation call
+        allItemsToAdd.push(...filteredItems);
+    }
+    // If there are items to add, create them in a single operation
+    if (allItemsToAdd.length > 0) {
+        const itemData = allItemsToAdd.map(item => item.toObject());
+        try {
+            await actor.createEmbeddedDocuments("Item", itemData);
+        } catch (error) {
+            console.error("Failed to create embedded documents:", error);
+        }
+    }
+}
 
   async setItemUsages(){
     this.tmpActions.forEach(action =>{  
@@ -144,46 +183,6 @@ export class Avd12Actor extends Actor {
     this.update({"system.created":true});
   }
 
-  prepareDerivedDataOLD() {
-    if(this.type == 'npc'){
-      //this.clearData()
-      let items = this.items.filter(item => item.type == "weapon" || item.type == "armor");
-      items.forEach(item =>{
-        //item.system.equipped = true;
-        if(item.type == "armor"){
-          //build armor
-        }else if(item.type == "weapon"){
-          //build weapon
-        }
-      });
-      this.rebuildNPCSkills()
-      this.parseActiveEffects()
-    }else if (this.type == 'character' ) { //|| game.user.isGM <--- I dont know what this is
-      this.system.health.max = this.system.level.value * 5 + 10;
-      this.system.focus.focuspoints = 0;
-      this.system.focus.focusregen = 0;
-      this.system.focus.castpenalty = 0;
-      this.system.movement.walk.value = 6;
-  
-      this.clearData()
-      this.rebuildSkills()
-      this.rebuildSize()
-      this.rebuildTraits()
-      this.rebuildMainTrait()
-      this.rebuildModules()
-      this.rebuildBonuses()
-      this.rebuildMitigations()
-      this.rebuildEquipment()
-      this.parseStances()
-      this.parseActiveEffects()
-      this.rebuildBonuses()
-      this.getMinimumModulePoints();
-    }else if (this.type == "expedition"){
-
-    }
-    super.prepareDerivedData();
-  }
-  
   isDuelistElligble(){
 
   }
@@ -192,18 +191,7 @@ export class Avd12Actor extends Actor {
     rebuildNPCSkills(this);
   }
 
-  /* -------------------------------------------- */
-  rebuildMitigations() {
-    for (let mitiKey in this.system.mitigation) {
-      let mitigation = this.system.mitigation[mitiKey]
-      for (let item of this.items) {
-        if (item.system.mitigation && item.system.mitigation[mitiKey]) {
-          mitigation.value += Number(item.system.mitigation[mitiKey].value)
-        }
-      }
-    }
-  }
-
+  
   //######## STANCES ###########
   async addStance(stance){
     addStance(this,stance)
@@ -211,6 +199,11 @@ export class Avd12Actor extends Actor {
 
   async changeStance(stanceId){
     changeStance(this, stanceId);
+  }
+
+  async changeBallad(balladId){
+    changeBallad(this, balladId)
+
   }
 
   parseStances(){
@@ -390,6 +383,52 @@ export class Avd12Actor extends Actor {
     "Wilderness"
 ];
 
+
+
+  parseFocus(focus){
+
+    let focusData = Avd12Utility.computeFocusData(focus.system.focus);
+    this.system.focus.burn_chance = focusData.burnChance;
+    this.system.focus.focuspoints += focusData.focusPoints;
+    this.system.focus.focusregen += focusData.focusRegen;
+
+    this.system.bonus.spell.attack += focusData.spellAttackBonus;
+    this.system.bonus.spell.damage += focusData.spellDamageBonus;
+  }
+
+  hasFocusEquipped(){
+    let allEquippedItems = this.items.filter(item => item.system.equipped && item.system.focus.isfocus);
+    if(allEquippedItems.length > 0)
+      return true;
+    return false;
+  }
+
+
+  getSpellShotFocus(){
+    let equippedWeapons = this.items.filter(item => (item.system.category == "lightranged" ||item.system.category == "heavyranged" || item.system.category == "ulightranged" ) && item.type == "weapon" && item.system.equipped && item.system.focus.isfocus)
+    return equippedWeapons[0] || null;
+
+  }
+
+  getSpellFistFocus(){
+    let equippedWeapons = this.items.filter(item => (item.system.category == "unarmed" || item.type == "gloves") && item.system.equipped && item.system.focus.isfocus)
+    return equippedWeapons[0] || null;
+  }
+
+  parseItemBonuses(item){
+    this.system.health.bonus += item.system.bonus.health;
+    this.system.movement.walk.value += item.system.bonus.movespeed;
+    this.system.bonus.spell.attack += item.system.bonus.spellattack;
+    this.system.bonus.spell.damage += item.system.bonus.spelldamage;
+    this.system.focus.focuspoints += item.system.bonus.power;
+    this.system.focus.focusregen += item.system.bonus.powerregen;
+    this.system.focus.burn_chance += item.system.bonus.burnchance;
+  }
+
+  parseItemMitigations(item){
+    console.logAVD12("parsing mitigations for item", item);
+  }
+  
   parseItemSkills(skills, craft, weapon){
     if(weapon){
       let weapon_array = weapon.split(",");
@@ -462,41 +501,13 @@ export class Avd12Actor extends Actor {
     }
   }
 
-  parseFocus(focus){
-
-    let focusData = Avd12Utility.computeFocusData(focus.system.focus);
-    this.system.focus.burn_chance = focusData.burnChance;
-    this.system.focus.focuspoints += focusData.focusPoints;
-    this.system.focus.focusregen += focusData.focusRegen;
-
-    this.system.bonus.spell.attack += focusData.spellAttackBonus;
-    this.system.bonus.spell.damage += focusData.spellDamageBonus;
-  }
-
-  hasFocusEquipped(){
-    let allEquippedItems = this.items.filter(item => item.system.equipped && item.system.focus.isfocus);
-    if(allEquippedItems.length > 0)
-      return true;
-    return false;
-  }
-
-
-  getSpellShotFocus(){
-    let equippedWeapons = this.items.filter(item => (item.system.category == "lightranged" ||item.system.category == "heavyranged" || item.system.category == "ulightranged" ) && item.type == "weapon" && item.system.equipped && item.system.focus.isfocus)
-    return equippedWeapons[0] || null;
-
-  }
-
-  getSpellFistFocus(){
-    let equippedWeapons = this.items.filter(item => (item.system.category == "unarmed" || item.type == "gloves") && item.system.equipped && item.system.focus.isfocus)
-    return equippedWeapons[0] || null;
-  }
 
   rebuildEquipment(){
     let allEquippedItems = this.items.filter(item => item.system.equipped)
     allEquippedItems.forEach(item => {
       this.parseItemSkills(item.system.skills, item.system.craft_skills, item.system.weapon_skills)
       this.parseItemBonuses(item);
+      this.parseItemMitigations(item);
       if(item.system.focus.isfocus){
         this.parseFocus(item);
       }
@@ -759,15 +770,6 @@ export class Avd12Actor extends Actor {
     }
   }
 
-  parseItemBonuses(item){
-    this.system.health.bonus += item.system.bonus.health;
-    this.system.movement.walk.value += item.system.bonus.movespeed;
-    this.system.bonus.spell.attack += item.system.bonus.spellattack;
-    this.system.bonus.spell.damage += item.system.bonus.spelldamage;
-    this.system.focus.focuspoints += item.system.bonus.power;
-    this.system.focus.focusregen += item.system.bonus.powerregen;
-    this.system.focus.burn_chance += item.system.bonus.burnchance;
-  }
 
   rebuildBonuses(){
     this.system.bonus.blunt.damage += this.system.bonus.weapon.damage;
@@ -800,7 +802,6 @@ export class Avd12Actor extends Actor {
   rebuildSize(){
     switch(Number(this.system.biodata.size)){
       case 2://small
-      console.log("twice");
         this.system.attributes.agility.skills.dodge.finalvalue += 1;
         this.system.attributes.agility.skills.stealth.finalvalue += 1;
         this.system.movement.walk.value -= 1;
@@ -855,9 +856,6 @@ export class Avd12Actor extends Actor {
   /* -------------------------------------------- */
   rebuildModules() {
     rebuildModules(this);
-  }
-  rebuildModules2() {
-    rebuildModules2(this);
   }
 
   clearData(){
@@ -1350,9 +1348,8 @@ export class Avd12Actor extends Actor {
   }
 
   getStances(){
-    let originalStances = foundry.utils.duplicate(this.items.filter(item => item.type == 'stance') || [])
-    let combinedStances = originalStances.concat(this.tmpStances);
-    return combinedStances;
+    return foundry.utils.duplicate(this.items.filter(item => item.type == 'stance') || [])
+
   }
 
   /* -------------------------------------------- */
@@ -1360,7 +1357,7 @@ export class Avd12Actor extends Actor {
     let comp = foundry.utils.duplicate(this.items.filter(item => item.type == 'avd12module') || [])
     return comp
   }
-
+  
   getCoreModules(modules) {
     let comp = foundry.utils.duplicate(modules.filter(item => item.system.type == 'core') || []);
     return comp
@@ -1374,17 +1371,13 @@ export class Avd12Actor extends Actor {
     return comp
   }
 
-  getTraits() {
-    return this.tmpTraits;
-  }
+
 
   getCraftingTraits(){
     return this.tmpCraftingTraits;
   }
 
-  getFreeActions(){
-    return this.tmpFreeActions;
-  }
+
 
   santizeFormula(formula){
     let parseTokens = Avd12Utility.findAtTokens(formula)
@@ -1439,9 +1432,10 @@ export class Avd12Actor extends Actor {
 
   getActionById(id){
     if(this.type == "character"){
-      for(let i in this.tmpActions){
-        if(this.tmpActions[i].system.avd12_id == id){
-          return this.tmpActions[i];
+      let tmpActions = this.getActions();
+      for(let i in tmpActions){
+        if(tmpActions[i]._id == id){
+          return tmpActions[i];
         }
       }
     }else if(this.type == "npc"){
@@ -1450,13 +1444,27 @@ export class Avd12Actor extends Actor {
   }
 
   getActions(){
-    return this.tmpActions;
+    return foundry.utils.duplicate(this.items.filter(item => item.type == 'action') || []);
+  }
+
+  getLanguages(){
+    return foundry.utils.duplicate(this.items.filter(item => item.type == 'language') || []);
+  }
+
+  getTraits(type){
+    return [
+      ...foundry.utils.duplicate(this.items.filter(item => item.type === 'trait' && item.system.traittype === type) || []),
+      ...foundry.utils.duplicate(this.tmpTraits.filter(trait => trait.system.traittype === type) || [])];
+  }
+
+  getFreeActions(){
+    return foundry.utils.duplicate(this.items.filter(item => item.type == 'freeaction') || []);
   }
   getReactions(){
-    return this.tmpReactions;
+    return foundry.utils.duplicate(this.items.filter(item => item.type == 'reaction') || []);
   }
   getBallads(){
-    return this.tmpBallads;
+    return foundry.utils.duplicate(this.items.filter(item => item.type == 'ballad') || []);
   }
 
   /* -------------------------------------------- */
@@ -2243,24 +2251,8 @@ export class Avd12Actor extends Actor {
   }
 
   async takeBreather(){
-    this.system.usages.forEach(use => {
-      let action = this.getActionById(use.key);
-      if(action){
-        console.log(action);
-        if(!action.system.daily){
-          use.uses = use.max;
-        }
-        
-      }else{
-        use.uses = use.max;
-      }
-
-      
-    })
-    let restData = {};
-    restData.actor = this;
-    restData.breather = true;
-    this.update({ 'system.usages': this.system.usages})
+    await resetActions(this, false);
+    let restData = {actor:this,breather:true};
     Avd12Utility.createRestChatMessage(restData);
   }
 
@@ -2275,9 +2267,6 @@ export class Avd12Actor extends Actor {
     }
     let restData = {};
     restData.actor = this;
-    this.system.usages.forEach(use => {
-      use.uses = use.max;
-    })
 
     let currentHealth = this.system.health.value;
     let currentPower = this.system.focus.currentfocuspoints;
@@ -2285,17 +2274,19 @@ export class Avd12Actor extends Actor {
     this.system.health.value = Math.min(this.system.health.max, (totalHealthRegen + this.system.health.value))
     this.system.focus.currentfocuspoints = Math.min(this.system.focus.focuspoints, (totalPowerRegen + this.system.focus.currentfocuspoints))
     this.update({ 'system.health.value': this.system.health.value})
-    this.update({ 'system.usages': this.system.usages})
     this.update({ 'system.focus.currentfocuspoints': this.system.focus.currentfocuspoints})
 
     restData.health = this.system.health.value - currentHealth;
     restData.power = this.system.focus.currentfocuspoints - currentPower;
    
+
+
     if(favorable){
       restData.favorable = "Favorable"
     }else{
       restData.favorable = "";
     }
+    await resetActions(this, true);
     Avd12Utility.createRestChatMessage(restData);
   }
 

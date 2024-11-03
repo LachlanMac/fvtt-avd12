@@ -64,9 +64,14 @@ export class Avd12ActorSheet extends ActorSheet {
       origin_modules: this.actor.getOriginModules(this.actor.getModules()),
       core_modules: this.actor.getCoreModules(this.actor.getModules()),
       secondary_modules: this.actor.getSecondaryModules(this.actor.getModules()),
-      traits: this.actor.getTraits(),
       craftingTraits: this.actor.getCraftingTraits(),
       character: this.actor.type == "character",
+      languages:this.actor.getLanguages(),
+      originTraits:this.actor.getTraits("origin"),
+      defenseTraits:this.actor.getTraits("defense"),
+      offenseTraits:this.actor.getTraits("offense"),
+      craftingTraits:this.actor.getTraits("crafting"),
+      generalTraits:this.actor.getTraits("general"),
       actions: this.actor.getActions(),
       reactions: this.actor.getReactions(),
       freeactions: this.actor.getFreeActions(),
@@ -209,11 +214,18 @@ export class Avd12ActorSheet extends ActorSheet {
       let attrKey = $(event.currentTarget).data("attr-key")
       let skillKey = $(event.currentTarget).data("skill-key")
       this.actor.rollSkill(attrKey, skillKey, shift)
-    });   
+    }); 
+
     html.find('.change-stance').click((event) => {
       const li = $(event.currentTarget).parents(".item");
       this.actor.changeStance( li.data("item-id") )
-    });    
+    }); 
+
+    html.find('.change-ballad').click((event) => {
+      const li = $(event.currentTarget).parents(".item");
+      this.actor.changeBallad( li.data("item-id") )
+    }); 
+
     html.find('.roll-spell').click((event) => {
       const li = $(event.currentTarget).parents(".item");
       this.actor.rollSpell( li.data("item-id"), shift)
@@ -251,7 +263,7 @@ export class Avd12ActorSheet extends ActorSheet {
     
     html.find('.use-action').click((event) => {
       const li = $(event.currentTarget).parents(".item");
-      const actionId = li.data("use-id");
+      const actionId = li.data("item-id");
       this.actor.useAction(actionId)
     });
 

@@ -75,7 +75,7 @@ export function rebuildNPCSkills(actor) {
       if(actor.system.imported == 0)
         actor.system.mitigation[mitiKey].value = 0;
     }
-
+    
     for(let mitiKey in actor.system.mitigation){
       let dataPath = "mitigation." + mitiKey + ".value"
       let availableTraits = actor.items.filter(t => t.type == "trait" && t.system.computebonus && t.system.bonusdata == dataPath)

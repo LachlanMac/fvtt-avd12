@@ -1,6 +1,7 @@
+import { IMAGES } from "../ui/images.js";
+
 export function parseOption(actor, option){
     if(!option.data){
-        console.log("No data for:",option.name, option.data);
         return;
     }
     let dataTokens = option.data.split(":");
@@ -19,7 +20,7 @@ export function parseOption(actor, option){
                         addSkill(actor, dataTokens[i]);
                         break;
                     case "Z": // Weapon skill
-                        addAttackSkill(actor, dataTokens[i]);
+                        addAttackSkill(actor, dataTokens[i], name, description, option.avd12_id);
                         break;
                     case "H": // Health
                         addHealth(actor, dataTokens[i]);
@@ -46,7 +47,7 @@ export function parseOption(actor, option){
                 handleWhenClause(actor, dataTokens[i]);
                 break;
             case "T": // Trait
-                addTrait(actor, dataTokens[i], description, name);
+                addTrait(actor, dataTokens[i], description, name, option.avd12_id);
                 break;
             case "X": // Action
                 addAction(actor, name, description,option.avd12_id);
@@ -58,7 +59,7 @@ export function parseOption(actor, option){
                 addFreeAction(actor, name, description,option.avd12_id);
                 break;
             case "H": // Fighting stance
-                addFightingStance(actor, dataTokens[i]);
+                addFightingStance(actor, dataTokens[i], option.avd12_id);
                 break;
             case "B": // Ballad
                 if (dataTokens[i].charAt(1) === "S") {
@@ -175,7 +176,7 @@ function addConduitSkill(character, data) {
     }
 }
 
-function addAttackSkill(actor, data) {
+function addAttackSkill(actor, data, name, description, custom_id) {
     let attackValue = Number(data.split("=")[1]);
     let attackCode = data.charAt(2);
     const attackMap = {
@@ -211,13 +212,14 @@ function addAttackSkill(actor, data) {
         "Z": "bonus.ranged.upgraded",
     };
     if (attackCode === "T") {
-        addAttackOfOpportunity(actor, data, "Slasher");
+        //(actor, name, description, custom_id){
+        addAttackOfOpportunity(actor,name, description, custom_id);
         return;
     } else if (attackCode === "U") {
-        addAttackOfOpportunity(actor, data, "Crusher");
+        addAttackOfOpportunity(actor,name, description, custom_id);
         return;
     } else if (attackCode === "V") {
-        addAttackOfOpportunity(actor, data, "Piercer");
+        addAttackOfOpportunity(actor,name, description, custom_id);
         return;
     }
     let path = attackMap[attackCode];
@@ -245,7 +247,7 @@ function addMovespeed(actor, data) {
 
 function addHealth(actor, data) {
     let healthValue = Number(data.split("=")[1]);
-    actor.system.health.max = healthValue;
+    actor.system.health.max += healthValue;
 }
 
 function addCraftingSkill(actor, data) {
@@ -279,7 +281,6 @@ function addCraftingSkill(actor, data) {
 }
 
 function handleWhenClause(character, data) {
-    console.log("----------------",data);
     if (data.charAt(1) === "5") {
         addShieldClause(character, data);
     } else {
@@ -425,54 +426,171 @@ function addRangedSkill(character, data) {
     }
 }
 
-function addLanguageSkill(actor, data) {
-    // Implement language skill-adding logic here
-    console.log(`Adding language skill to ${actor.name} with data:`, data);
+function addAction(actor, name, description, custom_id) {  
+    actor.tmpActions.push({ name: name,description: description,custom_id: custom_id});
 }
 
-function addTrait(actor, data, description, name) {
-    // Implement trait-adding logic here
-    console.log(`Adding trait to ${actor.name} with name: ${name}, description: ${description}, data:`, data);
+function addAttackOfOpportunity(actor, name, description, custom_id){
+    actor.tmpReactions.push({ name: name,description: description,custom_id: custom_id});
 }
-
-function addAction(actor, name, description, custom_id) {
-    // Check if an action with this custom ID already exists
-
-    /*
-    const existingAction = actor.items.find(item =>
-        item.type === "action" &&
-        item.system.custom &&
-        item.system.avd12_id === custom_id
-    );
-        if (existingAction) {
-        console.log(`Action with custom ID ${custom_id} already exists. Skipping.`);
-        return;
-    }
-    */
-    // Define the new action data structure based on the given template
-    let newActionData = getBaseAbility(name, description, custom_id, "action");
-    actor.tmpActions.push(newActionData);
-    console.log(`Added new action to ${actor.name} with custom ID ${custom_id}`);
-}
-
-
 
 function addReaction(actor, name, description, custom_id) {
-    let newActionData = getBaseAbility(name, description, custom_id, "reaction");
-    actor.tmpReactions.push(newActionData);
-    console.log(`Adding reaction to ${actor.name} with name: ${name}, description: ${description}`);
+    actor.tmpReactions.push({ name: name,description: description,custom_id: custom_id});
 }
 
 function addFreeAction(actor, name, description, custom_id) {
-    // Implement free action-adding logic here
-    let newActionData = getBaseAbility(name, description, custom_id, "freeaction");
-    actor.tmpFreeActions.push(newActionData);
-    console.log(`Adding free action to ${actor.name} with name: ${name}, description: ${description}`);
+    actor.tmpFreeActions.push({ name: name,description: description,custom_id: custom_id});
 }
 
-function addFightingStance(actor, data) {
-    // Implement fighting stance-adding logic here
-    console.log(`Adding fighting stance to ${actor.name} with data:`, data);
+function addLanguageSkill(actor, data) {
+    const languageMap = {
+        "S": "sylvan_29",
+        "D": "deadspeak_27",
+        "1": "common_1",
+        "2": "elven_2",
+        "3": "orcish_3",
+        "4": "goblin_4",
+        "5": "underspeak_26",
+        "6": "orycotal_6",
+        "7": "infernal_7",
+        "8": "lattus_8",
+        "9": "old_lattus_9",
+        "A": "arcanascript_10",
+        "B": "demonic_11",
+        "C": "divine_12",
+        "E": "hssshek_13",
+        "F": "giant_14",
+        "H": "shimmerspeak_15",
+        "I": "akan_16",
+        "J": "draconic_17",
+        "K": "old_draconic_18",
+        "L": "void_speak_19",
+        "M": "tidal_20",
+        "N": "aeron_21",
+        "O": "okkor_22",
+        "P": "gnilbark_23",
+        "Q": "as-bok_24",
+        "R": "qualatiq_25",
+        "U": "underspeak_26",
+        "V": "aeron_21",
+        "Z": "vethan_28"
+    };
+    const languageId = languageMap[data.charAt(2)];
+    if (languageId) {
+        actor.tmpLanguages.push({custom_id:languageId});
+    } else {
+        console.log(`No matching language found for identifier: ${data.charAt(2)}`);
+    }
+}
+
+function addTrait(actor, dataTokens, description, name, custom_id) {
+    const baseTrait = {
+        img: IMAGES["trait"],
+        type: "temporary trait",
+        name: name,
+        system: {
+            description: description,
+            avd12_id: custom_id,
+            data: ""
+        }
+    };
+    switch (dataTokens.charAt(1)) {
+        case "A": // ancestry and cultural
+            actor.tmpTraits.push({...baseTrait, system: {...baseTrait.system, traittype: "origin" }});
+            break;
+        case "O": // offense
+            actor.tmpTraits.push({...baseTrait, system: {...baseTrait.system, traittype: "offense" }});
+            break;
+        case "D": // defense
+            actor.tmpTraits.push({...baseTrait, system: {...baseTrait.system, traittype: "defense" }});
+            break;
+        case "G": // generic
+        case "B": // beast
+        case "T": // terrain
+            actor.tmpTraits.push({...baseTrait, system: {...baseTrait.system, traittype: "origin" }});
+            break;
+        case "C": // crafting
+            actor.tmpTraits.push({...baseTrait, system: {...baseTrait.system, traittype: "crafting" }});
+            break;
+        case "Y": // Custom traits with special cases
+            switch (dataTokens.charAt(2)) {
+                case "D": 
+                    actor.system.bonus.traits.dragonhorde = 1;
+                    break;
+                case "N": 
+                    actor.system.bonus.traits.naturalconduit = 1;
+                    break;
+                default:
+                    console.log("ERROR: Unrecognized custom trait code in:", dataTokens);
+                    break;
+            }
+            break;
+        case "U":
+            actor.system.bonus.traits.chucker = 1;
+            break;
+        case "4":
+            actor.system.bonus.traits.climb_at_walk = 1;
+            break;
+        case "5":
+            actor.system.bonus.traits.hover_at_walk = 1;
+            break;
+        case "6":
+            actor.system.bonus.traits.swim_at_walk = 1;
+            break;
+        case "7":
+            actor.system.bonus.traits.skilledchucking = 1;
+            break;
+        case "8":
+            actor.system.bonus.traits.deadlythrowing = 1;
+            break;
+        case "9":
+            actor.system.bonus.traits.koboldthrowing = 1;
+            break;
+        case "V":
+            actor.system.bonus.traits.spellshot = 1;
+            break;
+        case "F":
+            actor.system.bonus.traits.spellfist = 1;
+            break;
+        case "S":
+            actor.tmpTraits.push({...baseTrait, system: {...baseTrait.system, traittype: "offense" }});
+            actor.system.bonus.traits.spellsword = 1;
+            break;
+        default:
+            console.log("ERROR: Unrecognized data token:", dataTokens);
+            break;
+    }
+}
+
+
+function addFightingStance(actor, dataTokens) {
+    const stanceMap = {
+        "1": "1_neutral_stance",
+        "2": "2_savage_stance",
+        "3": "3_light_stance",
+        "4": "4_defensive_stance",
+        "5": "5_precise_stance",
+        "6": "6_focus_stance",
+        "7": "7_wide_stance",
+        "8": "8_dueling_stance",
+        "9": "9_quick_toss_stance",
+        "10": "10_pivot_stance",
+        "11": "11_control_stance",
+        "12": "12_screen_stance",
+        "14": "14_juggernaut_stance",
+        "15": "15_armsman_stance",
+        "16": "16_reactive_stance",
+        "17": "17_marksmans_focus",
+        "18": "18_flowing_strikes",
+        "19": "19_sentinel_stance",
+        "20": "20_dual_wield",
+        "21": "21_cavalier_stance"
+    };
+    const identifier = dataTokens.split("=")[1];
+    const custom_id = stanceMap[identifier];
+    if (custom_id) {
+        actor.tmpStances.push({custom_id:custom_id});
+    } 
 }
 
 function addBallad(actor, title, details) {
@@ -480,53 +598,43 @@ function addBallad(actor, title, details) {
     console.log(`Adding ballad to ${actor.name} with title: ${title}, details: ${details}`);
 }
 
-function addAttackOfOpportunity(actor, data, type){
-
-}
-
-function addImmunity(actor, dataTokens) {
-    // Implement immunity-adding logic here
-    console.log(`Adding immunity to ${actor.name} with data tokens:`, dataTokens);
+function addImmunity(actor, dataTokens) {  
+    const immunityMap = {
+        "1": "1_immunity_to_afraid",
+        "2": "2_immunity_to_bleeding",
+        "3": "3_immunity_to_blinded",
+        "4": "4_immunity_to_charmed",
+        "5": "5_immunity_to_confused",
+        "6": "6_immunity_to_dazed",
+        "7": "7_immunity_to_deafened",
+        "8": "8_immunity_to_diseased",
+        "9": "9_immunity_to_enveloped",
+        "10": "10_immunity_to_exhausted",
+        "11": "11_immunity_to_frozen",
+        "12": "12_immunity_to_grappled",
+        "13": "13_immunity_to_hidden",
+        "14": "14_immunity_to_ignited",
+        "15": "15_immunity_to_invisible",
+        "16": "16_immunity_to_maddened",
+        "17": "17_immunity_to_muted",
+        "18": "18_immunity_to_paralyzed",
+        "19": "19_immunity_to_poisoned",
+        "20": "20_immunity_to_prone",
+        "21": "21_immunity_to_sleeping",
+        "22": "22_immunity_to_stasis",
+        "23": "23_immunity_to_stunned",
+        "24": "24_immunity_to_trapped",
+        "25": "25_immunity_to_unconscious",
+        "26": "26_immunity_to_wounded"
+    };
+    const identifier = dataTokens.split("=")[1];
+    const custom_id = immunityMap[identifier];
+    if (custom_id) {
+        actor.tmpImmunities.push({custom_id:custom_id});
+    } 
 }
 
 function addCustomTrait(actor, { name, description }) {
     // Implement custom trait-adding logic here
     console.log(`Adding custom trait to ${actor.name} with name: ${name}, description: ${description}`);
-}
-
-function getBaseAbility(name, description, custom_id, type){
-    return  {
-        name: name,
-        type: type,
-        img: "systems/avd12/images/icons/up-card.svg",
-        system: {
-            description: description,
-            custom: false,
-            avd12_id: custom_id,
-            utility_roll: false,
-            utility_roll_formula: "1d12",
-            utility_roll_bonus_modifier: "0",
-            attack_roll: false,
-            attack_roll_formula: "1d12",
-            attack_type: "melee",
-            damage_roll: false,
-            damage_formula: "",
-            damage_type: "physical",
-            secondary_damage_roll: false,
-            secondary_damage_formula: "",
-            secondary_damage_type: "none",
-            tertiary_damage_roll: false,
-            tertiary_damage_formula: "",
-            tertiary_damage_type: "none",
-            check_roll: false,
-            check_roll_formula: "",
-            check_roll_check: "resilience",
-            crit_level: "normal",
-            daily: false,
-            uses: {
-                current: 3,
-                max: 3
-            }
-        }
-    };
 }

@@ -81,6 +81,55 @@
     },
     {
       "type": "Item",
+      "label": "Actions",
+      "name": "actions",
+      "path": "packs/actions",
+      "system": "avd12",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "type": "Item",
+      "label": "Reactions",
+      "name": "reactions",
+      "path": "packs/reactions",
+      "system": "avd12",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    
+    {
+      "type": "Item",
+      "label": "Free Actions",
+      "name": "freeactions",
+      "path": "packs/freeactions",
+      "system": "avd12",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "type": "Item",
+      "label": "Languages",
+      "name": "languages",
+      "path": "packs/languages",
+      "system": "avd12",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "type": "Item",
       "label": "Enhancements",
       "name": "enhancements",
       "path": "packs/enhancements",
@@ -108,6 +157,18 @@
       "label": "Headwear",
       "name": "headwear",
       "path": "packs/headwear",
+      "system": "avd12",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "type": "Item",
+      "label": "Traits",
+      "name": "traits",
+      "path": "packs/traits",
       "system": "avd12",
       "flags": {},
       "ownership": {
@@ -199,7 +260,30 @@
         "ASSISTANT": "OWNER"
       }
     },
-
+    {
+      "type": "Item",
+      "label": "Ballads",
+      "name": "ballads",
+      "path": "packs/ballads",
+      "system": "avd12",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "type": "Item",
+      "label": "Immunities",
+      "name": "immunities",
+      "path": "packs/immunities",
+      "system": "avd12",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
     {
       "type": "Item",
       "label": "Origin Modules",

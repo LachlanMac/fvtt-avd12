@@ -1104,7 +1104,7 @@ input[type="checkbox"] .skillcheck {
   border-radius: 0;
   background: rgba(30, 25, 20, 1);
   background-origin: padding-box;
-  border-image: url(img/ui/footer-button.png) 10 repeat;
+  border-image: url(../images/ui/footer-button.png) 10 repeat;
   border-image-width: 4px;
   border-image-outset: 0px;
 }
@@ -1112,7 +1112,7 @@ input[type="checkbox"] .skillcheck {
 #controls .scene-control.active, #controls .control-tool.active, #controls .scene-control:hover, #controls .control-tool:hover {
   background: rgba(72, 46, 28, 1);
   background-origin: padding-box;
-  border-image: url(img/ui/footer-button.png) 10 repeat;
+  border-image: url(../images/ui/footer-button.png) 10 repeat;
   border-image-width: 4px;
   border-image-outset: 0px;
   box-shadow: 0 0 3px #ff6400;
@@ -1137,7 +1137,7 @@ input[type="checkbox"] .skillcheck {
 }
 
 #players {
-  border-image: url(img/ui/footer-button.png) 10 repeat;
+  border-image: url(../images/ui/footer-button.png) 10 repeat;
   border-image-width: 4px;
   border-image-outset: 0px;
   background: rgba(30, 25, 20, 1);
@@ -1150,7 +1150,7 @@ input[type="checkbox"] .skillcheck {
 #navigation #scene-list .scene.nav-item {
   background: rgba(30, 25, 20, 1);
   background-origin: padding-box;
-  border-image: url(img/ui/footer-button.png) 10 repeat;
+  border-image: url(../images/ui/footer-button.png) 10 repeat;
   border-image-width: 4px;
   border-image-outset: 0px;
 }
@@ -1158,7 +1158,7 @@ input[type="checkbox"] .skillcheck {
 #navigation #scene-list .scene.view, #navigation #scene-list .scene.context {
   background: rgba(72, 46, 28, 1);
   background-origin: padding-box;
-  border-image: url(img/ui/footer-button.png) 10 repeat;
+  border-image: url(../images/ui/footer-button.png) 10 repeat;
   border-image-width: 4px;
   border-image-outset: 0px;
   box-shadow: 0 0 3px #ff6400;
@@ -1167,7 +1167,7 @@ input[type="checkbox"] .skillcheck {
 #navigation #nav-toggle {
   background: rgba(30, 25, 20, 1);
   background-origin: padding-box;
-  border-image: url(img/ui/footer-button.png) 10 repeat;
+  border-image: url(../images/ui/footer-button.png) 10 repeat;
   border-image-width: 4px;
   border-image-outset: 0px;
 }
@@ -1294,9 +1294,9 @@ input[type="checkbox"] .skillcheck {
 }
 
 #logo {
-  content : url(../images/ui/crucible_game_logo.png);
+  content : url(../images/ui/anyventure_splash.png);
   width: 100px;
-  height: 60px;
+  height: 100px;
 }
 
 .dice-cell {  

@@ -27,6 +27,52 @@ import { Avd12Hotbar } from "./avd12-hotbar.js"
 Hooks.once("init", async function () {
 
 
+  const originalLog = console.log;
+  const originalWarn = console.warn;
+  const originalInfo = console.info;
+  const originalError = console.error;
+  
+  const ignorePatterns = /deprecated|Foundry VTT/i;
+  
+  console.logAVD12 = function (...args) {
+    const style = `
+        background: linear-gradient(to right, #ff8a00, #e52e71);
+        border-radius: 4px;
+        color: white;
+        padding: 2px 6px;
+        font-weight: bold;
+        font-family: Arial, sans-serif;
+    `;
+    console.log('%c[AVD12]', style, ...args);
+};
+
+
+/*
+  console.log = function (...args) {
+      if (!ignorePatterns.test(args[0])) {
+          originalLog.apply(console, args);
+      }
+  };
+  
+  console.warn = function (...args) {
+      if (!ignorePatterns.test(args[0])) {
+          originalWarn.apply(console, args);
+      }
+  };
+  
+  console.info = function (...args) {
+      if (!ignorePatterns.test(args[0])) {
+          originalInfo.apply(console, args);
+      }
+  };
+  
+  console.error = function (...args) {
+      if (!ignorePatterns.test(args[0])) {
+          originalError.apply(console, args);
+      }
+  };
+  */
+
   console.log(`Initializing AVD12 RPG`);
   
   game.system.avd12 = {
