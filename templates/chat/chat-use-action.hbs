@@ -12,12 +12,12 @@
       {{#if (and (eq actor.type "character") (and (ne action.type "freeaction") (ne action.type "ballad")))}}<li><b>Uses: {{add action.system.uses.current -1}} / {{action.system.uses.max}}</b></li>{{/if}}
 
       <li style="border:1px black solid; border-radius:5px; background-color: rgb(67, 51, 70); padding:10px;"><span style="padding:0px">{{{map action.system.description actor}}}</span></li>
-      <li style="padding-top:3px;" class="flex-center">{{#if action.system.utility_roll}}<button data-action="utility" class="action-roll-btn" >Roll Utility</button>{{/if}}</li>
-      <li style="padding-top:3px;" class="flex-center">{{#if action.system.attack_roll}}<button data-action="action" class="action-roll-btn" >Roll Attack</button>{{/if}}</li>
-      <li style="padding-top:3px;" class="flex-center">{{#if action.system.check_roll}}<button data-action="check" class="action-roll-btn" >Roll Check</button>{{/if}}</li>
-      <li style="padding-top:3px;" class="flex-center">{{#if action.system.damage_roll}}<button data-action="damage" class="action-roll-btn" >Roll Damage</button>{{/if}}</li>
-      <li style="padding-top:3px;" class="flex-center">{{#if action.system.secondary_damage_roll}}<button data-action="damage-secondary" class="action-roll-btn" >Roll Secondary Damage</button>{{/if}}</li>
-      <li style="padding-top:3px;" class="flex-center">{{#if action.system.tertiary_damage_roll}}<button data-action="damage-tertiary" class="action-roll-btn" >Roll Tertiary Damage</button>{{/if}}</li>
+      <li style="padding-top:3px;" class="flex-center">{{#if action.system.utility_roll}}<button data-action="utility" class="action-roll-btn avd12-button" >Roll Utility</button>{{/if}}</li>
+      <li style="padding-top:3px;" class="flex-center">{{#if action.system.attack_roll}}<button data-action="action" class="action-roll-btn avd12-button" >Roll Attack</button>{{/if}}</li>
+      <li style="padding-top:3px;" class="flex-center">{{#if action.system.check_roll}}<button data-action="check" class="action-roll-btn avd12-button" >Roll Check</button>{{/if}}</li>
+      <li style="padding-top:3px;" class="flex-center">{{#if action.system.damage_roll}}<button data-action="damage" class="action-roll-btn avd12-button" >Roll Damage</button>{{/if}}</li>
+      <li style="padding-top:3px;" class="flex-center">{{#if action.system.secondary_damage_roll}}<button data-action="damage-secondary" class="action-roll-btn avd12-button" >Roll Secondary Damage</button>{{/if}}</li>
+      <li style="padding-top:3px;" class="flex-center">{{#if action.system.tertiary_damage_roll}}<button data-action="damage-tertiary" class="action-roll-btn avd12-button" >Roll Tertiary Damage</button>{{/if}}</li>
     </ul>
   </div>
 </div>

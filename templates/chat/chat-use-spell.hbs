@@ -34,9 +34,9 @@
           
 
         {{#if (ne spell.system.spelltype "utility")}}
-        <li style="padding-top:3px;" class="flex-center"><button data-spell="attack" class="spell-roll-btn" >Roll Spell Attack</button></li>
+        <li style="padding-top:3px;" class="flex-center"><button data-spell="attack" class="spell-roll-btn avd12-button" >Roll Spell Attack</button></li>
         {{else}}
-        <li style="padding-top:3px;" class="flex-center"><button data-spell="utility" class="spell-roll-btn" >Channel Spell</button></li>
+        <li style="padding-top:3px;" class="flex-center"><button data-spell="utility" class="spell-roll-btn avd12-button" >Channel Spell</button></li>
         {{/if}}
 
   
@@ -44,11 +44,11 @@
 
         {{#if (ne spell.system.damage "")}}
           {{#if (eq spell.system.damagetype "healing")}}
-            <li style="padding-top:3px;" class="flex-center"></li><button data-spell="damage" class="spell-roll-btn" >Roll Healing</button></li>
+            <li style="padding-top:3px;" class="flex-center"></li><button data-spell="damage" class="spell-roll-btn avd12-button" >Roll Healing</button></li>
           {{else if (eq spell.system.damagetype "shielding")}}
-            <li style="padding-top:3px;" class="flex-center"></li><button data-spell="damage" class="spell-roll-btn" >Roll Shielding</button></li>
+            <li style="padding-top:3px;" class="flex-center"></li><button data-spell="damage" class="spell-roll-btn avd12-button" >Roll Shielding</button></li>
           {{else}}
-            <li style="padding-top:3px;" class="flex-center"></li><button data-spell="damage" class="spell-roll-btn" >Roll Damage</button></li>
+            <li style="padding-top:3px;" class="flex-center"></li><button data-spell="damage" class="spell-roll-btn avd12-button" >Roll Damage</button></li>
           {{/if}}
         
         {{/if}}

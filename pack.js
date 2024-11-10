@@ -15,6 +15,7 @@ function getNameByID(uuid) {
         case "8f0646a847504190": return "Actions";
         case "d6656fd454944b77": return "Reactions";
         case "61f74e9ee4ba4778": return "FreeActions";
+        case "808eb324dea15c33": return "Ammunition";
         case "499a150c43d84ce4": return "Armor";
         case "6fb4040aad8e400b": return "Shields";
         case "334f21e5d5484575": return "Weapons";
@@ -207,7 +208,7 @@ async function getUniqueFolders() {
                 const folderStructure = getEmbeddedFolderStructure(folderID);
                 const folderFileName = getFolderName(folderID, getSpellLevel(folderID));
                 const folderFilePath = path.join(packPath, folderFileName);
-                
+
                 await fs.writeFile(folderFilePath, JSON.stringify(folderStructure, null, 2));
                 console.log(`Created folder file: ${folderFilePath}`);
             }

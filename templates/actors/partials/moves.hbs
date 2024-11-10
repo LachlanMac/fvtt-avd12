@@ -156,7 +156,7 @@
           </div>
         </li>
         {{#each ballads as |ballad key|}}
-        <li class="item flexrow list-item list-item-shadow {{#if ballad.system.active}}active-stance {{/if}}"  data-item-id="{{ballad._id}}">
+        <li class="item flexrow list-item list-item-shadow {{#if ballad.system.active}}active-ability {{/if}}"  data-item-id="{{ballad._id}}">
           <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
               src="{{ballad.img}}" /></a>
           <a class="flex1 big-label use-action side-border change-ballad"><p>{{ballad.name}}</p></a>
@@ -214,7 +214,7 @@
           </div>
         </li>
           {{#each stances as |stance key|}}
-        <li class="item stat flexrow list-item list-item-shadow  spell-card {{#if stance.system.active}}active-stance {{/if}}" data-item-id="{{stance._id}}">
+        <li class="item stat flexrow list-item list-item-shadow  spell-card {{#if stance.system.active}}active-ability {{/if}}" data-item-id="{{stance._id}}">
           <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"src="{{stance.img}}" /></a>
           
           <span class="text-center side-border">

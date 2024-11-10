@@ -1,7 +1,7 @@
 /* -------------------------------------------- */
 
 import { Avd12Utility } from "./avd12-utility.js";
-import { Avd12RollDialog } from "./avd12-roll-dialog.js";
+import { Avd12RollDialog } from "./dialog/avd12-roll-dialog.js";
 
 /* -------------------------------------------- */
 export class Avd12Commands {

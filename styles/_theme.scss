@@ -1,0 +1,166 @@
+$black: #252525;
+$absolute_black: black;
+$white: white;
+$diluted_black: rgba(0, 0, 0, 0.5);
+$nearly_diluted_black: rgba(15, 15, 15, 0.5);
+$text_field:rgb(255, 255, 255);
+$stormy: #494e6b;
+$cloud: #98878f;
+$sunset: #985e6d;
+$evening: #192231;
+$oldgold: #cfb53b;
+$oldergold: #cfb43b8f;
+$metalgold:#d7b740;
+$satpurple: rgb(85, 65, 130);
+$satpurple_faded: rgb(85, 65, 130, 0.5);
+$satpurple_faded_darker: rgba(57, 43, 92, 0.5);
+$satpurple_faded_lighter: rgba(130, 107, 185, 0.5);
+$pink: pink;
+$beige: rgb(228, 169, 93);
+$primary_button_color: pink;
+$secondary_button_color: white;
+$quaterniary_color_base: grey;
+$primary_border_color: rgba(0, 0, 0, 0.397);
+$primary_color_text: white;
+$secondary_color_text: black;
+$tertiary_color_text: purple;
+$defocused_color_text: grey;
+$delete_color: rgb(134, 24, 24);
+$close_color: rgb(138, 25, 25);
+$add_button: green;
+$lowlight_color_button: black;
+$highlight_color_button: rgb(194, 181, 243);
+$faded_highlight_color_button: rgb(131, 123, 160);
+$highlight_color_button_2: rgb(158, 217, 228);
+$icon_color: white;
+$card_box_color: $diluted_black;
+$card_box_text_color: white;
+$card_box_secondary_color: green;
+$card_box_border_color: rgb(85, 65, 130);
+$module_box_color: grey;
+$module_text_color: white;
+$module_border_color: white;
+$module_border_secondary_color: rgba(245, 245, 220, 0.685);
+$module_background_color: rgb(34, 34, 34);
+$faded_decoration: #494e6b28;
+$faded_decoration_2: rgb(85, 65, 130, 0.2);
+$odd: rgba(0, 0, 0, 0.2);
+$even: rgba(36, 36, 36, 0.2);
+
+
+
+
+$primary_color: rgb(85, 65, 130);
+$secondary_color: #807c94;
+$tertiary_color:#272a2d;
+
+$hard_accent:black;
+$hard_accent_2: darken(rgb(85, 65, 130), 30%);
+$soft_accent:rgb(156, 135, 17);
+
+$default_hover:rgb(79, 3, 129);
+$default_background: #f2f4f6; // Light gray-blue
+$default_text: #000000; // Dark gray for easy readability
+$default_hint: #333333; // Dark gray for easy readability
+
+$sheet_background: $secondary_color;
+$sheet_text: $hard_accent;
+$sheet_border: $soft_accent;
+$secondary_sheet_background:rgb(58, 58, 58);
+
+$even_row_background: darken($secondary_color,20%);
+$even_row_text:white;
+
+$odd_row_background: darken($secondary_color,10%);
+$odd_row_text:white;
+
+$input_field_bg: $default_background; // Light grayish-blue for subtle input field background
+$input_field_text: $default_text; // Dark gray text
+$input_field_border: $hard_accent_2; // Soft gray-blue for border contrast
+
+$select_field_bg: $default_background; // Matches input background
+$select_field_text: $default_text; // Matches input text
+
+$tab_background: $tertiary_color; // Dark slate gray for tabs
+$tab_border: $soft_accent; // Soft teal border for emphasis
+$tab_text: white; // Off-white for contrast
+
+$list_text: #eceff4;
+$list_background: rgba(46, 52, 64, 0.7); // Semi-transparent dark blue-gray
+$list_border: rgba(46, 52, 64, 0.7); // Matches background for seamless look
+$list_box_shadow: #a3be8c; // Soft greenish accent
+$list_item_shadow: rgba(255, 0, 128, 0.247); // Light shadow for subtle depth
+
+$button_background:$primary_color;
+$button_text:white;
+$button_border:$tertiary_color;
+$hover_button_background:darken($button_background,20%);
+$hover_button_text:white;
+$hover_button_border:$soft_accent;
+$disabled_button_text:grey;
+
+$dialog_button_background:$absolute_black;
+$dialog_button_text:pink;
+$dialog_button_border:green;
+
+$circle_input_border: $hard_accent_2; // Soft green for subtlety
+$circle_text: black; // Red to indicate warning or specific information
+$circle_icon_hover: $primary_color; // Warm orange hover effect
+
+$health_text: #ffffff; // Off-white for contrast
+$health_background: rgba(11, 107, 51, 0.8); // Green for health
+$temp_health_background: rgba(49, 215, 245, 0.8); // Light blue for temporary health
+
+$side_bar_background_active: $soft_accent; // Light blue-gray shadow
+$sidebar_shadow_active: $primary_color; // Muted blue accent
+$sidebar_bottom_border_active: $secondary_color; // Dark gray
+
+$side_bar_text: white; // Light gray for readability
+$side_bar_background: rgba(59, 66, 82, 0.08); // Very light gray for neutral background
+$sidebar_shadow: $primary_color; // Soft shadow
+$sidebar_bottom_border: #050505; // Matches active border
+
+$use_action_hover_background: $soft_accent; // Soft green to indicate hover action
+$use_action_hover_text: black; // Dark slate for contrast
+
+$plus_minus_button: #d08770; // Warm orange to draw attention
+
+$heading_title_background: #1d2026; // Very dark gray for title background
+$heading_title_text: #eceff4; // Light for readability
+
+$dice_hover_color: #ebcb8b; // Gold for dice hover
+$spell_card_border: #b48ead; // Purple to signify magic
+
+$active_ability_text: white; // Purple for active abilities
+$active_ability_border: darken($primary_color, 30%); // Soft teal
+$active_ability_background: $primary_color; // Dark gray-blue background
+
+$dice_display: #2e3440; // Dark slate to contrast with dice color
+$action_chat_header: rgba(76, 86, 106, 0.2); // Soft blue-gray
+
+
+
+$chat_whisper_background: #000000; // Dark slate for whisper chat
+$chat_whisper_border: rgba(255, 0, 221, 0.425); // Red accent for whispers
+$chat_whisper_text: #eceff4; // Off-white text
+
+
+
+$chat_message_background:black;
+$chat_message_text:green;
+$chat_text: #eceff4; // Off-white for readability
+$chat_background: #000000; // Dark slate for chat background
+$chat_message_border: $soft_accent;
+
+$package_mngr_background: #1e222a; // Darker gray for package manager
+$package_mngr_text: #d8dee9; // Light gray for readability
+
+$chat_content_background: $tertiary_color; // Slightly lighter gray-blue
+$chat_content_text: #ffffff; // Light blue accent
+$chat_content_border: #ffffff2d; // Blue for separation
+
+
+$text_area_text:black;
+$text_area_background:rgb(201, 201, 201);
+$text_area_border:black;
+

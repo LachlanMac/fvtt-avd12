@@ -1,5 +1,6 @@
+import { Avd12Utility } from "../avd12-utility.js";
+import {Avd12SpellAttackDialog} from "../dialog/avd12-spell-attack-dialog.js"
 export class Avd12ChatBinds {
-
 static chatListener(html){
     html.on("click", ".avd12-use-action button", this._onChatCardAction.bind(this));
     html.on("click", ".avd12-use-spell button", this._onChatCardSpell.bind(this));
@@ -36,6 +37,8 @@ static chatListener(html){
       if ( !actor ) {console.log("*AVD12 Error: No Actor*");return};
       if ( !(game.user.isGM || actor.isOwner) ) return;
     
+      actSpell.button = button;
+
       switch(spell){
         case "attack":
           let dialog = await Avd12SpellAttackDialog.create(actor, actSpell)
@@ -56,9 +59,10 @@ static chatListener(html){
           let msg = await Avd12Utility.createChatWithRollMode(rollData.alias, {
             content: await renderTemplate(`systems/avd12/templates/chat/chat-utility-spell.hbs`, rollData)
           })
+          button.disabled = false;
           break;
         case "damage":
-          actor.rollSpellDamage(card.dataset.spellId);
+          actor.rollSpellDamage(card.dataset.spellId, actSpell.button);
           break;
       }
   }

@@ -1,0 +1,11 @@
+  <header class="sheet-header">
+      <img class="item-sheet-img" src="{{img}}" data-edit="img" title="{{name}}"/>
+      <div class="header-fields">
+          <h1 class=""><input name="name" type="text" value="{{name}}" placeholder="Name"/></h1>
+      </div>
+      {{#if owned}}
+            <label class="item-field-label-long">Equipped</label>
+            <input type="checkbox" class="item-field-label-short item-checkbox" name="system.equipped" {{checked system.equipped}} />
+      {{/if}}
+  </header>
+  

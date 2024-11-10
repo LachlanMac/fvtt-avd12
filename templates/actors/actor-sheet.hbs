@@ -1,6 +1,6 @@
 <form class="{{cssClass}}" autocomplete="off">
   {{!-- Sheet Header --}}
-  <header class="sheet-header">
+  <header id="main-sheet-header" class="sheet-header">
     {{> systems/avd12/templates/actors/partials/header.hbs}}
   </header>
 
@@ -49,10 +49,6 @@
       {{> systems/avd12/templates/actors/partials/equipment.hbs}}
       <hr>
     </div>
-    {{!-- Equipement Tab --}}
-    <div class="tab crafting" data-group="primary" data-tab="crafting">
-       {{> systems/avd12/templates/actors/partials/crafting.hbs}}
-    </div>
 
     {{!-- Biography Tab --}}
     <div class="tab biodata" data-group="primary" data-tab="biodata">
@@ -60,7 +56,7 @@
     </div>
   </section>
     {{else}}
-         <button id="create-character" class="flex0">Character Creator</button>
+         <button id="create-character" class="flex0 avd12-button">Character Creator</button>
     {{/if}}
 
 

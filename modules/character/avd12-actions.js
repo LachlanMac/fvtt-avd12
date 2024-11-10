@@ -16,8 +16,35 @@ export async function useAction(actor, actionId) {
   if (!action) return;
   const actionClone = foundry.utils.duplicate(action);
   actionClone.actor = actor;
-  actor.displayActionCard(actionClone, {});
+  displayActionCard(actor, actionClone, {});
 }
+
+
+async function displayActionCard(actorRef, action, options){
+    const token = actorRef.token;
+    const templateData = {
+      actor: action.actor,
+      tokenId: token?.uuid || null,
+      action: action,
+      data: await action.actor.system,
+      labels: action.actor.labels,
+      name : action.actor.name, 
+      alias:action.actor.name
+    };
+    const html = await renderTemplate("systems/avd12/templates/chat/chat-use-action.hbs", templateData);
+    const chatData = {
+      user: game.user.id,
+      type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+      content: html,
+      speaker: ChatMessage.getSpeaker({actor: actorRef, token}),
+      flags: {"core.canPopout": true}
+    };
+    Hooks.callAll("avd12.preDisplayCard", actorRef, chatData, options);
+    ChatMessage.applyRollMode(chatData, options.rollMode ?? game.settings.get("core", "rollMode"));
+    const card = (options.createMessage !== false) ? await ChatMessage.create(chatData) : chatData;
+    Hooks.callAll("avd12.displayCard", actorRef, card);
+}
+
 
 export async function resetActions(actor, day){
   const updates = [];

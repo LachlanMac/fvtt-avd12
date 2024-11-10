@@ -1,154 +1,213 @@
 
 <ul class="stat-list alternate-list">
-            <li class="item flexrow list-item items-title-bg">
-              <span class="item-name-label-header-long">
-                <h3><label class="items-title-text">Skills</label></h3>
-              </span>
-            </li>
-             <div class="flexcol">
-          {{#if (gt system.attributes.knowledge.value -3)}}
-         
-             <span class="small-skill flexrow ">
-              <input type="checkbox" class="skill-good-checkbox" name="system.attributes.knowledge.skills.academic.good" {{checked system.attributes.knowledge.skills.academic.good}} />
-              <section class="skill-title flex2" >Academics:</section>
-              <section class="skill-value flex1">{{#if (gt system.attributes.knowledge.skills.academic.finalvalue -1)}}+{{/if}}{{system.attributes.knowledge.skills.academic.finalvalue}}</section>
-              <img class=" roll-skill ui-dice flex0 flex-center"   width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="academic" data-attr-key="knowledge"/>
-               <section class="skill-title flex1" ></section>
-            </span>
-            {{/if}}
-            
-             <span class="small-skill flexrow  odd-row">
-              <input type="checkbox" class="skill-good-checkbox" name="system.attributes.agility.skills.acrobatics.good" {{checked system.attributes.agility.skills.acrobatics.good}} />
-              <section class="skill-title flex2" >Acrobatics:</section>
-              <section class="skill-value flex1">{{#if (gt system.attributes.agility.skills.acrobatics.finalvalue -1)}}+{{/if}}{{system.attributes.agility.skills.acrobatics.finalvalue}}</section>
-              <img class="roll-skill ui-dice flex0 flex-center"  width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="acrobatics" data-attr-key="agility"></img>
-               <section class="skill-title flex1" ></section>
-            </span>
-            {{#if (gt system.attributes.social.value -3)}}
-             <span class="small-skill flexrow ">
-              <input type="checkbox" class="skill-good-checkbox" name="system.attributes.social.skills.animals.good" {{checked system.attributes.social.skills.animals.good}} />
-              <section class="skill-title flex2" >Animals:</section>
-              <section class="skill-value flex1">{{#if (gt system.attributes.social.skills.animals.finalvalue -1)}}+{{/if}}{{system.attributes.social.skills.animals.finalvalue}}</section>
-              <img class=" roll-skill ui-dice flex0 flex-center"   width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="animals" data-attr-key="social"/>
-               <section class="skill-title flex1" ></section>
-            </span>
-            {{/if}}
-            {{#if (gt system.attributes.knowledge.value -3)}}
-            <span class="small-skill flexrow  odd-row">
-              <input type="checkbox" class="skill-good-checkbox" name="system.attributes.knowledge.skills.arcanum.good" {{checked system.attributes.knowledge.skills.arcanum.good}} />
-              <section class="skill-title flex2" >Arcanum:</section>
-              <section class="skill-value flex1">{{#if (gt system.attributes.knowledge.skills.arcanum.finalvalue -1)}}+{{/if}}{{system.attributes.knowledge.skills.arcanum.finalvalue}}</section>
-              <img class=" roll-skill ui-dice flex0 flex-center"   width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="arcanum" data-attr-key="knowledge"/>
-               <section class="skill-title flex1" ></section>
-            </span>
-            {{/if}}
-            
-            <span class="small-skill flexrow ">
-              <input type="checkbox" class="skill-good-checkbox" name="system.attributes.might.skills.athletics.good" {{checked system.attributes.might.skills.athletics.good}} />
-              <section class="skill-title flex2" >Athletics:</section>
-              <section class="skill-value flex1">{{#if (gt system.attributes.might.skills.athletics.finalvalue -1)}}+{{/if}}{{system.attributes.might.skills.athletics.finalvalue}}</section>
-              <img class=" roll-skill ui-dice flex0 flex-center"   width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="athletics" data-attr-key="might"/>
-               <section class="skill-title flex1" ></section>
-            </span>
+    <li class="item flexrow list-item items-title-bg">
+        <span class="item-name-label-header-long">
+            <h3><label class="items-title-text">Skills</label></h3>
+        </span>
+    </li>
+    <div class="flexcol">
+        <!-- Academics -->
+        <span class="small-skill flexrow even-row">
+            <img class="roll-skill ui-dice flex0 flex-center" width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="academic" data-attr-key="knowledge"/>
+            <input type="checkbox" class="skill-good-checkbox" name="system.attributes.knowledge.skills.academic.good" {{checked system.attributes.knowledge.skills.academic.good}} />
+            <section class="skill-title flex2">Academics</section>
+            <section class="skill-value flex1" style="text-align: right;">{{#if (gt system.attributes.knowledge.skills.academic.finalvalue -1)}}+{{/if}}{{system.attributes.knowledge.skills.academic.finalvalue}}</section>
+        </span>
 
-            <span class="small-skill flexrow  odd-row">
-              <input type="checkbox" class="skill-good-checkbox" name="system.attributes.willpower.skills.concentration.good" {{checked system.attributes.willpower.skills.concentration.good}} />
-              <section class="skill-title flex2" >Concentration:</section>
-              <section class="skill-value flex1">{{#if (gt system.attributes.willpower.skills.concentration.finalvalue -1)}}+{{/if}}{{system.attributes.willpower.skills.concentration.finalvalue}}</section>
-              <img class=" roll-skill ui-dice flex0 flex-center"   width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="concentration" data-attr-key="willpower"/>
-               <section class="skill-title flex1" ></section>
-            </span>
+        <!-- Acrobatics -->
+        <span class="small-skill flexrow odd-row">
+            <img class="roll-skill ui-dice flex0 flex-center" width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="acrobatics" data-attr-key="agility"/>
+            <input type="checkbox" class="skill-good-checkbox" name="system.attributes.agility.skills.acrobatics.good" {{checked system.attributes.agility.skills.acrobatics.good}} />
+            <section class="skill-title flex2">Acrobatics</section>
+            <section class="skill-value flex1" style="text-align: right;">{{#if (gt system.attributes.agility.skills.acrobatics.finalvalue -1)}}+{{/if}}{{system.attributes.agility.skills.acrobatics.finalvalue}}</section>
+        </span>
 
-            <span class="small-skill flexrow">
-              <input type="checkbox" class="skill-good-checkbox" name="system.universal.skills.initiative.good" {{checked system.universal.skills.initiative.good}} />
-              <section class="skill-title flex2" >Initiative:</section>
-              <section class="skill-value flex1">{{#if (gt system.universal.skills.initiative.finalvalue -1)}}+{{/if}}{{system.universal.skills.initiative.finalvalue}}</section>
-              <img class=" roll-universal ui-dice flex0 flex-center"   width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="initiative"/>
-               <section class="skill-title flex1" ></section>
-            </span>
-            {{#if (gt system.attributes.social.value -3)}}
-            <span class="small-skill flexrow odd-row">
-              <input type="checkbox" class="skill-good-checkbox" name="system.attributes.social.skills.insight.good" {{checked system.attributes.social.skills.insight.good}} />
-              <section class="skill-title flex2" >Insight:</section>
-              <section class="skill-value flex1">{{#if (gt system.attributes.social.skills.insight.finalvalue -1)}}+{{/if}}{{system.attributes.social.skills.insight.finalvalue}}</section>
-              <img class=" roll-skill ui-dice flex0 flex-center"   width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="insight" data-attr-key="social"/>
-               <section class="skill-title flex1" ></section>
-            </span>
-            {{/if}}
-            {{#if (gt system.attributes.knowledge.value -3)}}
-            <span class="small-skill flexrow">
-              <input type="checkbox" class="skill-good-checkbox" name="system.attributes.knowledge.skills.medicine.good" {{checked system.attributes.knowledge.skills.medicine.good}} />
-              <section class="skill-title flex2" >Medicine:</section>
-              <section class="skill-value flex1">{{#if (gt system.attributes.knowledge.skills.medicine.finalvalue -1)}}+{{/if}}{{system.attributes.knowledge.skills.medicine.finalvalue}}</section>
-              <img class=" roll-skill ui-dice flex0 flex-center"   width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="medicine" data-attr-key="knowledge"/>
-               <section class="skill-title flex1" ></section>
-            </span>
-            {{/if}}
-            {{#if (gt system.attributes.social.value -3)}}
-             <span class="small-skill flexrow odd-row">
-              <input type="checkbox" class="skill-good-checkbox" name="system.attributes.social.skills.performance.good" {{checked system.attributes.social.skills.performance.good}} />
-              <section class="skill-title flex2" >Performance:</section>
-              <section class="skill-value flex1">{{#if (gt system.attributes.social.skills.performance.finalvalue -1)}}+{{/if}}{{system.attributes.social.skills.performance.finalvalue}}</section>
-              <img class=" roll-skill ui-dice flex0 flex-center"   width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="performance" data-attr-key="social"/>
-               <section class="skill-title flex1" ></section>
-            </span>
-           
-            <span class="small-skill flexrow">
-              <input type="checkbox" class="skill-good-checkbox" name="system.attributes.social.skills.persuasion.good" {{checked system.attributes.social.skills.persuasion.good}} />
-              <section class="skill-title flex2" >Persuasion:</section>
-              <section class="skill-value flex1">{{#if (gt system.attributes.social.skills.persuasion.finalvalue -1)}}+{{/if}}{{system.attributes.social.skills.persuasion.finalvalue}}</section>
-              <img class=" roll-skill ui-dice flex0 flex-center"   width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="persuasion" data-attr-key="social"/>
-               <section class="skill-title flex1" ></section>
-            </span>
-            {{/if}}
-            <span class="small-skill flexrow odd-row">
-              <input type="checkbox" class="skill-good-checkbox" name="system.attributes.willpower.skills.resilience.good" {{checked system.attributes.willpower.skills.resilience.good}} />
-              <section class="skill-title flex2" >Resilience:</section>
-              <section class="skill-value flex1">{{#if (gt system.attributes.willpower.skills.resilience.finalvalue -1)}}+{{/if}}{{system.attributes.willpower.skills.resilience.finalvalue}}</section>
-              <img class=" roll-skill ui-dice flex0 flex-center"   width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="resilience" data-attr-key="willpower"/>
-               <section class="skill-title flex1" ></section>
-            </span>
+        <!-- Animals -->
+        <span class="small-skill flexrow even-row">
+            <img class="roll-skill ui-dice flex0 flex-center" width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="animals" data-attr-key="social"/>
+            <input type="checkbox" class="skill-good-checkbox" name="system.attributes.social.skills.animals.good" {{checked system.attributes.social.skills.animals.good}} />
+            <section class="skill-title flex2">Animals</section>
+            <section class="skill-value flex1" style="text-align: right;">{{#if (gt system.attributes.social.skills.animals.finalvalue -1)}}+{{/if}}{{system.attributes.social.skills.animals.finalvalue}}</section>
+        </span>
 
-            <span class="small-skill flexrow">
-              <input type="checkbox" class="skill-good-checkbox" name="system.universal.skills.search.good" {{checked system.universal.skills.search.good}} />
-              <section class="skill-title flex2" >Search:</section>
-              <section class="skill-value flex1">{{#if (gt system.universal.skills.search.finalvalue -1)}}+{{/if}}{{system.universal.skills.search.finalvalue}}</section>
-              <img class="roll-universal ui-dice flex0 flex-center"   width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="search"/>
-               <section class="skill-title flex1" ></section>
-            </span>
+        <!-- Arcanum -->
+        <span class="small-skill flexrow odd-row">
+            <img class="roll-skill ui-dice flex0 flex-center" width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="arcanum" data-attr-key="knowledge"/>
+            <input type="checkbox" class="skill-good-checkbox" name="system.attributes.knowledge.skills.arcanum.good" {{checked system.attributes.knowledge.skills.arcanum.good}} />
+            <section class="skill-title flex2">Arcanum</section>
+            <section class="skill-value flex1" style="text-align: right;">{{#if (gt system.attributes.knowledge.skills.arcanum.finalvalue -1)}}+{{/if}}{{system.attributes.knowledge.skills.arcanum.finalvalue}}</section>
+        </span>
 
-            <span class="small-skill flexrow  odd-row">
-              <input type="checkbox" class="skill-good-checkbox" name="system.attributes.agility.skills.stealth.good" {{checked system.attributes.agility.skills.stealth.good}} />
-              <section class="skill-title flex2" >Stealth:</section>
-              <section class="skill-value flex1">{{#if (gt system.attributes.agility.skills.stealth.finalvalue -1)}}+{{/if}}{{system.attributes.agility.skills.stealth.finalvalue}}</section>
-              <img class=" roll-skill ui-dice flex0 flex-center"   width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="stealth" data-attr-key="agility"/>
-               <section class="skill-title flex1" ></section>
-            </span>
+        <!-- Athletics -->
+        <span class="small-skill flexrow even-row">
+            <img class="roll-skill ui-dice flex0 flex-center" width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="athletics" data-attr-key="might"/>
+            <input type="checkbox" class="skill-good-checkbox" name="system.attributes.might.skills.athletics.good" {{checked system.attributes.might.skills.athletics.good}} />
+            <section class="skill-title flex2">Athletics</section>
+            <section class="skill-value flex1" style="text-align: right;">{{#if (gt system.attributes.might.skills.athletics.finalvalue -1)}}+{{/if}}{{system.attributes.might.skills.athletics.finalvalue}}</section>
+        </span>
 
-             <span class="small-skill flexrow ">
-              <input type="checkbox" class="skill-good-checkbox" name="system.attributes.might.skills.strength.good" {{checked system.attributes.might.skills.strength.good}} />
-              <section class="skill-title flex2" >Strength:</section>
-              <section class="skill-value flex1">{{#if (gt system.attributes.might.skills.strength.finalvalue -1)}}+{{/if}}{{system.attributes.might.skills.strength.finalvalue}}</section>
-              <img class=" roll-skill ui-dice flex0 flex-center"   width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="strength" data-attr-key="might"/>
-               <section class="skill-title flex1" ></section>
-            </span>
-             {{#if (gt system.attributes.knowledge.value -3)}}
-            <span class="small-skill flexrow odd-row">
-              <input type="checkbox" class="skill-good-checkbox" name="system.attributes.knowledge.skills.thievery.good" {{checked system.attributes.knowledge.skills.thievery.good}} />
-              <section class="skill-title flex2" >Thievery:</section>
-              <section class="skill-value flex1">{{#if (gt system.attributes.knowledge.skills.thievery.finalvalue -1)}}+{{/if}}{{system.attributes.knowledge.skills.thievery.finalvalue}}</section>
-              <img class=" roll-skill ui-dice flex0 flex-center"   width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="thievery" data-attr-key="knowledge"/>
-               <section class="skill-title flex1" ></section>
-            </span>
-            {{/if}}
-          {{#if (gt system.attributes.knowledge.value -3)}}
-          <span class="small-skill flexrow ">
-              <input type="checkbox" class="skill-good-checkbox" name="system.attributes.knowledge.skills.wilderness.good" {{checked system.attributes.knowledge.skills.wilderness.good}} />
-              <section class="skill-title flex2" >Wilderness:</section>
-              <section class="skill-value flex1">{{#if (gt system.attributes.knowledge.skills.wilderness.finalvalue -1)}}+{{/if}}{{system.attributes.knowledge.skills.wilderness.finalvalue}}</section>
-              <img class=" roll-skill ui-dice flex0 flex-center"   width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="wilderness" data-attr-key="knowledge"/>
-               <section class="skill-title flex1" ></section>
-            </span>
-            {{/if}}
-          </div>
-          </ul>
+        <!-- Concentration -->
+        <span class="small-skill flexrow odd-row">
+            <img class="roll-skill ui-dice flex0 flex-center" width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="concentration" data-attr-key="willpower"/>
+            <input type="checkbox" class="skill-good-checkbox" name="system.attributes.willpower.skills.concentration.good" {{checked system.attributes.willpower.skills.concentration.good}} />
+            <section class="skill-title flex2">Concentration</section>
+            <section class="skill-value flex1" style="text-align: right;">{{#if (gt system.attributes.willpower.skills.concentration.finalvalue -1)}}+{{/if}}{{system.attributes.willpower.skills.concentration.finalvalue}}</section>
+        </span>
+
+        <!-- Initiative -->
+        <span class="small-skill flexrow even-row">
+            <img class="roll-skill ui-dice flex0 flex-center" width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="initiative"/>
+            <input type="checkbox" class="skill-good-checkbox" name="system.universal.skills.initiative.good" {{checked system.universal.skills.initiative.good}} />
+            <section class="skill-title flex2">Initiative</section>
+            <section class="skill-value flex1" style="text-align: right;">{{#if (gt system.universal.skills.initiative.finalvalue -1)}}+{{/if}}{{system.universal.skills.initiative.finalvalue}}</section>
+        </span>
+
+        <!-- Insight -->
+        <span class="small-skill flexrow odd-row">
+            <img class="roll-skill ui-dice flex0 flex-center" width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="insight" data-attr-key="social"/>
+            <input type="checkbox" class="skill-good-checkbox" name="system.attributes.social.skills.insight.good" {{checked system.attributes.social.skills.insight.good}} />
+            <section class="skill-title flex2">Insight</section>
+            <section class="skill-value flex1" style="text-align: right;">{{#if (gt system.attributes.social.skills.insight.finalvalue -1)}}+{{/if}}{{system.attributes.social.skills.insight.finalvalue}}</section>
+        </span>
+
+        <!-- Medicine -->
+        <span class="small-skill flexrow even-row">
+            <img class="roll-skill ui-dice flex0 flex-center" width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="medicine" data-attr-key="knowledge"/>
+            <input type="checkbox" class="skill-good-checkbox" name="system.attributes.knowledge.skills.medicine.good" {{checked system.attributes.knowledge.skills.medicine.good}} />
+            <section class="skill-title flex2">Medicine</section>
+            <section class="skill-value flex1" style="text-align: right;">{{#if (gt system.attributes.knowledge.skills.medicine.finalvalue -1)}}+{{/if}}{{system.attributes.knowledge.skills.medicine.finalvalue}}</section>
+        </span>
+
+       <!-- Performance -->
+<span class="small-skill flexrow odd-row">
+    <img class="roll-skill ui-dice flex0 flex-center" width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="performance" data-attr-key="social"/>
+    <input type="checkbox" class="skill-good-checkbox" name="system.attributes.social.skills.performance.good" {{checked system.attributes.social.skills.performance.good}} />
+    <section class="skill-title flex2">Performance</section>
+    <section class="skill-value flex1" style="text-align: right;">{{#if (gt system.attributes.social.skills.performance.finalvalue -1)}}+{{/if}}{{system.attributes.social.skills.performance.finalvalue}}</section>
+</span>
+
+<!-- Persuasion -->
+<span class="small-skill flexrow even-row">
+    <img class="roll-skill ui-dice flex0 flex-center" width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="persuasion" data-attr-key="social"/>
+    <input type="checkbox" class="skill-good-checkbox" name="system.attributes.social.skills.persuasion.good" {{checked system.attributes.social.skills.persuasion.good}} />
+    <section class="skill-title flex2">Persuasion</section>
+    <section class="skill-value flex1" style="text-align: right;">{{#if (gt system.attributes.social.skills.persuasion.finalvalue -1)}}+{{/if}}{{system.attributes.social.skills.persuasion.finalvalue}}</section>
+</span>
+
+<!-- Resilience -->
+<span class="small-skill flexrow odd-row">
+    <img class="roll-skill ui-dice flex0 flex-center" width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="resilience" data-attr-key="willpower"/>
+    <input type="checkbox" class="skill-good-checkbox" name="system.attributes.willpower.skills.resilience.good" {{checked system.attributes.willpower.skills.resilience.good}} />
+    <section class="skill-title flex2">Resilience</section>
+    <section class="skill-value flex1" style="text-align: right;">{{#if (gt system.attributes.willpower.skills.resilience.finalvalue -1)}}+{{/if}}{{system.attributes.willpower.skills.resilience.finalvalue}}</section>
+</span>
+
+<!-- Search -->
+<span class="small-skill flexrow even-row">
+    <img class="roll-skill ui-dice flex0 flex-center" width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="search"/>
+    <input type="checkbox" class="skill-good-checkbox" name="system.universal.skills.search.good" {{checked system.universal.skills.search.good}} />
+    <section class="skill-title flex2">Search</section>
+    <section class="skill-value flex1" style="text-align: right;">{{#if (gt system.universal.skills.search.finalvalue -1)}}+{{/if}}{{system.universal.skills.search.finalvalue}}</section>
+</span>
+
+<!-- Stealth -->
+<span class="small-skill flexrow odd-row">
+    <img class="roll-skill ui-dice flex0 flex-center" width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="stealth" data-attr-key="agility"/>
+    <input type="checkbox" class="skill-good-checkbox" name="system.attributes.agility.skills.stealth.good" {{checked system.attributes.agility.skills.stealth.good}} />
+    <section class="skill-title flex2">Stealth</section>
+    <section class="skill-value flex1" style="text-align: right;">{{#if (gt system.attributes.agility.skills.stealth.finalvalue -1)}}+{{/if}}{{system.attributes.agility.skills.stealth.finalvalue}}</section>
+</span>
+
+<!-- Strength -->
+<span class="small-skill flexrow even-row">
+    <img class="roll-skill ui-dice flex0 flex-center" width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="strength" data-attr-key="might"/>
+    <input type="checkbox" class="skill-good-checkbox" name="system.attributes.might.skills.strength.good" {{checked system.attributes.might.skills.strength.good}} />
+    <section class="skill-title flex2">Strength</section>
+    <section class="skill-value flex1" style="text-align: right;">{{#if (gt system.attributes.might.skills.strength.finalvalue -1)}}+{{/if}}{{system.attributes.might.skills.strength.finalvalue}}</section>
+</span>
+
+<!-- Thievery -->
+<span class="small-skill flexrow odd-row">
+    <img class="roll-skill ui-dice flex0 flex-center" width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="thievery" data-attr-key="knowledge"/>
+    <input type="checkbox" class="skill-good-checkbox" name="system.attributes.knowledge.skills.thievery.good" {{checked system.attributes.knowledge.skills.thievery.good}} />
+    <section class="skill-title flex2">Thievery</section>
+    <section class="skill-value flex1" style="text-align: right;">{{#if (gt system.attributes.knowledge.skills.thievery.finalvalue -1)}}+{{/if}}{{system.attributes.knowledge.skills.thievery.finalvalue}}</section>
+</span>
+
+<!-- Wilderness -->
+<span class="small-skill flexrow even-row">
+    <img class="roll-skill ui-dice flex0 flex-center" width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="wilderness" data-attr-key="knowledge"/>
+    <input type="checkbox" class="skill-good-checkbox" name="system.attributes.knowledge.skills.wilderness.good" {{checked system.attributes.knowledge.skills.wilderness.good}} />
+    <section class="skill-title flex2">Wilderness</section>
+    <section class="skill-value flex1" style="text-align: right;">{{#if (gt system.attributes.knowledge.skills.wilderness.finalvalue -1)}}+{{/if}}{{system.attributes.knowledge.skills.wilderness.finalvalue}}</section>
+</span>
+
+        
+    </div>
+</ul>
+
+
+{{#if character}}
+   
+<ul class="stat-list alternate-list">
+    <li class="item flexrow list-item items-title-bg">
+        <span class="item-name-label-header-long">
+            <h3><label class="items-title-text">Crafting Skills</label></h3>
+        </span>
+    </li>
+    <div class="flexcol">
+
+
+        <!-- Alchemy -->
+        <span class="small-skill flexrow even-row">
+            <img class="roll-craft ui-dice flex0 flex-center" width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="alchemy"/>
+            <section class="skill-title flex2">Alchemy</section>
+            <section class="skill-value flex1" style="text-align: right; margin-right: 20px;">{{#if (gt system.bonus.craft.alchemy -1)}}+{{/if}}{{system.bonus.craft.alchemy}}</section>
+        </span>
+        <!-- Ammocraft -->
+        <span class="small-skill flexrow odd-row">
+            <img class="roll-craft ui-dice flex0 flex-center" width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="ammocraft"/>
+            <section class="skill-title flex2">Ammocraft</section>
+            <section class="skill-value flex1" style="text-align: right; margin-right: 20px;">{{#if (gt system.bonus.craft.ammocraft -1)}}+{{/if}}{{system.bonus.craft.ammocraft}}</section>
+        </span>
+
+        <!-- Cooking -->
+        <span class="small-skill flexrow even-row">
+            <img class="roll-craft ui-dice flex0 flex-center" width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="cooking"/>
+            <section class="skill-title flex2">Cooking</section>
+            <section class="skill-value flex1" style="text-align: right; margin-right: 20px;">{{#if (gt system.bonus.craft.cooking -1)}}+{{/if}}{{system.bonus.craft.cooking}}</section>
+        </span>
+
+        <!-- Engineering -->
+        <span class="small-skill flexrow odd-row">
+            <img class="roll-craft ui-dice flex0 flex-center" width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="engineering"/>
+            <section class="skill-title flex2">Engineering</section>
+            <section class="skill-value flex1" style="text-align: right; margin-right: 20px;">{{#if (gt system.bonus.craft.engineering -1)}}+{{/if}}{{system.bonus.craft.engineering}}</section>
+        </span>
+
+        <!-- Runecarving -->
+        <span class="small-skill flexrow even-row">
+            <img class="roll-craft ui-dice flex0 flex-center" width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="runecarving"/>
+            <section class="skill-title flex2">Runecarving</section>
+            <section class="skill-value flex1" style="text-align: right; margin-right: 20px;">{{#if (gt system.bonus.craft.runecarving -1)}}+{{/if}}{{system.bonus.craft.runecarving}}</section>
+        </span>
+
+        <!-- Scribing -->
+        <span class="small-skill flexrow odd-row">
+            <img class="roll-craft ui-dice flex0 flex-center" width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="scribing"/>
+            <section class="skill-title flex2">Scribing</section>
+            <section class="skill-value flex1" style="text-align: right; margin-right: 20px;">{{#if (gt system.bonus.craft.scribing -1)}}+{{/if}}{{system.bonus.craft.scribing}}</section>
+        </span>
+
+         <span class="small-skill flexrow even-row">
+            <img class="roll-craft ui-dice flex0 flex-center" width="24px" height="24px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="smithing"/>
+            <section class="skill-title flex2">Smithing</section>
+            <section class="skill-value flex1" style="text-align: right; margin-right: 20px;">{{#if (gt system.bonus.craft.smithing -1)}}+{{/if}}{{system.bonus.craft.smithing}}</section>
+        </span>
+
+    </div>
+</ul>
+
+
+      
+{{/if}}

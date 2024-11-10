@@ -1,0 +1,111 @@
+<form class="{{cssClass}}" autocomplete="off">
+  {{> systems/avd12/templates/items/partial-equipment-header.hbs}}
+  {{> systems/avd12/templates/items/partial-item-nav.hbs}}
+  
+  <!-- Sheet Body Section -->
+  <section class="sheet-body item-sheet">
+    {{> systems/avd12/templates/items/partial-item-description.hbs}}
+    
+    <div class="tab details" data-group="primary" data-tab="details">
+      <ul>
+        <!-- Weapon Category and Type -->
+        <li class="flexrow">
+          <label class="item-field-label-long">Weapon category</label>
+          <select class="item-field-label-long" name="system.category" data-dtype="String">
+            {{#select system.category}}
+              {{> systems/avd12/templates/items/partial-options-weapon-categories.hbs}}
+            {{/select}}
+          </select> 
+          <label class="item-field-label-short">&nbsp;</label>
+          <label class="item-field-label-long">Weapon type</label>
+          <select class="item-field-label-long" name="system.weapontype" data-dtype="String">
+            {{#select system.weapontype}}
+              {{> systems/avd12/templates/items/partial-options-weapon-types.hbs}}
+            {{/select}}
+          </select> 
+        </li>
+
+        <!-- Magical Properties -->
+        <li class="flexrow">
+          <label class="item-field-label-long">Magical</label>
+          <input type="checkbox" class="item-checkbox" name="system.magical" {{checked system.magical}} />
+
+          <label class="item-field-label-long">Blackened Iron</label>
+          <input type="checkbox" class="item-checkbox" name="system.blackenediron" {{checked system.blackenediron}} />
+
+          <label class="item-field-label-long">Silvered</label>
+          <input type="checkbox" class="item-checkbox" name="system.silvered" {{checked system.silvered}} />
+        </li>
+
+        <!-- Damage Section -->
+        <li class="flexrow">
+          <h3 class="item-field-label-long">Damage</h3>
+        </li>
+
+        <li class="flexrow">
+          <div>
+            <label class="item-field-label-short">Attack Bonus</label>
+            <input type="text" class="item-field-label-short padd-right" name="system.bonus.attack" value="{{system.bonus.attack}}" data-dtype="Number"/>
+          </div>
+        </li>
+
+        <!-- Damage Types -->
+        <li class="flexrow">
+          {{#each system.damages as |damage key|}}
+            <div class="flexcol">
+              <label class="item-field-label-long">{{upperFirst key}}</label>
+              <div class="flexrow">
+                <label class="item-field-label-short">Type</label>
+                <select class="item-field-label-long" name="system.damages.{{key}}.damagetype" data-dtype="String">
+                  {{#select damage.damagetype}}
+                    {{> systems/avd12/templates/items/partial-options-damage-types.hbs}}
+                  {{/select}}
+                </select> 
+              </div>
+              <div class="flexrow">
+                <label class="item-field-label-short">Dice</label>
+                <input type="text" class="item-field-label-short" name="system.damages.{{key}}.dice" value="{{damage.dice}}" data-dtype="String"/>
+              </div>
+              <div class="flexrow">
+                <label class="item-field-label-short">Bonus</label>              
+                <input type="text" class="item-field-label-short" name="system.damages.{{key}}.bonus" value="{{damage.bonus}}" data-dtype="Number"/>
+              </div>
+            </div>
+          {{/each}}
+        </li>
+
+        <!-- Range Section -->
+        <li class="flexrow">
+          <h3 class="item-field-label-long">Range</h3>
+        </li>
+        <li class="flexrow">
+          <label class="item-field-label-long">Min Range</label>
+          <input type="text" class="item-field-label-short" name="system.minrange" value="{{system.minrange}}" data-dtype="Number"/>
+          <label class="item-field-label-short">&nbsp;</label>
+          <label class="item-field-label-long">Max Range</label>
+          <input type="text" class="item-field-label-short" name="system.maxrange" value="{{system.maxrange}}" data-dtype="Number"/>
+        </li>
+        <li class="flexrow">
+          <label class="item-field-label-long">Throw Range</label>
+          <input type="text" class="item-field-label-short" name="system.throwrange" value="{{system.throwrange}}" data-dtype="Number"/>
+        </li>
+
+        <!-- Ammo Capacity -->
+        <li class="flexrow">
+          <label class="item-field-label-long">Ammo Capacity</label>
+          <select class="item-field-label-long" name="system.ammocapacity" data-dtype="String">
+            {{#select system.ammocapacity}}
+              <option value="1">1 (+4 damage)</option>
+              <option value="2">2 (+2 damage)</option>
+              <option value="3">3 (+1 damage)</option>
+              <option value="4">None</option>
+            {{/select}}
+          </select>
+        </li>
+
+        <!-- Additional Fields -->
+        {{> systems/avd12/templates/items/partial-common-item-fields.hbs}}
+      </ul>
+    </div>
+  </section>
+</form>

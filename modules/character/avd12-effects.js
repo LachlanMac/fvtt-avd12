@@ -1,8 +1,9 @@
 
 export function getBestLightSource(actor){
-    let lightSources = actor.items.filter(item => item.system.equipped && item.system.light)
+    let lightSources = actor.getEquippedLightSources();
     let bestLightSource = null;
     lightSources.forEach(item => {
+      console.logAVD12(item.name, item.system.light);
       if(item.system.light.lightsource){
         if(bestLightSource){
           if(item.system.light.dim > bestLightSource.system.light.dim)
@@ -11,43 +12,21 @@ export function getBestLightSource(actor){
           bestLightSource = item;
         }
       }
-    })
-
-    if(bestLightSource)
-      return bestLightSource.system.light;
-    else
-      return null;
+    });
+      if(bestLightSource){
+        return bestLightSource.system.light;
+      }
+      else{
+        return null;
+      }
     }
-
- function resetLightsource(lightsource){
-    lightsource.alpha = 0.5
-    lightsource.angle = 360
-    lightsource.animation.intensity = 5
-    lightsource.animation.reverse = false
-    lightsource.animation.speed = 5
-    lightsource.animation.type = null
-    lightsource.attenuation = 0.5
-    lightsource.bright = 0
-    //lightsource.color = null
-    lightsource.coloration = 1
-    lightsource.contrast = 0
-    lightsource.darkness.min = 0
-    lightsource.darkness.max = 1
-    lightsource.dim = 0
-    lightsource.luminosity = 0.5
-    lightsource.saturation = 0
-    lightsource.shadows = 0
-    return lightsource
-  }
-    
 
 export async function parseActiveEffects(actor){
     let protoToken = actor.prototypeToken;
     let lightsource = null;
     
     if(protoToken){ 
-      //unlinked
-      lightsource = actor.getBestLightSource();
+      lightsource = getBestLightSource(actor);
       if(actor.getActiveTokens().length > 0){
         protoToken = actor.getActiveTokens()[0].document;
       }
@@ -205,4 +184,24 @@ export async function parseActiveEffects(actor){
             });
         }
     }
+}
+function resetLightsource(lightsource){
+  lightsource.alpha = 0.5
+  lightsource.angle = 360
+  lightsource.animation.intensity = 5
+  lightsource.animation.reverse = false
+  lightsource.animation.speed = 5
+  lightsource.animation.type = null
+  lightsource.attenuation = 0.5
+  lightsource.bright = 0
+  //lightsource.color = null
+  lightsource.coloration = 1
+  lightsource.contrast = 0
+  lightsource.darkness.min = 0
+  lightsource.darkness.max = 1
+  lightsource.dim = 0
+  lightsource.luminosity = 0.5
+  lightsource.saturation = 0
+  lightsource.shadows = 0
+  return lightsource
 }

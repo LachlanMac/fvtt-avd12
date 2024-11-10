@@ -1,11 +1,25 @@
 <ul class="stat-list alternate-list">
-
-            <span class="flexrow ">
-             <span class="attribute-label flex1">Module Points</span>
-              <input id="change-module-points" type="text" class="item-field-label-short" name="system.module_points" value="{{system.module_points}}" data-dtype="Number"/>  
-              <span>{{total_module_points}}</span>
-              <span></span>
-            </span>
+<div class="module-points-container flexrow">
+    <!-- Module Points Input -->
+     <div class="module-value-container">
+    <label class="attribute-label flex1 module-label" for="change-module-points">Module Points</label>
+    <input id="change-module-points" 
+           type="text" 
+           class="module-points-input item-field-label-short" 
+           name="system.module_points" 
+           value="{{system.module_points}}" 
+           data-dtype="Number"/>
+    </div>
+   
+    <div class="module-value-container">
+    <label class="attribute-label flex1 module-label" for="total-module-points">Total Module Points</label>
+    <span id="total-module-points" class="module-points-total">{{total_module_points}}</span>
+    </div>
+    <!-- Sync Modules Button -->
+    <button id="sync-modules-btn" class="sync-button avd12-button flex1">
+        Sync Modules
+    </button>
+</div>
 
             <li class="item flexrow list-item items-title-bg">
               <span class="item-name-label-header-long">

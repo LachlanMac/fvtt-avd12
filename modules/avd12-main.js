@@ -9,10 +9,10 @@
 /* -------------------------------------------- */
 // Import Modules
 import { Avd12Actor } from "./avd12-actor.js";
-import { Avd12ItemSheet } from "./avd12-item-sheet.js";
-import { Avd12ActorSheet } from "./avd12-actor-sheet.js";
-import { Avd12ExpeditionSheet } from "./avd12-expedition-sheet.js";
-import { Avd12NPCSheet } from "./avd12-npc-sheet.js";
+import { Avd12ItemSheet } from "./sheets/avd12-item-sheet.js";
+import { Avd12ActorSheet } from "./sheets/avd12-actor-sheet.js";
+import { Avd12ExpeditionSheet } from "./sheets/avd12-expedition-sheet.js";
+import { Avd12NPCSheet } from "./sheets/avd12-npc-sheet.js";
 import { Avd12Utility } from "./avd12-utility.js";
 import { Avd12Combat } from "./avd12-combat.js";
 import { Avd12Item } from "./avd12-item.js";
@@ -47,7 +47,8 @@ Hooks.once("init", async function () {
 };
 
 
-/*
+
+  
   console.log = function (...args) {
       if (!ignorePatterns.test(args[0])) {
           originalLog.apply(console, args);
@@ -71,7 +72,7 @@ Hooks.once("init", async function () {
           originalError.apply(console, args);
       }
   };
-  */
+  
 
   console.log(`Initializing AVD12 RPG`);
   
@@ -368,7 +369,6 @@ Hooks.once("ready", function () {
     sidebar.style.width = "min-content";
   }
 
-  welcomeMessage();
   Avd12Utility.ready()
   Avd12Utility.init()
 })

@@ -20,7 +20,7 @@
           {{#if weapon.thrown}}
           <span class="flex1"></span>
           {{else}}
-          <span class="flex1 flex-center"><label class="roll-description flex-center">{{#if (gt weapon.system.maxrange 0)}}{{weapon.system.minrange}}u - {{weapon.system.maxrange}}u{{/if}}</label></span>
+          <span class="flex1 flex-center"><label class="roll-description flex-center">{{#if (ne weapon.thrown)}} {{#if (gt weapon.system.maxrange 0)}}{{weapon.system.minrange}}u - {{weapon.system.maxrange}}u{{/if}}{{/if}}</label></span>
 
           {{/if}}
           <a class="flex1 flex-center roll-text roll-weapon"><img class="ui-dice" width="20px" height="20px" src="systems/avd12/images/ui/D12_White.webp"/><span class="roll-description">+{{weapon.attackBonus}}</span></a>
@@ -36,13 +36,37 @@
             <a class="flex1"></a>
             {{/if}}
         </li>
-         
-         {{#if weapon.thrown}}
-         <li class="item flexrow list-item list-item-shadow" data-item-id="{{weapon._id}}">
-         <span class="flex3"><b>{{weapon.name}} [Thrown]</b></span>
+        </section>
+      
+
+        {{/each}}
+      </ul>
+{{/if}}
+
+
+
+{{#if equippedThrowingWeapons}}
+      <ul class="item-list alternate-list">
+        <li class="item flexrow list-item items-title-bg">
+          <h3 class="flex3"><label class="items-title-text">Throwing Weapons</label></h3>
+          <label class="flex1 flex-center">Range</label>
+          <label class="flex1 flex-center">Attack</label>
+          <label class="flex1 flex-center">Damage</label>
+          <label class="flex1 flex-center">Secondary</label>
+          <label class="flex1 flex-center">Tertiary</label>
+          <!--
+          <label class="flex1 flex-center">Critical</label>
+          <label class="flex1 flex-center">Brutal</label>
+          -->
+        </li>
+
+       {{#each equippedThrowingWeapons as |weapon key|}}
+        <section class="spell-card">
+        <li class="item flexrow list-item list-item-shadow" data-item-id="{{weapon._id}}">
+          <span class="flex3"><b>{{weapon.name}}</b></span>
           <span class="flex1 flex-center"><label class="roll-description flex-center">{{#if (gt weapon.system.maxrange 0)}}{{weapon.system.minrange}}u - {{weapon.system.maxrange}}u{{/if}}</label></span>
           <a class="flex1 flex-center roll-text roll-weapon"><img class="ui-dice" width="20px" height="20px" src="systems/avd12/images/ui/D12_White.webp"/><span class="roll-description">+{{weapon.attackBonus}}</span></a>
-          <a class="flex1 flex-center roll-text roll-thrown-weapon-damage" data-damage="normal"><img class="ui-dice" width="20px" height="20px" src="systems/avd12/images/ui/D12_White.webp"/><span class="roll-description">{{weapon.system.damages.primary.thrown}}</span></a>
+          <a class="flex1 flex-center roll-text roll-weapon-damage" data-damage="normal"><img class="ui-dice" width="20px" height="20px" src="systems/avd12/images/ui/D12_White.webp"/><span class="roll-description">{{weapon.system.damages.primary.normal}}</span></a>
            {{#if weapon.system.damages.secondary.normal}}
           <a class="flex1 flex-center roll-text roll-secondary-weapon-damage" data-damage="normal"><img class="ui-dice" width="20px" height="20px" src="systems/avd12/images/ui/D12_White.webp"/><span class="roll-description">{{weapon.system.damages.secondary.normal}}</span></a>
             {{else}}
@@ -54,13 +78,11 @@
             <a class="flex1"></a>
             {{/if}}
         </li>
-        {{/if}}
         </section>
-      
-
         {{/each}}
       </ul>
 {{/if}}
+
 
 
 {{#if equippedThrowing}}

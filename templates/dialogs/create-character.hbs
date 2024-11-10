@@ -1,0 +1,112 @@
+<form class="create-character-dialog">
+  <header class="roll-dialog-header">
+    <h1 class="dialog-roll-title roll-dialog-header text-center">Create a Character</h1>
+  </header>
+  <div class="character-creation-window">
+  <div class="flexcol">
+    <div class="flexrow row-spacing">
+      <div class="label-col">
+        <label for="character-name">Name:</label>
+      </div>
+      <div class="input-col">
+        <input type="text" id="character-name" name="character-name" placeholder="Enter character name"  class="character-creator-dropdown" required>
+      </div>
+    </div>
+  </div>
+    <div class="flexcol">
+    <div class="flexrow row-spacing">
+      <div class="label-col"><label for="character-ancestry">Origin:</label></div>
+      <div class="input-col">
+            <select id="origin" name="origin" value="{{origin}}" data-dtype="String"  class="character-creator-dropdown" required>
+                  {{#select origin}}
+                    <option value="1">Born Adventurer</option>
+                    <option value="2">Pact Bound</option>
+                    <option value="3">Mixed Ancestry</option>
+                    <option value="4">Extra Planar</option>
+                    <option value="5">Vampire</option>
+                    <option value="6">Lycanthrope</option>
+                {{/select}}
+            </select>
+        </div>
+    </div>  
+    <p id="origin-description" class="text-center character-detail-description"></p>
+  </div>
+
+  <div class="flexcol">
+    <div class="flexrow row-spacing">
+      <div class="label-col"><label for="character-ancestry">Ancestry:</label></div>
+      <div class="input-col">
+            <select id="character-ancestry" name="character-ancestry"  class="character-creator-dropdown" required>
+            {{#each ancestries as |selection|}}
+                <option value="{{selection._id}}" {{#if (eq selection._id ../selected._id)}}selected="selected"{{/if}}>
+                {{selection.name}}
+                </option>
+            {{/each}}
+            </select>
+        </div>
+    </div>
+  </div>
+   <div class="flexcol">
+    <div class="flexrow row-spacing">
+      <div class="label-col"><label for="size">Size:</label></div>
+      <div class="input-col">
+            <select id="size" name="size" value="{{sizeType}}" data-dtype="String"  class="character-creator-dropdown" required>
+                  {{#select sizeType}}
+                    <option value="2">Small</option>
+                    <option value="3">Medium</option>
+                    <option value="4">Large</option>
+                {{/select}}
+            </select>
+        </div>
+    </div>  
+    <p id="size-description" class="text-center character-detail-description"></p>
+  </div>
+
+{{#if (eq originType 3)}}
+<div class="flexcol">
+    <div class="flexrow row-spacing">
+      <div class="label-col"><label for="secondary-character-ancestry">Secondary Ancestry:</label></div>
+      <div class="input-col">     
+          <select id="secondary-character-ancestry" name="secondary-character-ancestry" class="character-creator-dropdown" required>
+              {{#each ancestries as |selection|}}
+                  <option value="{{selection._id}}" {{#if (eq selection._id ../secondary_selected._id)}}selected="selected"{{/if}}>
+                      {{selection.name}}
+                  </option>
+              {{/each}}
+          </select>
+        </div>
+    </div>
+  </div>
+  {{/if}}
+
+  {{#if (eq originType 4)}}
+  <div class="flexcol">
+    <div class="flexrow row-spacing">
+      <div class="label-col"><label for="planar-character-ancestry">Planar Ancestry:</label></div>
+      <div class="input-col">     
+          <select id="planar-character-ancestry" name="planar-character-ancestry"  class="character-creator-dropdown" required>
+              {{#each planar as |selection|}}
+                  <option value="{{selection._id}}" {{#if (eq selection._id ../secondary_selected._id)}}selected="selected"{{/if}}>
+                      {{selection.name}}
+                  </option>
+              {{/each}}
+          </select>
+        </div>
+    </div>
+  </div>
+  {{/if}}
+
+
+  <div class="flexrow ancestry-container row-spacing">
+    <div class="label-col ancestry-icon-container">
+        <img id="ancestry-icon" class="ancestry-icon" src="{{selected.img}}" alt="{{selected.name}}" />
+    </div>
+    <div class="input-col">
+        <h4><strong class="embedded-label">Size: </strong>{{selected.details.size}} </h4>
+        <h4><strong class="embedded-label">Language: </strong>{{selected.details.language}}</h4>
+        <h4><strong class="embedded-label">Homeworld: </strong>{{selected.details.homeworld}}</h4>
+        <h4><strong class="embedded-label">Lifespan: </strong>{{selected.details.lifespan}}</h4>
+    </div>
+  </div>
+  </div>
+</form>

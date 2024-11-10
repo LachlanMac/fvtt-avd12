@@ -332,6 +332,7 @@
         },
         "bonus": {
           "traits": {
+            "scrapper":0,
             "armsman": 0,
             "juggernaut":0,
             "dualwield":0,
@@ -343,14 +344,15 @@
             "spellfist":0,
             "wideattacks":0,
             "dueling":0,
-            "quicktoss":0,
+            "precise_throwing":0,
             "chucker":0,
             "dragonhorde":0,
             "naturalconduit":0,
             "skilledchucking":0,
             "deadlythrowing":0,
             "koboldthrowing":0,
-            "swim_at_walk":0
+            "swim_at_walk":0,
+            "effective_blows":0
           },
           "ranged": {
             "attack": 0,
@@ -561,6 +563,7 @@
       },
       "commonitem": {
         "avd12_id":"0",
+        "auto_added":false,
         "imported":false,
         "light":{
           "lightsource":false,
@@ -741,6 +744,13 @@
     },"avd12module":{
       "type":"core",
       "avd12_id":"0",
+      "details":{
+        "size":"",
+        "homeworld":"",
+        "lifespan":"",
+        "language":"",
+        "description":""
+      },
       "description":"",
       "origin":false,
       "options":{

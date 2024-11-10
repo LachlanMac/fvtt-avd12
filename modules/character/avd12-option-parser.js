@@ -130,9 +130,9 @@ function addDefense(actor, data) {
     let skillValue = Number(data.split("=")[1]);
     let defenseCode = data.charAt(2);
     const mitigationMap = {
-        "1": "attributes.willpower.skills.resistance.modifier",
-        "2": "attributes.agility.skills.dodge.modifier",
-        "3": "attributes.might.skills.block.modifier",
+        "1": "attributes.willpower.skills.resistance.finalvalue",
+        "2": "attributes.agility.skills.dodge.finalvalue",
+        "3": "attributes.might.skills.block.finalvalue",
         "4": "mitigation.physical.value",
         "5": "mitigation.cold.value",
         "6": "mitigation.fire.value",
@@ -175,7 +175,6 @@ function addConduitSkill(character, data) {
             break;
     }
 }
-
 function addAttackSkill(actor, data, name, description, custom_id) {
     let attackValue = Number(data.split("=")[1]);
     let attackCode = data.charAt(2);
@@ -201,8 +200,8 @@ function addAttackSkill(actor, data, name, description, custom_id) {
         "J": "bonus.slash.brutals",
         "K": "bonus.blunt.brutals",
         "L": "bonus.pierce.brutals",
-        "M": "bonus.unarmed.attack",
-        "N": "bonus.unarmed.damage",
+        "M": "bonus.unarmed.attack",  
+        "N": "bonus.unarmed.damage", 
         "O": "bonus.unarmed.brutals",
         "P": "bonus.unarmed.upgraded",
         "R": "bonus.traits.armsman",
@@ -211,34 +210,31 @@ function addAttackSkill(actor, data, name, description, custom_id) {
         "Y": "bonus.pierce.upgraded",
         "Z": "bonus.ranged.upgraded",
     };
-    if (attackCode === "T") {
-        //(actor, name, description, custom_id){
-        addAttackOfOpportunity(actor,name, description, custom_id);
-        return;
-    } else if (attackCode === "U") {
-        addAttackOfOpportunity(actor,name, description, custom_id);
-        return;
-    } else if (attackCode === "V") {
-        addAttackOfOpportunity(actor,name, description, custom_id);
+
+    if (attackCode === "T" || attackCode === "U" || attackCode === "V" || attackCode === "W") {
+        addAttackOfOpportunity(actor, name, description, custom_id);
         return;
     }
+
     let path = attackMap[attackCode];
     if (!path) return;
-    if (attackCode >= "D" && attackCode <= "Z" && typeof path === 'string') {
-        // Boolean flags for criticals and brutals
+
+    if ((attackCode >= "D" && attackCode <= "Z" && attackCode !== "M" && attackCode !== "N") && typeof path === 'string') {
+        // Boolean flags for criticals and brutals, excluding M and N
         let keys = path.split('.');
         keys.reduce((acc, key, index) => {
             if (index === keys.length - 1) acc[key] = true;
             return acc[key];
         }, actor.system);
     } else {
-        // Numerical bonus adjustments
+        // Numerical bonus adjustments for attack or damage, including M and N
         path.split('.').reduce((obj, key, index, arr) => {
             if (index === arr.length - 1) obj[key] += attackValue;
             return obj[key];
         }, actor.system);
     }
 }
+
 
 function addMovespeed(actor, data) {
     let speedValue = Number(data.split("=")[1]);
@@ -514,21 +510,33 @@ function addTrait(actor, dataTokens, description, name, custom_id) {
             break;
         case "Y": // Custom traits with special cases
             switch (dataTokens.charAt(2)) {
+                case "A": 
+                    actor.system.bonus.traits.effective_blows = 1;
+                    break;
+                case "B": 
+                    actor.system.bonus.traits.scrapper = 1;
+                    break;
                 case "D": 
                     actor.system.bonus.traits.dragonhorde = 1;
                     break;
                 case "N": 
                     actor.system.bonus.traits.naturalconduit = 1;
                     break;
+                case "T": //+2 throwing
+                    actor.system.bonus.traits.precise_throwing = 1;
+                    break;
+                case "S": //Athetlics as attack modifier instead of weapon skill
+                    actor.system.bonus.traits.skilledchucking = 1;
+                    break;
+                case "U": //Use heavy weapons and +2 range
+                    actor.system.bonus.traits.chucker = 1;
+                    break;
                 default:
                     console.log("ERROR: Unrecognized custom trait code in:", dataTokens);
                     break;
             }
             break;
-        case "U":
-            actor.system.bonus.traits.chucker = 1;
-            break;
-        case "4":
+       case "4":
             actor.system.bonus.traits.climb_at_walk = 1;
             break;
         case "5":
@@ -536,9 +544,6 @@ function addTrait(actor, dataTokens, description, name, custom_id) {
             break;
         case "6":
             actor.system.bonus.traits.swim_at_walk = 1;
-            break;
-        case "7":
-            actor.system.bonus.traits.skilledchucking = 1;
             break;
         case "8":
             actor.system.bonus.traits.deadlythrowing = 1;
@@ -550,7 +555,7 @@ function addTrait(actor, dataTokens, description, name, custom_id) {
             actor.system.bonus.traits.spellshot = 1;
             break;
         case "F":
-            actor.system.bonus.traits.spellfist = 1;
+            actor.system.bonus.traits.spellfist += 1;
             break;
         case "S":
             actor.tmpTraits.push({...baseTrait, system: {...baseTrait.system, traittype: "offense" }});
@@ -584,7 +589,9 @@ function addFightingStance(actor, dataTokens) {
         "18": "18_flowing_strikes",
         "19": "19_sentinel_stance",
         "20": "20_dual_wield",
-        "21": "21_cavalier_stance"
+        "21": "21_cavalier_stance",
+        "22": "22_flawless_defense",
+        "23": "23_elemental_fist",
     };
     const identifier = dataTokens.split("=")[1];
     const custom_id = stanceMap[identifier];

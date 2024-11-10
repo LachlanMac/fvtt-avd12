@@ -1,0 +1,16 @@
+<form class="{{cssClass}}" autocomplete="off">
+  {{> systems/avd12/templates/items/partial-equipment-header.hbs}}
+  {{> systems/avd12/templates/items/partial-item-nav.hbs}}
+
+  {{!-- Sheet Body --}}
+  <section class="sheet-body item-sheet">
+    {{> systems/avd12/templates/items/partial-item-description.hbs}}
+    <div class="tab details" data-group="primary" data-tab="details">
+      <div class="tab" data-group="primary">
+        <ul>
+          {{> systems/avd12/templates/items/partial-common-item-fields.hbs}}
+        </ul>
+    </div>
+  </div>
+  </section>
+</form>

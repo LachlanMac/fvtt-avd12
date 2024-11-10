@@ -96,7 +96,15 @@ export function parseStances(actor) {
             break;
         case "20_dual_wield":
             actor.system.bonus.traits.dualwield = 1;
-            // nothing
+            break;
+        case "21_cavalier_stance":
+           break;
+        case "22_flawless_defense":
+            actor.system.attributes.might.skills.block.finalvalue += 2;
+            actor.system.attributes.agility.skills.dodge.finalvalue += 2;
+            actor.system.attributes.willpower.skills.resistance.finalvalue += 2;
+            break;
+        case "23_elemental_fist":
             break;
         default:
             console.log("unknown active stance", activeStance.system.avd12_id);

@@ -1,0 +1,31 @@
+<form class="{{cssClass}}" autocomplete="off">
+  {{> systems/avd12/templates/items/partial-equipment-header.hbs}}
+  {{> systems/avd12/templates/items/partial-item-nav.hbs}}
+
+  {{!-- Sheet Body --}}
+  <section class="sheet-body item-sheet">
+
+    {{> systems/avd12/templates/items/partial-item-description.hbs}}
+    
+    <div class="tab details" data-group="primary" data-tab="details">
+
+      <div class="tab" data-group="primary">
+        <ul>
+
+          {{> systems/avd12/templates/items/partial-common-item-fields.hbs}}
+
+          <li class="flexrow">
+            <label class="item-field-label-long">Shield type</label>
+            <select class="item-field-label-long" type="text" name="system.category" value="{{system.category}}" data-dtype="String">
+              {{#select system.category}}
+                 <option value="lightshield">Light Shield</option>
+                 <option value="heavyshield">Heavy Shield</option>
+              {{/select}}
+            </select> 
+          </li>
+        </ul>
+    </div>
+  </div>
+
+  </section>
+</form>

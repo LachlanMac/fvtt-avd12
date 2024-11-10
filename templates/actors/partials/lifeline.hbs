@@ -1,0 +1,27 @@
+<div class="flexcol flexgroup-center flex-center">
+              {{#if (eq type "character")}}
+              <div class="flexcol">
+                  <div class="flexcol flex-center">
+                    <h3 class="flex-center flex0">Lifeline</h3>
+                    <div class="flexrow">
+                      <div class="flexcol">
+                        <span class="attribute-label flex0">Current</span>
+                        <input type="text" class="item-field-label-short health-input" name="system.lifeline.value" value="{{system.lifeline.value}}" data-dtype="Number"/>
+                      </div>
+                      <div class="flexcol">
+                        <span class="attribute-label flex0">Max</span>
+                        <input type="text" class="item-field-label-short health-input" name="system.lifeline.max" value="{{system.lifeline.max}}" data-dtype="Number"/>  
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              {{else}}
+                  <div class="flexcol flex-center">
+                    <h3 class="flex-center flex0">Type</h3>
+                    <div class="flexrow">
+                    <a class="skill-value flex1">{{creatureSize}} {{upperFirst creatureType}}</a>
+                    </div>
+                  </div>
+                
+              {{/if}}
+            </div>

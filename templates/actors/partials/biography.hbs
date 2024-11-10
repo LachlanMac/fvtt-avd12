@@ -10,7 +10,7 @@
                <input type="text" class="" name="system.uuid" value="{{system.uuid}}"
                 data-dtype="String" />
                 {{#if isGM}}
-               <button id="import-character" class="flex0">Import Character</button>
+               <button id="import-character" class="flex0 avd12-button">Import Character</button>
                {{/if}}
             </li>
           </ul>
@@ -46,6 +46,7 @@
         </div>
       </div>
       <hr>
+ 
       <h3>Background : </h3>
       <div class="form-group editor">
         {{editor data.biodata.description target="system.biodata.description" button=true owner=owner
@@ -56,5 +57,5 @@
       <div class="form-group editor">
         {{editor data.biodata.notes target="system.biodata.notes" button=true owner=owner editable=editable}}
       </div>
-      <hr>
-      </article>
+   
+     

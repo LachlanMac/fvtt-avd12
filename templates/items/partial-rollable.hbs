@@ -4,7 +4,7 @@
 
       <li class="flexrow flex-center">
         <label class="item-field-label-long" style="text-align:left;">Utility Roll</label>
-        <input type="checkbox" class="item-field-label-short" name="system.utility_roll" {{checked system.utility_roll}} />
+        <input type="checkbox" class="item-field-label-short item-checkbox" name="system.utility_roll" {{checked system.utility_roll}} />
          <input type="text" class="item-field-label-long" name="system.utility_roll_formula" value="{{system.utility_roll_formula}}"/>
          <!--//utility_roll_bonus_modifier-->
          <div class="item-field-label-long" type="text" data-dtype="String"></div>
@@ -14,7 +14,7 @@
 
       <li class="flexrow flex-center">
         <label class="item-field-label-long" style="text-align:left;">Attack Roll</label>
-        <input type="checkbox" class="item-field-label-short" name="system.attack_roll" {{checked system.attack_roll}} />
+        <input type="checkbox" class="item-field-label-short item-checkbox" name="system.attack_roll" {{checked system.attack_roll}} />
          <input type="text" class="item-field-label-long" name="system.attack_roll_formula" value="{{system.attack_roll_formula}}"/>
          <select class="item-field-label-long" type="text" name="system.crit_level" value="{{system.crit_level}}" data-dtype="String">
           {{#select system.crit_level}}
@@ -33,7 +33,7 @@
     
       <li style="" class="flexrow flex-center">
         <label class="item-field-label-long" style="text-align:left;">Primary Damage</label>
-           <input type="checkbox" class="item-field-label-short" name="system.damage_roll" {{checked system.damage_roll}} />
+           <input type="checkbox" class="item-field-label-short item-checkbox" name="system.damage_roll" {{checked system.damage_roll}} />
            <input type="text" class="item-field-label-long" name="system.damage_formula" value="{{system.damage_formula}}"/>
            <select class="item-field-label-long" type="text" name="system.damage_type" value="{{system.damage_type}}" data-dtype="String">
             {{#select system.damage_type}}
@@ -45,7 +45,7 @@
 
       <li class="flexrow flex-center">
         <label class="item-field-label-long" style="text-align:left;">Secondary Damage</label>
-           <input type="checkbox" class="item-field-label-short" name="system.secondary_damage_roll" {{checked system.secondary_damage_roll}} />
+           <input type="checkbox" class="item-field-label-short item-checkbox" name="system.secondary_damage_roll" {{checked system.secondary_damage_roll}} />
            <input type="text" class="item-field-label-long" name="system.secondary_damage_formula" value="{{system.secondary_damage_formula}}"/>
            <select class="item-field-label-long" type="text" name="system.secondary_damage_type" value="{{system.secondary_damage_type}}" data-dtype="String">
             {{#select system.secondary_damage_type}}
@@ -59,7 +59,7 @@
 
         <li class="flexrow flex-center">
         <label class="item-field-label-long" style="text-align:left;">Tertiary Damage</label>
-           <input type="checkbox" class="item-field-label-short" name="system.tertiary_damage_roll" {{checked system.tertiary_damage_roll}} />
+           <input type="checkbox" class="item-field-label-short item-checkbox" name="system.tertiary_damage_roll" {{checked system.tertiary_damage_roll}} />
            <input type="text" class="item-field-label-long" name="system.tertiary_damage_formula" value="{{system.tertiary_damage_formula}}"/>
            <select class="item-field-label-long" type="text" name="system.tertiary_damage_type" value="{{system.tertiary_damage_type}}" data-dtype="String">
             {{#select system.tertiary_damage_type}}
@@ -72,7 +72,7 @@
 
       <li class="flexrow flex-center">
         <label class="item-field-label-long" style="text-align:left;">Required Check Roll</label>
-        <input type="checkbox" class="item-field-label-short" name="system.check_roll" {{checked system.check_roll}} />
+        <input type="checkbox" class="item-field-label-short item-checkbox" name="system.check_roll" {{checked system.check_roll}} />
          <input type="text" class="item-field-label-long" name="system.check_roll_formula" value="{{system.check_roll_formula}}"/>
          <select class="item-field-label-long" type="text" name="system.check_roll_check" value="{{system.check_roll_check}}" data-dtype="String">
             {{#select system.check_roll_check}}

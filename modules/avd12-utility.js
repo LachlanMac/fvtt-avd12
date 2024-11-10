@@ -3,6 +3,7 @@ import { Avd12Actor } from "./avd12-actor.js";
 import { Avd12Combat } from "./avd12-combat.js";
 import { Avd12Commands } from "./avd12-commands.js";
 import { Avd12ChatBinds } from "./character/avd12-chat-binds.js";
+import { IMAGES } from "./ui/images.js";
 
 /* -------------------------------------------- */
 const __ALLOWED_MODULE_TYPES = { "action": 1, "reaction": 1, "freeaction": 1, "trait": 1 }
@@ -92,6 +93,7 @@ export class Avd12Utility {
   static async init() {
     Hooks.on('renderChatLog', (log, html, data) => Avd12ChatBinds.chatListener(html));
     Hooks.on("renderChatMessage", Avd12Utility.displayChatActionButtons);
+    CONFIG.MeasuredTemplate.defaults.angle = 90;
 
     this.rollDataStore = {}
     this.defenderStore = {}
@@ -179,8 +181,6 @@ export class Avd12Utility {
   /* -------------------------------------------- */
   static buildBonusList() {
     let bonusList = []
-    console.log(game.system);
-
     for (let key in game.system.template.Actor.character.bonus) {
       let bonuses = game.system.template.Actor.character.bonus[key]
       for (let bonus in bonuses) {
@@ -293,7 +293,9 @@ export class Avd12Utility {
       'systems/avd12/templates/items/partial-options-attack-type.hbs',
       'systems/avd12/templates/items/partial-options-skills.hbs',
       'systems/avd12/templates/items/partial-rollable.hbs',
+      'systems/avd12/templates/items/partial-equipment-header.hbs',
       'systems/avd12/templates/actors/partials/moves.hbs',
+      'systems/avd12/templates/actors/partials/quickbar.hbs',
       'systems/avd12/templates/actors/partials/skills.hbs',
       'systems/avd12/templates/actors/partials/defense.hbs',
       'systems/avd12/templates/actors/partials/offense.hbs',
@@ -303,7 +305,6 @@ export class Avd12Utility {
       'systems/avd12/templates/actors/partials/equipment.hbs',
       'systems/avd12/templates/actors/partials/weapons.hbs',
       'systems/avd12/templates/actors/partials/biography.hbs',
-      'systems/avd12/templates/actors/partials/crafting.hbs',
       'systems/avd12/templates/actors/partials/modules.hbs',
       'systems/avd12/templates/actors/partials/navigation.hbs',
       'systems/avd12/templates/actors/partials/creature-type.hbs',
@@ -470,16 +471,12 @@ static GetOtherTier(optionKey){
     let oppositeKey = Avd12Utility.GetOtherTier(optionKey);
     if(oppositeKey){
       if(module.system.options[oppositeKey].selected){
-        console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
         return true;
       }
     }
-
     if(selectedTier > highestTier + 1){//cant go forward
-      console.log(selectedTier, "is higher than", + highestTier);
       return false;
     }else if(selectedTier< highestTier){//cant go backwards
-      console.log(selectedTier, "is lower than", + highestTier);
       return false;
     }
 
@@ -658,6 +655,8 @@ static GetOtherTier(optionKey){
     let actor = game.actors.get(rollData.actorId)
     // Build the dice formula
     let diceFormula = "1d12"
+    if(rollData.offense)
+      diceFormula += "+" + rollData.offense.attack;
     if (rollData.skill)
       diceFormula += "+" + rollData.skill.finalvalue
     if (rollData.crafting) 
@@ -706,7 +705,7 @@ static GetOtherTier(optionKey){
     let penalty = "";
     let conditions = rollData.conditions;
  
-    if(rollData.spellAttack || rollData.weapon || rollData.action){
+    if(rollData.spellAttack || rollData.weapon || rollData.action || rollData.offense){
       conditions.blinded == 1 ? penalty += "-1d4" : penalty +="";
       conditions.hidden == 1 ? penalty += "+1d4" : penalty +="";
       conditions.prone == 1 ? penalty += "+-1d4" : penalty +="";
@@ -889,40 +888,7 @@ static GetOtherTier(optionKey){
     })
   }
 
-  static getHeavyShieldReaction(){
 
-    let json = `{
-      "folder": "JUbRIYO0CIXLz4NV",
-      "name": "Reaction : Shields Up! [Heavy]",
-      "type": "reaction",
-      "img": "icons/svg/item-bag.svg",
-      "system": {
-          "description": "In response to an Enemy making an Attack Roll against you, lower the Roll by 1d4 after the result of the Attack Roll is known. This also downgrades True Hits to Normal Hits.",
-          "traittype": "undefined"
-      },
-      "effects": [],
-      "sort": 0,
-      "ownership": {
-          "default": 0,
-          "PkSjA89Pm9zyORjP": 3
-      },
-      "flags": {},
-      "_stats": {
-          "systemId": "avd12",
-          "systemVersion": "10.0.25",
-          "coreVersion": "10.291",
-          "createdTime": 1680974863058,
-          "modifiedTime": 1680974895862,
-          "lastModifiedBy": "PkSjA89Pm9zyORjP"
-      },
-      "_id": "3f035231e05a42fa"
-  }`
-
-    return JSON.parse(json);
-
-
-  }
-  
   static parse(str) {
     let matches = str.match(/\[(.+)\]\s*(.+)/);
     if (matches) {
@@ -1010,39 +976,36 @@ static GetOtherTier(optionKey){
   }
   
 
+  static getHeavyShieldTrait(){
+    const baseTrait = {
+      img: IMAGES["trait"],
+      type: "temporary trait",
+      name: "Heavy Shield Bonus",
+      system: {
+          description: "Attacks against you are botched if you roll an 11 or 12 on your Block Check, instead of only on a 12. Additionally, you have half cover against Projectiles.",
+          avd12_id: "heavy_shield_1",
+          traittype:"defense",
+          data: ""
+      }
+  };
+  return baseTrait;
+  }
+  
 
-  static getLightShieldReaction(){
-
-    let json = `{
-      "folder": "JUbRIYO0CIXLz4NV",
-      "name": "Reaction : Shields Up! [Light]",
-      "type": "reaction",
-      "img": "icons/svg/item-bag.svg",
-      "system": {
-          "description": "After being hit by a Projectile or Weapon Attack that does Physical Damage, reduce the Damage by a number equal to 1d4 plus your Block Modifier.",
-          "traittype": "undefined"
-      },
-      "effects": [],
-      "sort": 0,
-      "ownership": {
-          "default": 0,
-          "PkSjA89Pm9zyORjP": 3
-      },
-      "flags": {},
-      "_stats": {
-          "systemId": "avd12",
-          "systemVersion": "10.0.25",
-          "coreVersion": "10.291",
-          "createdTime": 1680974863058,
-          "modifiedTime": 1680974895862,
-          "lastModifiedBy": "PkSjA89Pm9zyORjP"
-      },
-      "_id": "3f035231e05a42fa"
-  }`
-
-    return JSON.parse(json);
-
-
+  static getLightShieldTrait(){
+    const baseTrait = {
+      img: IMAGES["trait"],
+      type: "temporary trait",
+      name: "Light Shield Bonus",
+      system: {
+          description: "Attacks against you are botched if you roll an 11 or 12 on your Block Check, instead of only on a 12.",
+          avd12_id: "light_shield_1",
+          traittype:"defense",
+          data: ""
+      }
+  };
+  return baseTrait;
+    
   }
 
   /* -------------------------------------------- */
@@ -1069,7 +1032,6 @@ static GetOtherTier(optionKey){
     let chatGM = foundry.utils.duplicate(chatOptions);
     chatGM.whisper = this.getUsers(user => user.isGM);
     chatGM.content = "Blinde message of " + game.user.name + "<br>" + chatOptions.content;
-    console.log("blindMessageToGM", chatGM);
     game.socket.emit("system.avd12", { msg: "msg_gm_chat_message", data: chatGM });
   }
 
@@ -1110,6 +1072,9 @@ static GetOtherTier(optionKey){
     chatOptions.alias = chatOptions.alias || name;
     return ChatMessage.create(chatOptions);
   }
+
+
+  
 
   static async createDamageChatMessage(damageData) {
     return ChatMessage.create({
@@ -1160,6 +1125,10 @@ static GetOtherTier(optionKey){
     return this.createChatMessage(name, game.settings.get("core", "rollMode"), chatOptions)
    
   }
+
+  static getNestedProperty(obj, keyPath) {
+    return keyPath.split('.').reduce((acc, key) => acc && acc[key], obj);
+}
 
   static getStanceId(id){
     const idToValue = {

@@ -115,5 +115,27 @@
             {{/each}}
             {{/if}}
        
+     {{#if craftingTraits}}
+            <li class="item flexrow list-item items-title-bg">
+              <span class="item-name-label-header-long">
+                <h3><label class="items-title-text">Crafting Traits</label></h3>
+              </span>
+            </li>
+            {{#each craftingTraits as |trait key|}}
+            <li class="item flexrow list-item list-item-shadow" data-item-id="{{trait._id}}">
+                <a class="item-edit item-name-img flex-center" style="margin-left:4px;" title="Edit Item">
+                    <img class="sheet-competence-img flex-center" src="{{trait.img}}" />
+                </a>
+                <span class="flex1 big-label side-border">{{trait.name}}</span>
+                <span class="flex3 item-description side-border">{{{trait.system.description}}}</span>
+                <span class="flex1 item-controls item-controls-fixed flex-center">
+                     {{#if (ne trait.type "temporary trait")}}
+                          <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+                      {{/if}}
+                </span>
+            </li>
+            {{/each}}
+            {{/if}}
+
 
 </ul>{{/if}}

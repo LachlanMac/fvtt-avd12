@@ -61,7 +61,16 @@
           </div>
         {{/if}}
 
-     
+        {{#if offense}}
+          <li>Skill : {{offense.name}} ({{offense.attack}}) </li>
+          <li>Modifier : <b>{{bonusMalusRoll}}</b></li>
+          <li>Dice Formula : <b>{{diceFormula}}</b> </li>
+          <li>Total : <b>{{roll.total}} </b></li>
+            <div class="flex1">
+            {{{roll.diceData}}}
+          </div>
+        {{/if}}
+
 
         {{#if weapon}}
           <li>Skill : {{weapon.name}}</li>
@@ -77,7 +86,10 @@
         <li>Crafting : {{crafting.name}} ({{crafting.skill}}) </li>
         <li>Modifier : <b>{{bonusMalusRoll}}</b></li>
         <li>Dice Formula : <b>{{diceFormula}}</b> </li>
-        <li>Total : <b>{{roll.total}}</b></li>
+        <li>Total : <b>{{roll.total}} </b></li>
+            <div class="flex1">
+            {{{roll.diceData}}}
+          </div>
         {{/if}}
 
         {{#if spell}}

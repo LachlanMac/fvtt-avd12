@@ -15,7 +15,7 @@ export function getMinimumModulePoints(actor) {
 
 export async function updateModulePoints(actor, delta) {
     let modulePoints = actor.getTotalModulePoints() + delta;
-    let level = Math.floor((modulePoints - (actor.system.born_adventurer ? 4 : 0)) / 8);
+    let level = Math.floor((modulePoints - (actor.system.origin_trait == 1 ? 4 : 0)) / 8);
 
     if (level !== actor.system.level.value) {
         await actor.update({ "system.level.value": level });
@@ -48,7 +48,6 @@ export function getSpentModulePoints(module) {
   }
 
 export async function updateModuleSelection(actor, item, location, selection){
-
     let module = actor.items.filter(found => found._id == item._id);
     if(module){
       if(!Avd12Utility.isValidModuleOption(item,location)){
@@ -87,15 +86,6 @@ export async function updateModuleSelection(actor, item, location, selection){
   } 
 
   export function rebuildModules(actor) {
-    actor.tmpFreeActions = [];
-    actor.tmpActions = [];
-    actor.tmpReactions = [];
-    actor.tmpBallads = [];
-    actor.tmpStances = [];
-    actor.tmpLanguages = [];
-    actor.tmpTraits = [];
-    actor.tmpImmunities = [];
-
     let  baseTrait = {
       img: IMAGES["trait"],
       type: "temporary trait",
@@ -127,7 +117,6 @@ export async function updateModuleSelection(actor, item, location, selection){
     modules.forEach(module => {
         Object.entries(module.system.options).forEach(([key, option]) => {
             const optionKey = key.replace("option_", "");
-          
             if (option.selected) {
                 option.avd12_id = `${module.system.avd12_id}_${optionKey}`;
                 parseOption(actor, option);
