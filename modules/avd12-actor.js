@@ -70,7 +70,6 @@ export class Avd12Actor extends Actor {
       this.tmpReactions = [];
       this.tmpBallads = [];
       this.tmpStances = [{custom_id:"1_neutral_stance"}];
-      console.log("1", this.name, this.system.attributes.might.skills.block.finalvalue);
       this.tmpLanguages = [];
       this.tmpTraits = [];
       this.tmpImmunities = [];
@@ -85,16 +84,13 @@ export class Avd12Actor extends Actor {
       this.rebuildSkills()
       this.rebuildSize()
       this.updateModulePoints(0);
-      console.log("2", this.name, this.system.attributes.might.skills.block.finalvalue);
       this.system.health.max += (this.system.level.value * 5 + 10);
       this.system.focus.focuspoints = 0;
       this.system.focus.focusregen = 0;
       this.system.focus.castpenalty = 0;
       
       this.rebuildModules();
-      console.log("3", this.name, this.system.attributes.might.skills.block.finalvalue);
       this.rebuildEquipment();
-      console.log("4", this.name, this.system.attributes.might.skills.block.finalvalue);
       this.parseStances();
       this.parseActiveEffects();
       this.rebuildBonuses();
@@ -166,7 +162,6 @@ export class Avd12Actor extends Actor {
         }
     }
 }
-
   rebuildNPCSkills() {
     rebuildNPCSkills(this);
   }
@@ -616,7 +611,7 @@ export class Avd12Actor extends Actor {
     this.system.bonus.weapon.attack += this.system.bonus.when.unarmored.attack;
 
   }
-  console.log("5", this.name, this.system.attributes.might.skills.block.finalvalue);
+
   let equippedShield = this.items.find(item => item.type == "shield" && item.system.equipped)
     if(equippedShield){
       switch(equippedShield.system.category){
@@ -1018,6 +1013,7 @@ export class Avd12Actor extends Actor {
     let comp = foundry.utils.duplicate(modules.filter(item => item.system.type == 'secondary') || []);
     return comp
   }
+
   getOriginModules(modules) {
     let comp = foundry.utils.duplicate(modules.filter(item => (item.system.type == 'racial') || item.system.type == 'alteration' || item.system.type == "planar") || []);
     return comp

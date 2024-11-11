@@ -6,7 +6,7 @@
   --major-button-font-size: 1.05rem;
   --major-button-font-weight: normal;
   --major-button-color: #dadada;
-  --tab-header-font-size: 1.0rem;
+  --tab-header-font-size: 1rem;
   --tab-header-font-weight: 700;
   --tab-header-color: #403f3e;
   --tab-header-color-active: #4a0404;
@@ -16,7 +16,7 @@
   --actor-label-font-size: 0.8rem;
   --actor-label-font-weight: 700;
   --actor-label-color: #464331c4;
-  --color-underline-header:rgb(226, 209, 113) !important;
+  --color-underline-header: rgb(226, 209, 113) !important;
 }
 
 .window-app {
@@ -43,11 +43,15 @@ form button {
   color: rgb(255, 255, 255) !important;
 }
 
-form .notes, form .hint {
+form .notes,
+form .hint {
   color: rgb(201, 201, 201);
 }
 
-.sheet header.sheet-header h1 input, .window-app .window-header, #actors .directory-list, #navigation #scene-list .scene.nav-item {
+.sheet header.sheet-header h1 input,
+.window-app .window-header,
+#actors .directory-list,
+#navigation #scene-list .scene.nav-item {
   font-size: 1rem;
 }
 
@@ -55,7 +59,16 @@ form .notes, form .hint {
   font-size: 0.8rem;
 }
 
-.window-app input, .avd12 .item-form, .sheet header.sheet-header .flex-group-center.flex-compteurs, .sheet header.sheet-header .flex-group-center.flex-fatigue, select, button, .item-checkbox, #sidebar, #players, #navigation #nav-toggle {
+.window-app input,
+.avd12 .item-form,
+.sheet header.sheet-header .flex-group-center.flex-compteurs,
+.sheet header.sheet-header .flex-group-center.flex-fatigue,
+select,
+button,
+.item-checkbox,
+#sidebar,
+#players,
+#navigation #nav-toggle {
   font-size: 0.8rem;
 }
 
@@ -73,17 +86,21 @@ form .notes, form .hint {
   font-weight: bold;
 }
 
-.tabs .item.active, .blessures-list li ul li:first-child:hover, a:hover {
+.tabs .item.active,
+.blessures-list li ul li:first-child:hover,
+a:hover {
   text-shadow: 1px 0px 0px #d7b740;
 }
 
-.rollable:hover, .rollable:focus {
+.rollable:hover,
+.rollable:focus {
   color: #000;
   text-shadow: 0 0 10px red;
   cursor: pointer;
 }
 
-input:hover, select:hover {
+input:hover,
+select:hover {
   border-width: 4px;
   border-color: rgb(85, 65, 130);
 }
@@ -100,7 +117,8 @@ table {
   border: 1px solid #7a7971;
 }
 
-.grid, .grid-2col {
+.grid,
+.grid-2col {
   display: grid;
   grid-column: span 2/span 2;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -335,12 +353,18 @@ select {
   color: #000000;
 }
 
-.window-app.sheet .window-content .sheet-header select[type=text], .window-app.sheet .window-content .sheet-header input[type=text], .window-app.sheet .window-content .sheet-header input[type=number], .window-app.sheet .window-content .sheet-body input[type=text], .window-app.sheet .window-content .sheet-body input[type=number], .window-app.sheet .window-content .sheet-body select[type=text] {
+.window-app.sheet .window-content .sheet-header select[type=text],
+.window-app.sheet .window-content .sheet-header input[type=text],
+.window-app.sheet .window-content .sheet-header input[type=number],
+.window-app.sheet .window-content .sheet-body input[type=text],
+.window-app.sheet .window-content .sheet-body input[type=number],
+.window-app.sheet .window-content .sheet-body select[type=text] {
   background: #f2f4f6;
   color: #000000;
 }
 
-.window-app .window-content, .window-app.sheet .window-content .sheet-body {
+.window-app .window-content,
+.window-app.sheet .window-content .sheet-body {
   font-size: 0.8rem;
   background: #807c94;
   color: black;
@@ -425,22 +449,28 @@ section.sheet-body:after {
   padding: 0.25rem;
 }
 
-.window-app.sheet .window-content .carac-value, .window-app.sheet .window-content .competence-xp {
+.window-app.sheet .window-content .carac-value,
+.window-app.sheet .window-content .competence-xp {
   margin: 0.05rem;
   flex-basis: 3rem;
   text-align: center;
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   font-weight: bold;
 }
 
-ul, ol {
+ul,
+ol {
   margin: 0;
   padding: 0;
 }
 
-ul, li {
+ul,
+li {
   list-style-type: none;
 }
 
@@ -778,7 +808,8 @@ input[type=checkbox] .skillcheck {
   height: 470px !important;
 }
 
-#sidebar-tabs > .collapsed, #chat-controls .chat-control-icon {
+#sidebar-tabs > .collapsed,
+#chat-controls .chat-control-icon {
   color: #000000;
   text-shadow: #f2f4f6;
 }
@@ -824,7 +855,8 @@ input[type=checkbox] .skillcheck {
   border: 2px solid rgba(255, 0, 221, 0.425);
 }
 
-.chat-message .message-header .flavor-text, .chat-message .message-header .whisper-to {
+.chat-message .message-header .flavor-text,
+.chat-message .message-header .whisper-to {
   font-size: 0.9rem;
 }
 
@@ -961,7 +993,8 @@ input[type=checkbox] .skillcheck {
   text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.75);
 }
 
-#controls .scene-control, #controls .control-tool {
+#controls .scene-control,
+#controls .control-tool {
   box-shadow: 0 0 3px #000;
   margin: 0 0 8px;
   border-radius: 0;
@@ -973,7 +1006,10 @@ input[type=checkbox] .skillcheck {
   border-image-outset: 0px;
 }
 
-#controls .scene-control.active, #controls .control-tool.active, #controls .scene-control:hover, #controls .control-tool:hover {
+#controls .scene-control.active,
+#controls .control-tool.active,
+#controls .scene-control:hover,
+#controls .control-tool:hover {
   background: rgb(72, 46, 28);
   background-origin: padding-box;
   -o-border-image: url(../images/ui/footer-button.png) 10 repeat;
@@ -1021,7 +1057,8 @@ input[type=checkbox] .skillcheck {
   border-image-outset: 0px;
 }
 
-#navigation #scene-list .scene.view, #navigation #scene-list .scene.context {
+#navigation #scene-list .scene.view,
+#navigation #scene-list .scene.context {
   background: rgb(72, 46, 28);
   background-origin: padding-box;
   -o-border-image: url(../images/ui/footer-button.png) 10 repeat;
@@ -1118,7 +1155,7 @@ input[type=checkbox] .skillcheck {
 }
 
 #pause > h3 {
-  color: #CCC;
+  color: #ccc;
 }
 
 #pause > img {
@@ -1898,9 +1935,9 @@ select[type=text] {
 }
 
 .prosemirror .editor-container .editor-content {
-  color: white;
-  background-color: #1c2058;
-  border: 3px pink solid;
+  color: rgb(0, 0, 0);
+  background-color: #ffffff;
+  border: 3px rgb(0, 0, 0) solid;
 }
 
 textarea:-moz-read-only {
@@ -2236,4 +2273,39 @@ form .form-group .form-fields > * {
   border: none;
   vertical-align: middle;
   margin-left: 4px;
+}
+
+.generic-label {
+  font-weight: 800;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+}
+
+.use-banner {
+  color: white;
+  border: black 2px solid;
+  border-radius: 10px;
+  padding: 2px;
+  text-align: center;
+}
+
+.action-banner {
+  background: rgb(107, 0, 0);
+  background: radial-gradient(circle, rgb(107, 0, 0) 50%, rgb(201, 0, 0) 100%);
+}
+
+.freeaction-banner {
+  background: rgb(113, 115, 33);
+  background: radial-gradient(circle, rgb(113, 115, 33) 50%, rgb(183, 201, 0) 100%);
+}
+
+.reaction-banner {
+  background: rgb(88, 0, 107);
+  background: radial-gradient(circle, rgb(88, 0, 107) 50%, rgb(165, 0, 201) 100%);
+}
+
+.ballad-banner {
+  background: rgb(37, 40, 141);
+  background: radial-gradient(circle, rgb(37, 40, 141) 50%, rgb(0, 146, 255) 100%);
 }/*# sourceMappingURL=simple.css.map */

@@ -43,21 +43,22 @@ export async function importData(actor, data){
         await actorRef.createEmbeddedDocuments('Item', [x]);
       });
     }
+  }
 
+  async function uploadImageLocally(){
+    /*
     const image = await Avd12Utility.downloadImage(`https://anyventured12.com/upload/${data.imgurl}`)
-    
     if(image){
       let options = Avd12Utility.parse("avd12/characters/");
       var file = new File([image], data.imgurl);
       await Avd12Utility.uploadToPath(options.current, file);
       await actor.update({ 'img': `avd12/characters/${data.imgurl}`})
     }
+    */
   }
-
 
   export async function importCharacterModules(actor,data, cleanse){
     let moduleIds = actor.items.filter(item => item.type === "avd12module").map(item => item.id);
-  
     if(cleanse){
       moduleIds = actor.items.filter(item => item.type === "avd12module" || item.type === "ballad" || item.type === "freeaction" || item.type === "action" || item.type === "reaction").map(item => item.id);
     }
@@ -66,8 +67,6 @@ export async function importData(actor, data){
     await actor.createEmbeddedDocuments("Item", modules);
     await actor.update({ "system.module_points": data.system.module_points });
   }
-
-
 
   async function overwriteCharacter(actor, data) {
     await actor.update({ "system": data.system });
@@ -98,24 +97,6 @@ export async function importData(actor, data){
     await actor.createEmbeddedDocuments("Item", matchedStances);
 }
 
-
-
   export async function importCharacter(actor, data){
     await overwriteCharacter(actor,data, true);
-    //await importCharacterModules(actor,data, true);
-
-
-    return;
-    data.system.health.value = actor.system.health.value;
-    data.system.focus.currentfocuspoints = actor.system.focus.currentfocuspoints;
-    
-    await actor.update({'system':data.system});
-    await actor.update({ 'name': data.name})
-    await actor.update({ 'prototypeToken.name': data.name});
-    await actor.update({ 'prototypeToken.width': data.prototypeToken.width});
-    await actor.update({ 'prototypeToken.height':  data.prototypeToken.height});
-    await actor.update({ 'name': data.name})
-
-
-
   }

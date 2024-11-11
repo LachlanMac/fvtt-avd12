@@ -1,69 +1,128 @@
-
-
 <ul class="stat-list alternate-list">
-            <li class="item flexrow list-item items-title-bg">
-              <span class="item-name-label-header-long">
-                <h3><label class="items-title-text">Defense</label></h3>
-              </span>
-            </li>
+  <li class="item flexrow list-item items-title-bg">
+    <span class="item-name-label-header-long">
+      <h3>
+        <label class="items-title-text">
+          Defense
+        </label>
+      </h3>
+    </span>
+  </li>
 
+  <div id="defense-container" class="flexrow flexrow-no-expand flex-center">
+    <span class="item-field-skill skill-label large-skill">
+      <div class="flexcol align-center">
+        <a class="flex-center">
+          Dodge :
+          {{#if (gt system.attributes.agility.skills.dodge.finalvalue -1)}}
+            +
+          {{/if}}{{system.attributes.agility.skills.dodge.finalvalue}}
+        </a>
+        <a class="flex-center">
+          <img
+            class="roll-skill ui-dice"
+            width="32px"
+            height="32px"
+            src="systems/avd12/images/ui/D12_White.webp"
+            data-skill-key="dodge"
+            data-attr-key="agility"
+          />
+        </a>
+      </div>
+    </span>
 
-<div id="defense-container" class="flexrow flexrow-no-expand flex-center">
-  <span class="item-field-skill skill-label large-skill">
-    <div class="flexcol align-center">
-      <a class="flex-center">Dodge : {{#if (gt system.attributes.agility.skills.dodge.finalvalue -1)}}+{{/if}}{{system.attributes.agility.skills.dodge.finalvalue}}</a>
-      <a class="flex-center">
-        <img class="roll-skill ui-dice" width="32px" height="32px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="dodge" data-attr-key="agility"/>
-      </a>
-    </div>
-  </span>
+    <span class="item-field-skill skill-label large-skill">
+      <div class="flexcol align-center">
+        <a class="flex-center">
+          Block :
+          {{#if (gt system.attributes.might.skills.block.finalvalue -1)}}
+            +
+          {{/if}}{{system.attributes.might.skills.block.finalvalue}}
+        </a>
+        <a class="flex-center">
+          <img
+            class="roll-skill ui-dice"
+            width="32px"
+            height="32px"
+            src="systems/avd12/images/ui/D12_White.webp"
+            data-skill-key="block"
+            data-attr-key="might"
+          />
+        </a>
+      </div>
+    </span>
 
-  <span class="item-field-skill skill-label large-skill">
-    <div class="flexcol align-center">
-      <a class="flex-center">Block : {{#if (gt system.attributes.might.skills.block.finalvalue -1)}}+{{/if}}{{system.attributes.might.skills.block.finalvalue}}</a>
-      <a class="flex-center">
-        <img class="roll-skill ui-dice" width="32px" height="32px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="block" data-attr-key="might"/>
-      </a>
-    </div>
-  </span>
+    <span class="item-field-skill skill-label large-skill">
+      <div class="flexcol align-center">
+        <a class="flex-center">
+          Resist :
+          {{#if (gt system.attributes.willpower.skills.resistance.finalvalue -1)
+          }}
+            +
+          {{/if}}{{system.attributes.willpower.skills.resistance.finalvalue}}
+        </a>
+        <a class="flex-center">
+          <img
+            class="roll-skill ui-dice"
+            width="32px"
+            height="32px"
+            src="systems/avd12/images/ui/D12_White.webp"
+            data-skill-key="resistance"
+            data-attr-key="willpower"
+          />
+        </a>
+      </div>
+    </span>
+  </div>
 
-  <span class="item-field-skill skill-label large-skill">
-    <div class="flexcol align-center">
-      <a class="flex-center">Resist : {{#if (gt system.attributes.willpower.skills.resistance.finalvalue -1)}}+{{/if}}{{system.attributes.willpower.skills.resistance.finalvalue}}</a>
-      <a class="flex-center">
-        <img class="roll-skill ui-dice" width="32px" height="32px" src="systems/avd12/images/ui/D12_White.webp" data-skill-key="resistance" data-attr-key="willpower"/>
-      </a>
-    </div>
-  </span>
-</div>
-
-<div class="flex-row inline-buttons">
-  <button id="take-damage-btn" class="flex0 avd12-button">Take Damage</button>
-  <button id="add-health-btn" class="flex0 avd12-button">Add Health</button>
-</div>
-
+  <div class="flex-row inline-buttons">
+    <button id="take-damage-btn" class="flex0 avd12-button">
+      Take Damage
+    </button>
+    <button id="add-health-btn" class="flex0 avd12-button">
+      Add Health
+    </button>
+  </div>
 </ul>
 
 <ul>
   <!-- Mitigations Section -->
   <li class="item flexrow list-item items-title-bg">
     <span class="item-name-label-header-long">
-      <h3><label class="items-title-text">Mitigations</label></h3>
+      <h3>
+        <label class="items-title-text">
+          Mitigations
+        </label>
+      </h3>
     </span>
-    <span class="item-name-label-short"></span> <!-- Placeholder for Atk column alignment -->
-      <span class="flex0" style="margin-left:24px;"></span>
-    <span class="item-name-label-short"><strong>Value</strong></span>
+    <span class="item-name-label-short"></span>
+    <!-- Placeholder for Atk column alignment -->
+    <span class="flex0" style="margin-left:24px;"></span>
+    <span class="item-name-label-short">
+      <strong>
+        Value
+      </strong>
+    </span>
   </li>
 
   {{#each system.mitigation as |mitigation key|}}
     {{#if (ne mitigation.value 0)}}
-      <li class="item flexrow list-item list-item-shadow" data-mitigation-id="{{key}}">
+      <li
+        class="item flexrow list-item list-item-shadow"
+        data-mitigation-id="{{key}}"
+      >
         <span class="item-name-label-spacer flex0"></span>
-        <span class="item-name-label-medium">{{mitigation.label}}</span>
+        <span class="item-name-label-medium">
+          {{mitigation.label}}
+        </span>
         <div class="flexrow list-item-content">
-          
-        <span class="item-name-label-short"></span> <!-- Placeholder for Atk alignment -->
-        <span class="item-name-label-short">{{#if (gt mitigation.value -1)}}+{{/if}}{{mitigation.value}}</span>
+          <span class="item-name-label-short"></span>
+          <!-- Placeholder for Atk alignment -->
+          <span class="item-name-label-short">
+            {{#if (gt mitigation.value -1)}}
+              +
+            {{/if}}{{mitigation.value}}
+          </span>
         </div>
       </li>
     {{/if}}

@@ -62,13 +62,10 @@ export function parseStances(actor) {
             actor.system.bonus.traits.quicktoss = 1;
             break;
         case "10_pivot_stance":
-            // nothing
             break;
         case "11_control_stance":
-            // nothing
             break;
         case "12_screen_stance":
-            // partial cover
             break;
         case "14_juggernaut_stance":
             actor.system.movement.walk.value -= 1;
@@ -79,7 +76,6 @@ export function parseStances(actor) {
             actor.system.bonus.traits.arsman = 1;
             break;
         case "16_reactive_stance":
-            // nothing
             break;
         case "17_marksmans_focus":
             actor.system.bonus.ranged.attack += 1;

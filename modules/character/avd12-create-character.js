@@ -53,9 +53,8 @@ export async function confirmCreateCharacter(actor, data){
         break;
     }
     system.created = true;
-    actor.update({"system":system});
-
-    const neutralStance = combinedArray.find(module => module.system.avd12_id.toLowerCase() === "lycanthropy");
+    await actor.update({"system":system});
+    await actor.update ({"name":data.name});
 
     if (modulesToAdd.length > 0) {
       await actor.createEmbeddedDocuments("Item", modulesToAdd);

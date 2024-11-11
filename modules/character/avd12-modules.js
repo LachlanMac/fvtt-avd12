@@ -15,7 +15,7 @@ export function getMinimumModulePoints(actor) {
 
 export async function updateModulePoints(actor, delta) {
     let modulePoints = actor.getTotalModulePoints() + delta;
-    let level = Math.floor((modulePoints - (actor.system.origin_trait == 1 ? 4 : 0)) / 8);
+    let level = Math.floor((modulePoints - (Number(actor.system.origin_trait) == 1 ? 4 : 0)) / 8);
 
     if (level !== actor.system.level.value) {
         await actor.update({ "system.level.value": level });

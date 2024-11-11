@@ -107,7 +107,7 @@ export function prepareWeapon(actor, item){
     else if(actor.system.bonus.traits.juggernaut == 1 && (weapon.system.category == "heavy1h" || weapon.system.category == "heavy2h"))
       weaponDamageBonus += 2;
     
-    
+
     weapon.dice = weaponDamageDice;
     weapon.attackBonus = weaponAttackBonus;
 

@@ -1,12 +1,6 @@
 import { Avd12Utility } from "./avd12-utility.js";
 
-/**
- * A specialized form of the Combat entity for the AVD12 system.
- * It handles combat-specific logic and overrides for initiative rolling,
- * turn order, and combatant management.
- */
 export class Avd12Combat extends Combat {
-
   /**
    * Rolls initiative for one or more combatants in the combat.
    * @param {Array|string} ids - A single combatant id or an array of combatant ids to roll initiative for.
@@ -42,9 +36,6 @@ export class Avd12Combat extends Combat {
     return this;
   }
 
-  /**
-   * Ensures that the combat's turn order is reset to the beginning.
-   */
   static async checkTurnPosition() {
     while (game.combat.turn > 0) {
       await game.combat.previousTurn();

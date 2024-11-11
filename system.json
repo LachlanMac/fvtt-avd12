@@ -2,10 +2,10 @@
   "id": "avd12",
   "title": "AnyVenture D12 RPG",
   "description": "Anyventure D12 system for FoundryVTT",
-  "version": "14.0.0",
+  "version": "14.0.2",
   "compatibility": {
     "minimum": "12",
-    "verified": "12"
+    "verified": "12.331"
   },
   "url": "https://github.com/LachlanMac/avd12",
   "manifest": "https://github.com/LachlanMac/fvtt-avd12/releases/latest/download/system.json",
@@ -16,16 +16,12 @@
       "flags": {}
     }
   ],
-  "esmodules": [
-    "modules/avd12-main.js"
-  ],
-  "scripts": [
-    "js/lodash.js"
-  ],
+  "esmodules": ["modules/avd12-main.js"],
+  "scripts": ["js/lodash.js"],
   "background": "systems/avd12/images/ui/anyventure_splash.png",
-  "grid":{
-    "distance":1,
-    "units":"u"
+  "grid": {
+    "distance": 1,
+    "units": "u"
   },
   "languages": [
     {
@@ -39,9 +35,7 @@
   "primaryTokenAttribute": "secondary.health",
   "secondaryTokenAttribute": "secondary.power",
   "socket": true,
-  "styles": [
-    "styles/simple.css"
-  ],
+  "styles": ["styles/simple.css"],
   "packs": [
     {
       "type": "Item",

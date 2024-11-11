@@ -41,7 +41,6 @@ export class Avd12RestDialog extends Dialog {
     super(conf, options);
     this.restData = {bonusHealth:0, bonusPower:0};
     this.actor = actor;
-   
   }
 
   /* -------------------------------------------- */

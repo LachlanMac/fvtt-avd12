@@ -1,169 +1,169 @@
 <div class="header-fields">
-      <div class="flexrow">
-        <div class="profile-img-section">
-          <div style="position:relative">
-          <img class="profile-img" src="{{img}}" data-edit="img" title="{{name}}"/>
-          <div class="health-bar"> 
-            <div class="all-health-bar">                                                                         
+  <div class="flexrow">
+    <div class="profile-img-section">
+      <div style="position:relative">
+        <img class="profile-img" src="{{img}}" data-edit="img" title="{{name}}" />
+        <div class="health-bar">
+          <div class="all-health-bar">
             <div id="health-container" class="flexrow" style="background: linear-gradient(-90deg,rgba(139, 10, 10, 0.815) 0%,rgba(139, 10, 10, 0.815) calc({{hpOverlayCalculationCurrent1}}),rgba(16, 156, 70, 0.815) calc({{hpOverlayCalculationCurrent2}}),rgba(16, 156, 70, 0.815) 100%);">
-                <input id="current-health-bar" type="text" class="health-bar-field" name="system.health.value" value="{{system.health.value}}" data-dtype="Number"/>
-                <span id="health-divider" class="flex0">/</span>
-                <input id="max-health-bar" type="text" class="health-bar-field" name="system.health.max" value="{{system.health.max}}" data-dtype="Number"/>
+              <input id="current-health-bar" type="text" class="health-bar-field" name="system.health.value" value="{{system.health.value}}" data-dtype="Number" />
+              <span id="health-divider" class="flex0">/</span>
+              <input id="max-health-bar" type="text" class="health-bar-field" name="system.health.max" value="{{system.health.max}}" data-dtype="Number" />
             </div>
             <div id="temp-health-container">
-                <input id="temp-health-bar" type="text" class="temp-health-bar-field" name="system.health.tmpvalue" value="{{system.health.tmpvalue}}" data-dtype="Number"/>
+              <input id="temp-health-bar" type="text" class="temp-health-bar-field" name="system.health.tmpvalue" value="{{system.health.tmpvalue}}" data-dtype="Number" />
             </div>
-            </div>    
           </div>
-
-          <div id="level-display">
-              <input id="level-input-field" type="text" class="hover-button" name="system.level.value" value="{{system.level.value}}" data-dtype="Number"/>
-          </div>
-
-          <span id="rest-display" class="hover-button">
-            <div id="rest-icon">
-              <i style="padding-top:5px;" class="fa fa-bed" aria-hidden="true"></i>
-            </div>
-          </span>
         </div>
-      </div>
-        <div class="middle flexcol flex2">
-          <div class="flexrow name-section flex2">
-            <div class="flexcol flex-center flex0">
-              <h3 class="flex-center">Name</h3><input class="charname" name="name" type="text" value="{{name}}" placeholder="Name" />
-            </div>
-            <div class="flexcol flexgroup-center flex-center">
-              {{#if (eq type "character")}}
-              <div class="flexcol">
-                  <div class="flexcol flex-center">
-                    <h3 class="flex-center flex0">Lifeline</h3>
-                    <div class="flexrow">
-                      <div class="flexcol">
-                        <span class="attribute-label flex0">Current</span>
-                        <input type="text" class="item-field-label-short health-input" name="system.lifeline.value" value="{{system.lifeline.value}}" data-dtype="Number"/>
-                      </div>
-                      <div class="flexcol">
-                        <span class="attribute-label flex0">Max</span>
-                        <input type="text" class="item-field-label-short health-input" name="system.lifeline.max" value="{{system.lifeline.max}}" data-dtype="Number"/>  
-                      </div>
-                    </div>
-                  </div>
-              </div>
-              {{else}}
-                  <div class="flexcol flex-center">
-                    <h3 class="flex-center flex0">Type</h3>
-                    <div class="flexrow">
-                    <a class="skill-value flex1">{{creatureSize}} {{upperFirst creatureType}}</a>
-                    </div>
-                  </div>
-                
-              {{/if}}
-            </div>
+
+        <div id="level-display">
+          <input id="level-input-field" type="text" class="hover-button" name="system.level.value" value="{{system.level.value}}" data-dtype="Number" />
+        </div>
+
+        <span id="rest-display" class="hover-button">
+          <div id="rest-icon">
+            <i style="padding-top:5px;" class="fa fa-bed" aria-hidden="true"></i>
           </div>
-
-          <div class="flexrow conduit-section flex2">
-              {{#if hasFocusEquipped}}
-                <div class="flexcol flex-center flex1">
-                  <div class="circle" style="background: linear-gradient(180deg,rgba(0, 0, 0, 0.815) 0%,rgba(0, 0, 0, 0.815) calc({{powerOverlayCalculationCurrent1}}),rgba(255,0,181,0.85) calc({{powerOverlayCalculationCurrent2}}),rgba(255,0,181,0.85) 100%);">
-                    <div id="essence-burn-icon" class="hover-button">
-                      <i style="padding-top:5px;" class="fa fa-fire" aria-hidden="true"></i>
-                    </div>
-                    <div id="power-regen-icon">
-                          <!-- linear-gradient(0deg, rgba(255,0,181,1) 0%, rgba(255,0,232,1) 80%, rgba(0,0,0,1) 85%); -->
-                    </div>
-                    <input id="power-regen-value" type="text" class="power-field" name="system.focus.focusregen" value="{{system.focus.focusregen}}" data-dtype="Number"/>
-                    <input id="power-current-value" type="text" class="power-field" name="system.focus.currentfocuspoints" value="{{system.focus.currentfocuspoints}}" data-dtype="Number"/>
-                    <i id="power-divider" class="fa-thin fa-horizontal-rule"></i>
-                    <input id="power-max-value" type="text" class="power-field" name="system.focus.focuspoints" value="{{system.focus.focuspoints}}" data-dtype="Number"/>
-
-                  </div>
-              </div>
-              {{/if}}
-             
-              {{#if (and (gt system.focus.focuspoints 0) (eq type "npc"))}}
-                <div class="flexcol flex-center flex1">
-                  <div class="circle" style="background: linear-gradient(180deg,rgba(0, 0, 0, 0.815) 0%,rgba(0, 0, 0, 0.815) calc({{powerOverlayCalculationCurrent1}}),rgba(255,0,181,0.85) calc({{powerOverlayCalculationCurrent2}}),rgba(255,0,181,0.85) 100%);">
-                    <div id="essence-burn-icon" class="hover-button">
-                      <i style="padding-top:5px;" class="fa fa-fire" aria-hidden="true"></i>
-                    </div>
-                    <div id="power-regen-icon">
-                          <!-- linear-gradient(0deg, rgba(255,0,181,1) 0%, rgba(255,0,232,1) 80%, rgba(0,0,0,1) 85%); -->
-                    </div>
-                    <input id="power-regen-value" type="text" class="power-field" name="system.focus.focusregen" value="{{system.focus.focusregen}}" data-dtype="Number"/>
-                    <input id="power-current-value" type="text" class="power-field" name="system.focus.currentfocuspoints" value="{{system.focus.currentfocuspoints}}" data-dtype="Number"/>
-                    <i id="power-divider" class="fa-thin fa-horizontal-rule"></i>
-                    <input id="power-max-value" type="text" class="power-field" name="system.focus.focuspoints" value="{{system.focus.focuspoints}}" data-dtype="Number"/>
-                  </div>
-              </div>
-              {{/if}}
-              
-              <div class="flexcol text-center">
-               
-              </div>
-             
-            </div>
-          </div>
-        <div class="flexcol flex2">
-
-            <div class="flex-center flex0">
-            <h3 id="movespeed-title">Attributes</h3>
-          </div>
-          <div class="flexrow flex2">
-              <div class="flexcol flex-center">
-                  <span class="attribute-label flex0">Might</span>
-                  <input type="text" class="item-field-label-short attribute-input" name="system.attributes.might.value" value="{{system.attributes.might.value}}" data-dtype="Number"/>
-              </div>
-              <div class="flexcol flex-center">
-                  <span class="attribute-label flex0">Agility</span>
-                  <input type="text" class="item-field-label-short attribute-input" name="system.attributes.agility.value" value="{{system.attributes.agility.value}}" data-dtype="Number"/>
-              </div>
-
-              <div class="flexcol flex-center">
-                  <span class="attribute-label flex0">Willpower</span>
-                  <input type="text" class="item-field-label-short attribute-input" name="system.attributes.willpower.value" value="{{system.attributes.willpower.value}}" data-dtype="Number"/>
-              </div>
-
-              <div class="flexcol flex-center">
-                  <span class="attribute-label flex0">Knowledge</span>
-                  <input type="text" class="item-field-label-short attribute-input" name="system.attributes.knowledge.value" value="{{system.attributes.knowledge.value}}" data-dtype="Number"/>
-              </div>
-
-              <div class="flexcol flex-center">
-                  <span class="attribute-label flex0">Social</span>
-                  <input type="text" class="item-field-label-short attribute-input" name="system.attributes.social.value" value="{{system.attributes.social.value}}" data-dtype="Number"/>
-              </div>
-          </div>
-
-          <div class="flex-center flex0">
-            <h3 id="movespeed-title">Movespeed</h3>
-          </div>
-
-          <div class="flexrow">
-              <div class="flexcol flex-center">
-                  <span class="movement-label flex0">{{system.movement.walk.label}}</span>
-                  <input type="text" class="item-field-label-short movement-input" name="system.movement.walk.value" value="{{system.movement.walk.value}}" data-dtype="Number"/>
-              </div>
-              <div class="flexcol flex-center">
-                  <span class="movement-label flex0">{{system.movement.fly.label}}</span>
-                  <input type="text" class="item-field-label-short movement-input" name="system.movement.fly.value" value="{{system.movement.fly.value}}" data-dtype="Number"/>
-              </div>
-               <div class="flexcol flex-center">
-                  <span class="movement-label flex0">{{system.movement.climb.label}}</span>
-                  <input type="text" class="item-field-label-short movement-input" name="system.movement.climb.value" value="{{system.movement.climb.value}}" data-dtype="Number"/>
-              </div>
-              <div class="flexcol flex-center">
-                  <span class="movement-label flex0">{{system.movement.burrow.label}}</span>
-                  <input type="text" class="item-field-label-short movement-input" name="system.movement.burrow.value" value="{{system.movement.burrow.value}}" data-dtype="Number"/>
-              </div>
-              <div class="flexcol flex-center">
-                  <span class="movement-label flex0">{{system.movement.hover.label}}</span>
-                  <input type="text" class="item-field-label-short movement-input" name="system.movement.hover.value" value="{{system.movement.hover.value}}" data-dtype="Number"/>
-              </div>  
-                <div class="flexcol flex-center">
-                  <span class="movement-label flex0">{{system.movement.swim.label}}</span>
-                  <input type="text" class="item-field-label-short movement-input" name="system.movement.swim.value" value="{{system.movement.swim.value}}" data-dtype="Number"/>
-              </div>  
-          </div>
-        </div> 
+        </span>
       </div>
     </div>
+    <div class="middle flexcol flex2">
+      <div class="flexrow name-section flex2">
+        <div class="flexcol flex-center flex0">
+          <h3 class="flex-center">Name</h3><input class="charname" name="name" type="text" value="{{name}}" placeholder="Name" />
+        </div>
+        <div class="flexcol flexgroup-center flex-center">
+          {{#if (eq type "character")}}
+            <div class="flexcol">
+              <div class="flexcol flex-center">
+                <h3 class="flex-center flex0">Lifeline</h3>
+                <div class="flexrow">
+                  <div class="flexcol">
+                    <span class="attribute-label flex0">Current</span>
+                    <input type="text" class="item-field-label-short health-input" name="system.lifeline.value" value="{{system.lifeline.value}}" data-dtype="Number" />
+                  </div>
+                  <div class="flexcol">
+                    <span class="attribute-label flex0">Max</span>
+                    <input type="text" class="item-field-label-short health-input" name="system.lifeline.max" value="{{system.lifeline.max}}" data-dtype="Number" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          {{else}}
+            <div class="flexcol flex-center">
+              <h3 class="flex-center flex0">Type</h3>
+              <div class="flexrow">
+                <a class="skill-value flex1">{{creatureSize}} {{upperFirst creatureType}}</a>
+              </div>
+            </div>
+
+          {{/if}}
+        </div>
+      </div>
+
+      <div class="flexrow conduit-section flex2">
+        {{#if hasFocusEquipped}}
+          <div class="flexcol flex-center flex1">
+            <div class="circle" style="background: linear-gradient(180deg,rgba(0, 0, 0, 0.815) 0%,rgba(0, 0, 0, 0.815) calc({{powerOverlayCalculationCurrent1}}),rgba(255,0,181,0.85) calc({{powerOverlayCalculationCurrent2}}),rgba(255,0,181,0.85) 100%);">
+              <div id="essence-burn-icon" class="hover-button">
+                <i style="padding-top:5px;" class="fa fa-fire" aria-hidden="true"></i>
+              </div>
+              <div id="power-regen-icon">
+                <!-- linear-gradient(0deg, rgba(255,0,181,1) 0%, rgba(255,0,232,1) 80%, rgba(0,0,0,1) 85%); -->
+              </div>
+              <input id="power-regen-value" type="text" class="power-field" name="system.focus.focusregen" value="{{system.focus.focusregen}}" data-dtype="Number" />
+              <input id="power-current-value" type="text" class="power-field" name="system.focus.currentfocuspoints" value="{{system.focus.currentfocuspoints}}" data-dtype="Number" />
+              <i id="power-divider" class="fa-thin fa-horizontal-rule"></i>
+              <input id="power-max-value" type="text" class="power-field" name="system.focus.focuspoints" value="{{system.focus.focuspoints}}" data-dtype="Number" />
+
+            </div>
+          </div>
+        {{/if}}
+
+        {{#if (and (gt system.focus.focuspoints 0) (eq type "npc"))}}
+          <div class="flexcol flex-center flex1">
+            <div class="circle" style="background: linear-gradient(180deg,rgba(0, 0, 0, 0.815) 0%,rgba(0, 0, 0, 0.815) calc({{powerOverlayCalculationCurrent1}}),rgba(255,0,181,0.85) calc({{powerOverlayCalculationCurrent2}}),rgba(255,0,181,0.85) 100%);">
+              <div id="essence-burn-icon" class="hover-button">
+                <i style="padding-top:5px;" class="fa fa-fire" aria-hidden="true"></i>
+              </div>
+              <div id="power-regen-icon">
+                <!-- linear-gradient(0deg, rgba(255,0,181,1) 0%, rgba(255,0,232,1) 80%, rgba(0,0,0,1) 85%); -->
+              </div>
+              <input id="power-regen-value" type="text" class="power-field" name="system.focus.focusregen" value="{{system.focus.focusregen}}" data-dtype="Number" />
+              <input id="power-current-value" type="text" class="power-field" name="system.focus.currentfocuspoints" value="{{system.focus.currentfocuspoints}}" data-dtype="Number" />
+              <i id="power-divider" class="fa-thin fa-horizontal-rule"></i>
+              <input id="power-max-value" type="text" class="power-field" name="system.focus.focuspoints" value="{{system.focus.focuspoints}}" data-dtype="Number" />
+            </div>
+          </div>
+        {{/if}}
+
+        <div class="flexcol text-center">
+
+        </div>
+
+      </div>
+    </div>
+    <div class="flexcol flex2">
+
+      <div class="flex-center flex0">
+        <h3 id="movespeed-title">Attributes</h3>
+      </div>
+      <div class="flexrow flex2">
+        <div class="flexcol flex-center">
+          <span class="attribute-label flex0">Might</span>
+          <input type="text" class="item-field-label-short attribute-input" name="system.attributes.might.value" value="{{system.attributes.might.value}}" data-dtype="Number" />
+        </div>
+        <div class="flexcol flex-center">
+          <span class="attribute-label flex0">Agility</span>
+          <input type="text" class="item-field-label-short attribute-input" name="system.attributes.agility.value" value="{{system.attributes.agility.value}}" data-dtype="Number" />
+        </div>
+
+        <div class="flexcol flex-center">
+          <span class="attribute-label flex0">Willpower</span>
+          <input type="text" class="item-field-label-short attribute-input" name="system.attributes.willpower.value" value="{{system.attributes.willpower.value}}" data-dtype="Number" />
+        </div>
+
+        <div class="flexcol flex-center">
+          <span class="attribute-label flex0">Knowledge</span>
+          <input type="text" class="item-field-label-short attribute-input" name="system.attributes.knowledge.value" value="{{system.attributes.knowledge.value}}" data-dtype="Number" />
+        </div>
+
+        <div class="flexcol flex-center">
+          <span class="attribute-label flex0">Social</span>
+          <input type="text" class="item-field-label-short attribute-input" name="system.attributes.social.value" value="{{system.attributes.social.value}}" data-dtype="Number" />
+        </div>
+      </div>
+
+      <div class="flex-center flex0">
+        <h3 id="movespeed-title">Movespeed</h3>
+      </div>
+
+      <div class="flexrow">
+        <div class="flexcol flex-center">
+          <span class="movement-label flex0">{{system.movement.walk.label}}</span>
+          <input type="text" class="item-field-label-short movement-input" name="system.movement.walk.value" value="{{system.movement.walk.value}}" data-dtype="Number" />
+        </div>
+        <div class="flexcol flex-center">
+          <span class="movement-label flex0">{{system.movement.fly.label}}</span>
+          <input type="text" class="item-field-label-short movement-input" name="system.movement.fly.value" value="{{system.movement.fly.value}}" data-dtype="Number" />
+        </div>
+        <div class="flexcol flex-center">
+          <span class="movement-label flex0">{{system.movement.climb.label}}</span>
+          <input type="text" class="item-field-label-short movement-input" name="system.movement.climb.value" value="{{system.movement.climb.value}}" data-dtype="Number" />
+        </div>
+        <div class="flexcol flex-center">
+          <span class="movement-label flex0">{{system.movement.burrow.label}}</span>
+          <input type="text" class="item-field-label-short movement-input" name="system.movement.burrow.value" value="{{system.movement.burrow.value}}" data-dtype="Number" />
+        </div>
+        <div class="flexcol flex-center">
+          <span class="movement-label flex0">{{system.movement.hover.label}}</span>
+          <input type="text" class="item-field-label-short movement-input" name="system.movement.hover.value" value="{{system.movement.hover.value}}" data-dtype="Number" />
+        </div>
+        <div class="flexcol flex-center">
+          <span class="movement-label flex0">{{system.movement.swim.label}}</span>
+          <input type="text" class="item-field-label-short movement-input" name="system.movement.swim.value" value="{{system.movement.swim.value}}" data-dtype="Number" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

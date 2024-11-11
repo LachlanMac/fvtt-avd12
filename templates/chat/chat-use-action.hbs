@@ -7,9 +7,14 @@
 </div>
   <div class="avd12-use-action" data-actor-id="{{actor._id}}" data-action-id="{{action._id}}" {{#if tokenId}}data-token-id="{{tokenId}}"{{/if}}>
     <ul style="padding:5px;">
+      {{#if (eq action.type "freeaction")}}<h3 class="use-banner freeaction-banner">Free Action</h3>{{/if}}
+      {{#if (eq action.type "reaction")}}<h3 class="use-banner reaction-banner">Reaction</h3>{{/if}}
+      {{#if (eq action.type "action")}}<h3 class="use-banner action-banner">Action</h3>{{/if}}
+      {{#if (eq action.type "ballad")}}<h3 class="use-banner ballad-banner">Ballad</h3>{{/if}}
+  
       <h3 style="font-size:16px;">{{actor.name}} used {{action.name}}!</h3>
       
-      {{#if (and (eq actor.type "character") (and (ne action.type "freeaction") (ne action.type "ballad")))}}<li><b>Uses: {{add action.system.uses.current -1}} / {{action.system.uses.max}}</b></li>{{/if}}
+      {{#if (and (eq actor.type "character") (and (ne action.type "freeaction") (ne action.type "ballad")))}}<li><b>Uses: {{action.system.uses.current}} / {{action.system.uses.max}}</b></li>{{/if}}
 
       <li style="border:1px black solid; border-radius:5px; background-color: rgb(67, 51, 70); padding:10px;"><span style="padding:0px">{{{map action.system.description actor}}}</span></li>
       <li style="padding-top:3px;" class="flex-center">{{#if action.system.utility_roll}}<button data-action="utility" class="action-roll-btn avd12-button" >Roll Utility</button>{{/if}}</li>

@@ -3,14 +3,14 @@ $absolute_black: black;
 $white: white;
 $diluted_black: rgba(0, 0, 0, 0.5);
 $nearly_diluted_black: rgba(15, 15, 15, 0.5);
-$text_field:rgb(255, 255, 255);
+$text_field: rgb(255, 255, 255);
 $stormy: #494e6b;
 $cloud: #98878f;
 $sunset: #985e6d;
 $evening: #192231;
 $oldgold: #cfb53b;
 $oldergold: #cfb43b8f;
-$metalgold:#d7b740;
+$metalgold: #d7b740;
 $satpurple: rgb(85, 65, 130);
 $satpurple_faded: rgb(85, 65, 130, 0.5);
 $satpurple_faded_darker: rgba(57, 43, 92, 0.5);
@@ -47,18 +47,15 @@ $faded_decoration_2: rgb(85, 65, 130, 0.2);
 $odd: rgba(0, 0, 0, 0.2);
 $even: rgba(36, 36, 36, 0.2);
 
-
-
-
 $primary_color: rgb(85, 65, 130);
 $secondary_color: #807c94;
-$tertiary_color:#272a2d;
+$tertiary_color: #272a2d;
 
-$hard_accent:black;
+$hard_accent: black;
 $hard_accent_2: darken(rgb(85, 65, 130), 30%);
-$soft_accent:rgb(156, 135, 17);
+$soft_accent: rgb(156, 135, 17);
 
-$default_hover:rgb(79, 3, 129);
+$default_hover: rgb(79, 3, 129);
 $default_background: #f2f4f6; // Light gray-blue
 $default_text: #000000; // Dark gray for easy readability
 $default_hint: #333333; // Dark gray for easy readability
@@ -66,13 +63,13 @@ $default_hint: #333333; // Dark gray for easy readability
 $sheet_background: $secondary_color;
 $sheet_text: $hard_accent;
 $sheet_border: $soft_accent;
-$secondary_sheet_background:rgb(58, 58, 58);
+$secondary_sheet_background: rgb(58, 58, 58);
 
-$even_row_background: darken($secondary_color,20%);
-$even_row_text:white;
+$even_row_background: darken($secondary_color, 20%);
+$even_row_text: white;
 
-$odd_row_background: darken($secondary_color,10%);
-$odd_row_text:white;
+$odd_row_background: darken($secondary_color, 10%);
+$odd_row_text: white;
 
 $input_field_bg: $default_background; // Light grayish-blue for subtle input field background
 $input_field_text: $default_text; // Dark gray text
@@ -91,17 +88,17 @@ $list_border: rgba(46, 52, 64, 0.7); // Matches background for seamless look
 $list_box_shadow: #a3be8c; // Soft greenish accent
 $list_item_shadow: rgba(255, 0, 128, 0.247); // Light shadow for subtle depth
 
-$button_background:$primary_color;
-$button_text:white;
-$button_border:$tertiary_color;
-$hover_button_background:darken($button_background,20%);
-$hover_button_text:white;
-$hover_button_border:$soft_accent;
-$disabled_button_text:grey;
+$button_background: $primary_color;
+$button_text: white;
+$button_border: $tertiary_color;
+$hover_button_background: darken($button_background, 20%);
+$hover_button_text: white;
+$hover_button_border: $soft_accent;
+$disabled_button_text: grey;
 
-$dialog_button_background:$absolute_black;
-$dialog_button_text:pink;
-$dialog_button_border:green;
+$dialog_button_background: $absolute_black;
+$dialog_button_text: pink;
+$dialog_button_border: green;
 
 $circle_input_border: $hard_accent_2; // Soft green for subtlety
 $circle_text: black; // Red to indicate warning or specific information
@@ -138,16 +135,12 @@ $active_ability_background: $primary_color; // Dark gray-blue background
 $dice_display: #2e3440; // Dark slate to contrast with dice color
 $action_chat_header: rgba(76, 86, 106, 0.2); // Soft blue-gray
 
-
-
 $chat_whisper_background: #000000; // Dark slate for whisper chat
 $chat_whisper_border: rgba(255, 0, 221, 0.425); // Red accent for whispers
 $chat_whisper_text: #eceff4; // Off-white text
 
-
-
-$chat_message_background:black;
-$chat_message_text:green;
+$chat_message_background: black;
+$chat_message_text: green;
 $chat_text: #eceff4; // Off-white for readability
 $chat_background: #000000; // Dark slate for chat background
 $chat_message_border: $soft_accent;
@@ -159,8 +152,6 @@ $chat_content_background: $tertiary_color; // Slightly lighter gray-blue
 $chat_content_text: #ffffff; // Light blue accent
 $chat_content_border: #ffffff2d; // Blue for separation
 
-
-$text_area_text:black;
-$text_area_background:rgb(201, 201, 201);
-$text_area_border:black;
-
+$text_area_text: black;
+$text_area_background: rgb(201, 201, 201);
+$text_area_border: black;
