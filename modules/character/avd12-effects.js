@@ -3,7 +3,6 @@ export function getBestLightSource(actor){
     let lightSources = actor.getEquippedLightSources();
     let bestLightSource = null;
     lightSources.forEach(item => {
-      console.logAVD12(item.name, item.system.light);
       if(item.system.light.lightsource){
         if(bestLightSource){
           if(item.system.light.dim > bestLightSource.system.light.dim)

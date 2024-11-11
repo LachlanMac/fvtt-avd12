@@ -95,7 +95,7 @@ function addSkill(actor, data) {
     let skillCode = data.charAt(2);
     const skillMap = {
         "1": "attributes.might.skills.athletics.finalvalue",
-        "2": "attributes.might.skills.block.finalvalue",
+        "2": "attributes.might.skills.strength.finalvalue",
         "3": "attributes.agility.skills.acrobatics.finalvalue",
         "4": "attributes.agility.skills.stealth.finalvalue",
         "5": "attributes.willpower.skills.concentration.finalvalue",

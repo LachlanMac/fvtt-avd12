@@ -309,6 +309,7 @@ export class Avd12Utility {
       'systems/avd12/templates/actors/partials/navigation.hbs',
       'systems/avd12/templates/actors/partials/creature-type.hbs',
       'systems/avd12/templates/items/partial-item-light.hbs',
+      'systems/avd12/templates/actors/partials/spell-data.hbs',
       'systems/avd12/templates/items/partial-options-light-animation.hbs',
     ]
     return loadTemplates(templatePaths);

@@ -180,6 +180,23 @@ export class Avd12NPCSheet extends ActorSheet {
       });
   
       
+      html.find('.item-expand').click((event) => {
+        const caretIcon = $(event.currentTarget).find("i");
+        const li = $(event.currentTarget).data("expand-id");
+        toggleDescription(li);
+        caretIcon.toggleClass("caret-rotated");
+      });
+      
+      function toggleDescription(id) {
+        const element = document.getElementById(id);
+        if (element.style.display === "none" || !element.style.display) {
+          element.style.display = "block";
+        } else {
+          element.style.display = "none";
+        }
+      }
+  
+
       html.find('.roll-weapon-damage').click((event) => {
         const li = $(event.currentTarget).parents(".item");
         const dmg = $(event.currentTarget).data("damage")

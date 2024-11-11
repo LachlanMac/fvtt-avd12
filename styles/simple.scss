@@ -1,7 +1,5 @@
-
   @import "theme";
   :root {
-    /* =================== 1. ACTOR SHEET FONT STYLES =========== */
       --window-header-title-font-size: 1.3rem;
       --window-header-title-font-weight: normal;
       --window-header-title-color: #f5f5f5;
@@ -31,11 +29,14 @@
 
 .window-app {
     font-size:18px;
-    text-align: justify;
-    font-family: "Exo", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
+
+font-family: "Exo", sans-serif;
+font-optical-sizing: auto;
+font-weight: 400;
+font-style: normal;
+letter-spacing: normal;
+word-spacing: 0.02em;
+text-rendering: optimizeLegibility; 
   }
 
   .text-center{
@@ -56,13 +57,13 @@
   }
   
   
-  /* Fonts */
+
   .sheet header.sheet-header h1 input, .window-app .window-header, #actors .directory-list, #navigation #scene-list .scene.nav-item {
     font-size: 1.0rem;
-  } /* For title, sidebar character and scene */
+  } 
   .sheet nav.sheet-tabs {
     font-size: 0.8rem;
-  } /* For nav and title */
+  } 
   .window-app input, .avd12 .item-form, .sheet header.sheet-header .flex-group-center.flex-compteurs, .sheet header.sheet-header .flex-group-center.flex-fatigue, select, button, .item-checkbox, #sidebar, #players, #navigation #nav-toggle {
     font-size: 0.8rem;
   }
@@ -116,8 +117,8 @@
 
   .main-grid-3col {
     display: grid;
-    grid-template-columns: 10% 1fr 1fr; /* 10% for quickbar, remaining space split equally */
-    gap: 16px; /* Adjust as needed */
+    grid-template-columns: 10% 1fr 1fr;
+    gap: 16px;
 }
 
   .grid-3col {
@@ -221,7 +222,6 @@
     flex: 'flex-shrink' ;
   }
   
-  /* Styles limited to sheets */
   .avd12 .sheet-header {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 210px;
@@ -362,13 +362,12 @@
     -ms-flex: 0 0 100px;
     flex: 0 0 100px;
     text-align: right;
-  
+
   }
-  f
-  /* ======================================== */
-  /* Sheet  */
+  
+
   .window-app.sheet .window-content .sheet-header{
-    color: $sheet_text;
+    color: white;
     background: $sheet_background;
   }
   
@@ -391,7 +390,6 @@
     color: $sheet_text;
   }
   
-  /*  background: rgba(245,245,240,0.6) url("../images/ui/sheet_background.webp") left top;*/
   
   section.sheet-body{padding: 0.25rem 0.5rem;}
   
@@ -432,8 +430,6 @@
     color:white;
   }
   
-  /*  background: rgb(245,245,240) url("../images/ui/fond4.webp") repeat left top;*/
-  
   nav.sheet-tabs .item {
     position: relative;
     padding: 0 0.25rem;
@@ -471,11 +467,7 @@
     flex-basis: 3rem;
     text-align: center;
   }
-  
-  /* ======================================== */
-  /* Global UI elements  */
-  
-  /* ======================================== */
+
   
   h1, h2, h3, h4 {
     font-weight: bold;
@@ -703,7 +695,7 @@
     align-content: flex-start;
   }
   
-  /* ======================================== */
+
   .tokenhudext {
       display: flex; 
       flex: 0 !important;
@@ -738,7 +730,8 @@
   #token-hud .status-effects.active{
     z-index: 2;
   }
-  /* ======================================== */
+
+
   .item-checkbox {
     height: 25px;
     border: 1px solid #736953a6;
@@ -755,15 +748,15 @@
   }
 
   input[type="checkbox"] {
-    width: 20px;                         /* Set width */
-    height: 20px;                        /* Set height */
-    clip-path: circle(46% at 50% 50%);   /* Set the clip path of circle*/
+    width: 20px;                         
+    height: 20px;                       
+    clip-path: circle(46% at 50% 50%);   
   }
   
   input[type="checkbox"] .skillcheck {
-    width: 45px;                         /* Set width */
-    height: 45px;                        /* Set height */
-    clip-path: circle(46% at 50% 50%);   /* Set the clip path of circle*/
+    width: 45px;                         
+    height: 45px;                      
+    clip-path: circle(46% at 50% 50%);   
   }
   
   .skill-label {
@@ -779,9 +772,7 @@
   .flex-actions-bar  {
     flex-grow: 2;
   }
-  
-  /* ======================================== */
-  /* Sidebar CSS */
+
   #sidebar {
     font-size: 1rem;
     background-position: 100%;
@@ -789,13 +780,9 @@
     background-color: $side_bar_background;
   }
   
-  /*  background: rgb(105,85,65) url("../images/ui/texture_feuille_perso_onglets.webp") no-repeat right bottom;*/
-  
   #sidebar.collapsed {
     height: 470px !important;
   }
-  
-
 
   #sidebar-tabs > .collapsed, #chat-controls .chat-control-icon {
     color: $default_text;
@@ -984,9 +971,6 @@
   
   }
   
-  /*--------------------------------------------------------------------------*/
-  /* Control, Tool, hotbar & navigation */
-  
   #controls .scene-control, #controls .control-tool {
     box-shadow: 0 0 3px #000;
     margin: 0 0 8px;
@@ -1060,52 +1044,41 @@
     border-image-width: 4px;
     border-image-outset: 0px;
   }
-  
-  /* Tooltip container */
+  .avd12-use-ability{
+    font-weight: bold;
+    padding:8px 1px 8px 1px;
+  }
+  .avd12-use-ability:hover{
+    background-color: $use_action_hover_background;
+    color:$use_action_hover_text;
+  }
+
   .tooltip {
     position: relative;
     display: inline-block;
-    /*border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
   }
   
-  /* Tooltip text */
   .tooltip .tooltiptext {
     text-align: left;
     background: rgba(231, 229, 226, 0.9);
     width: 150px;
     padding: 3px 0;
     font-size: 0.9rem;
-  
-    /* Position the tooltip text */
     top: 1px;
     position: absolute;
     z-index: 1;
-    
-    /* Fade in tooltip */
     visibility: hidden;
     opacity: 0;
     transition: opacity 0.3s;
   }
   
-  .use-action{
-    font-weight: bold;
-  }
-
-  .use-action:hover{
-    background-color: $use_action_hover_background;
-    color:$use_action_hover_text;
-  }
-  
   .tooltip-nobottom {
-    border-bottom: unset; /* If you want dots under the hoverable text */
+    border-bottom: unset; 
   }
-  
-  /* Show the tooltip text when you mouse over the tooltip container */
   .tooltip:hover .tooltiptext {
     visibility: visible;
     opacity: 1;
   }
-  
   .plus-minus-button {
     display: inline-block;
     cursor: pointer;
@@ -1119,7 +1092,7 @@
   }
   
   .flex-100-fixed {
-    flex: 0 0 100px; /* This means don't grow, don't shrink, and base size is 50px */
+    flex: 0 0 100px;
   }
   
   .plus-minus-button:hover{
@@ -1140,9 +1113,7 @@
   .ul-level1 {
     padding-left: 2rem;
   }
-  
-  
-  /*************************************************************/
+
   #pause
   {
     font-size: 2rem;
@@ -1309,13 +1280,10 @@
     border-bottom-right-radius: 10px;
   }
 
-
-
-
   .inline-buttons {
     display: flex;
-    gap: 10px; /* Optional: space between the buttons */
-    justify-content: center; /* Center align, or adjust as needed */
+    gap: 10px; 
+    justify-content: center;
     align-items: center;
     padding:5px;
   }
@@ -1460,6 +1428,12 @@
     border-radius: 5px;
   }
   
+  .empty-side-border{
+    margin-left:2px;
+    margin-right:2px;
+    border: 1px solid rgba(0, 0, 0, 0);
+  }
+
   .item-description {
     padding-left:10px;
     padding-right:10px;
@@ -2020,8 +1994,8 @@ form .form-group .form-fields > *{
     color: $list_text;
     border: 2px solid $soft_accent;
     display: flex;
-    align-items: center;      /* Centers content vertically */
-    justify-content: center;   /* Centers content horizontally */
+    align-items: center;   
+    justify-content: center; 
     padding: 0 8px;
     gap: 8px;
 }
@@ -2047,13 +2021,13 @@ form .form-group .form-fields > *{
 }
 .dice-wrapper {
   display: flex;
-  justify-content: center; /* Horizontally centers the dice-container */
-  padding: 16px;           /* Optional: adds space around the grid */
-  justify-content: center; /* Ensures the grid is centered within the wrapper */
+  justify-content: center;
+  padding: 16px;     
+  justify-content: center; 
 }
 .dice-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(64px, 74px)); /* Adjust minimum size as needed */
+  grid-template-columns: repeat(auto-fill, minmax(64px, 74px)); 
   gap: 4px;
 }
 
@@ -2063,13 +2037,13 @@ form .form-group .form-fields > *{
   display: flex;
   align-items: center;
   justify-content: center;
-  aspect-ratio: 1; /* Ensures each box is a perfect square */
+  aspect-ratio: 1;
   padding: 2px;
 }
 
 .dice-icon {
-  width: 100%; /* Ensures the dice icon fits well inside the box */
-  height: auto; /* Maintains aspect ratio */
+  width: 100%;
+  height: auto;
 }
 
 
@@ -2150,6 +2124,15 @@ form .form-group .form-fields > *{
   max-width: 6rem;
   min-width: 6rem;
 }
+
+.spell-field-even{
+  flex-grow:1;
+  max-width:8rem;
+  min-width:8rem;
+}
+
+
+
 .item-field-skill {
   flex-grow:1;
   max-width: 6.8rem;
@@ -2161,10 +2144,20 @@ form .form-group .form-fields > *{
   max-width: 8rem;
   min-width: 8rem;
 }
-.item-control-end {
-  align-self: flex-end;
-  padding:5px;
+
+.item-control-container {
+  min-width:5rem;
+  max-width: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;    
+  gap: 0.5rem;         
 }
+.item-controls-fixed {
+  min-width:4rem;
+  max-width: 4rem;
+}
+
 .alternate-list {
   margin-top: 4px;
   flex-wrap: nowrap;
@@ -2173,18 +2166,25 @@ form .form-group .form-fields > *{
   flex-grow: 6;  
   flex-shrink: 7;
 }
-.item-controls-fixed {
-  min-width:4rem;
-  max-width: 4rem;
-}
+
 .item-control-empty{
   min-width:4rem;
   max-width: 4rem;
 }
+
 .item-control i{
   margin-left: 5px;
   margin-right:5px;
+  font-size:14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+.item-expand i {
+  font-size:18px;
+}
+
 .attribute-label {
   font-weight: bold;
 }
@@ -2202,7 +2202,31 @@ form .form-group .form-fields > *{
   font-weight:bold;
   padding:5px;
   margin:5px;
-
 }
 
+.caret-rotated {
+  transform: rotate(180deg);
+  transition: transform 0.3s;
+}
 
+.caret-icon {
+  transition: transform 0.3s;
+}
+
+.spell-description{
+  color:black;
+  font-weight: 500;
+  border: 3px $primary_color solid;
+  border-radius: 5px;
+  padding:5px;
+  background-color: white;
+}
+
+.spell-icon {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  border:none;
+  vertical-align: middle; 
+  margin-left: 4px;
+}

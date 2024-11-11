@@ -6,7 +6,7 @@ import { Avd12DamageDialog } from "./dialog/avd12-damage-dialog.js";
 import { Avd12HealthDialog } from "./dialog/avd12-health-dialog.js";
 import {createCharacter, confirmCreateCharacter} from "./character/avd12-create-character.js"
 import { Avd12WeaponDamageDialog } from "./dialog/avd12-weapon-damage-dialog.js";
-import {importData} from "./character/avd12-character-importer.js"
+import {importCharacter} from "./character/avd12-character-importer.js"
 import {parseStances, addStance, changeStance} from "./character/avd12-stances.js"
 import {rebuildNPCSkills} from "./npc/avd12-npc.js"
 import {parseActiveEffects, getBestLightSource} from "./character/avd12-effects.js"
@@ -65,13 +65,12 @@ export class Avd12Actor extends Actor {
       this.rebuildNPCSkills()
       this.parseActiveEffects()
     }else if (this.type == 'character' ) { 
-
       this.tmpFreeActions = [];
       this.tmpActions = [];
       this.tmpReactions = [];
       this.tmpBallads = [];
       this.tmpStances = [{custom_id:"1_neutral_stance"}];
-      
+      console.log("1", this.name, this.system.attributes.might.skills.block.finalvalue);
       this.tmpLanguages = [];
       this.tmpTraits = [];
       this.tmpImmunities = [];
@@ -86,15 +85,16 @@ export class Avd12Actor extends Actor {
       this.rebuildSkills()
       this.rebuildSize()
       this.updateModulePoints(0);
-
+      console.log("2", this.name, this.system.attributes.might.skills.block.finalvalue);
       this.system.health.max += (this.system.level.value * 5 + 10);
       this.system.focus.focuspoints = 0;
       this.system.focus.focusregen = 0;
       this.system.focus.castpenalty = 0;
       
       this.rebuildModules();
-  
+      console.log("3", this.name, this.system.attributes.might.skills.block.finalvalue);
       this.rebuildEquipment();
+      console.log("4", this.name, this.system.attributes.might.skills.block.finalvalue);
       this.parseStances();
       this.parseActiveEffects();
       this.rebuildBonuses();
@@ -108,8 +108,9 @@ export class Avd12Actor extends Actor {
       mitigation.value = 0
     }
   }
+
   async syncAllItems() {
-    if (!game.user.isGM && !actor.isOwner) {
+    if (!game.user.isGM && !this.isOwner) {
       return;
     }
     let actor = this;
@@ -280,8 +281,6 @@ export class Avd12Actor extends Actor {
    // msg.setFlag("world", "rolldata", damageData)
   }
 
-
-
   async displaySpellCard(spell, options){
     const token = this.token;
     const templateData = {
@@ -323,8 +322,6 @@ export class Avd12Actor extends Actor {
     }
   }
 
-
-
   parseFocus(focus){
     let focusData = Avd12Utility.computeFocusData(focus.system.focus);
     this.system.focus.burn_chance = focusData.burnChance;
@@ -360,6 +357,9 @@ export class Avd12Actor extends Actor {
     this.system.focus.focuspoints += item.system.bonus.power;
     this.system.focus.focusregen += item.system.bonus.powerregen;
     this.system.focus.burn_chance += item.system.bonus.burnchance;
+    this.system.attributes.willpower.skills.resistance.finalvalue += item.system.bonus.resistance.value;
+    this.system.attributes.might.skills.block.finalvalue += item.system.bonus.block.value;
+    this.system.attributes.agility.skills.dodge.finalvalue += item.system.bonus.dodge.value;
   }
 
   parseItemMitigations(item){
@@ -375,6 +375,7 @@ export class Avd12Actor extends Actor {
       for(let i in weapon_array){
         weapon_array[i] = Number(weapon_array[i]);
       }
+
       this.system.bonus.blunt.damage += weapon_array[0];
       this.system.bonus.slash.damage += weapon_array[1];
       this.system.bonus.pierce.damage += weapon_array[2];
@@ -444,6 +445,7 @@ export class Avd12Actor extends Actor {
   rebuildEquipment(){
     let allEquippedItems = this.items.filter(item => item.system.equipped)
     allEquippedItems.forEach(item => {
+      
       this.parseItemSkills(item.system.skills, item.system.craft_skills, item.system.weapon_skills)
       this.parseItemBonuses(item);
       this.parseItemMitigations(item);
@@ -451,9 +453,8 @@ export class Avd12Actor extends Actor {
         this.parseFocus(item);
       }
     })
-
+   
     let equippedWeapons = this.items.filter(item => item.type == "weapon" && item.system.equipped)
-
     equippedWeapons.forEach(weapon => {
       switch(weapon.system.category){
         case "light1h":
@@ -479,8 +480,7 @@ export class Avd12Actor extends Actor {
           break;
       }
     })
-
-
+   
     let equippedArmor = this.items.find(item => item.type == "armor" && item.system.equipped)
     if(equippedArmor){
       switch(equippedArmor.system.category){
@@ -616,7 +616,7 @@ export class Avd12Actor extends Actor {
     this.system.bonus.weapon.attack += this.system.bonus.when.unarmored.attack;
 
   }
-
+  console.log("5", this.name, this.system.attributes.might.skills.block.finalvalue);
   let equippedShield = this.items.find(item => item.type == "shield" && item.system.equipped)
     if(equippedShield){
       switch(equippedShield.system.category){
@@ -647,21 +647,8 @@ export class Avd12Actor extends Actor {
     for (let attrKey in this.system.attributes) {
       let attr = this.system.attributes[attrKey]
       for (let skillKey in attr.skills) {
-        let dataPath = attrKey + ".skills." + skillKey + ".modifier"
         let skill = attr.skills[skillKey]
         skill.modifier = 0
-        /*
-        let availableTraits = this.items.filter(t => t.type == "trait" && t.system.computebonus && t.system.bonusdata == dataPath)
-        for (let trait of availableTraits) {
-          skill.modifier += Number(trait.system.bonusvalue)
-        }
-        */
-        // Process additionnal bonuses
-        for (let item of this.items) {
-          if (item.system.bonus && item.system.bonus[skillKey]) {
-            skill.modifier += Number(item.system.bonus[skillKey].value)
-          }
-        }
         skill.finalvalue = skill.modifier + attr.value
       }
     }
@@ -703,12 +690,13 @@ export class Avd12Actor extends Actor {
     this.system.bonus.weapon.attack = 0;
     this.system.health.bonus = 0;
   }
-
+  
   rebuildSize(){
     switch(Number(this.system.biodata.size)){
       case 2://small
         this.system.attributes.agility.skills.dodge.finalvalue += 1;
         this.system.attributes.agility.skills.stealth.finalvalue += 1;
+        this.system.attributes.might.skills.strength.finalvalue -= 1;
         this.system.movement.walk.value -= 1;
         break;
       case 3://medium
@@ -797,7 +785,6 @@ export class Avd12Actor extends Actor {
   getEquippedWeapons() {
     let comp = this.items.filter(item => item.type == 'weapon' && item.system.equipped);
     let equippedWeapons = [];
-    
     comp.forEach(item => {
       let preparedWeapon = this.prepareWeapon(item);
       if(preparedWeapon){
@@ -808,12 +795,7 @@ export class Avd12Actor extends Actor {
     return equippedWeapons;
   }
 
-  parseEquippedGear(){
-    let comp = foundry.utils.duplicate(this.items.filter(item => item.type == 'weapon' && item.system.equipped) || [])
-    comp.forEach(item => {
-      this.prepareWeapon(item)
-    })
-  }
+
   /* -------------------------------------------- */
   getWeapons() {
     let comp = foundry.utils.duplicate(this.items.filter(item => item.type == 'weapon' || item.type == 'equipable') || [])
@@ -901,10 +883,14 @@ export class Avd12Actor extends Actor {
           spell.system.range_type = "adjacent";
           spell.system.spelltype = "melee attack";
       }     
+      spell.system.areaTypeDescription = spell.system.area_type == "" ? "" : spell.system.area_type;
       spell.system.rangeDescription = (spell.system.range > 0 ? spell.system.range : "") + " " + spell.system.range_type.charAt(0).toUpperCase() + spell.system.range_type.substring(1, spell.system.range_type.length);
       spell.system.actionDescription = spell.system.actions + " " + spell.system.action_type.charAt(0).toUpperCase() + spell.system.action_type.slice(1) + (spell.system.actions > 1 ? 's' :'');
-      spell.system.improvedDescription = spell.system.description  + (spell.system.chargeEffect ? "\nCharge Effect: " + spell.system.chargeEffect:"")  + (spell.system.components ? "\nComponents: " + spell.system.components : "");  
+      spell.system.improvedDescription = spell.system.description  + (spell.system.chargeeffect ? "\nCharge Effect: " + spell.system.chargeeffect:"")  + (spell.system.components ? "\nComponents: " + spell.system.components : "");  
       spell.system.damageDescription = spell.system.damage + " " + spell.system.damagetype.charAt(0).toUpperCase() + spell.system.damagetype.slice(1)
+      if(spell.system.damageDescription.trim()==""){
+        spell.system.damageDescription = null;
+      }
     })
     return comp
   }
@@ -935,7 +921,7 @@ export class Avd12Actor extends Actor {
   }
 
   getGrandmasterSpells(spells) {
-    let comp = foundry.utils.duplicate(spells.filter(item => item.system.level == 'grandmaster') || []);
+    let comp = foundry.utils.duplicate(spells.filter(item => item.system.level == 'grand master') || []);
     return comp
   }
 
@@ -1875,8 +1861,8 @@ export class Avd12Actor extends Actor {
 
  
 
-  async importData(data){
-    importData(actor, data);
+  async importCharacter(data){
+    importCharacter(this, data);
  }
 
  getPowerPercentage(){

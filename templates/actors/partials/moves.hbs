@@ -1,9 +1,7 @@
 <ul class="item-list alternate-list">
      {{#if character}}
       <li class="item flexrow list-item items-title-bg"> 
-        <div class="item-controls item-controls-fixed">
-          <a class="item-control item-add" data-type="action" title="Create Item" style="margin-left:4px;"><i class="fas fa-plus"></i></a>
-        </div>
+        <span class="flex0" style="min-width:1rem;max-width:1rem;"></span>
         <span class="flex1">
            <h3 class="text-center"><label class="items-title-text">Actions</label></h3>
         </span>
@@ -20,7 +18,7 @@
     <a class="item-edit item-name-img" title="Edit Item">
       <img class="sheet-competence-img" src="{{action.img}}" />
     </a>
-    <a class="flex1 big-label use-action side-border">
+    <a class="flex1 big-label use-action avd12-use-ability side-border">
       <p>{{action.name}}</p>
     </a>
       
@@ -61,9 +59,9 @@
       <li class="item flexrow list-item list-item-shadow"  data-item-id="{{action._id}}">
         <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
             src="{{action.img}}" /></a>
-        <a class="flex1  use-action big-label side-border"><p>{{action.name}}</p></a>
+        <a class="flex1 use-action avd12-use-ability big-label side-border"><p>{{action.name}}</p></a>
         <span class="flex3 item-description side-border">{{{action.system.description}}}</span>
-        <div class="item-controls item-controls-fixed">
+        <div class="item-controls">
           <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
         </div>
       </li>
@@ -92,7 +90,7 @@
             <a class="item-edit item-name-img" title="Edit Item">
               <img class="sheet-competence-img" src="{{action.img}}" />
             </a>
-            <a class="flex1 big-label use-action side-border">
+            <a class="flex1 big-label use-action avd12-use-ability side-border">
               <p>{{action.name}}</p>
             </a>
               
@@ -131,7 +129,7 @@
         <li class="item flexrow list-item list-item-shadow" data-item-id="{{action._id}}">
           <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
               src="{{action.img}}" /></a>
-          <a class="flex1 big-label use-action side-border"><p>{{action.name}}</p></a>
+          <a class="flex1 big-label use-action avd12-use-ability side-border"><p>{{action.name}}</p></a>
           <span class="flex3 item-description side-border" >{{{action.system.description}}}</span>
           <div class="item-controls item-controls-fixed">
             <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
@@ -159,7 +157,7 @@
         <li class="item flexrow list-item list-item-shadow {{#if ballad.system.active}}active-ability {{/if}}"  data-item-id="{{ballad._id}}">
           <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
               src="{{ballad.img}}" /></a>
-          <a class="flex1 big-label use-action side-border change-ballad"><p>{{ballad.name}}</p></a>
+          <a class="flex1 big-label use-action avd12-use-ability side-border change-ballad"><p>{{ballad.name}}</p></a>
           <span class="flex3 item-description side-border">{{{ballad.system.description}}}</span>
           <div class="item-controls item-controls-fixed">
             <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
@@ -186,7 +184,7 @@
         <li class="item flexrow list-item list-item-shadow" data-use-id="{{action.system.avd12_id}}" data-item-id="{{action._id}}">
           <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"
               src="{{action.img}}" /></a>
-          <a class="flex1 big-label use-action side-border"><p>{{action.name}}</p></a>
+          <a class="flex1 big-label use-action avd12-use-ability side-border"><p>{{action.name}}</p></a>
           <span class="flex3 item-description side-border">{{{action.system.description}}}</span>
           <div class="item-controls item-controls-fixed">
             <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
@@ -214,10 +212,10 @@
           </div>
         </li>
           {{#each stances as |stance key|}}
-        <li class="item stat flexrow list-item list-item-shadow  spell-card {{#if stance.system.active}}active-ability {{/if}}" data-item-id="{{stance._id}}">
+        <li class="item stat flexrow list-item list-item-shadow spell-card {{#if stance.system.active}}active-ability {{/if}}" data-item-id="{{stance._id}}">
           <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"src="{{stance.img}}" /></a>
           
-          <span class="text-center side-border">
+          <span class="text-center side-border avd12-use-ability">
             <a class="change-stance "><p>{{stance.name}}</p></a>
           </span>
           

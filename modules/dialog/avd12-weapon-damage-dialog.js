@@ -42,7 +42,6 @@ export class Avd12WeaponDamageDialog extends Dialog {
 
   /* -------------------------------------------- */
   async refreshDialog() {
-    console.log(this.options);
     const content = await renderTemplate("systems/avd12/templates/dialogs/roll-weapon-damage.hbs", this.weapon)
     this.data.content = this.weapon
     this.render(true)

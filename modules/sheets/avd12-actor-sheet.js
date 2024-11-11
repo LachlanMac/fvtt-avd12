@@ -22,16 +22,16 @@ export class Avd12ActorSheet extends ActorSheet {
     });
   }
   
-  async importData(){
+  async importCharacter(){
     let uuid = this.actor.system.uuid;
     let actor = this.actor;
     await $.ajax({
       type: "GET",
-      url: `https://anyventured12.com/foundryvtt/${uuid}`,
-      //url: `https://localhost/foundryvtt/${uuid}`,
+      url: `https://anyventured12.com/foundryvtt/character/${uuid}`,
+      //url: `https://localhost/foundryvtt/character/${uuid}`,
       dataType:"json",
       success: function (data) {
-        actor.importData(data)
+        actor.importCharacter(data)
       },
       error: function (jqXHR, textStatus, errorThrown) {
           console.log(jqXHR.responseText);
@@ -68,6 +68,22 @@ export class Avd12ActorSheet extends ActorSheet {
       secondary_modules: this.actor.getSecondaryModules(this.actor.getModules()),
       craftingTraits: this.actor.getCraftingTraits(),
       character: this.actor.type == "character",
+
+      offense: [
+        { name: "Slashing Weapons", attack_key: "system.bonus.slash.attack", damage_key: "system.bonus.slash.damage", attack: this.actor.system.bonus.slash.attack, damage: this.actor.system.bonus.slash.damage },
+        { name: "Blunt Weapons", attack_key: "system.bonus.blunt.attack", damage_key: "system.bonus.blunt.damage", attack: this.actor.system.bonus.blunt.attack, damage: this.actor.system.bonus.blunt.damage },
+        { name: "Piercing Weapons", attack_key: "system.bonus.pierce.attack", damage_key: "system.bonus.pierce.damage", attack: this.actor.system.bonus.pierce.attack, damage: this.actor.system.bonus.pierce.damage },
+        { name: "Unarmed", attack_key: "system.bonus.unarmed.attack", damage_key: "system.bonus.unarmed.damage", attack: this.actor.system.bonus.unarmed.attack, damage: this.actor.system.bonus.unarmed.damage },
+        { name: "Ranged Weapons", attack_key: "system.bonus.ranged.attack", damage_key: "system.bonus.ranged.damage", attack: this.actor.system.bonus.ranged.attack, damage: this.actor.system.bonus.ranged.damage },
+        { name: "Spells", attack_key: "system.bonus.spell.attack", damage_key: "system.bonus.spell.damage", attack: this.actor.system.bonus.spell.attack, damage: this.actor.system.bonus.spell.damage }
+    ],
+      beginnerSpells: this.actor.getBeginnerSpells(foundry.utils.duplicate(this.actor.getSpells())),
+      noviceSpells: this.actor.getNoviceSpells(foundry.utils.duplicate(this.actor.getSpells())),
+      journeymanSpells: this.actor.getJourneymanSpells(foundry.utils.duplicate(this.actor.getSpells())),
+      expertSpells: this.actor.getExpertSpells(foundry.utils.duplicate(this.actor.getSpells())),
+      masterSpells: this.actor.getMasterSpells(foundry.utils.duplicate(this.actor.getSpells())),
+      grandmasterSpells: this.actor.getGrandmasterSpells(foundry.utils.duplicate(this.actor.getSpells())),
+
       languages:this.actor.getLanguages(),
       originTraits:this.actor.getTraits("origin"),
       defenseTraits:this.actor.getTraits("defense"),
@@ -89,26 +105,43 @@ export class Avd12ActorSheet extends ActorSheet {
       weapons: this.actor.getWeapons(),
       armors: this.actor.getArmors(),
       shields:this.actor.getShields(),
-      offense: [
-        { name: "Slashing Weapons", attack_key: "system.bonus.slash.attack", damage_key: "system.bonus.slash.damage", attack: this.actor.system.bonus.slash.attack, damage: this.actor.system.bonus.slash.damage },
-        { name: "Blunt Weapons", attack_key: "system.bonus.blunt.attack", damage_key: "system.bonus.blunt.damage", attack: this.actor.system.bonus.blunt.attack, damage: this.actor.system.bonus.blunt.damage },
-        { name: "Piercing Weapons", attack_key: "system.bonus.pierce.attack", damage_key: "system.bonus.pierce.damage", attack: this.actor.system.bonus.pierce.attack, damage: this.actor.system.bonus.pierce.damage },
-        { name: "Unarmed", attack_key: "system.bonus.unarmed.attack", damage_key: "system.bonus.unarmed.damage", attack: this.actor.system.bonus.unarmed.attack, damage: this.actor.system.bonus.unarmed.damage },
-        { name: "Ranged Weapons", attack_key: "system.bonus.ranged.attack", damage_key: "system.bonus.ranged.damage", attack: this.actor.system.bonus.ranged.attack, damage: this.actor.system.bonus.ranged.damage },
-        { name: "Spells", attack_key: "system.bonus.spell.attack", damage_key: "system.bonus.spell.damage", attack: this.actor.system.bonus.spell.attack, damage: this.actor.system.bonus.spell.damage }
-    ],
-      beginnerSpells: this.actor.getBeginnerSpells(foundry.utils.duplicate(this.actor.getSpells())),
-      noviceSpells: this.actor.getNoviceSpells(foundry.utils.duplicate(this.actor.getSpells())),
-      journeymanSpells: this.actor.getJourneymanSpells(foundry.utils.duplicate(this.actor.getSpells())),
-      expertSpells: this.actor.getExpertSpells(foundry.utils.duplicate(this.actor.getSpells())),
-      masterSpells: this.actor.getMasterSpells(foundry.utils.duplicate(this.actor.getSpells())),
-      grandmasterSpells: this.actor.getGrandmasterSpells(foundry.utils.duplicate(this.actor.getSpells())),
       equipments: foundry.utils.duplicate(this.actor.getEquipmentsOnly()),
       equippedWeapons: this.actor.getEquippedWeapons(),
       equippedThrowingWeapons : this.actor.getEquippedThrowingWeapons(),
       equippedThrowing: foundry.utils.duplicate(this.actor.getThrowingEquipment()),
       equippedArmor: this.actor.getEquippedArmor(),
       equippedShield: this.actor.getEquippedShield(),
+
+      /*
+      languages: [],
+      originTraits: [],
+      defenseTraits: [],
+      offenseTraits: [],
+      craftingTraits: [],
+      generalTraits: [],
+      actions: [],
+      reactions: [],
+      freeactions: [],
+      ballads: [],
+      ammunition: [],
+      light_sources: [],
+      stances: [],
+      gloves: [],
+      rings: [],
+      cloaks: [],
+      boots: [],
+      headwear: [],
+      weapons: [],
+      armors: [],
+      shields: [],
+      equipments: [],
+      equippedWeapons: [],
+      equippedThrowingWeapons : [],
+      equippedThrowing: [],
+      equippedArmor: [],
+      equippedShield: [],
+      */
+
       subActors: foundry.utils.duplicate(this.actor.getSubActors()),
       moneys: foundry.utils.duplicate(this.actor.getMoneys()),
       focusData: this.actor.computeFinalFocusData(),
@@ -278,7 +311,7 @@ export class Avd12ActorSheet extends ActorSheet {
     });
     html.find('#import-character').click(async (event) => {
       html.find("#import-character").disabled = true;
-      await this.importData("TEST").then(()=>{
+      await this.importCharacter("TEST").then(()=>{
         html.find("#import-character").disabled = false;
       });
     });
@@ -324,6 +357,21 @@ export class Avd12ActorSheet extends ActorSheet {
       this.actor.showWeaponDamageDialog(weaponId, "thrown", shift)
     });
 
+    html.find('.item-expand').click((event) => {
+      const caretIcon = $(event.currentTarget).find("i");
+      const li = $(event.currentTarget).data("expand-id");
+      toggleDescription(li);
+      caretIcon.toggleClass("caret-rotated");
+    });
+    
+    function toggleDescription(id) {
+      const element = document.getElementById(id);
+      if (element.style.display === "none" || !element.style.display) {
+        element.style.display = "block";
+      } else {
+        element.style.display = "none";
+      }
+    }
 
     html.find('.lock-unlock-sheet').click((event) => {
       this.options.editScore = !this.options.editScore;

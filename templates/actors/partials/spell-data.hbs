@@ -1,15 +1,63 @@
-          <li class="item stat flexrow list-item list-item-shadow spell-card" data-item-id="{{spell._id}}">
-            <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img"src="{{spell.img}}" /></a>
-            <span class="item-name-label"><a class="roll-spell"></i>{{spell.name}}</a></span>
-            <span class="item-field-label-medium flex-center">{{upperFirst spell.system.spelltype}}</span>
-             <span class="item-field-label-medium flex-center">{{upperFirst spell.system.rangeDescription}}</span>
-            <span class="item-field-label-medium flex-center">{{upperFirst spell.system.actionDescription}}</span>
-            <a class="item-field-label-medium flex-center roll-spell-damage">{{upperFirst spell.system.damageDescription}}</a>
-            <span class="item-field-label-extra-short flex-center">{{#if spell.system.sustained}}<i class="fas fa-circle"></i>{{/if}}</span>
-            <span class="item-field-label-extra-short flex-center">{{#if spell.system.reaction}}<i class="fas fa-circle"></i>{{/if}}</span>
-            <span class="item-field-label-extra-short flex-center">{{#if spell.system.components}}<i class="fas fa-circle"></i>{{/if}}</span>
-            <span class="item-filler">&nbsp;</span>
-            <div class="item-controls item-controls-fixed">
-              <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
-            </div>  
-          </li>
+<ul class="stat-list alternate-list">
+  <li class="item flexrow list-item items-title-bg">
+    <span class="item-name-label-header" style="margin-right:6px;">
+      <h3><label class="items-title-text">{{title}}</label></h3>
+    </span>
+    <span class="spell-field-even flex-center">
+      <label class="short-label">Type</label>
+    </span>
+     <span class="spell-field-even flex-center">
+      <label class="short-label">Area</label>
+    </span>
+    <span class="spell-field-even flex-center">
+      <label class="short-label">Range</label>
+    </span>
+    <span class="spell-field-even flex-center">
+      <label class="short-label">Cost</label>
+    </span>
+    <span class="spell-field-even flex-center">
+      <label class="short-label" style="">Damage</label>
+    </span>
+     <div class="item-controls item-control-trashcan-container">
+        
+     </div>
+ 
+  </li>
+  {{#each spells as |spell key|}}
+<li class="item stat flexrow list-item list-item-shadow spell-card" data-item-id="{{spell._id}}" style="display: flex; align-items: center">
+  <a class="item-edit item-name-img" title="Edit Item"><img class="sheet-competence-img" src="{{spell.img}}" /></a>
+  <a class="item-name-label side-border avd12-use-ability use-spell">{{spell.name}}
+     {{#if spell.system.sustained}}
+    <img src="systems/avd12/images/ui/focus_icon.png" alt="Sustained" class="spell-icon">
+  {{/if}}
+  {{#if spell.system.reaction}}
+    <img src="systems/avd12/images/ui/reaction_icon.png" alt="Reaction" class="spell-icon">
+  {{/if}}
+  {{#if spell.system.components}}
+    <img src="systems/avd12/images/ui/component_icon.png" alt="Components" class="spell-icon">
+  {{/if}}
+
+  </a>
+  <span class="spell-field-even flex-center">{{upperFirst spell.system.spelltype}}</span>
+  <span class="spell-field-even flex-center">{{upperFirst spell.system.areaTypeDescription}}</span>
+  <span class="spell-field-even flex-center">{{upperFirst spell.system.rangeDescription}}</span>
+  <span class="spell-field-even flex-center">{{upperFirst spell.system.actionDescription}}</span>
+  {{#if spell.system.damageDescription}}
+    <a class="spell-field-even side-border avd12-use-ability roll-spell-damage flex-center">{{upperFirst spell.system.damageDescription}}</a>
+  {{else}}
+  <span class="spell-field-even empty-side-border"></span>
+  {{/if}}
+  
+  <div class="item-controls item-control-container">
+    <a class="item-control item-expand" title="Show Item" data-expand-id="expand-{{spell._id}}"><i class="fa-solid fa-caret-down"></i></a>
+    <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+  </div> 
+</li>
+
+  <li id="expand-{{spell._id}}" class="description-item spell-description" style="display: none;">
+      <p><strong>Description:</strong> {{spell.system.description}}</p>
+      {{#if spell.system.chargeeffect}}<p><strong>Charge Effect:</strong> {{spell.system.chargeeffect}}</p>{{/if}}
+      {{#if spell.system.components}}<p><strong>Components:</strong> {{spell.system.components}}</p>{{/if}}
+  </li>
+  {{/each}}
+</ul>

@@ -59,7 +59,6 @@ export async function confirmCreateCharacter(actor, data){
 
     if (modulesToAdd.length > 0) {
       await actor.createEmbeddedDocuments("Item", modulesToAdd);
-      console.log("Modules added to actor:", modulesToAdd);
   } else {
       console.warn("No modules found to add.");
   }
@@ -108,7 +107,6 @@ export async function confirmCreateCharacter(actor, data){
     const alteration = Array.from(compendiumItems.filter(item => item.system.type === "alteration"));
     let creationData = {ancestries:ancestries, races:races,planar:planar, alteration:alteration, originType:1, origin_description_map:origin_description_map,size_description_map:size_description_map, sizeType:3}
     creationData.selected = creationData.ancestries[0];
-    console.log(creationData.selected);
     let dialog = await AVD12CharacterCreatorDialog.create(actor, creationData)
     dialog.render(true)
   }
