@@ -16,40 +16,40 @@
         }
       },
       "core": {
-        "imported":0,
-        "module_points":8,
-        "created":false,
-        "uuid":"",
-        "origin_trait":1,
+        "imported": 0,
+        "module_points": 8,
+        "created": false,
+        "uuid": "",
+        "origin_trait": 1,
         "subactors": [],
-        "alert":false,
-        "conditions":{
-          "afraid":0,
-          "bleeding":0,  
-          "blinded":0,  
-          "charmed":0,  
-          "confused":0,  
-          "dazed":0,  
-          "deafened":0,  
-          "diseased":0,  
-          "enveloped":0,  
-          "exhausted":0,  
-          "frozen":0,  
-          "grappled":0,  
-          "hidden":0,  
-          "ignited":0,  
-          "invisible":0,   
-          "maddened":0,  
-          "muted":0,  
-          "paralyzed":0,  
-          "poisoned":0,  
-          "prone":0,  
-          "sleeping":0,  
-          "stasis":0,  
-          "stunned":0,  
-          "trapped":0,  
-          "unconscious":0,  
-          "wounded":0
+        "alert": false,
+        "conditions": {
+          "afraid": 0,
+          "bleeding": 0,
+          "blinded": 0,
+          "charmed": 0,
+          "confused": 0,
+          "dazed": 0,
+          "deafened": 0,
+          "diseased": 0,
+          "enveloped": 0,
+          "exhausted": 0,
+          "frozen": 0,
+          "grappled": 0,
+          "hidden": 0,
+          "ignited": 0,
+          "invisible": 0,
+          "maddened": 0,
+          "muted": 0,
+          "paralyzed": 0,
+          "poisoned": 0,
+          "prone": 0,
+          "sleeping": 0,
+          "stasis": 0,
+          "stunned": 0,
+          "trapped": 0,
+          "unconscious": 0,
+          "wounded": 0
         },
         "attributes": {
           "might": {
@@ -193,7 +193,7 @@
             }
           }
         },
-        "creature_type":"humanoid",
+        "creature_type": "humanoid",
         "universal": {
           "skills": {
             "search": {
@@ -261,15 +261,15 @@
           "value": 10,
           "tmpvalue": 0,
           "max": 10,
-          "bonus":0
+          "bonus": 0
         },
-        "usages":[],
+        "usages": [],
         "focus": {
           "burn_chance": 0,
           "focuspoints": 0,
           "focusregen": 0,
           "currentfocuspoints": 0,
-          "castpenalty":0
+          "castpenalty": 0
         },
         "lifeline": {
           "value": 12,
@@ -332,27 +332,27 @@
         },
         "bonus": {
           "traits": {
-            "scrapper":0,
+            "scrapper": 0,
             "armsman": 0,
-            "juggernaut":0,
-            "dualwield":0,
-            "flowingstrikes":0,
-            "weaponmaster":0,
-            "sentinel":0,
-            "spellsword":0,
-            "spellshot":0,
-            "spellfist":0,
-            "wideattacks":0,
-            "dueling":0,
-            "precise_throwing":0,
-            "chucker":0,
-            "dragonhorde":0,
-            "naturalconduit":0,
-            "skilledchucking":0,
-            "deadlythrowing":0,
-            "koboldthrowing":0,
-            "swim_at_walk":0,
-            "effective_blows":0
+            "juggernaut": 0,
+            "dualwield": 0,
+            "flowingstrikes": 0,
+            "weaponmaster": 0,
+            "sentinel": 0,
+            "spellsword": 0,
+            "spellshot": 0,
+            "spellfist": 0,
+            "wideattacks": 0,
+            "dueling": 0,
+            "precise_throwing": 0,
+            "chucker": 0,
+            "dragonhorde": 0,
+            "naturalconduit": 0,
+            "skilledchucking": 0,
+            "deadlythrowing": 0,
+            "koboldthrowing": 0,
+            "swim_at_walk": 0,
+            "effective_blows": 0
           },
           "ranged": {
             "attack": 0,
@@ -399,14 +399,14 @@
             "brutals": 0,
             "upgraded": 0
           },
-          "npc":{
-            "attack_power":0,
-            "spell_power":0,
-            "attack_accuracy":0,
-            "spell_accuracy":0
+          "npc": {
+            "attack_power": 0,
+            "spell_power": 0,
+            "attack_accuracy": 0,
+            "spell_accuracy": 0
           },
           "stances": {
-            "dualwield_stance":0,
+            "dualwield_stance": 0,
             "dueling_stance": 0,
             "juggernaught_stance": 0,
             "armsman_stance": 0,
@@ -494,11 +494,12 @@
       "npccore": {
         "npctype": "",
         "description": ""
-      },"expeditioncore":{
-        "name":"Expedition",
-        "morale":0,
-        "fatigue":0,
-        "supplies":0,
+      },
+      "expeditioncore": {
+        "name": "Expedition",
+        "morale": 0,
+        "fatigue": 0,
+        "supplies": 0,
         "movement": {
           "speed": 6
         }
@@ -507,75 +508,53 @@
     "character": {
       "templates": ["biodata", "core"]
     },
-    "npc": { "templates": ["biodata","core"] },
+    "npc": { "templates": ["biodata", "core"] },
     "expedition": { "templates": ["expeditioncore"] }
   },
   "Item": {
-    "types": [
-      "spell",
-      "armor",
-      "shield",
-      "equipment",
-      "headwear",
-      "gloves",
-      "boots",
-      "cloak",
-      "ring",
-      "weapon",
-      "module",
-      "action",
-      "freeaction",
-      "reaction",
-      "stance",
-      "trait",
-      "ballad",
-      "equipable",
-      "avd12module",
-      "language",
-      "immunity"
-    ],
+    "types": ["spell", "armor", "shield", "equipment", "headwear", "gloves", "boots", "cloak", "ring", "weapon", "module", "action", "freeaction", "reaction", "stance", "trait", "ballad", "equipable", "avd12module", "language", "immunity"],
     "templates": {
-      "roll":{
-        "utility_roll":false,
+      "roll": {
+        "utility_roll": false,
         "utility_roll_formula": "1d12",
         "utility_roll_bonus_modifier": "0",
-        "attack_roll":false,
+        "attack_roll": false,
         "attack_roll_formula": "1d12",
-        "attack_type":"melee",
-        "damage_roll":false,
+        "attack_type": "melee",
+        "damage_roll": false,
         "damage_formula": "",
-        "damage_type":"physical",
-        "secondary_damage_roll":false,
+        "damage_type": "physical",
+        "secondary_damage_roll": false,
         "secondary_damage_formula": "",
-        "secondary_damage_type":"none",
-        "tertiary_damage_roll":false,
+        "secondary_damage_type": "none",
+        "tertiary_damage_roll": false,
         "tertiary_damage_formula": "",
-        "tertiary_damage_type":"none",
-        "check_roll":false,
-        "check_roll_formula":"",
-        "check_roll_check":"resilience",
-        "crit_level":"normal",
-        "daily":false,
-        "uses":{
-          "current":3,
-          "max":3
+        "tertiary_damage_type": "none",
+        "check_roll": false,
+        "check_roll_formula": "",
+        "check_roll_check": "resilience",
+        "crit_level": "normal",
+        "daily": false,
+        "uses": {
+          "current": 3,
+          "max": 3
         }
       },
       "commonitem": {
-        "avd12_id":"0",
-        "auto_added":false,
-        "imported":false,
-        "light":{
-          "lightsource":false,
-          "dim":0,
-          "bright":0,
-          "animation":{"type":"none", "speed":5, "intensity":5, "reverse":false},
-          "luminosity":0.5,
-          "color":"#ffffff"
+        "avd12_id": "0",
+        "auto_added": false,
+        "imported": false,
+        "light": {
+          "lightsource": false,
+          "dim": 0,
+          "bright": 0,
+          "animation": { "type": "none", "speed": 5, "intensity": 5, "reverse": false },
+          "luminosity": 0.5,
+          "color": "#ffffff"
         },
-        "skills":"0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
-        "craft_skills":"0,0,0,0,0,0,0",
-        "weapon_skills":"0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
+        "skills": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
+        "craft_skills": "0,0,0,0,0,0,0",
+        "weapon_skills": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
         "focuspointsbonus": 0,
         "focusregenbonus": 0,
         "burnchancebonus": 0,
@@ -616,13 +595,13 @@
             "value": 0
           },
           "attack": 0,
-          "spellattack":0,
-          "movespeed":0,
-          "health":0,
-          "power":0,
-          "powerregen":0,
-          "spelldamage":0,
-          "burnchance":0
+          "spellattack": 0,
+          "movespeed": 0,
+          "health": 0,
+          "power": 0,
+          "powerregen": 0,
+          "spelldamage": 0,
+          "burnchance": 0
         },
         "focus": {
           "isfocus": false,
@@ -649,17 +628,17 @@
     "stance": {
       "active": false,
       "description": "",
-      "id":""
+      "id": ""
     },
     "ballad": {
       "active": false,
       "description": "",
-      "magic":false,
-      "masterpiece":false
+      "magic": false,
+      "masterpiece": false
     },
     "trait": {
       "traittype": "",
-      "data":"",
+      "data": "",
       "description": ""
     },
     "spell": {
@@ -703,13 +682,13 @@
     },
     "weapon": {
       "weapontype": "",
-      "throwtype":"",
+      "throwtype": "",
       "category": "",
       "templates": ["commonitem"],
       "minrange": 0,
       "maxrange": 0,
       "throwrange": 0,
-      "ammocapacity":0,
+      "ammocapacity": 0,
       "magical": false,
       "blackenediron": false,
       "silvered": false,
@@ -718,7 +697,7 @@
         "primary": {
           "damagetype": "physical",
           "dice": "1d4",
-          "thrown":"0",
+          "thrown": "0",
           "bonus": "0"
         },
         "secondary": {
@@ -734,44 +713,45 @@
       },
       "description": ""
     },
-    "language":{
-      "description":"",
-      "magic":false
+    "language": {
+      "description": "",
+      "magic": false
     },
     "module": {
       "levels": [],
       "description": ""
-    },"avd12module":{
-      "type":"core",
-      "avd12_id":"0",
-      "details":{
-        "size":"",
-        "homeworld":"",
-        "lifespan":"",
-        "language":"",
-        "description":""
+    },
+    "avd12module": {
+      "type": "core",
+      "avd12_id": "0",
+      "details": {
+        "size": "",
+        "homeworld": "",
+        "lifespan": "",
+        "language": "",
+        "description": ""
       },
-      "description":"",
-      "origin":false,
-      "options":{
-        "option_1":{"name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0},
-        "option_2a":{ "name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0},
-        "option_2b":{ "name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0},
-        "option_3":{ "name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0},
-        "option_4a":{ "name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0},
-        "option_4b":{ "name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0},
-        "option_5":{ "name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0},
-        "option_6a":{ "name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0},
-        "option_6b":{ "name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0},
-        "option_7":{ "name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0},
-        "option_8a":{ "name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0},
-        "option_8b":{ "name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0},
-        "option_9":{ "name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0},
-        "option_10a":{ "name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0},
-        "option_10b":{ "name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0},
-        "option_11":{ "name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0},
-        "option_a":{ "name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0},
-        "option_b":{ "name": "option name","avd12_id":"0","custom":false,"description": "${data.description}","selected": false,"data":"","cost":0}
+      "description": "",
+      "origin": false,
+      "options": {
+        "option_1": { "name": "option name", "avd12_id": "0", "custom": false, "description": "${data.description}", "selected": false, "data": "", "cost": 0 },
+        "option_2a": { "name": "option name", "avd12_id": "0", "custom": false, "description": "${data.description}", "selected": false, "data": "", "cost": 0 },
+        "option_2b": { "name": "option name", "avd12_id": "0", "custom": false, "description": "${data.description}", "selected": false, "data": "", "cost": 0 },
+        "option_3": { "name": "option name", "avd12_id": "0", "custom": false, "description": "${data.description}", "selected": false, "data": "", "cost": 0 },
+        "option_4a": { "name": "option name", "avd12_id": "0", "custom": false, "description": "${data.description}", "selected": false, "data": "", "cost": 0 },
+        "option_4b": { "name": "option name", "avd12_id": "0", "custom": false, "description": "${data.description}", "selected": false, "data": "", "cost": 0 },
+        "option_5": { "name": "option name", "avd12_id": "0", "custom": false, "description": "${data.description}", "selected": false, "data": "", "cost": 0 },
+        "option_6a": { "name": "option name", "avd12_id": "0", "custom": false, "description": "${data.description}", "selected": false, "data": "", "cost": 0 },
+        "option_6b": { "name": "option name", "avd12_id": "0", "custom": false, "description": "${data.description}", "selected": false, "data": "", "cost": 0 },
+        "option_7": { "name": "option name", "avd12_id": "0", "custom": false, "description": "${data.description}", "selected": false, "data": "", "cost": 0 },
+        "option_8a": { "name": "option name", "avd12_id": "0", "custom": false, "description": "${data.description}", "selected": false, "data": "", "cost": 0 },
+        "option_8b": { "name": "option name", "avd12_id": "0", "custom": false, "description": "${data.description}", "selected": false, "data": "", "cost": 0 },
+        "option_9": { "name": "option name", "avd12_id": "0", "custom": false, "description": "${data.description}", "selected": false, "data": "", "cost": 0 },
+        "option_10a": { "name": "option name", "avd12_id": "0", "custom": false, "description": "${data.description}", "selected": false, "data": "", "cost": 0 },
+        "option_10b": { "name": "option name", "avd12_id": "0", "custom": false, "description": "${data.description}", "selected": false, "data": "", "cost": 0 },
+        "option_11": { "name": "option name", "avd12_id": "0", "custom": false, "description": "${data.description}", "selected": false, "data": "", "cost": 0 },
+        "option_a": { "name": "option name", "avd12_id": "0", "custom": false, "description": "${data.description}", "selected": false, "data": "", "cost": 0 },
+        "option_b": { "name": "option name", "avd12_id": "0", "custom": false, "description": "${data.description}", "selected": false, "data": "", "cost": 0 }
       }
     }
   }

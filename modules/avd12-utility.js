@@ -957,7 +957,7 @@ export class Avd12Utility {
       type: "temporary trait",
       name: "Heavy Shield Bonus",
       system: {
-        description: "Attacks against you are botched if you roll an 11 or 12 on your Block Check, instead of only on a 12. Additionally, you have half cover against Projectiles.",
+        description: "Attacks against you are botched if you roll an 11 or 12 on your Block Check, instead of only on a 12. Additionally, you have partial cover against Projectiles.",
         avd12_id: "heavy_shield_1",
         traittype: "defense",
         data: "",
