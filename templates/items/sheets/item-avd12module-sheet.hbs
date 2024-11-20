@@ -150,7 +150,7 @@
   </button>
   {{/if}}
   
-  {{#if (eq system.type "alteration")}}
+  {{#if (or (eq system.type "planar")(eq system.type "alteration"))}}
   <button class="grid-item {{#if system.options.option_6a.selected}}color-selected{{/if}}">
     <div class="button-content toggle-module-option" data-option="option_6a">
       <span class="button-title">{{system.options.option_6a.name}}</span>

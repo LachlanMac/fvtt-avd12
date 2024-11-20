@@ -1,14 +1,14 @@
-2024/11/18-21:26:12.828 423c Recovering log #6
-2024/11/18-21:26:12.841 423c Delete type=0 #6
-2024/11/18-21:26:12.841 423c Delete type=3 #4
-2024/11/18-21:26:12.850 9278 Level-0 table #10: started
-2024/11/18-21:26:12.857 9278 Level-0 table #10: 286891 bytes OK
-2024/11/18-21:26:12.859 9278 Delete type=0 #8
-2024/11/18-21:26:12.859 9278 Manual compaction at level-0 from '!folders!059e0c0e659a4090' @ 72057594037927935 : 1 .. '!items!ffef9ee26707410f' @ 0 : 0; will stop at '!items!ffef9ee26707410f' @ 570 : 1
-2024/11/18-21:26:12.859 9278 Compacting 2@0 + 0@1 files
-2024/11/18-21:26:12.867 9278 Generated table #11@0: 661 keys, 286891 bytes
-2024/11/18-21:26:12.867 9278 Compacted 2@0 + 0@1 files => 286891 bytes
-2024/11/18-21:26:12.868 9278 compacted to: files[ 0 1 0 0 0 0 0 ]
-2024/11/18-21:26:12.868 9278 Delete type=2 #5
-2024/11/18-21:26:12.869 9278 Delete type=2 #10
-2024/11/18-21:26:12.869 9278 Manual compaction at level-0 from '!items!ffef9ee26707410f' @ 570 : 1 .. '!items!ffef9ee26707410f' @ 0 : 0; will stop at (end)
+2024/11/19-19:13:28.038 21d8 Recovering log #6
+2024/11/19-19:13:28.044 21d8 Delete type=0 #6
+2024/11/19-19:13:28.044 21d8 Delete type=3 #4
+2024/11/19-19:13:28.053 6e1c Level-0 table #10: started
+2024/11/19-19:13:28.059 6e1c Level-0 table #10: 287121 bytes OK
+2024/11/19-19:13:28.061 6e1c Delete type=0 #8
+2024/11/19-19:13:28.061 6e1c Manual compaction at level-0 from '!folders!059e0c0e659a4090' @ 72057594037927935 : 1 .. '!items!ff28fa97e2ab480d' @ 0 : 0; will stop at '!items!ff28fa97e2ab480d' @ 570 : 1
+2024/11/19-19:13:28.061 6e1c Compacting 2@0 + 0@1 files
+2024/11/19-19:13:28.070 6e1c Generated table #11@0: 661 keys, 287121 bytes
+2024/11/19-19:13:28.070 6e1c Compacted 2@0 + 0@1 files => 287121 bytes
+2024/11/19-19:13:28.071 6e1c compacted to: files[ 0 1 0 0 0 0 0 ]
+2024/11/19-19:13:28.071 6e1c Delete type=2 #5
+2024/11/19-19:13:28.072 6e1c Delete type=2 #10
+2024/11/19-19:13:28.072 6e1c Manual compaction at level-0 from '!items!ff28fa97e2ab480d' @ 570 : 1 .. '!items!ff28fa97e2ab480d' @ 0 : 0; will stop at (end)

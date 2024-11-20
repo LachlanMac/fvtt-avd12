@@ -1,14 +1,14 @@
-2024/11/18-21:26:12.664 423c Recovering log #6
-2024/11/18-21:26:12.669 423c Delete type=0 #6
-2024/11/18-21:26:12.669 423c Delete type=3 #4
-2024/11/18-21:26:12.675 9278 Level-0 table #10: started
-2024/11/18-21:26:12.679 9278 Level-0 table #10: 126701 bytes OK
-2024/11/18-21:26:12.680 9278 Delete type=0 #8
-2024/11/18-21:26:12.680 9278 Manual compaction at level-0 from '!items!0061e1a0b7c94173' @ 72057594037927935 : 1 .. '!items!fa707dca4e524625' @ 0 : 0; will stop at '!items!fa707dca4e524625' @ 235 : 1
-2024/11/18-21:26:12.681 9278 Compacting 2@0 + 0@1 files
-2024/11/18-21:26:12.684 9278 Generated table #11@0: 235 keys, 126701 bytes
-2024/11/18-21:26:12.684 9278 Compacted 2@0 + 0@1 files => 126701 bytes
-2024/11/18-21:26:12.686 9278 compacted to: files[ 0 1 0 0 0 0 0 ]
-2024/11/18-21:26:12.686 9278 Delete type=2 #5
-2024/11/18-21:26:12.686 9278 Delete type=2 #10
-2024/11/18-21:26:12.686 9278 Manual compaction at level-0 from '!items!fa707dca4e524625' @ 235 : 1 .. '!items!fa707dca4e524625' @ 0 : 0; will stop at (end)
+2024/11/19-19:13:27.860 21d8 Recovering log #6
+2024/11/19-19:13:27.864 21d8 Delete type=0 #6
+2024/11/19-19:13:27.864 21d8 Delete type=3 #4
+2024/11/19-19:13:27.870 6e1c Level-0 table #10: started
+2024/11/19-19:13:27.874 6e1c Level-0 table #10: 126576 bytes OK
+2024/11/19-19:13:27.876 6e1c Delete type=0 #8
+2024/11/19-19:13:27.876 6e1c Manual compaction at level-0 from '!items!01088e8560a74c7e' @ 72057594037927935 : 1 .. '!items!ff9ea351e2384e0c' @ 0 : 0; will stop at '!items!ff9ea351e2384e0c' @ 235 : 1
+2024/11/19-19:13:27.876 6e1c Compacting 2@0 + 0@1 files
+2024/11/19-19:13:27.880 6e1c Generated table #11@0: 235 keys, 126576 bytes
+2024/11/19-19:13:27.880 6e1c Compacted 2@0 + 0@1 files => 126576 bytes
+2024/11/19-19:13:27.881 6e1c compacted to: files[ 0 1 0 0 0 0 0 ]
+2024/11/19-19:13:27.882 6e1c Delete type=2 #5
+2024/11/19-19:13:27.882 6e1c Delete type=2 #10
+2024/11/19-19:13:27.882 6e1c Manual compaction at level-0 from '!items!ff9ea351e2384e0c' @ 235 : 1 .. '!items!ff9ea351e2384e0c' @ 0 : 0; will stop at (end)
