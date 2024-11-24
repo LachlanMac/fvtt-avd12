@@ -2,7 +2,7 @@
   "id": "avd12",
   "title": "AnyVenture D12 RPG",
   "description": "Anyventure D12 system for FoundryVTT",
-  "version": "14.0.5",
+  "version": "14.1.0",
   "compatibility": {
     "minimum": "12",
     "verified": "12.331"
@@ -138,6 +138,18 @@
       "label": "AVD12 Immunities",
       "name": "immunities",
       "path": "packs/immunities",
+      "system": "avd12",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "type": "Actor",
+      "label": "AVD12 Bestiary",
+      "name": "bestiary",
+      "path": "packs/bestiary",
       "system": "avd12",
       "flags": {},
       "ownership": {

@@ -1,14 +1,14 @@
-2024/11/19-19:13:27.787 21d8 Recovering log #6
-2024/11/19-19:13:27.792 21d8 Delete type=0 #6
-2024/11/19-19:13:27.792 21d8 Delete type=3 #4
-2024/11/19-19:13:27.795 6e1c Level-0 table #10: started
-2024/11/19-19:13:27.797 6e1c Level-0 table #10: 38477 bytes OK
-2024/11/19-19:13:27.799 6e1c Delete type=0 #8
-2024/11/19-19:13:27.799 6e1c Manual compaction at level-0 from '!folders!12dc74b2243c4c88' @ 72057594037927935 : 1 .. '!items!fdf97d21efc547c6' @ 0 : 0; will stop at '!items!fdf97d21efc547c6' @ 61 : 1
-2024/11/19-19:13:27.799 6e1c Compacting 2@0 + 0@1 files
-2024/11/19-19:13:27.801 6e1c Generated table #11@0: 71 keys, 38477 bytes
-2024/11/19-19:13:27.801 6e1c Compacted 2@0 + 0@1 files => 38477 bytes
-2024/11/19-19:13:27.803 6e1c compacted to: files[ 0 1 0 0 0 0 0 ]
-2024/11/19-19:13:27.803 6e1c Delete type=2 #5
-2024/11/19-19:13:27.803 6e1c Delete type=2 #10
-2024/11/19-19:13:27.803 6e1c Manual compaction at level-0 from '!items!fdf97d21efc547c6' @ 61 : 1 .. '!items!fdf97d21efc547c6' @ 0 : 0; will stop at (end)
+2024/11/24-16:45:29.657 83ac Recovering log #6
+2024/11/24-16:45:29.661 83ac Delete type=0 #6
+2024/11/24-16:45:29.661 83ac Delete type=3 #4
+2024/11/24-16:45:29.667 a12c Level-0 table #10: started
+2024/11/24-16:45:29.669 a12c Level-0 table #10: 38753 bytes OK
+2024/11/24-16:45:29.671 a12c Delete type=0 #8
+2024/11/24-16:45:29.671 a12c Manual compaction at level-0 from '!folders!12dc74b2243c4c88' @ 72057594037927935 : 1 .. '!items!ffca6d2051444f9d' @ 0 : 0; will stop at '!items!ffca6d2051444f9d' @ 61 : 1
+2024/11/24-16:45:29.671 a12c Compacting 2@0 + 0@1 files
+2024/11/24-16:45:29.673 a12c Generated table #11@0: 71 keys, 38753 bytes
+2024/11/24-16:45:29.673 a12c Compacted 2@0 + 0@1 files => 38753 bytes
+2024/11/24-16:45:29.675 a12c compacted to: files[ 0 1 0 0 0 0 0 ]
+2024/11/24-16:45:29.675 a12c Delete type=2 #5
+2024/11/24-16:45:29.675 a12c Delete type=2 #10
+2024/11/24-16:45:29.676 a12c Manual compaction at level-0 from '!items!ffca6d2051444f9d' @ 61 : 1 .. '!items!ffca6d2051444f9d' @ 0 : 0; will stop at (end)

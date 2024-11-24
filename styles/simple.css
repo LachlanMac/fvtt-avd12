@@ -1199,6 +1199,13 @@ input[type=checkbox] .skillcheck {
   height: 24px;
 }
 
+.roll-universal {
+  margin-left: 20px;
+  margin-right: 20px;
+  width: 24px;
+  height: 24px;
+}
+
 .roll-offense {
   margin-left: 20px;
   margin-right: 20px;
