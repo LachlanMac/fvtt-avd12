@@ -1,14 +1,14 @@
-2024/11/24-16:45:29.657 83ac Recovering log #6
-2024/11/24-16:45:29.661 83ac Delete type=0 #6
-2024/11/24-16:45:29.661 83ac Delete type=3 #4
-2024/11/24-16:45:29.667 a12c Level-0 table #10: started
-2024/11/24-16:45:29.669 a12c Level-0 table #10: 38753 bytes OK
-2024/11/24-16:45:29.671 a12c Delete type=0 #8
-2024/11/24-16:45:29.671 a12c Manual compaction at level-0 from '!folders!12dc74b2243c4c88' @ 72057594037927935 : 1 .. '!items!ffca6d2051444f9d' @ 0 : 0; will stop at '!items!ffca6d2051444f9d' @ 61 : 1
-2024/11/24-16:45:29.671 a12c Compacting 2@0 + 0@1 files
-2024/11/24-16:45:29.673 a12c Generated table #11@0: 71 keys, 38753 bytes
-2024/11/24-16:45:29.673 a12c Compacted 2@0 + 0@1 files => 38753 bytes
-2024/11/24-16:45:29.675 a12c compacted to: files[ 0 1 0 0 0 0 0 ]
-2024/11/24-16:45:29.675 a12c Delete type=2 #5
-2024/11/24-16:45:29.675 a12c Delete type=2 #10
-2024/11/24-16:45:29.676 a12c Manual compaction at level-0 from '!items!ffca6d2051444f9d' @ 61 : 1 .. '!items!ffca6d2051444f9d' @ 0 : 0; will stop at (end)
+2024/11/28-18:44:39.094 65c4 Recovering log #6
+2024/11/28-18:44:39.098 65c4 Delete type=0 #6
+2024/11/28-18:44:39.098 65c4 Delete type=3 #4
+2024/11/28-18:44:39.102 6708 Level-0 table #10: started
+2024/11/28-18:44:39.105 6708 Level-0 table #10: 37421 bytes OK
+2024/11/28-18:44:39.108 6708 Delete type=0 #8
+2024/11/28-18:44:39.108 6708 Manual compaction at level-0 from '!folders!12dc74b2243c4c88' @ 72057594037927935 : 1 .. '!items!fe7076d45c48433e' @ 0 : 0; will stop at '!items!fe7076d45c48433e' @ 61 : 1
+2024/11/28-18:44:39.108 6708 Compacting 2@0 + 0@1 files
+2024/11/28-18:44:39.110 6708 Generated table #11@0: 71 keys, 37421 bytes
+2024/11/28-18:44:39.110 6708 Compacted 2@0 + 0@1 files => 37421 bytes
+2024/11/28-18:44:39.112 6708 compacted to: files[ 0 1 0 0 0 0 0 ]
+2024/11/28-18:44:39.113 6708 Delete type=2 #5
+2024/11/28-18:44:39.113 6708 Delete type=2 #10
+2024/11/28-18:44:39.113 6708 Manual compaction at level-0 from '!items!fe7076d45c48433e' @ 61 : 1 .. '!items!fe7076d45c48433e' @ 0 : 0; will stop at (end)

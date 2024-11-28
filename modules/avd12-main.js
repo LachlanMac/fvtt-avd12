@@ -43,33 +43,30 @@ Hooks.once("init", async function () {
     console.log("%c[AVD12]", style, ...args);
   };
 
-  /*
-  
   console.log = function (...args) {
-      if (!ignorePatterns.test(args[0])) {
-          originalLog.apply(console, args);
-      }
+    if (!ignorePatterns.test(args[0])) {
+      originalLog.apply(console, args);
+    }
   };
-  
+
   console.warn = function (...args) {
-      if (!ignorePatterns.test(args[0])) {
-          originalWarn.apply(console, args);
-      }
+    if (!ignorePatterns.test(args[0])) {
+      originalWarn.apply(console, args);
+    }
   };
-  
+
   console.info = function (...args) {
-      if (!ignorePatterns.test(args[0])) {
-          originalInfo.apply(console, args);
-      }
+    if (!ignorePatterns.test(args[0])) {
+      originalInfo.apply(console, args);
+    }
   };
-  
+
   console.error = function (...args) {
-      if (!ignorePatterns.test(args[0])) {
-          originalError.apply(console, args);
-      }
+    if (!ignorePatterns.test(args[0])) {
+      originalError.apply(console, args);
+    }
   };
-  
-*/
+
   console.log(`Initializing AVD12 RPG`);
 
   game.system.avd12 = {

@@ -1,14 +1,14 @@
-2024/11/24-16:45:29.595 542c Recovering log #6
-2024/11/24-16:45:29.600 542c Delete type=0 #6
-2024/11/24-16:45:29.600 542c Delete type=3 #4
-2024/11/24-16:45:29.619 a12c Level-0 table #10: started
-2024/11/24-16:45:29.628 a12c Level-0 table #10: 582178 bytes OK
-2024/11/24-16:45:29.630 a12c Delete type=0 #8
-2024/11/24-16:45:29.630 a12c Manual compaction at level-0 from '!actors!01063ed888864797' @ 72057594037927935 : 1 .. '!folders!fe00cf0d699641cc' @ 0 : 0; will stop at '!actors.items!fa5bf64b9648474b.Y2P0iMXgBpLw8PaN' @ 592 : 1
-2024/11/24-16:45:29.630 a12c Compacting 2@0 + 0@1 files
-2024/11/24-16:45:29.642 a12c Generated table #11@0: 603 keys, 582178 bytes
-2024/11/24-16:45:29.642 a12c Compacted 2@0 + 0@1 files => 582178 bytes
-2024/11/24-16:45:29.644 a12c compacted to: files[ 0 1 0 0 0 0 0 ]
-2024/11/24-16:45:29.644 a12c Delete type=2 #5
-2024/11/24-16:45:29.644 a12c Delete type=2 #10
-2024/11/24-16:45:29.645 a12c Manual compaction at level-0 from '!actors.items!fa5bf64b9648474b.Y2P0iMXgBpLw8PaN' @ 592 : 1 .. '!folders!fe00cf0d699641cc' @ 0 : 0; will stop at (end)
+2024/11/28-18:44:39.036 44b8 Recovering log #25
+2024/11/28-18:44:39.041 44b8 Delete type=0 #25
+2024/11/28-18:44:39.041 44b8 Delete type=3 #24
+2024/11/28-18:44:39.054 6708 Level-0 table #29: started
+2024/11/28-18:44:39.065 6708 Level-0 table #29: 582188 bytes OK
+2024/11/28-18:44:39.067 6708 Delete type=0 #27
+2024/11/28-18:44:39.067 6708 Manual compaction at level-0 from '!actors!01063ed888864797' @ 72057594037927935 : 1 .. '!folders!fe00cf0d699641cc' @ 0 : 0; will stop at '!folders!fe00cf0d699641cc' @ 1795 : 1
+2024/11/28-18:44:39.067 6708 Compacting 1@0 + 1@1 files
+2024/11/28-18:44:39.078 6708 Generated table #30@0: 603 keys, 582188 bytes
+2024/11/28-18:44:39.078 6708 Compacted 1@0 + 1@1 files => 582188 bytes
+2024/11/28-18:44:39.081 6708 compacted to: files[ 0 1 0 0 0 0 0 ]
+2024/11/28-18:44:39.081 6708 Delete type=2 #11
+2024/11/28-18:44:39.081 6708 Delete type=2 #29
+2024/11/28-18:44:39.082 6708 Manual compaction at level-0 from '!folders!fe00cf0d699641cc' @ 1795 : 1 .. '!folders!fe00cf0d699641cc' @ 0 : 0; will stop at (end)

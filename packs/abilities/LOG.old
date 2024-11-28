@@ -1,14 +1,14 @@
-2024/11/24-16:45:29.513 542c Recovering log #6
-2024/11/24-16:45:29.522 542c Delete type=0 #6
-2024/11/24-16:45:29.522 542c Delete type=3 #4
-2024/11/24-16:45:29.528 a12c Level-0 table #10: started
-2024/11/24-16:45:29.532 a12c Level-0 table #10: 116775 bytes OK
-2024/11/24-16:45:29.534 a12c Delete type=0 #8
-2024/11/24-16:45:29.534 a12c Manual compaction at level-0 from '!folders!4b09bbc3c03e42b3' @ 72057594037927935 : 1 .. '!items!ff34183f991c46b6' @ 0 : 0; will stop at '!items!ff34183f991c46b6' @ 395 : 1
-2024/11/24-16:45:29.534 a12c Compacting 2@0 + 0@1 files
-2024/11/24-16:45:29.538 a12c Generated table #11@0: 399 keys, 116775 bytes
-2024/11/24-16:45:29.538 a12c Compacted 2@0 + 0@1 files => 116775 bytes
-2024/11/24-16:45:29.539 a12c compacted to: files[ 0 1 0 0 0 0 0 ]
-2024/11/24-16:45:29.539 a12c Delete type=2 #5
-2024/11/24-16:45:29.539 a12c Delete type=2 #10
-2024/11/24-16:45:29.539 a12c Manual compaction at level-0 from '!items!ff34183f991c46b6' @ 395 : 1 .. '!items!ff34183f991c46b6' @ 0 : 0; will stop at (end)
+2024/11/28-18:44:38.955 44b8 Recovering log #6
+2024/11/28-18:44:38.962 44b8 Delete type=0 #6
+2024/11/28-18:44:38.962 44b8 Delete type=3 #4
+2024/11/28-18:44:38.970 6708 Level-0 table #10: started
+2024/11/28-18:44:38.973 6708 Level-0 table #10: 118931 bytes OK
+2024/11/28-18:44:38.975 6708 Delete type=0 #8
+2024/11/28-18:44:38.975 6708 Manual compaction at level-0 from '!folders!4b09bbc3c03e42b3' @ 72057594037927935 : 1 .. '!items!ff9362c83bf84150' @ 0 : 0; will stop at '!items!ff9362c83bf84150' @ 399 : 1
+2024/11/28-18:44:38.975 6708 Compacting 2@0 + 0@1 files
+2024/11/28-18:44:38.979 6708 Generated table #11@0: 403 keys, 118931 bytes
+2024/11/28-18:44:38.979 6708 Compacted 2@0 + 0@1 files => 118931 bytes
+2024/11/28-18:44:38.980 6708 compacted to: files[ 0 1 0 0 0 0 0 ]
+2024/11/28-18:44:38.980 6708 Delete type=2 #5
+2024/11/28-18:44:38.981 6708 Delete type=2 #10
+2024/11/28-18:44:38.981 6708 Manual compaction at level-0 from '!items!ff9362c83bf84150' @ 399 : 1 .. '!items!ff9362c83bf84150' @ 0 : 0; will stop at (end)

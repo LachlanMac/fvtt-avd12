@@ -50,13 +50,13 @@ export function parseOption(actor, option) {
         addTrait(actor, dataTokens[i], description, name, option.avd12_id);
         break;
       case "X": // Action
-        addAction(actor, name, description, option.avd12_id);
+        addAction(actor, name, description, option.avd12_id, option.custom, dataTokens[i]);
         break;
       case "Z": // Reaction
-        addReaction(actor, name, description, option.avd12_id);
+        addReaction(actor, name, description, option.avd12_id, option.custom, dataTokens[i]);
         break;
       case "Y": // Free action
-        addFreeAction(actor, name, description, option.avd12_id);
+        addFreeAction(actor, name, description, option.avd12_id, option.custom);
         break;
       case "H": // Fighting stance
         addFightingStance(actor, dataTokens[i], option.avd12_id);
@@ -421,20 +421,67 @@ function addRangedSkill(character, data) {
   }
 }
 
-function addAction(actor, name, description, custom_id) {
-  actor.tmpActions.push({ name: name, description: description, custom_id: custom_id });
+function getCustomAbility(name, description, custom_id, type, data) {
+  let currentUses = 0;
+  let maxUses = 0;
+  let daily = false;
+  if (type == "action" || type == "reaction") {
+    currentUses = type == "action" ? 3 : 2;
+    maxUses = type == "action" ? 3 : 2;
+
+    let usageTokens = data.split("=")[1];
+
+    if (usageTokens?.length == 3) {
+      daily = usageTokens.charAt(1) == "D" ? true : false;
+      currentUses = Number(usageTokens.charAt(2));
+      maxUses = Number(usageTokens.charAt(2));
+    }
+  }
+
+  let JSON = {
+    name: name,
+    type: type,
+    img: "systems/avd12/images/icons/focus2.webp",
+    system: {
+      daily: daily,
+      uses: {
+        current: currentUses,
+        max: maxUses,
+      },
+      description: description,
+      avd12_id: custom_id,
+    },
+  };
+
+  return JSON;
+}
+
+function addAction(actor, name, description, custom_id, custom, data) {
+  let abilityData = {};
+  if (custom) {
+    abilityData = getCustomAbility(name, description, custom_id, "action", data);
+  }
+  actor.tmpActions.push({ name: name, description: description, custom_id: custom_id, data: abilityData });
+}
+
+function addReaction(actor, name, description, custom_id, custom, data) {
+  let abilityData = {};
+  if (custom) {
+    abilityData = getCustomAbility(name, description, custom_id, "reaction", data);
+  }
+  actor.tmpReactions.push({ name: name, description: description, custom_id: custom_id, data: abilityData });
+}
+
+function addFreeAction(actor, name, description, custom_id, custom) {
+  let abilityData = {};
+  if (custom) {
+    abilityData = getCustomAbility(name, description, custom_id, "freeaction");
+  }
+  actor.tmpFreeActions.push({ name: name, description: description, custom_id: custom_id, data: abilityData });
 }
 
 function addAttackOfOpportunity(actor, name, description, custom_id) {
   actor.tmpReactions.push({ name: name, description: description, custom_id: custom_id });
-}
-
-function addReaction(actor, name, description, custom_id) {
-  actor.tmpReactions.push({ name: name, description: description, custom_id: custom_id });
-}
-
-function addFreeAction(actor, name, description, custom_id) {
-  actor.tmpFreeActions.push({ name: name, description: description, custom_id: custom_id });
 }
 
 function addLanguageSkill(actor, data) {

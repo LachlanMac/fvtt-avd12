@@ -110,6 +110,7 @@ export class Avd12Actor extends Actor {
     if (!game.user.isGM && !this.isOwner) {
       return;
     }
+
     let actor = this;
     const combinedAbilities = [...actor.tmpActions, ...actor.tmpFreeActions, ...actor.tmpReactions];
     const itemSets = [
@@ -119,19 +120,19 @@ export class Avd12Actor extends Actor {
       { items: actor.tmpImmunities, packName: "avd12.immunities", key: "tmpImmunities" },
     ];
     const allItemsToAdd = [];
+    const missingItems = [];
+
     const autoItems = actor.items.filter((item) => item.system.auto_added == true);
     if (autoItems.length > 0) {
       const autoItemIds = autoItems.map((item) => item.id);
       await actor.deleteEmbeddedDocuments("Item", autoItemIds);
     }
-
     for (const { items, packName, key } of itemSets) {
       const pack = game.packs.get(packName);
       if (!pack) {
         console.error(`Missing pack for ${key}:`, packName);
         continue;
       }
-
       let compendiumItems = [];
       try {
         compendiumItems = await pack.getDocuments();
@@ -144,6 +145,12 @@ export class Avd12Actor extends Actor {
         const notInActorInventory = !actor.items.some((i) => i.system.avd12_id === item.system.avd12_id);
         return itemInSet && notInActorInventory;
       });
+
+      const itemsNotFound = items.filter((tmpItem) => !compendiumItems.some((compItem) => compItem.system.avd12_id === tmpItem.custom_id) && !actor.items.some((actorItem) => actorItem.system.avd12_id === tmpItem.custom_id));
+
+      if (itemsNotFound.length > 0) {
+        missingItems.push(...itemsNotFound);
+      }
       actor[key] = items.filter((tmpItem) => !filteredItems.some((addedItem) => addedItem.system.avd12_id === tmpItem.custom_id));
       allItemsToAdd.push(...filteredItems);
     }
@@ -154,6 +161,9 @@ export class Avd12Actor extends Actor {
         itemObj.system.auto_added = true;
         return itemObj;
       });
+      for (let x = 0; x < missingItems.length; x++) {
+        itemData.push(missingItems[x].data);
+      }
       try {
         await actor.createEmbeddedDocuments("Item", itemData);
       } catch (error) {
@@ -161,6 +171,7 @@ export class Avd12Actor extends Actor {
       }
     }
   }
+
   rebuildNPCSkills() {
     rebuildNPCSkills(this);
   }
