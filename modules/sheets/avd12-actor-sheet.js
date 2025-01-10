@@ -61,6 +61,7 @@ export class Avd12ActorSheet extends ActorSheet {
       limited: this.object.limited,
       total_module_points: this.actor.getTotalModulePoints(),
       modules: this.actor.getModules(),
+      ancestries:this.actor.getAncestries(),
       origin_modules: this.actor.getOriginModules(this.actor.getModules()),
       core_modules: this.actor.getCoreModules(this.actor.getModules()),
       secondary_modules: this.actor.getSecondaryModules(this.actor.getModules()),

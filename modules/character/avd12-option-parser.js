@@ -458,6 +458,7 @@ function getCustomAbility(name, description, custom_id, type, data) {
 
 function addAction(actor, name, description, custom_id, custom, data) {
   let abilityData = {};
+  console.log(name, custom, custom_id)
   if (custom) {
     abilityData = getCustomAbility(name, description, custom_id, "action", data);
   }

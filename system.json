@@ -2,7 +2,7 @@
   "id": "avd12",
   "title": "AnyVenture D12 RPG",
   "description": "Anyventure D12 system for FoundryVTT",
-  "version": "14.1.2",
+  "version": "14.2.0",
   "compatibility": {
     "minimum": "12",
     "verified": "12.331"
@@ -37,6 +37,18 @@
   "socket": true,
   "styles": ["styles/simple.css"],
   "packs": [
+    {
+      "type": "Item",
+      "label": "AVD12 Ancestries",
+      "name": "ancestries",
+      "path": "packs/ancestries",
+      "system": "avd12",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
     {
       "type": "Item",
       "label": "AVD12 Modules",

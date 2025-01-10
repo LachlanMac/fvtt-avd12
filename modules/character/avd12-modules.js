@@ -6,14 +6,14 @@ export function getMinimumModulePoints(actor) {
   let minPoints = 0;
   let modules = actor.items.filter((item) => item.type === "avd12module");
   modules.forEach((module) => {
-    minPoints += actor.getSpentModulePoints(module);
+    minPoints += actor.getSpentModulePoints(module,actor);
   });
   return minPoints;
 }
 
 export async function updateModulePoints(actor, delta) {
   let modulePoints = actor.getTotalModulePoints() + delta;
-  let level = Math.floor((modulePoints - (Number(actor.system.origin_trait) == 1 ? 4 : 0)) / 10);
+  let level = Math.floor(modulePoints / 10);
 
   if (level !== actor.system.level.value) {
     await actor.update({ "system.level.value": level });
@@ -23,20 +23,33 @@ export async function updateModulePoints(actor, delta) {
 
 export function getTotalModulePoints(actor) {
   let totalPoints = 0;
+  
   let modules = actor.items.filter((item) => item.type == "avd12module");
   modules.forEach((module) => {
-    totalPoints += actor.getSpentModulePoints(module);
+    totalPoints += actor.getSpentModulePoints(module, actor);
+    console.log(actor.name, `AFter ${module.name}`, totalPoints);
   });
+  let ancestries = actor.items.filter((item) => item.type == "avd12ancestry");
+  totalPoints += ((ancestries.length - 1) * 2); //add 2 for each multirace
+ 
+  if(actor.system.origin_trait != 1){
+    totalPoints += 4;
+  }
+  console.log(actor.name, `Finished`, totalPoints);
   return totalPoints + actor.system.module_points;
 }
 
-export function getSpentModulePoints(module) {
+export function getSpentModulePoints(module, actor) {
   let cost = 0;
   if (module.system.options && typeof module.system.options === "object") {
     Object.entries(module.system.options).forEach(([location, option]) => {
       if (option.selected) {
-        if (module.system.origin && location === "option_1") {
-        } else {
+        if (module.system.avd12_id == actor.system.culture && location === "option_1") {
+          //culture
+          console.log("Culture : ", module.name)
+        } else if(location === "option_1" && module.system.origin){
+          console.log("Origin : ", module.name)
+        }else {
           cost += option.cost;
         }
       }
@@ -104,6 +117,22 @@ export function rebuildModules(actor) {
   }
 
   actor.tmpTraits.push(baseTrait);
+
+  let ancestries = actor.items.filter((item) => item.type == "avd12ancestry");
+  ancestries.forEach((ancestry) =>{
+    console.log("parsing", actor.name, ancestry);
+    if (ancestry.system.avd12_id.length > 6) {
+      ancestry.system.option_1.custom = true;
+      ancestry.system.option_2.custom = true;
+    } else {
+      ancestry.system.option_1.custom = false;
+      ancestry.system.option_2.custom = false;
+    }
+    parseOption(actor, ancestry.system.option_1);
+    parseOption(actor, ancestry.system.option_2);
+
+  });
+
 
   let modules = actor.items.filter((item) => item.type == "avd12module");
   modules.forEach((module) => {

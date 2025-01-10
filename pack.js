@@ -50,6 +50,7 @@ function getNameByID(uuid) {
         case "c9f2e7e60f104a65": return "Dark";
         case "2312b1df738f442a": return "Divine";
         case "7d696b5a1fa94eb9": return "Monster";
+        case "b876cba57e226bdf": return "Ancestry";
         default: return "Unknown";
     }
 }

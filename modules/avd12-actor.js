@@ -110,7 +110,7 @@ export class Avd12Actor extends Actor {
     if (!game.user.isGM && !this.isOwner) {
       return;
     }
-
+    
     let actor = this;
     const combinedAbilities = [...actor.tmpActions, ...actor.tmpFreeActions, ...actor.tmpReactions];
     const itemSets = [
@@ -159,11 +159,13 @@ export class Avd12Actor extends Actor {
       const itemData = allItemsToAdd.map((item) => {
         const itemObj = item.toObject();
         itemObj.system.auto_added = true;
-        return itemObj;
-      });
-      for (let x = 0; x < missingItems.length; x++) {
-        itemData.push(missingItems[x].data);
-      }
+      return itemObj;
+    });
+
+    for (let x = 0; x < missingItems.length; x++) {
+      console.log("Mapping Missing Item", missingItems[x].name, missingItems[x]);
+      itemData.push(missingItems[x]);
+    }
       try {
         await actor.createEmbeddedDocuments("Item", itemData);
       } catch (error) {
@@ -998,6 +1000,11 @@ export class Avd12Actor extends Actor {
     return comp;
   }
 
+  getAncestries(){
+    let comp = foundry.utils.duplicate(this.items.filter((item) => item.type == "avd12ancestry") || []);
+    return comp;
+  }
+
   getCoreModules(modules) {
     let comp = foundry.utils.duplicate(modules.filter((item) => item.system.type == "core") || []);
     return comp;
@@ -1214,7 +1221,7 @@ export class Avd12Actor extends Actor {
   }
 
   getSpentModulePoints(module) {
-    return getSpentModulePoints(module);
+    return getSpentModulePoints(module, this);
   }
   async updateModuleSelection(item, location, selection) {
     updateModuleSelection(this, item, location, selection);

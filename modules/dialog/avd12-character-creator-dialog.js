@@ -25,8 +25,11 @@ export class AVD12CharacterCreatorDialog extends Dialog {
     super(conf, options);
     this.creationData = creationData;
     this.actor = actor;
+    this.creationData.name = actor.name;
+    this.creationData.selected_culture = creationData.cultures[0];
     this.creationData.selected = creationData.ancestries[0];
-    this.creationData.secondary_selected = creationData.ancestries[2];
+    this.creationData.secondary_selected = null;
+    this.creationData.selected_plane = creationData.planar[0];
     this.creationData.originType = this.creationData.originType || 1;
   }
 
@@ -34,13 +37,17 @@ export class AVD12CharacterCreatorDialog extends Dialog {
     const dataPackage = {
       primary: this.creationData.selected,
       secondary: this.creationData.secondary_selected,
+      plane: this.creationData.selected_plane,
+      culture:this.creationData.selected_culture,
       origin: this.creationData.originType,
       name: $("#character-name").val(),
       size: this.creationData.sizeType,
       alteration: this.creationData.alteration,
       planar: this.creationData.planar,
-      ancestries: this.creationData.races,
+      cultures: this.creationData.cultures,
+      ancestries:this.creationData.ancestries
     };
+
     this.actor.confirmCreateCharacter(dataPackage);
   }
 
@@ -62,10 +69,19 @@ export class AVD12CharacterCreatorDialog extends Dialog {
 
     var dialog = this;
     function onLoad() {
+      $("#character-name").val(dialog.creationData.name);
       $("#character-ancestry").val(dialog.creationData.selected._id);
       $("#size-description").text(dialog.creationData.size_description_map[dialog.creationData.sizeType]);
       $("#origin-description").text(dialog.creationData.origin_description_map[dialog.creationData.originType]);
-      $("#secondary-character-ancestry").val(dialog.creationData.secondary_selected._id);
+      if(dialog.creationData.secondary_selected != null){
+        $("#secondary-character-ancestry").val(dialog.creationData.secondary_selected._id);
+        $("#secondary-ancestry-container").show();
+      }else{
+        $("#secondary-ancestry-container").hide();
+      }
+
+      $("#character-culture").val(dialog.creationData.selected_culture._id);
+
       $("#character-name").val(dialog.creationData.name);
       if ($("#origin").val() !== dialog.creationData.originType.toString()) {
         $("#origin").val(dialog.creationData.originType.toString()).change();
@@ -81,10 +97,8 @@ export class AVD12CharacterCreatorDialog extends Dialog {
       if (selectedValue == this.creationData.originType) {
         return;
       } else {
-        if (selectedValue == 3) {
-          this.creationData.secondary_selected = this.creationData.ancestries[0];
-        } else if (selectedValue == 4) {
-          this.creationData.secondary_selected = this.creationData.planar[0];
+        if (selectedValue == 4) {
+          this.creationData.selected_plane = this.creationData.planar[0];
         }
         this.creationData.originType = selectedValue;
         this.refreshDialog();
@@ -111,20 +125,34 @@ export class AVD12CharacterCreatorDialog extends Dialog {
       this.refreshDialog();
     });
 
+    html.find("#character-culture").change((event) => {
+      const selectedId = $(event.currentTarget).val();
+      const selectedCulture = this.creationData.cultures.find((culture) => culture._id === selectedId);
+      if (selectedCulture) {
+        this.creationData.selected_culture = selectedCulture;
+        $("#character-culture option:selected").text(selectedCulture.name);
+      }
+      this.refreshDialog();
+    });
+
     html.find("#secondary-character-ancestry").change((event) => {
       const selectedId = $(event.currentTarget).val();
       const selectedAncestry = this.creationData.ancestries.find((ancestry) => ancestry._id === selectedId);
       if (selectedAncestry) {
         this.creationData.secondary_selected = selectedAncestry;
         $("#secondary-character-ancestry option:selected").text(selectedAncestry.name);
+      }else if(selectedId == 0){
+        this.creationData.secondary_selected = null;
+        $("#secondary-character-ancestry option:selected").text("None");
       }
+      this.refreshDialog();
     });
 
     html.find("#planar-character-ancestry").change((event) => {
       const selectedId = $(event.currentTarget).val();
       const selectedAncestry = this.creationData.planar.find((ancestry) => ancestry._id === selectedId);
       if (selectedAncestry) {
-        this.creationData.secondary_selected = selectedAncestry;
+        this.creationData.planar_selected = selectedAncestry;
         $("#planar-character-ancestry option:selected").text(selectedAncestry.name);
       }
     });

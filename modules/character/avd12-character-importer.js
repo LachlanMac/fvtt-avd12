@@ -57,6 +57,7 @@ export async function importData(actor, data){
     */
   }
 
+  /*
   export async function importCharacterModules(actor,data, cleanse){
     let moduleIds = actor.items.filter(item => item.type === "avd12module").map(item => item.id);
     if(cleanse){
@@ -67,8 +68,10 @@ export async function importData(actor, data){
     await actor.createEmbeddedDocuments("Item", modules);
     await actor.update({ "system.module_points": data.system.module_points });
   }
+*/
 
   async function overwriteCharacter(actor, data) {
+    console.log(data);
     await actor.update({ "system": data.system });
     const itemIds = actor.items.map(item => item.id);
     await actor.deleteEmbeddedDocuments("Item", itemIds);

@@ -43,6 +43,8 @@ Hooks.once("init", async function () {
     console.log("%c[AVD12]", style, ...args);
   };
 
+
+  /*
   console.log = function (...args) {
     if (!ignorePatterns.test(args[0])) {
       originalLog.apply(console, args);
@@ -66,7 +68,7 @@ Hooks.once("init", async function () {
       originalError.apply(console, args);
     }
   };
-
+*/
   console.log(`Initializing AVD12 RPG`);
 
   game.system.avd12 = {

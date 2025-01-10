@@ -17,9 +17,10 @@
       },
       "core": {
         "imported": 0,
-        "module_points": 8,
+        "module_points": 10,
         "created": false,
         "uuid": "",
+        "culture":0,
         "origin_trait": 1,
         "subactors": [],
         "alert": false,
@@ -512,7 +513,7 @@
     "expedition": { "templates": ["expeditioncore"] }
   },
   "Item": {
-    "types": ["spell", "armor", "shield", "equipment", "headwear", "gloves", "boots", "cloak", "ring", "weapon", "module", "action", "freeaction", "reaction", "stance", "trait", "ballad", "equipable", "avd12module", "language", "immunity"],
+    "types": ["spell", "armor", "shield", "equipment", "headwear", "gloves", "boots", "cloak", "ring", "weapon", "module", "action", "freeaction", "reaction", "stance", "trait", "ballad", "equipable", "avd12module", "avd12ancestry", "language", "immunity"],
     "templates": {
       "roll": {
         "utility_roll": false,
@@ -753,6 +754,19 @@
         "option_a": { "name": "option name", "avd12_id": "0", "custom": false, "description": "${data.description}", "selected": false, "data": "", "cost": 0 },
         "option_b": { "name": "option name", "avd12_id": "0", "custom": false, "description": "${data.description}", "selected": false, "data": "", "cost": 0 }
       }
+    },
+    "avd12ancestry": {
+      "avd12_id": "0",
+      "details": {
+        "size": "",
+        "homeworld": "",
+        "lifespan": "",
+        "language": "",
+        "description": ""
+      },
+      "description": "",
+      "option_1": { "name": "option name", "avd12_id": "0", "custom": false, "description": "${data.description}",  "data": "" },
+      "option_2": { "name": "option name", "avd12_id": "0", "custom": false, "description": "${data.description}",  "data": "" }
     }
   }
 }
